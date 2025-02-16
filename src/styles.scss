@@ -1,0 +1,492 @@
+/* You can add global styles to this file, and also import other style files */
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import "primeicons/primeicons.css";
+@import "./assets/scss/fonts";
+@import 'ngx-toastr/toastr';
+
+:root {
+  --main-text-color: redF2F3E;
+}
+
+.toast-success {
+  width:400px!important;
+  background-color: #F1FDF5 !important;
+  color:#43B66D!important;
+  .toast-message , .toast-close-button {
+    color:#414D60!important;
+  }
+  .toast-icon{
+    display: none !important;
+    color: #4caf50 !important;
+    font-size: 30px !important;
+  }
+
+}
+
+// .toast-success .toast-icon {
+//   content: url('assets/images/arabian-man.png') !important; /* Path to your custom icon */
+//   width: 300px!important; /* Adjust the size */
+//   height: 300px!important; /* Adjust the size */
+// }
+
+// ::ng-deep .toast-success .toast-icon {
+//   color: #4caf50 !important;
+//   font-size: 30px !important;
+// }
+  .toast-error {
+    background-color: #FDF2F2 !important;
+    color:#DE3232!important;
+    .toast-message , .toast-close-button , .toast-icon{
+      color:#414D60!important;
+    }
+
+  }
+
+
+
+.toast-warning {
+  background-color: #ffc369 !important;
+}
+
+// // Outfit
+// @font-face {
+//   font-family: 'Bahij';
+//   src: url('./assets/fonts/');
+// }
+
+// @font-face {
+//   font-family: 'Bahij';
+//   src: url('../assets/fonts/Bahij/Janna-Regular.ttf');
+// }
+
+body {
+
+  font-family: 'Bahij', sans-serif;
+  background: #F2F3F5;
+  &:lang(ar) {
+    font-family: 'Bahij', sans-serif;
+  }
+
+  p,
+  span,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    margin: 0px;
+  }
+
+  // background-color: #F5F5F5;
+  &[dir='rtl'] {
+    .rtl-drawer {
+      direction: ltr;
+    }
+
+    .side-nav-bar {
+      position: absolute;
+      left: unset !important;
+      right: 0;
+      top: 0 !important;
+      bottom: 0 !important;
+    }
+
+    img.menu-grid-icon {
+
+      left: auto !important;
+      right: 40px;
+
+    }
+
+    .actions-icon-in-small-table {
+      right: unset;
+      left: 25px;
+    }
+
+  }
+}
+a.g-map-location{
+  text-decoration: none;
+  color: inherit;
+}
+.p-drawer-title{
+   font-size: 21px!important;
+}
+.p-datepicker-weekday-cell{
+   text-align: center;
+}
+.faqs-form-container {
+  .page-details {
+    display: flex;
+    justify-content: space-between;
+
+    h2 {
+      color: #7d7d7d;
+    }
+  }
+}
+p-password.password-w-100{
+  .p-inputtext{
+      width:100%!important
+      }
+}
+
+.p-datepicker {
+  width: 100% !important;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.dialog-close-btn {
+  border: 1px solid #dddddd;
+  margin: 0px 5px;
+}
+
+.page-form-container {
+  .page-details {
+    display: flex;
+    justify-content: space-between;
+
+    h2 {
+      color: #7d7d7d;
+    }
+  }
+}
+
+small {
+  color: red;
+  font-size: 12px;
+}
+
+.block {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .pr-pl-30-small-screen {
+    padding: 0px 35px;
+  }
+}
+
+
+// Table Scss code for all modules
+.table-container {
+
+  .content {
+    h2 {
+      color: #7d7d7d;
+    }
+
+    .title-bredcrumb-section {
+      display: flex;
+      justify-content: space-between;
+      padding-inline: 7px;
+    }
+
+    .details-container {
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      margin-top: 30px;
+      border-radius: 8px;
+      padding: 20px;
+
+      .action-filter {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+
+        span.pi-filter {
+          padding: 8px;
+          border: 1px solid gray;
+          border-radius: 6px;
+
+          &:hover {
+            color: #fff;
+            background-color: gray;
+          }
+        }
+
+        a {
+          text-decoration: none;
+        }
+      }
+
+      .responsive-accordions {
+        display: none;
+      }
+    }
+  }
+
+
+
+  // Small devices (portrait phones)
+  @media only screen and (max-width:249.98px) {
+    .responsive-accordions {
+      display: block !important;
+
+      p-card {
+        .p-card {
+          margin-block: 20px !important;
+        }
+      }
+
+      p-accordion {
+        p-accordion-panel {
+          border-bottom: none !important;
+        }
+      }
+    }
+
+    .table-view,
+    .title {
+      display: none !important;
+    }
+  }
+
+
+  // Small devices (portrait phones)
+  @media only screen and (min-width:250.98px) and (max-width: 575.98px) {
+    .responsive-accordions {
+      display: block !important;
+
+      p-card {
+        .p-card {
+          margin-block: 20px !important;
+        }
+      }
+
+      p-accordion {
+        p-accordion-panel {
+          border-bottom: none !important;
+        }
+      }
+    }
+
+    .table-view,
+    .title {
+      display: none !important;
+    }
+
+    .search-input {
+      margin-top: 20px !important;
+    }
+  }
+
+  // Medium devices (landscape phones, tablets)
+  @media only screen and (min-width: 576px) and (max-width: 767.98px) {
+    .responsive-accordions {
+      display: block !important;
+
+      p-card {
+        .p-card {
+          margin-block: 20px !important;
+        }
+      }
+
+      p-accordion {
+        p-accordion-panel {
+          border-bottom: none !important;
+        }
+      }
+    }
+
+    .table-view {
+      display: none !important;
+    }
+  }
+
+  // Large devices (tablets, small desktops)
+  @media only screen and (min-width: 768px) and (max-width: 991.98px) {
+    .responsive-accordions {
+      display: block !important;
+
+      p-card {
+        .p-card {
+          margin-block: 20px !important;
+        }
+      }
+
+      p-accordion {
+        p-accordion-panel {
+          border-bottom: none !important;
+        }
+      }
+    }
+
+    .table-view {
+      display: none !important;
+    }
+  }
+
+}
+
+// End of table code
+
+
+
+// Scss code for any form (Add , Edit and View Details)
+.form-container {
+  div.reactive-form {
+    background-color: #f8fafc5e;
+    padding: 20px;
+    border: 1px solid #dfdfdf;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+
+    .actions {
+      display: flex;
+      gap: 20px;
+      justify-content: flex-end;
+
+      .submit-btn {
+        padding: 6px 30px;
+        color: white;
+        background: #30ab30;
+        border-radius: 4px;
+        border: none;
+        font-size: 20px;
+
+        &:hover {
+          background: #196919;
+        }
+
+        &:disabled {
+          background: rgba(48, 171, 48, .1);
+          color: #b8b5b5;
+          border: 1px solid #cac6c6;
+          cursor: not-allowed;
+        }
+      }
+
+      .cancel-btn {
+        background: #ffffff00;
+        border: 1px solid red;
+        color: red;
+        padding: 6px 27px;
+        border-radius: 4px;
+
+        &:hover {
+          background: red;
+          color: white;
+        }
+      }
+    }
+
+    @media only screen and (min-width:250.98px) and (max-width: 575.98px) {
+      .actions {
+        justify-content: center !important;
+      }
+    }
+  }
+
+  .disabled-view {
+    cursor: not-allowed;
+    pointer-events: none;
+    background-color: #F9F9F9;
+    color: #a5a0a0;
+  }
+}
+
+// End of form code
+
+.d-grid {
+  display: grid !important;
+}
+
+
+.error-message {
+  color: red;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+
+.search-form {
+  flex-direction: column;
+  justify-content: space-between;
+
+  .form-content {
+    input {
+      box-shadow: none !important;
+    }
+  }
+
+  .search-form-actions {
+    gap: 10px;
+
+    button {
+      flex-basis: 48%;
+    }
+  }
+}
+
+
+// scss code for edit image case component
+
+.edit-image-container {
+  border-radius: 5px;
+  border: 1px solid #d7d7d7;
+  padding: 20px;
+  // width: 500px;
+
+  .content {
+    display: flex;
+    gap: 20px;
+
+    .image-section {
+      flex-basis: 80%;
+
+      img {
+        // width: 100%;
+        border-radius: 5px;
+        border: 1px solid #eaeaea;
+      }
+    }
+
+    .action {
+      flex-basis: 18%;
+
+      button {
+        width: 100%;
+      }
+    }
+  }
+}
+
+
+// Small devices (portrait phones)
+@media only screen and (max-width:249.98px) {
+  .edit-image-container {
+    width: 100% !important;
+  }
+}
+
+
+// Small devices (portrait phones)
+@media only screen and (min-width:250.98px) and (max-width: 575.98px) {
+  .edit-image-container {
+    width: 100% !important;
+  }
+}
+
+
+@media only screen and (min-width: 576px) and (max-width: 664.98px) {
+  .edit-image-container {
+    width: 100% !important;
+  }
+}
+
+/// end of the code of edit image
+
+
+.arabic body {
+  font-family: 'Bahij', sans-serif !important;
+}
+
+

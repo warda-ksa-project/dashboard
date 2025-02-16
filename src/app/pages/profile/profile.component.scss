@@ -1,0 +1,32 @@
+.page{
+    max-width: 600px;
+    padding: 30px;
+    background-color: #F8FAFC;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+.img-border{
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 10px;
+    margin-top: 10px;
+    height: 150px;
+    width: 150px;
+    img{
+        width:100%
+    }
+  
+  }
+  .content-info{
+      // margin: 0px 50px;
+      .info{
+          margin-top: 20px;
+          .value{
+             color: gray;
+              width: 250px;
+              margin: 0px 10px;
+  
+          }
+      }
+      
+  }
+}

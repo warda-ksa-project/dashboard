@@ -1,0 +1,68 @@
+
+
+    <!-- <div class="content">
+            <div class="logo text-center">
+                <img src="assets/images/smallLogo.svg">
+            </div>
+            <div class="nav-container">
+                    <div class="header text-center">
+                        <img src="assets/images/logo.png">
+                    </div>
+                <div class="items-nav mt-5">
+                        <ng-container>
+                            @for (item of menu; track $index) {
+                            <div class="item d-flex justify-content-start">
+                                <button class="btn btn-link w-90 text-center" [routerLink]="[item.path]" routerLinkActive="active">
+                                    <img src="assets/images/logo.png" width="20px">
+                                </button>
+                            </div>
+                            }
+                        </ng-container>
+                        <div class="nav-footer mt-5">
+                            <div class="setting text-center">
+                                <img src="assets/images/logo.png" width="20px">
+                                <span> {{'setting'}}</span>
+                            </div>
+                            <div class="user-img text-center">
+                                <hr>
+                                <img src="assets/images/user.png" width="50px">
+                            </div>
+                        </div>
+                    
+            
+                </div>
+            </div>
+        
+    
+    </div> -->
+    <div class="sidebar-container">
+        <div class="content">
+          <div class="logo-section" routerLink="/dashboard">
+            <img  src="assets/images/smallLogo.svg" alt="matlop-logo">
+          </div>
+          <div class="routing-section mt-5">
+            <div class="pages-routing-section section-color">
+              <ng-container *ngFor="let route of routingList">
+                <div [routerLink]="route.route" class="routing-action w-100" routerLinkActive="active"
+                  [routerLinkActiveOptions]="{ exact: true }" [pTooltip]="route.label | translate"
+                  [tooltipPosition]="selectedLang == 'ar' ? 'left' : 'right'">
+                  <span [class]="route.icon"></span>
+                  <span> {{route.label|titlecase}}</span>
+                </div>
+              </ng-container>
+      
+            </div>
+            <div class="setting-section section-color w-100">
+              <div routerLink="/settings" class="routing-action" routerLinkActive="active"
+                  [routerLinkActiveOptions]="{ exact: true }" [pTooltip]="'SETTINGS' | translate"
+                  [tooltipPosition]="selectedLang == 'ar' ? 'left' : 'right'">
+                  <span class="pi pi-cog"></span>
+                </div>
+                <div class="user-image-section" routerLink="/profile" [pTooltip]="'Profile' | translate" [tooltipPosition]="selectedLang == 'ar' ? 'left' : 'right'">
+                  <img src="https://www.primefaces.org/cdn/primevue/images/landing/apps/main-avatar.png" alt="user-image">
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      

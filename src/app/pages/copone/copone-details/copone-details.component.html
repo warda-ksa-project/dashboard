@@ -1,0 +1,100 @@
+<div class="faqs-form-container container-fluid">
+    <div class="row">
+      <div class="page-details mb-3">
+        <div class="title mb-4">
+          <h2>{{tyepMode()|translate|titlecase}} {{'copone.title'|translate|titlecase}} </h2>
+        </div>
+        <div class="breadcrumb">
+          <app-breadcrump [breadcrumbProps]="bredCrumb"></app-breadcrump>
+        </div>
+      </div>
+    </div>
+    <div class=" form-container">
+      <div class="reactive-form">
+        <form [formGroup]="form" class="w-70" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
+              <app-input-text [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'" [label]="'copone.form.code'"
+                [control]="form.get('code')"></app-input-text>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
+              <app-input-text [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'" [label]="'copone.form.usedNumber'"
+                [control]="form.get('numberOfUsing')"></app-input-text>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
+                  <app-select [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'" [label]="'copone.form.offerType'"
+                  [control]="form.get('offerType')"
+                   class="w-100" [list]="offerTypeList">
+                  </app-select>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
+                <app-input-text [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'" [label]="'copone.form.amount'"
+                  [control]="form.get('amount')"></app-input-text>
+              </div>
+
+              <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
+                <app-date-picker (changeDate)="onStartDateChange($event)" class="w-100" [placeholder]="form.get('startDate')?.value" [readOnly]="tyepMode()==='View'" [disabled]="tyepMode()==='View'" [label]="'copone.form.start'"
+                [control]="form.get('startDate')"></app-date-picker>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
+                <app-date-picker
+                [minDate]="minEndDate"  [readOnly]="tyepMode()=='View'||form.get('startDate')?.value ==null" [placeholder]="form.get('endDate')?.value" [disabled]="tyepMode()=='View'||form.get('startDate')?.value == null" [label]="'copone.form.end'"
+                [control]="form.get('endDate')"></app-date-picker>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
+                <app-select [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'" [label]="'copone.form.coponeType'"
+                [control]="form.get('coponeType')"
+                 class="w-100" [list]="coponeTypeList">
+                </app-select>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
+                <app-input-text [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'" [label]="'copone.form.maxUsagePerUser'"
+                  [control]="form.get('maxUsagePerUser')"></app-input-text>
+              </div>
+
+              <div class="col-lg-12 col-md-12 col-sm-12 mt-5">
+                <div class="d-flex justify-content-start">
+                  <app-check-box class="m-2" [isToggle]="true" [disabled]="tyepMode()=='View'" [label]="'copone.form.status'" [control]="form.get('status')"></app-check-box>
+                  <app-check-box class="m-2" [isToggle]="true" [disabled]="tyepMode()=='View'" [label]="'copone.form.used_x'" [control]="form.get('usedForXTimes')"></app-check-box>
+                  <app-check-box class="m-2" [isToggle]="true" [disabled]="tyepMode()=='View'" [label]="'copone.form.hasMaxAmount'" [control]="form.get('hasMaxAmount')"></app-check-box>
+                </div>
+              </div>
+
+              <div class="col-lg-12 col-md-12 col-sm-12 mt-4" *ngIf="form.get('hasMaxAmount')?.value">
+                <app-input-text
+                  [readOnly]="tyepMode()=='View'"
+                  [disabled]="tyepMode()=='View'"
+                  [label]="'copone.form.maxAmount'"
+                  [control]="form.get('maxAmount')">
+                </app-input-text>
+              </div>
+
+
+              <div class=" mt-2 col-lg-6 col-md-6 col-sm-12 mt-4">
+                <app-editor [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'" [label]="'copone.form.desc_en'" [control]="form.get('enDescription')"></app-editor>
+              </div>
+              <div class=" mt-2 col-lg-6 col-md-6 col-sm-12 mt-4">
+                <app-editor [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'" [label]="'copone.form.desc_ar'" [control]="form.get('arDescription')"></app-editor>
+              </div>
+
+
+            <div class="actions mt-5 text-center">
+              <button type="submit" class="submit-btn" [disabled]="!form.valid" *ngIf="tyepMode()!=='View'">
+                <span *ngIf="tyepMode()=='Add'">{{'actions.add'|translate}}</span>
+                <span *ngIf="tyepMode()=='Edit'">{{'actions.edit'|translate}}</span>
+             </button>
+             <button type="button" class="cancel-btn" (click)="cancel()">
+                {{'actions.cancel'|translate}}
+             </button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <app-dialog [visible]="showConfirmMessage">
+    <button class="dialog-close-btn btn btn-default" (click)="showConfirmMessage = false"> {{'actions.close'|translate}}</button>
+    <button class="dialog-close-btn btn btn-danger" (click)="onConfirmMessage()">  {{'actions.confirm'|translate}}</button>
+  </app-dialog>

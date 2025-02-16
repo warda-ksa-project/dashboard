@@ -1,0 +1,118 @@
+:host ::ng-deep {
+  .sidebar-container {
+    padding: 3px 12px 3px;
+    height: 100%;
+
+    .content {
+      // height: 99vh;
+      gap: 20px;
+      background-color: #f8fafc;
+      padding: 10px;
+      border-radius: 1rem;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
+      .logo-section {
+        border-radius: 0.8rem;
+        border: 1px solid #c0c6ce;
+        padding: 7px;
+        cursor: pointer;
+
+        img {
+          cursor: pointer;
+        }
+      }
+
+      .routing-section {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        // align-items: center;
+        justify-content: space-between;
+
+        .pages-routing-section {
+          display: flex;
+          flex-direction: column;
+          // align-items: center;
+          gap: 10px;
+
+          .routing-action {
+            cursor: pointer;
+            padding: 7px 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            &:hover {
+              background-color: rgb(208, 207, 207);
+              border-radius: 6px;
+            }
+
+            .pi {
+              font-size: 20px;
+            }
+          }
+
+          .active {
+            background: linear-gradient(to right, #81ef62, #42d0b6);
+            border-radius: 6px;
+            color: white;
+
+            &:hover {
+              background: linear-gradient(to right, #81ef62, #42d0b6);
+              border-radius: 6px;
+            }
+          }
+        }
+
+        .setting-section {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 10px;
+
+          .routing-action {
+            cursor: pointer;
+            padding: 7px 12px;
+
+            &:hover {
+              background-color: rgb(208, 207, 207);
+              border-radius: 6px;
+            }
+          }
+
+          .user-image-section {
+            border-top: 1px solid rgb(186, 184, 184);
+            padding-top: 10px;
+            position: relative;
+            cursor: pointer;
+
+            img {
+              width: 40px;
+              height: 40px;
+              border-radius: 50%;
+            }
+          }
+
+          .active {
+            background: linear-gradient(to bottom, #81ef62, #42d0b6);
+            border-radius: 6px;
+            color: white;
+
+            &:hover {
+              background: linear-gradient(to bottom, #81ef62, #42d0b6);
+              border-radius: 6px;
+            }
+          }
+        }
+
+        .section-color {
+          color: #64748b;
+        }
+      }
+    }
+  }
+}

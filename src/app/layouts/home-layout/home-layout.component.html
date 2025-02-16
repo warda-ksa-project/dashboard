@@ -1,0 +1,24 @@
+<div class="layout-container">
+
+  <div class="content d-flex justify-content-start gap-10">
+    <div class="side-nav">
+      <app-sidebar></app-sidebar>
+    </div>
+  <div class="main-home-content">
+    <app-navbar></app-navbar>
+    <img  class="menu-grid-icon" src="assets/images/menu-navigation-grid.svg" width="20px" alt="menu" (click)="onClickMenuIcon()">
+    <div class="home-content">
+
+      <router-outlet />
+    </div>
+  </div>
+  </div>
+  @if (showMenuIcon) {
+    <div class="side-nav-bar"appClickOutside (onClickOutSideCompleted)="onClickOutSideCompleted($event)">
+      <app-side-nav></app-side-nav>
+    </div>
+  }
+</div>
+
+
+<p-toast [position]="selectedLang == 'ar' ? 'top-left' : 'top-right'"></p-toast>

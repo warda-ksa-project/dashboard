@@ -1,0 +1,28 @@
+<div class="table-container">
+  <div class="content">
+    <div class="title-bredcrumb-section">
+      <div class="title">
+        <h2>{{'roles.list'|translate|titlecase}}</h2>
+      </div>
+      <div class="breadcrumb">
+        <app-breadcrump [breadcrumbProps]="bredCrumb"></app-breadcrump>
+      </div>
+    </div>
+    <div class="details-container">
+      <div class="action-filter">
+        <a [routerLink]="global_router_add_url_in_Table">   +{{'shared.add_new'|translate}}</a>
+      </div>
+
+     <div class="table-view">
+      <app-table [colsHeader]="columns" [records]="dataList" [showrecordIndex]="true" [actions]="tableActions"></app-table>
+     </div>
+     <div class="responsive-accordions">
+        <app-table-small-screen [colsHeaderSmallTable]="columnsSmallTable" [records]="dataList"  [actions]="tableActions">
+
+        </app-table-small-screen>
+    </div>
+
+    </div>
+  </div>
+</div>
+

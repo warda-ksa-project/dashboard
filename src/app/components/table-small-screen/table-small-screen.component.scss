@@ -1,0 +1,50 @@
+div.actions-icon{
+    margin: 0px;
+    span{
+      margin:0px 5px;
+      cursor: pointer;
+    }
+    .pi-trash{
+      color:#f76262
+    }
+    .pi-pen-to-square{
+      color:#28a745;
+    }
+    .pi-eye{
+      color:#6060e7;
+    }
+  }
+
+  p-accordion-header{
+    position: relative;
+    .actions-icon-in-small-table{
+       position: absolute;
+       top: 19px;
+       right: 25px;
+       z-index: 99999;
+
+    }
+  }
+
+
+  //as cards
+
+  .as-card{
+    .info{
+        padding: 0 5px;
+    }
+    .card-desc{
+        background-color: #f9f9f9;
+        border-radius: 4px;
+        margin: 5px 0px;
+        padding: 5px;
+        .desc-content{
+          padding: 5px 10px; 
+          margin-top: 5px;
+        }
+    }
+   .gray{
+    color:gray
+   }
+  }
+  

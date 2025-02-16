@@ -1,0 +1,98 @@
+<ng-container *ngFor="let record of filterdRecords">
+  <ng-container *ngIf="type!=='card'">
+    <p-card>
+      <p-accordion [value]="0">
+        <!-- <div class="d-flex justify-content-end actions-icon" *ngIf="actions">
+          <div *ngFor="let action of actions">
+              <div class="" (click)="onAction(action,record,$event)">
+                  <span *ngIf="action.name==='view'" class="pi pi-eye "></span>
+                  <span *ngIf="action.name==='edit'" class="pi pi-pen-to-square"></span>
+                  <span *ngIf="action.name==='delete'" class="pi pi-trash"></span>
+              </div>
+          </div>
+      </div> -->
+        <p-accordion-panel [value]="record">
+          <p-accordion-header>
+            <div class="d-flex justify-content-end actions-icon actions-icon-in-small-table" *ngIf="actions">
+              <div *ngFor="let action of actions">
+                <div class="" (click)="onAction(action,record,$event)">
+                  <span *ngIf="action.name==='view'" class="pi pi-eye "></span>
+                  <span *ngIf="action.name==='edit'" class="pi pi-pen-to-square"></span>
+                  <span *ngIf="action.name==='delete'" class="pi pi-trash"></span>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex justify-content-start w-100">
+              <div *ngFor="let item of colsHeaderSmallTable">
+                @if(item.showAs=='header'){
+                <span>{{record[item.keyName]}}</span> &nbsp;
+                }
+              </div>
+            </div>
+          </p-accordion-header>
+          <p-accordion-content>
+            <div *ngFor="let item of colsHeaderSmallTable">
+              @if(item.showAs=='content'){
+
+              <span>{{record[item.keyName]}}</span>
+              }
+            </div>
+          </p-accordion-content>
+        </p-accordion-panel>
+      </p-accordion>
+    </p-card>
+  </ng-container>
+
+  <ng-container *ngIf="type=='card'">
+    <p-card class="as-card">
+      <div class="d-flex justify-content-between">
+        <span class="gray">{{'client.form.action' | translate}}</span>
+        <div class="d-flex justify-content-end actions-icon actions-icon-in-small-table" *ngIf="actions">
+          <div *ngFor="let action of actions">
+            <div class="" (click)="onAction(action,record,$event)">
+              <span *ngIf="action.name==='view'" class="pi pi-eye "></span>
+              <span *ngIf="action.name==='edit'" class="pi pi-pen-to-square"></span>
+              <span *ngIf="action.name==='delete'" class="pi pi-trash"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr *ngIf="actions.length!==0">
+      <div class="card-content">
+        <div *ngFor="let item of sortedItemsIncolsHeaderSmallTable">
+           <ng-container *ngIf="item.type!==EType.editor;else isEditor">
+            <div class="info d-flex justify-content-between">
+              <span class="black bold">{{item.header}}</span>
+              <span *ngIf="item.type !==EType.status">{{ record[item.keyName]}}</span>
+              <span *ngIf="item.type ==EType.status">
+                <span class="active" *ngIf="record[item.keyName]==true">
+                  <span class="pi pi-circle-on" style="color:green;font-size: .5rem"></span>
+                 {{'shared.active'|translate}}
+                </span>
+                <span class="not-active" *ngIf="record[item.keyName]==false">
+                  <span class="pi  pi-circle-off" style="font-size: .5rem"></span>
+                  {{'shared.not_active'|translate}}
+                </span>
+              </span>
+            </div>
+           </ng-container>
+           <ng-template #isEditor>
+              <div class="card-desc">
+                <span class="black bold">{{item.header}}</span>
+               <div class="desc-content">
+                <span [innerHTML]="record[item.keyName]"></span>
+               </div>
+              </div>
+           </ng-template>
+        </div>
+      </div>
+
+    </p-card>
+  </ng-container>
+</ng-container>
+
+<app-dialog [message]="'Are you sure to delete this item ?'" [visible]="showConfirmMessage">
+  <button class="dialog-close-btn btn btn-danger" (click)="onConfirmMessage()"> Delete</button>
+  <button class="dialog-close-btn btn btn-default" (click)="showConfirmMessage = false"> No</button>
+</app-dialog>

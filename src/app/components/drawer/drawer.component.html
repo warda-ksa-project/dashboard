@@ -1,0 +1,12 @@
+<p-drawer [(visible)]="visible" (onHide)="onHide($event)" [styleClass]="'rtl-drawer'" [closeOnEscape]="false"
+  [position]="this.selectedLang == 'ar' ? 'left' : 'right'" position="full" [header]="header">
+  <div class="drawer-content">
+    <div class="header">
+      <ng-content select="[header]"></ng-content>
+    </div>
+
+    <div class="body">
+      <ng-content select="[body]"></ng-content>
+    </div>
+  </div>
+</p-drawer>

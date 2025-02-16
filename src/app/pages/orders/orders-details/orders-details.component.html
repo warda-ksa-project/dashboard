@@ -1,0 +1,416 @@
+<div class="order-details-container" *ngIf="orderDetails">
+  <div class="contianer">
+    <div class="row mb-3">
+      <div class="page-details mb-3">
+        <div class="title">
+          <h2>{{tyepMode()|translate|titlecase}} {{pageName()|translate|titlecase}}</h2>
+        </div>
+        <div class="breadcrumb">
+          <app-breadcrump [breadcrumbProps]="bredCrumb"></app-breadcrump>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-4 col-md-6 col-sm-12 client-deatils-container">
+        <div class="content">
+          <div class="title-section">
+            <p>{{'order.client_details'|translate}}</p>
+          </div>
+          <div class="desc">
+            <div class="main-details">
+              <div class="img mt-4">
+                <img
+                  [src]="this.clientDetails?.gender == 1 ? 'assets/images/arabian-man.png' : 'assets/images/arabian-woman.png'"
+                  alt="client image">
+              </div>
+
+              <div class="name">
+                <p>{{this.clientDetails?.firstName | uppercase}}</p>
+              </div>
+              <div class="actions">
+                <a class="view" (click)="viewClientDetails(this.clientDetails?.userId)">
+                  <i class="pi pi-eye"></i>
+                </a>
+                <div class="call" (click)="dialNumber(this.clientDetails?.mobileNumber)">
+                  <i class="pi pi-phone"></i>
+                </div>
+              </div>
+            </div>
+            <div class="sub-deatils">
+              <div class="email main">
+                <div class="icon">
+                  <i class="pi pi-envelope"></i>
+                </div>
+                <div class="details">
+                  <div class="title">
+                    <p>{{'order.form.email'|translate}}</p>
+                  </div>
+                  <div class="desc">
+                    <p>{{this.clientDetails?.email}}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="Mobile main">
+                <div class="icon">
+                  <i class="pi pi-mobile"></i>
+                </div>
+                <div class="details">
+                  <div class="title">
+                    <p>{{'order.form.mobile'|translate}}</p>
+                  </div>
+                  <div class="desc">
+                    <p>{{this.clientDetails?.mobileNumber}}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="Status main">
+                <div class="icon">
+                  <i class="pi pi-star-fill"></i>
+                </div>
+                <div class="details">
+                  <div class="title">
+                    <p>{{'order.form.status'|translate}}</p>
+                  </div>
+                  <div class="desc">
+                    <p style="color: #30d50d;">{{this.clientDetails?.isActive == true ? 'Active' : 'Inactive'}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-container mt-3" style="height: 293px">
+          <div class="title-section mb-4">
+            <p >{{'order.form.note'|translate}}</p>
+          </div>
+          <p-floatlabel variant="on">
+            <textarea pTextarea id="over_label" rows="6" style="resize: none" class="h-full w-full" [readonly]="true"
+              [(ngModel)]="orderDetails.notes" [style]="{ width: '100%' }"></textarea>
+          </p-floatlabel>
+
+        </div>
+      </div>
+      <div class="col-lg-8 col-md-6 col-sm-12 order-details-container">
+        <div class="content">
+          <div class="title-section d-flex justify-content-between align-items-center pt-2 pb-2">
+            <p class="m-0 p-0">{{'order.order_details'|translate}}</p>
+            <button class="delete-order-btn" (click)="openDeleteModal('deleteOrder')">{{'order.delete_order_button' | translate}}</button>
+          </div>
+          <div class="desc">
+            <div class="details order-status-dropdown">
+              <div class="title">
+                <p>{{'order.order_status'|translate}}</p>
+              </div>
+              <div class="details-desc">
+                <p-select [options]="statuses" (onChange)="onStatusChange()" [(ngModel)]="orderStatusValue"
+                  optionLabel="name" placeholder="Select a Status" class="w-full md:w-56" />
+              </div>
+            </div>
+            <div class="details">
+              <div class="title">
+                <p>{{'order.order_id'|translate}}</p>
+              </div>
+              <div class="details-desc">
+                <p>{{orderDetails.orderId}}</p>
+              </div>
+            </div>
+            <div class="details">
+              <div class="title">
+                <p>{{'order.payment'|translate}}</p>
+              </div>
+              <div class="details-desc">
+                <p>{{orderDetails.paymentWayName ?  orderDetails.paymentWayName: '-'}}</p>
+              </div>
+            </div>
+            <div class="details">
+              <div class="title">
+                <p>{{'order.pkg'|translate}}</p>
+              </div>
+              <div class="details-desc">
+                <p>{{orderDetails.packageName ? orderDetails.packageName : '-'}}</p>
+              </div>
+            </div>
+            <div class="details">
+              <div class="title">
+                <p>{{'order.copone'|translate}}</p>
+              </div>
+              <div class="details-desc">
+                <p>{{orderDetails.coponeName ? orderDetails.coponeName: '-'}}</p>
+              </div>
+            </div>
+            <div class="details">
+              <div class="title">
+                <p>{{'order.location'|translate}}</p>
+              </div>
+              <div class="details-desc">
+                <p>{{orderDetails.locationName ? orderDetails.locationName: '-'}}</p>
+              </div>
+            </div>
+            <div class="details">
+              <div class="title">
+                <p>{{'order.total_tech_number'|translate}}</p>
+              </div>
+              <div class="details-desc">
+                <p>{{orderTechnicalAssignments.length != 0 ?orderTechnicalAssignments.length :  0}}</p>
+              </div>
+            </div>
+            <div class="details">
+              <div class="title">
+                <p>{{'order.next_visit'|translate}}</p>
+              </div>
+              <div class="details-desc">
+                <p>{{orderDetails.nextVistDate ? convertDate(orderDetails.nextVistDate): '-'}}</p>
+              </div>
+            </div>
+            <div class="details">
+              <div class="title">
+                <p>{{'order.total_price'|translate}}</p>
+              </div>
+              <div class="details-desc total-price">
+                <p>{{orderDetails.orderTotal ? orderDetails.orderTotal: '-'}} <span>SAR</span></p>
+              </div>
+            </div>
+            <div class="details">
+              <div class="title">
+                <p>{{'order.total_additional_price' | translate}}</p>
+              </div>
+              <div class="details-desc total-price">
+                <p>{{orderDetails.totalWithAdditional ? orderDetails.totalWithAdditional: '-'}} <span>SAR</span></p>
+              </div>
+            </div>
+            <div class="details">
+              <div class="title">
+                <p>{{'order.location'|translate}} </p>
+              </div>
+              <div class="details-desc">
+                <p class="pointer">
+                  <a class="g-map-location" [href]="'https://www.google.com/maps?q=' + orderDetails.latitude + ',' + orderDetails.longitude" target="_blank">
+                    <span class="pi pi-map-marker"></span>
+                    <span> {{ 'order.map' | translate }}</span>
+                  </a>
+                </p>
+              </div>
+            </div>
+            <div class="details">
+              <div class="title">
+                <p>{{'order.order_status'|translate}}</p>
+              </div>
+              <div class="details-desc status-details"
+                [style.backgroundColor]="getColorById(orderDetails.orderStatusEnum)">
+                <p>{{orderDetails.orderStatusName ? orderDetails.orderStatusName : '-'}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-6 col-md-6 col-sm-12">
+        <div class="table-container">
+          <div class="title-section mb-4">
+            <p>{{'order.order_provider'|translate}}</p>
+            <span class="d-flex align-center" style="gap: 10px;">
+              <button [disabled]="checkOrderStatus == 7" class="add-provider" pTooltip="{{'order.tool_tip.add_tech'|translate}}" tooltipPosition="top" (click)="openTechnicalModal()">
+                <p>{{'order.technical'|translate}}</p>
+                <i class="pi pi-plus"></i>
+              </button>
+              <button [disabled]="checkOrderStatus == 7" class="add-provider driver" pTooltip="{{'order.tool_tip.add_driver'|translate}}" tooltipPosition="top" (click)="openDriverModal()">
+                <p>{{'order.driver'|translate}}</p>
+                <i class="pi pi-plus"></i>
+              </button>
+            </span>
+          </div>
+          <table class="p-datatable">
+            <thead class="p-datatable-thead">
+              <tr>
+                <th>{{'order.table.tech_id'|translate}}</th>
+                <th>{{'order.table.tech_Name'|translate}}</th>
+                <th>{{'order.table.tech_type'|translate}}</th>
+                <th>{{'order.table.mobile'|translate}}</th>
+                <th>{{'order.table.specialize'|translate}}</th>
+                <th *ngIf="checkOrderStatus != 7">{{'order.table.edit_tech'|translate}}</th>
+              </tr>
+            </thead>
+            <tbody class="p-datatable-tbody">
+              <tr *ngFor="let assignment of orderTechnicalAssignments">
+                <td>{{ assignment.technicalId }}</td>
+                <td>{{ assignment.technicalName || '-' }}</td>
+                <td>{{ assignment.technicalTypeName || '-' }}</td>
+                <td>{{ assignment.technicalPhoneNumber || '-' }}</td>
+                <td>{{ selectedLang == 'ar' ? assignment.technicalSpecializeNameAr : assignment.technicalSpecializeNameEn }}</td>
+                <td *ngIf="checkOrderStatus != 7">
+                  <div class="actions-icon">
+                    <span class="pi pi-pen-to-square" title="Edit" (click)="editProvider(assignment.technicalId , assignment.orderTechnicalAssignmentId ,assignment.technicalType)"></span>
+                    <span class="pi pi-trash" title="Edit" (click)="openDeleteModal('deleteProvider' , assignment)"></span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-6 col-sm-12">
+        <div class="table-container">
+          <div class="title-section mb-4">
+            <p class="c-white">{{'order.order_add_item'|translate}}</p>
+            <button [disabled]="checkOrderStatus == 7" class="add-provider" pTooltip="{{'order.tool_tip.add_item'|translate}}" tooltipPosition="top" (click)="openAdditinaolModal()">
+              <i class="pi pi-plus"></i>
+            </button>
+          </div>
+          <table class="p-datatable">
+            <thead class="p-datatable-thead">
+              <tr>
+                <th>{{'order.table.add_id'|translate}}</th>
+                <th>{{'order.table.desc'|translate}}</th>
+                <th>{{'order.table.add_price'|translate}}</th>
+                <th>{{'order.table.edit'|translate}}</th>
+              </tr>
+            </thead>
+            <tbody class="p-datatable-tbody">
+              <tr *ngFor="let item of additonalItemList">
+                <td>{{ item.orderAddtionalItemId }}</td>
+                <td>{{ item.note }}</td>
+                <td>{{ item.additionalPrice}}</td>
+                <td>
+                  <div class="actions-icon">
+                    <span class="pi pi-pen-to-square" title="Edit" (click)="editAdditinal(item)"></span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="table-container">
+          <div class="title-section">
+            <p>{{'order.order_img'|translate}}</p>
+          </div>
+
+          <div class="order-image-desc">
+            <ng-container *ngIf="this.imageList.length != 0">
+              <app-gallery [mediaList]=imageList></app-gallery>
+            </ng-container>
+            <ng-container *ngIf="this.imageList.length == 0">
+              <img src="assets/images/empty-state.png" alt="empty state">
+              <p>{{'order.no_image'|translate}}</p>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="order-time-schedule-section">
+      <div class="title-section">
+        <p>{{'order.item_schedule'|translate}}</p>
+      </div>
+      <div class="card-container row">
+        <ng-container *ngFor="let item of orderTimeSchedule">
+         <div class="padding-container mt-3 col-lg-3 col-md-6 col-sm-12">
+          <div class="time-card" >
+            <div class="title">
+              <p>{{formatDateTime(item.visitDate)}}</p>
+            </div>
+            <div class="actions-content">
+
+            </div>
+          </div>
+         </div>
+        </ng-container>
+    </div>
+    </div>
+  </div>
+</div>
+
+
+
+<app-modal [dialogProps]="dialogProps">
+  <div class="title">
+    <h3>{{providerTitle}}</h3>
+  </div>
+
+  <div class="content" style="width: 300px;">
+    <p-select appendTo="body" [options]="providerList" (onChange)="onProviderChange('t')" [(ngModel)]="providerValue" optionLabel="firstName"
+      placeholder="Select a Provider" class="w-full md:w-56" />
+  </div>
+</app-modal>
+
+<app-modal [dialogProps]="driverDialogProps">
+  <div class="title">
+    <h3>{{driverTitle}}</h3>
+  </div>
+
+  <div class="content" style="width: 300px;">
+    <p-select appendTo="body" [options]="driversList" (onChange)="onProviderChange('d')" [(ngModel)]="driverValue"
+      optionLabel="firstName" placeholder="Select a Provider" class="w-full md:w-56" />
+  </div>
+</app-modal>
+
+<app-modal [dialogProps]="additinalModal">
+  <div class="title">
+    <h3>{{additonalTitle}}</h3>
+  </div>
+
+  <div class="content" style="width: 300px;">
+    <form #form="ngForm" (ngSubmit)="onSubmit(form)" novalidate>
+      <div class="form-group mb-2">
+        <label for="price">{{'order.form.price'|translate}}</label>
+        <input
+        type="number"
+        id="additionalPrice"
+        name="additionalPrice"
+        [(ngModel)]="additionalObject.additionalPrice"
+        #additionalPrice="ngModel"
+        required
+        min="1"
+        class="form-control"
+        />
+        <div *ngIf="additionalPrice.invalid && (additionalPrice.dirty || additionalPrice.touched)" class="error">
+          <div *ngIf="additionalPrice.errors?.['required']">{{'order.form.price_required'|translate}}</div>
+          <div *ngIf="additionalPrice.errors?.['min']">{{'order.form.price_atleast'|translate}}</div>
+        </div>
+      </div>
+
+      <div class="form-group mb-4">
+        <label for="note">{{'order.form.note'|translate}}</label>
+        <textarea
+        id="note"
+        name="note"
+        [(ngModel)]="additionalObject.note"
+        #note="ngModel"
+        required
+        class="form-control"
+        ></textarea>
+        <div *ngIf="note.invalid && (note.dirty || note.touched)" class="error">
+          <div *ngIf="note.errors?.['required']">{{'order.form.note_required'|translate}}</div>
+        </div>
+      </div>
+      <!-- Submit Button -->
+      <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+       {{'shared.submit'|translate}}
+      </button>
+    </form>
+  </div>
+</app-modal>
+
+<app-modal [dialogProps]="deleteModal">
+  <ng-container *ngIf="this.deleteType == 'deleteOrder'">
+    <div class="title">
+      <h3>{{'order.delete_order_confirmation' | translate}}</h3>
+    </div>
+    <div class="content d-flex justify-content-end" >
+      <button (click)="deleteOrder()" class="delete-order-btn"> {{'order.delete_order_button' | translate}}</button>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="this.deleteType == 'deleteProvider'">
+    <div class="title">
+      <h3>{{'order.delete_provider_confirmation' | translate}}</h3>
+    </div>
+    <div class="content d-flex justify-content-end" >
+      <button (click)="deleteProvider()" class="delete-order-btn">{{'order.delete_provider_button' | translate}}</button>
+    </div>
+  </ng-container>
+</app-modal>

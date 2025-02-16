@@ -1,0 +1,55 @@
+<p-button
+  label="{{ 'WALLET_DIALOG.TITLE' | translate }}"
+  (click)="showDialog()"
+  styleClass="p-button-primary"
+></p-button>
+
+<p-dialog
+  [(visible)]="displayDialog"
+  [modal]="true"
+  [style]="{ width: '400px' }"
+  [header]="'WALLET_DIALOG.TITLE' | translate"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <form [formGroup]="walletForm" (ngSubmit)="onSubmit()">
+    <div class="p-field">
+      <label for="amount">{{ 'WALLET_DIALOG.AMOUNT_LABEL' | translate }}</label>
+      <p-inputNumber
+        id="amount"
+        formControlName="amount"
+        mode="decimal"
+        [min]="1"
+        [max]="1000000"
+        [placeholder]="'WALLET_DIALOG.AMOUNT_PLACEHOLDER' | translate"
+      ></p-inputNumber>
+      <small
+        *ngIf="walletForm.get('amount')?.hasError('required') && walletForm.get('amount')?.touched"
+        class="p-error"
+      >
+        {{ 'WALLET_DIALOG.VALIDATION.REQUIRED' | translate }}
+      </small>
+      <small
+        *ngIf="walletForm.get('amount')?.hasError('min') && walletForm.get('amount')?.touched"
+        class="p-error"
+      >
+        {{ 'WALLET_DIALOG.VALIDATION.MIN' | translate }}
+      </small>
+    </div>
+
+    <div class="p-dialog-footer">
+      <p-button
+        type="button"
+        [label]="'WALLET_DIALOG.CANCEL_BUTTON' | translate"
+        (click)="hideDialog()"
+        styleClass="p-button-secondary"
+      ></p-button>
+      <p-button
+        type="submit"
+        [label]="'WALLET_DIALOG.SUBMIT_BUTTON' | translate"
+        styleClass="p-button-primary"
+        [disabled]="walletForm.invalid"
+      ></p-button>
+    </div>
+  </form>
+</p-dialog>

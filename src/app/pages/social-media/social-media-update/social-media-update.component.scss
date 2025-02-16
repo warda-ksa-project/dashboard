@@ -1,0 +1,18 @@
+.submit-btn {
+padding: 6px 30px;
+color: white;
+background: #30ab30;
+border-radius: 4px;
+border: none;
+font-size: 20px;
+
+&:hover {
+  background: #196919;
+}
+&:disabled {
+  background: rgba(48, 171, 48, .1);
+  color: #b8b5b5;
+  border: 1px solid #cac6c6;
+  cursor: not-allowed;
+}
+}

@@ -1,0 +1,43 @@
+<div class="faqs-form-container container-fluid">
+  <div class="row">
+      <div class="page-details mb-3">
+          <div class="title mb-4">
+              <h2> {{pageName()|translate}}</h2>
+          </div>
+          <div class="breadcrumb">
+              <app-breadcrump [breadcrumbProps]="bredCrumb"></app-breadcrump>
+          </div>
+      </div>
+  </div>
+  <div class=" form-container">
+      <div class="reactive-form">
+          <form [formGroup]="form" class="w-70" (ngSubmit)="onSubmit()">
+              <div class="row">
+                  <div class="col-lg-6 col-md-6 col-sm-12 mt-3">
+                      <app-input-text
+                          [label]="'notifications.form.title'" [control]="form.get('title')"></app-input-text>
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-sm-12 mt-3">
+                      <app-select [placeholder]="form.get('userType')?.value" class="w-100" [list]="userTypeList"
+                          [label]="'notifications.form.userType'" [control]="form.get('userType')">
+                      </app-select>
+                  </div>
+
+                      <div class=" mt-2 col-lg-12 col-md-12 col-sm-12 mt-3">
+                        <div class="title-section mb-2">
+                          <p>{{'notifications.form.note'|translate}}</p>
+                        </div>
+                          <textarea pTextarea id="over_label" rows="6" style="resize: none" class="h-full w-full"
+                          formControlName='body' [style]="{ width: '100%' }"></textarea>
+                        </div>
+                  <div class="actions mt-5 text-center">
+                      <button type="submit" class="submit-btn" [disabled]="!form.valid">
+                          <span>{{'actions.add'|translate}}</span>
+                      </button>
+                  </div>
+              </div>
+
+          </form>
+      </div>
+  </div>
+</div>

@@ -1,0 +1,96 @@
+<ng-container *ngIf="filterdRecords?.length>0;else  emptyData">
+  <p-table [columns]="colsHeader" [value]="filterdRecords" [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template #header let-columns>
+      <tr>
+        <th *ngFor="let col of columns">
+          <span *ngIf="col.show"> {{ col.header }}</span>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-rowData let-columns="columns">
+      <tr>
+        <td *ngFor="let col of columns;let index = index">
+          <ng-container *ngIf="col.show">
+            <div *ngIf="!showrecordIndex">
+              <span *ngIf="col.type=='index'">
+                {{index+1}}
+              </span>
+            </div>
+            <span *ngIf="col.type=='id'"> {{ rowData[col.keyName]? rowData[col.keyName]:'-' }}</span>
+            <span *ngIf="col.type=='text'"> {{ rowData[col.keyName]? rowData[col.keyName]:'-' }}</span>
+            <span *ngIf="col.type=='boolean'"> {{ rowData[col.keyName]? true: false }}</span>
+            <span *ngIf="col.type=='orderStatus'" class="order-status"
+              [style.backgroundColor]="getOrderStatusColorById(rowData?.orderStatusEnum)"> {{ rowData[col.keyName]?
+              rowData[col.keyName]:'-' }}</span>
+            <span *ngIf="col.type=='specialOrderStatus'" class="order-status"
+              [style.backgroundColor]="getSpecialOrderStatusColorById(rowData?.specialOrderStatus)"> {{
+              rowData[col.keyName]? rowData[col.keyName]:'-' }}</span>
+
+            <span *ngIf="col.type=='changeOrderStatus' && rowData?.showOrderStatusButton" (click)="onStatusChange(rowData.orderId)">
+              <button class="change-order-payment-status">Change to paid</button>
+            </span>
+
+            <span *ngIf="col.type=='changeOrderStatus' && !rowData?.showOrderStatusButton"> {{selectedLang == 'ar' ? rowData.orderStatusAr : rowData.orderStatusAr}}</span>
+
+
+            <div *ngIf="col.type=='editor'" [innerHTML]="rowData[col.keyName]? rowData[col.keyName]:'-' "> </div>
+            <img class="rounded" *ngIf="col.type=='image'" [src]="imageBaseUrl+rowData[col.keyName]" width="60px"
+              height="auto" alt="image">
+            <span *ngIf="col.type =='date'">{{convertDate( rowData[col.keyName]? rowData[col.keyName]:'-' )}}</span>
+            <span *ngIf="col.type =='time'">{{getCurrentTime( rowData[col.keyName]? rowData[col.keyName]:'-' )}}</span>
+            <div>
+              <span *ngIf="col.type=='object'">
+                <img class="rounded" [src]="rowData[col.keyName][col.nested.img]" width="60px" height="auto"
+                  alt="image">
+                <span> {{ rowData[col.keyName][col.nested.text]?rowData[col.keyName][col.nested.text]:'-'}}</span>
+              </span>
+              <span *ngIf="col.type=='status'">
+                <button [class]="rowData[col.keyName]"> {{ rowData[col.keyName]}}</button>
+              </span>
+              <span *ngIf="col.type ==='toggle'">
+                <app-check-box [initValue]="rowData[col.keyName]" (toggleValue)="onToggleChange($event,rowData,col)"
+                  [isToggle]="true"></app-check-box>
+              </span>
+              <div class="d-flex" *ngIf="col.type=='actions'">
+                <div *ngFor="let action of col.actions">
+                  <div class="actions-icon" (click)="onAction(action,rowData)">
+                    <span *ngIf="action.name==='view'" class="pi pi-eye" pTooltip="View" tooltipPosition="top"></span>
+                    <span *ngIf="action.name==='edit'" class="pi pi-pen-to-square" pTooltip="Edit"
+                      tooltipPosition="top"></span>
+                    <span *ngIf="action.name==='delete'" class="pi pi-trash" pTooltip="Delete"
+                      tooltipPosition="top"></span>
+                    <span *ngIf="action.name==='active'" class="pi pi-bullseye" pTooltip="Active"
+                      tooltipPosition="top"></span>
+                    <span *ngIf="action.name==='block'" class="pi pi-ban" pTooltip="Block" tooltipPosition="top"></span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </ng-container>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</ng-container>
+<ng-template #emptyData>
+  <div class="text-center w-100 mt-5">
+    {{'shared.no_data_found'|translate}}
+  </div>
+</ng-template>
+
+<app-dialog [message]="'Are you sure to delete this item ?'" [visible]="showConfirmMessage">
+  <button class="dialog-close-btn btn btn-danger" (click)="onConfirmMessage()"> Delete</button>
+  <button class="dialog-close-btn btn btn-default" (click)="showConfirmMessage = false"> No</button>
+</app-dialog>
+
+
+<app-dialog [message]="'Are you sure to block this item ?'" [visible]="showBlockConfirmationMessage">
+  <button class="dialog-close-btn btn btn-danger" (click)="onConfirmMessage()"> Delete</button>
+  <button class="dialog-close-btn btn btn-default" (click)="showBlockConfirmationMessage = false"> No</button>
+</app-dialog>
+
+<app-dialog [message]="'Are you sure to active this item ?'" [visible]="showActiveConfirmationMessage">
+  <button class="dialog-close-btn btn btn-success" (click)="onActiveConfirmMessage()"> Active</button>
+  <button class="dialog-close-btn btn btn-default" (click)="showActiveConfirmationMessage = false"> No</button>
+</app-dialog>

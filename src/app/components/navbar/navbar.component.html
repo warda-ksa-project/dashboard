@@ -1,0 +1,35 @@
+<div class="navbar-container">
+  <div class="content">
+      <div class="search-section  pr-pl-30-small-screen">
+        <p-autocomplete  placeholder="{{'nav.search'|translate}}" [(ngModel)]="value" [suggestions]="items"
+          (completeMethod)="search($event)" />
+      </div>
+
+    <div class="option-section">
+      <div class="notifications-section">
+      <app-notifications></app-notifications>
+      </div>
+      <div class="lang-section">
+        <p-select [options]="langOptions" [(ngModel)]="selectedLang" (onChange)="onLangChange()" optionLabel="name"
+          optionValue="code">
+          <ng-template let-lang pTemplate="selectedItem">
+            <div class="selected-lang">
+              <img src="assets/images/icons/global.svg" [alt]="lang.name.toLowerCase()" width="16px" />
+              <div>{{ lang.code }}</div>
+            </div>
+          </ng-template>
+          <ng-template let-lang pTemplate="item">
+            <div class="lang">
+              <img [src]="lang.icon" [alt]="lang.name.toLowerCase()" width="16px" />
+              <div>{{ lang.name }}</div>
+            </div>
+          </ng-template>
+        </p-select>
+      </div>
+
+      <div class="logout-section" (click)="logout()" routerLink='/auth/login'>
+        <span class="pi pi-sign-out"></span>
+      </div>
+    </div>
+  </div>
+</div>

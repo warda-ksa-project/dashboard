@@ -1,0 +1,20 @@
+<p-fileupload
+[showUploadButton]="false"
+[disabled]="isDisabled"
+(onSelect)="onSelect($event)"
+[multiple]="false"
+accept="image/*"
+maxFileSize="1000000"
+mode="advanced"
+chooseLabel="{{'actions.choose_image'|translate}}" 
+cancelLabel="{{'actions.cancel'|translate}}"
+>
+    <ng-template #empty>
+        <div>{{'shared.drag_drop_img'|translate}}</div>
+    </ng-template>
+    <ng-template #content>
+        <ul *ngIf="uploadedFiles.length">
+            <li *ngFor="let file of uploadedFiles">{{ file.name }} - {{ file.size }} {{'shared.bytes'|translate}}</li>
+        </ul>
+    </ng-template>
+</p-fileupload>

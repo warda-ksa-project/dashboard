@@ -1,0 +1,13 @@
+
+    <p-accordion [value]="0">
+      <p-accordion-panel [value]="value">
+        <p-accordion-header>
+            <ng-content select="[header]"></ng-content>
+        </p-accordion-header>
+        <p-accordion-content>
+          <p class="m-0"> 
+               <ng-content select="[content]"></ng-content>
+          </p>
+        </p-accordion-content>
+      </p-accordion-panel>
+    </p-accordion>

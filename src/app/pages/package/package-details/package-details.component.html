@@ -1,0 +1,120 @@
+<div class="faqs-form-container container-fluid">
+    <div class="row">
+        <div class="page-details mb-3">
+            <div class="title mb-4">
+                <h2>{{'pkg.list'|translate|titlecase}} </h2>
+            </div>
+            <div class="breadcrumb">
+                <app-breadcrump [breadcrumbProps]="bredCrumb"></app-breadcrump>
+            </div>
+        </div>
+    </div>
+    <div class=" form-container">
+        <div class="reactive-form">
+            <form [formGroup]="form" class="w-70" (ngSubmit)="onSubmit()">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
+                        <app-input-text [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'"
+                            [label]="'pkg.form.nameEn'" [control]="form.get('nameEn')">
+                        </app-input-text>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
+                        <app-input-text [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'"
+                            [label]="'pkg.form.nameAr'" [control]="form.get('nameAr')">
+                        </app-input-text>
+                    </div>
+
+                    <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
+                        <app-input-text [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'"
+                            [label]="'pkg.form.provider_no'" [control]="form.get('providerNumber')">
+                        </app-input-text>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
+                        <app-select [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'"
+                        [label]="'pkg.form.visit_hr'" [control]="form.get('visitHours')" [list]="visitHoursList">
+                        </app-select>
+                        <!-- <app-input-text [readOnly]="tyepMode()=='View'||form.get('typeOfPackage')?.value==''" [disabled]="tyepMode()=='View'||form.get('typeOfPackage')?.value==''"
+                            [label]="'Visit Hours'" [control]="form.get('visitHours')">
+                        </app-input-text> -->
+                    </div>
+                    <!-- (onSelectedValue)="onTypepkgSelected($event)" -->
+                    <div class="col-lg-6 col-md-6 col-sm-12 mt-4" *ngIf="typeOfPackageList.length!==0">
+                        <app-select    [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'"
+                            [label]="'pkg.form.type_pkg'" [placeholder]="form.get('typeOfPackage')?.value" [control]="form.get('typeOfPackage')" class="w-100"
+                            [list]="typeOfPackageList">
+                        </app-select>
+                    </div>
+                    <!-- (onValueChange)="onVisitNumberChange($event)" -->
+                    <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
+                        <app-input-text  [readOnly]="tyepMode()=='View'||form.get('typeOfPackage')?.value==''" [disabled]="tyepMode()=='View'||form.get('typeOfPackage')?.value==''"
+                            [label]="'pkg.form.visit_no'" [control]="form.get('visitNumber')">
+                        </app-input-text>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
+                      <app-select [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'"
+                          [label]="'pkg.form.service_type'" (onSelectedValue)="onServiceChange($event)" [placeholder]="form.get('serviceId')?.value" [control]="form.get('serviceId')" class="w-100"
+                          [list]="serviceTypeList">
+                      </app-select>
+                  </div>
+
+                    <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
+                        <app-select [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'"
+                            [label]="'pkg.form.contract_typ'" [placeholder]="form.get('contractTypeId')?.value" [control]="form.get('contractTypeId')" class="w-100"
+                            [list]="contractTypeList"  [disabled]="tyepMode() == 'View' || !form.get('serviceId')?.value" >
+                        </app-select>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
+                        <app-input-text [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'"
+                            [label]="'pkg.form.price'" [control]="form.get('price')">
+                        </app-input-text>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
+                        <app-select [type]="'multi'" [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'"
+                            [label]="'pkg.form.working_time'" [placeholder]="form.get('packageWorkTimes')?.value" [control]="form.get('packageWorkTimes')" class="w-100"
+                            [list]="workingTimeList">
+                        </app-select>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 mt-5">
+                        <app-check-box [isToggle]="true" [disabled]="tyepMode()=='View'" [label]="'pkg.form.isActive'"
+                            [control]="form.get('isActive')"></app-check-box>
+                    </div>
+                     <div class="row">
+                        <div class=" mt-2 col-lg-6 col-md-6 col-sm-12 mt-4">
+                            <app-editor [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'"
+                                [label]="'pkg.form.desc_en'" [control]="form.get('descriptionEn')"></app-editor>
+                        </div>
+                        <div class=" mt-2 col-lg-6 col-md-6 col-sm-12 mt-4">
+                            <app-editor [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'"
+                                [label]="'pkg.form.desc_ar'" [control]="form.get('descriptionAr')"></app-editor>
+                        </div>
+                        <div class=" mt-2 col-lg-6 col-md-6 col-sm-12 mt-4">
+                            <app-editor [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'"
+                                [label]="'pkg.form.instr_en'" [control]="form.get('enInstraction')"></app-editor>
+                        </div>
+                        <div class=" mt-2 col-lg-6 col-md-6 col-sm-12 mt-4">
+                            <app-editor [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'"
+                                [label]="'pkg.form.instr_ar'" [control]="form.get('arInstraction')"></app-editor>
+                        </div>
+                     </div>
+
+
+                    <div class="actions mt-5 text-center">
+                        <button type="submit" class="submit-btn" [disabled]="!form.valid" *ngIf="tyepMode()!=='View'">
+                            <span *ngIf="tyepMode()=='Add'">{{'actions.add'|translate}}</span>
+                            <span *ngIf="tyepMode()=='Edit'">{{'actions.edit'|translate}}</span>
+                         </button>
+                         <button type="button" class="cancel-btn" (click)="cancel()">
+                            {{'actions.cancel'|translate}}
+                         </button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<app-dialog [visible]="showConfirmMessage">
+    <button class="dialog-close-btn btn btn-default" (click)="showConfirmMessage = false"> {{'actions.close'|translate}}</button>
+    <button class="dialog-close-btn btn btn-danger" (click)="onConfirmMessage()">  {{'actions.confirm'|translate}}</button>
+  </app-dialog>

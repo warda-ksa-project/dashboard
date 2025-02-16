@@ -1,0 +1,70 @@
+<div class="role-form-container container-fluid">
+  <div class="row">
+    <div class="page-details mb-3 d-flex justify-content-between flex-wrap">
+      <div class="title mb-4">
+        <h2>{{tyepMode()|translate|titlecase}} {{pageName()|translate|titlecase}} </h2>
+      </div>
+      <div class="breadcrumb">
+        <app-breadcrump [breadcrumbProps]="bredCrumb"></app-breadcrump>
+      </div>
+    </div>
+  </div>
+  <div class=" form-container">
+    <div class="reactive-form">
+      <form [formGroup]="form" class="w-70" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
+            <app-input-text [readOnly]="tyepMode()==='View'" [disabled]="tyepMode()==='View'" [label]="'roles.form.title_en'"
+              [control]="form.get('enName')"></app-input-text>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
+            <app-input-text [readOnly]="tyepMode()==='View'" [disabled]="tyepMode()==='View'" [label]="'roles.form.title_ar'"
+              [control]="form.get('arName')"></app-input-text>
+          </div>
+        </div>
+          <div class="roles-section mt-4">
+            <div class="title mb-3">
+              <h4>{{'roles.form.assign_roles'|translate|titlecase}}</h4>
+            </div>
+            <div class="card-container row">
+              <ng-container *ngFor="let item of rolesList; let indexDOC = index">
+               <div class="padding-container mt-3 col-lg-4 col-md-6 col-sm-12">
+                <div class="role-card" >
+                  <div class="title">
+                    <p>{{item.controller}}</p>
+                  </div>
+                  <div class="actions-content">
+                    <div class="controller" *ngFor="let action of item.actions">
+                        <p>{{action?.name}}</p>
+                        <app-check-box [initValue]="action?.checked" [isToggle]="true" [readOnly]="tyepMode()==='View'"   (toggleValue)="onToggle($event,item.controller,action.name,indexDOC)"></app-check-box>
+                    </div>
+                  </div>
+                </div>
+               </div>
+              </ng-container>
+          </div>
+        </div>
+        <div class="actions mt-5 text-center">
+          <button type="submit" class="submit-btn" [disabled]="!form.valid"  *ngIf="tyepMode()!=='View'">
+            <span *ngIf="tyepMode()=='Add'">{{'actions.add'|translate}}</span>
+            <span *ngIf="tyepMode()=='Edit'">{{'actions.edit'|translate}}</span>
+          </button>
+          <button type="button" class="cancel-btn" (click)="cancel()">
+            {{'actions.cancel'|translate}}
+          </button>
+        </div>
+
+
+      </form>
+
+
+
+    </div>
+  </div>
+</div>
+
+<app-dialog [visible]="showConfirmMessage">
+  <button class="dialog-close-btn btn btn-default" (click)="showConfirmMessage = false">
+    {{'actions.close'|translate}}</button>
+  <button class="dialog-close-btn btn btn-danger" (click)="onConfirmMessage()"> {{'actions.confirm'|translate}}</button>
+</app-dialog>

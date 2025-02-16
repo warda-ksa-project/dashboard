@@ -1,0 +1,45 @@
+:host ::ng-deep {
+  .navbar-container {
+    .content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+      width: 100%;
+      padding: 20px 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      background: #f8fafc;
+      margin-top: 4px;
+      .search-section {
+        flex-basis: 40%;
+        // p-autocomplete {
+        //   width: 80%;
+        //   .p-autocomplete {
+        //     width: 80%;
+
+        //     .p-inputtext {
+        //       width: 80%;
+        //       // border: 1px solid #cbd5e121 !important;
+        //     }
+        //   }
+        // }
+      }
+
+      .option-section {
+        display: flex;
+        align-items: center;
+        gap: 25px;
+
+        .notifications-section {
+          cursor: pointer;
+        }
+
+        .logout-section {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}

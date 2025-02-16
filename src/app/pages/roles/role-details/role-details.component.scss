@@ -1,0 +1,45 @@
+::ng-deep {
+  .role-form-container {
+    .roles-section {
+      border-radius: 8px;
+      padding: 15px;
+      border: 1px solid #d1d1d1;
+
+      .card-container {
+        max-height: 400px;
+        overflow-y: scroll;
+        .padding-container {
+          padding: 10px;
+          .role-card {
+            background-color: #f1f5f9;
+            border-radius: 8px;
+            padding: 15px;
+            .title {
+              margin-block: 10px;
+
+              p {
+                color: #334155;
+                font-size: 20px;
+              }
+            }
+
+            .actions-content {
+              background-color: white;
+              min-height: 100px;
+              border-radius: 8px;
+              padding: 15px;
+
+              .controller {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin: 5px 25px;
+              }
+            }
+          }
+        }
+
+      }
+    }
+  }
+}

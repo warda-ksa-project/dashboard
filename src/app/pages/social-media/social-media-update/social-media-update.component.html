@@ -1,0 +1,35 @@
+
+<div class="title">
+    <h2>{{'social_media.title'|translate|titlecase}}</h2>
+  </div>
+    <form  [formGroup]="form" class="w-70 mt-5" (ngSubmit)="onSubmit()">
+     <div class="row">
+        <div class=" mt-2 col-lg-6 col-md-6 col-sm-12 mt-4">
+            <app-input-text [label]="'social_media.facebook'" [control]="form.get('faceBookLink')" [placeholder]="'Facebook link'"></app-input-text>
+        </div>
+        <div class=" mt-2 col-lg-6 col-md-6 col-sm-12 mt-4">
+            <app-input-text [label]="'social_media.instgram'"  [control]="form.get('instagramLink')"  [placeholder]="'Instgram link'"></app-input-text>
+        </div>
+        <div class=" mt-2 col-lg-6 col-md-6 col-sm-12 mt-4">
+            <app-input-text [label]="'social_media.tikTok'"  [control]="form.get('tikTokLink')"  [placeholder]="'TikTok link'"></app-input-text>
+        </div>
+        <div class=" mt-2 col-lg-6 col-md-6 col-sm-12 mt-4">
+            <app-input-text [label]="'social_media.youTube'"  [control]="form.get('youTubeLink')"  [placeholder]="'YouTube link'"></app-input-text>
+        </div>
+        <div class=" mt-2 col-lg-6 col-md-6 col-sm-12 mt-4">
+            <app-input-text [label]="'social_media.whats'"  [control]="form.get('whatsAppNumber')"  [placeholder]="'whatsApp Number'"></app-input-text>
+        </div>
+     </div>
+         <div class="row">
+            <div class=" mt-2 col-lg-6 col-md-6 col-sm-12 mt-4">
+                <app-editor [label]="'social_media.instr_en'" [control]="form.get('enBasicInstructions')"></app-editor>
+            </div>
+            <div class=" mt-2 col-lg-6 col-md-6 col-sm-12 mt-4">
+                <app-editor [label]="'social_media.instr_ar'" [control]="form.get('arBasicInstructions')"></app-editor>
+            </div>
+         </div>
+
+        <div class="actions mt-3 d-flex justify-content-end">
+            <button type="submit" class="submit-btn" [disabled]="!form.valid"> {{'actions.update'|translate|titlecase}}</button>
+        </div>
+    </form>

@@ -1,0 +1,17 @@
+::ng-deep {
+  .drawer-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .header {
+    padding: 20px;
+    flex-shrink: 0;
+  }
+
+  .body {
+    flex-grow: 1;
+    overflow-y: auto;
+  }
+}

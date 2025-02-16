@@ -1,0 +1,189 @@
+<div class="faqs-form-container container-fluid">
+  <div class="row">
+    <div class="page-details mb-3">
+      <div class="title">
+        <h2>{{tyepMode()|translate|titlecase}} {{'client.pageTitle'|translate|titlecase}} <span>{{ userStatus ? '':
+            'client.notActive' | translate}}</span> </h2>
+      </div>
+      <div class="breadcrumb">
+        <app-breadcrump [breadcrumbProps]="bredCrumb"></app-breadcrump>
+      </div>
+    </div>
+  </div>
+
+  <div class="client-wallet-section mt-3 mb-3" *ngIf="tyepMode() != 'Add'">
+    <div class="wallet-details">
+      <img width="64" src="assets/images/wallet.png" alt="wallet">
+      <div class="desc">
+        <div class="title">
+          <p>{{ 'WALLET_DIALOG.WALLET_AMOUNT' | translate}}</p>
+        </div>
+        <div class="amount" >
+          <p>{{clientWalletBalance}} <span>{{'SAR' | translate}}</span></p>
+        </div>
+      </div>
+    </div>
+    <app-wallet-dialog (amountAdded)="onAmountAdded($event)" [clientId]="clientid"></app-wallet-dialog>
+  </div>
+
+
+
+  <div class=" form-container">
+    <div class="reactive-form" [ngClass]="{ 'red-border': tyepMode() != 'Add' && userStatus == false }">
+      <form [formGroup]="form" class="w-70" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
+            <app-input-text [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'"
+              [label]="'client.form.firstName'" [control]="form.get('firstName')"></app-input-text>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
+            <app-input-text [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'"
+              [label]="'client.form.lastName'" [control]="form.get('lastName')"></app-input-text>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
+            <app-input-text [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'"
+              [label]="'client.form.userName'" [control]="form.get('username')"></app-input-text>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
+            <app-input-text [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'"
+              [label]="'client.form.email'" [control]="form.get('email')"></app-input-text>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
+            <app-input-text [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'"
+              [label]="'client.form.mobileNumber'" [control]="form.get('mobileNumber')"></app-input-text>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-12 mt-4" *ngIf="tyepMode()=='Add'">
+            <app-input-text [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'"
+              [label]="'client.form.pinCode'" [control]="form.get('pinCode')"></app-input-text>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-12 mt-4" *ngIf="tyepMode()=='Add'">
+            <app-input-text type="password" (onValueChange)="onPasswordChanged($event)" [showPasswordWeakness]="true"
+              [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'" [label]="'client.form.password'"
+              [control]="form.get('password')"></app-input-text>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-12 mt-4" *ngIf="tyepMode()=='Add'">
+            <app-input-text type="password" (onValueChange)="onConfirmPasswordChanged($event)"
+              [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'" [label]="'client.form.confirmPassword'"
+              [control]="form.get('confirmPassword')"></app-input-text>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
+            <app-select [placeholder]="form.get('gender')?.value" class="w-100" [list]="gender"
+              [label]="'client.form.gender'" [control]="form.get('gender')">
+            </app-select>
+          </div>
+          <div class=" mt-2 col-lg-6 col-md-6 col-sm-12 mt-4">
+            <app-date-picker [maxDate]="maxDate" [placeholder]="form.get('endDate')?.value" [label]="'client.form.date'"
+              [control]="form.get('dateOfBirth')"></app-date-picker>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-12 mt-4 d-flex align-items-center">
+            <app-check-box [isToggle]="true" [disabled]="tyepMode()=='View'" [label]="'client.form.isActive'"
+              [control]="form.get('isActive')"></app-check-box>
+          </div>
+          <!-- <div class=" mt-2 col-lg-12 col-md-12 col-sm-12 mt-4">
+            <app-editor [label]="'Note'" [control]="form.get('notes')"></app-editor>
+          </div> -->
+          <div class="upload-image-section mt-4 mb-4" *ngIf="!editMode">
+            <label class="mb-2">{{'shared.upload_img'|translate}}</label>
+            <app-upload-file formControlName="imgSrc"></app-upload-file>
+            <!-- <div *ngIf="isRequiredError" class="error-message mt-2">
+              {{'shared.img_required'|translate}}
+            </div> -->
+          </div>
+          <div class="edit-mode-section mt-2" *ngIf="editMode">
+            <label class="mb-2">{{'shared.uploaded_img'|translate}}</label>
+            <app-edit-mode-image [editImageProps]="editImageProps"></app-edit-mode-image>
+          </div>
+
+
+
+          <div class="actions mt-5 text-center">
+            <button type="submit" class="submit-btn" [disabled]="!form.valid" *ngIf="tyepMode()!=='View'">
+              <span *ngIf="tyepMode()=='Add'">{{'actions.add'|translate}}</span>
+              <span *ngIf="tyepMode()=='Edit'">{{'actions.edit'|translate}}</span>
+            </button>
+            <button type="button" class="cancel-btn" (click)="cancel()">
+              {{'actions.cancel'|translate}}
+            </button>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <div class="row mt-3 mb-4" *ngIf="tyepMode() != 'Add'">
+    <div class="col-lf-12">
+      <p-panel [header]="'CLIENT_ORDERS' | translate" [toggleable]="true">
+        <div class="client-orders-list" *ngIf="clientOrdersList.length != 0">
+          <div class="row">
+            <div class="col-lg-4 col-md-6 col-sm-12" *ngFor="let order of clientOrdersList">
+              <div class="order-card mt-3" (click)="goOrder(order.orderId)">
+                <div class="content">
+                  <div class="row">
+                    <div class="col-lg-6 mt-2 mb-2">
+                      <div class="title">
+                        <p>{{ 'ORDER_ID' | translate }}</p>
+                      </div>
+                      <div class="desc">
+                        <p>{{order.orderId}}</p>
+                      </div>
+                    </div>
+                    <div class="col-lg-6 mt-2 mb-2">
+                      <div class="title">
+                        <p>{{ 'STATUS' | translate }}</p>
+                      </div>
+                      <div class="desc">
+                        <p>{{order.orderStatusName}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-6 mt-2 mb-2">
+                      <div class="title">
+                        <p>{{ 'CREATION_TIME' | translate }}</p>
+                      </div>
+                      <div class="desc">
+                        <p>{{order.creationTime | date: 'dd/MM/yyyy'}}</p>
+                      </div>
+                    </div>
+                    <div class="col-lg-6 mt-2 mb-2">
+                      <div class="title">
+                        <p>{{ 'PACKAGE_NAME' | translate }}</p>
+                      </div>
+                      <div class="desc">
+                        <p>{{ selectedLang == 'ar' ? order.package.nameAr : order.package.nameEn}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-6 mt-2 mb-2">
+                      <div class="title">
+                        <p>{{ 'SERVICE_NAME' | translate }}</p>
+                      </div>
+                      <div class="desc">
+                        <p>{{ selectedLang == 'ar' ? order.serviceNameAr : order.serviceNameEn}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="empty-state" *ngIf="clientOrdersList.length == 0">
+          <h3>
+            {{ 'NO_ORDERS_AVAILABLE' | translate }}
+          </h3>
+        </div>
+      </p-panel>
+    </div>
+  </div>
+</div>
+
+
+
+<app-dialog [visible]="showConfirmMessage">
+  <button class="dialog-close-btn btn btn-default" (click)="showConfirmMessage = false">
+    {{'actions.close'|translate}}</button>
+  <button class="dialog-close-btn btn btn-danger" (click)="onConfirmMessage()"> {{'actions.confirm'|translate}}</button>
+</app-dialog>

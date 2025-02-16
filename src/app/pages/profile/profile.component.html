@@ -1,0 +1,36 @@
+<div class="faqs-form-container container-fluid">
+  <div class="row">
+    <div class="page-details mb-3">
+      <div class="title mb-4">
+        <h2>{{tyepMode()|translate|titlecase}} {{pageName()|translate|titlecase}}</h2>
+      </div>
+      <div class="breadcrumb">
+        <app-breadcrump [breadcrumbProps]="bredCrumb"></app-breadcrump>
+      </div>
+    </div>
+  </div>
+    <div class="page">
+      <div class="d-flex justify-content-end">
+        <span class="pointer pi pi-pencil" (click)="onEditProfile()"></span>
+      </div>
+      <div class="d-flex justify-content-between flex-wrap">
+        <div class="img-border">
+          <img [src]="imgUrl??defaultImage" alt="img">
+        </div>
+        <div class="content-info">
+          <div class="info d-flex justify-content-between flex-wrap" *ngFor="let item of userDataInfo">
+              <div>
+                <span [class]="item.icon"></span>
+                <span class="bold black"> {{item.title|translate}}</span>
+              </div>
+
+              <div class="text-start value">
+                <span class=""> {{item.value}}</span>
+              </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+

@@ -1,0 +1,31 @@
+<div class="sidebar-container">
+  <div class="content">
+    <div class="logo-section" routerLink="/dashboard">
+      <img width="30" src="assets/images/logo.png" alt="matlop-logo">
+    </div>
+    <div class="routing-section">
+      <div class="pages-routing-section section-color">
+        <!-- [pTooltip]="route.label | translate"
+            [tooltipPosition]="selectedLang == 'ar' ? 'left' : 'right'" -->
+        <ng-container *ngFor="let route of routingList">
+          <div [routerLink]="route.route" class="routing-action" routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }" >
+            <span [class]="route.icon"></span>
+            <p>{{route.label | translate}}</p>
+          </div>
+        </ng-container>
+
+      </div>
+      <div class="setting-section section-color">
+        <div routerLink="/settings/faqs" class="routing-action" routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }" pTooltip="{{'side_bar.setting' | translate|uppercase}}"
+            [tooltipPosition]="selectedLang == 'ar' ? 'left' : 'right'">
+            <span class="pi pi-cog"></span>
+          </div>
+          <div class="user-image-section" routerLink="/profile" [pTooltip]="'Profile' | translate" [tooltipPosition]="selectedLang == 'ar' ? 'left' : 'right'">
+            <img [src]="userDate.img?baseImageUrl+userDate.img:this.defaultImage" alt="user-image">
+          </div>
+      </div>
+    </div>
+  </div>
+</div>

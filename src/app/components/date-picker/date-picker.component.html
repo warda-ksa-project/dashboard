@@ -1,0 +1,16 @@
+<div class="w-100">
+    <label class="block mb-1">{{label|translate}}</label>
+    <p-datepicker class="w-100"
+     [minDate]="minDate"
+     [maxDate]="maxDate"
+     (ngModelChange)="onDateChange($event)"
+     [placeholder]="placeholder"
+     [readonlyInput]="readOnly"
+     [disabled]="disabled"
+     [formControl]="control"
+     dateFormat="dd-mm-yy"
+     [showIcon]="true" />
+     <div  *ngIf="control.errors && control.touched || (control.value && control.errors)">
+        <span class="text-danger"> {{control.errors|validationHandlerPipe}}</span>
+     </div>
+</div>

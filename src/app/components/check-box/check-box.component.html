@@ -1,0 +1,8 @@
+<div class="check-content">
+    <label for="ny" [class.toggle-style]="isToggle"> {{label|translate}} </label>
+<p-checkbox *ngIf="!isToggle" [formControl]="control"  [binary]="true"  inputId="ny" [disabled]="disabled" />
+<p-toggleswitch *ngIf="isToggle"
+(onChange)="onToggleChange($event)" 
+[(ngModel)]="initValue"
+ [formControl]="control" [disabled]="disabled" [readonly]="readOnly" />
+</div>

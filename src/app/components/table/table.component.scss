@@ -1,0 +1,150 @@
+::ng-deep {
+
+  p-table {
+    .p-datatable {
+      margin: 2rem auto;
+      border-radius: 8px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      background-color: #fff;
+      overflow: hidden;
+    }
+
+    .p-datatable-thead {
+      background-color: #f4f4f6;
+      color: #333;
+      font-weight: bold;
+
+      th {
+        padding: 1rem;
+        text-align: left;
+        font-size: 0.9rem;
+        border-bottom: 1px solid #ddd;
+        &:lang(ar) {
+          text-align: right !important;
+        }
+      }
+    }
+
+    .p-datatable-tbody {
+      tr {
+        transition: background-color 0.3s ease;
+        div.actions-icon{
+          span{
+            margin:0px 5px;
+            cursor: pointer;
+          }
+          .pi-trash{
+            color:#f76262
+          }
+          .pi-pen-to-square{
+            color:#28a745;
+          }
+          .pi-eye{
+            color:#6060e7;
+          }
+          .pi-ban {
+            color:#f76262
+          }
+          .pi-bullseye {
+            color:green
+          }
+        }
+
+        &:nth-child(even) {
+          background-color: #f9f9f9;
+        }
+
+        &:hover {
+          background-color: #f0f4fa;
+        }
+      }
+
+      td {
+        font-size: 0.9rem;
+        color: #555;
+        border-bottom: 1px dotted #ddd !important;
+        padding-block: 1.5rem !important;
+
+        &:lang(ar) {
+          text-align: right !important;
+        }
+
+        img.rounded {
+          border-radius: 4px;
+          border: 1px solid #ddd;
+          padding: 2px;
+          width: 60px;
+          height: auto;
+        }
+
+        button {
+          padding: 0.5rem 1rem;
+          border: none;
+          border-radius: 4px;
+          font-size: 0.8rem;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+
+          &.active {
+            background-color: #28a745;
+            color: white;
+          }
+
+          &.inactive {
+            background-color: #dc3545;
+            color: white;
+          }
+
+          &:hover {
+            opacity: 0.8;
+          }
+        }
+      }
+    }
+
+    .text-center {
+      margin-top: 2rem;
+      font-size: 1rem;
+      color: #666;
+      text-align: center;
+    }
+  }
+
+  .order-status {
+    padding: 7px;
+    border-radius: 7px;
+    opacity: 0.9;
+    color: white;
+  }
+}
+
+
+
+@mixin status($text-color, $bg-color, $border-color) {
+  color: $text-color;
+  background-color: $bg-color;
+  border: 1px solid $border-color;
+  border-radius: 8px;
+  padding: 5px;
+  width: 100px;
+}
+.complete {
+  @include status(green, #e3f5e3, #90d290);
+}
+
+.inProgress {
+  @include status(blue, #d7d7f2, #6f6fd5);
+}
+
+.cancel {
+  @include status(red, #ffd1d1, #d59595);
+}
+
+
+.change-order-payment-status {
+  border: none;
+  background-color: #2aa613;
+  color: white;
+  border-radius: 10px;
+  padding: 10px;
+}

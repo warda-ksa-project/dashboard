@@ -1,0 +1,9 @@
+<p-dialog [header]="header|translate" [modal]="true" [(visible)]="visible" [closeIcon]="'false'" [style]="{ width: '25rem' }">
+     <div>
+        {{message|translate}}
+     </div>
+
+    <div class="d-grid gap-2 mt-5">
+        <ng-content></ng-content>
+    </div>
+</p-dialog>

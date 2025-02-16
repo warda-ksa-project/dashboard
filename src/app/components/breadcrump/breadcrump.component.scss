@@ -1,0 +1,22 @@
+::ng-deep {
+  .breadcrump-container {
+    p-breadcrumb {
+      .p-breadcrumb {
+        padding: 0px !important;
+
+        .pi-home:before {
+          color: #42d0b6;
+          font-size: 20px;
+        }
+
+        .p-breadcrumb-list {
+          .p-breadcrumb-separator {
+            &:lang(ar) {
+              transform: rotate(180deg) !important;
+            }
+          }
+        }
+      }
+    }
+  }
+}
