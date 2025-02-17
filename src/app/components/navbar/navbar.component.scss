@@ -12,19 +12,32 @@
       margin-bottom: 20px;
       background: #f8fafc;
       margin-top: 4px;
+      .profile{
+        padding: 7px;
+        border-radius: 32px;
+        background-color: #8174A0;
+        div.info{
+          font-size: 13px;
+          line-height: 14px;
+          margin: 5px;
+          span.name{
+            color:#fff;
+          }
+          span.mail{
+            color:#F3F3F3
+          }
+        }
+      }
       .search-section {
         flex-basis: 40%;
-        // p-autocomplete {
-        //   width: 80%;
-        //   .p-autocomplete {
-        //     width: 80%;
-
-        //     .p-inputtext {
-        //       width: 80%;
-        //       // border: 1px solid #cbd5e121 !important;
-        //     }
-        //   }
-        // }
+        .p-autocomplete {
+          width: 100%;
+          margin: 0px 30px;
+        }
+            .p-inputtext {
+              width: 90%!important;
+              border-radius: 32px!important;
+            }
       }
 
       .option-section {

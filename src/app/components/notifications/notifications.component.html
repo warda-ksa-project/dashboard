@@ -1,7 +1,7 @@
 <ng-container>
   <div class="count-noti">
     <div class="count-number">{{totalUnSeen}}</div>
-    <span class="pi pi-bell" (click)="op.toggle($event)"></span>
+    <img src="assets/images/Bell_Ring.svg" width="27" (click)="op.toggle($event)" alt="bell">
   </div>
   <p-popover #op>
     <div class="notification-container">

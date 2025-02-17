@@ -1,15 +1,30 @@
 <div class="navbar-container">
   <div class="content">
-      <div class="search-section  pr-pl-30-small-screen">
-        <p-autocomplete  placeholder="{{'nav.search'|translate}}" [(ngModel)]="value" [suggestions]="items"
+    <div class="welcome">
+        <h4>الرئيسية</h4>
+        <div>
+          <span>مرحبا بك</span> ,
+          <span> احمد محمد</span>
+        </div>
+    </div>
+      <div class="search-section  pr-pl-30-small-screen flex-fill">
+          <p-autocomplete  placeholder="{{'nav.search'|translate}}" [(ngModel)]="value" [suggestions]="items"
           (completeMethod)="search($event)" />
       </div>
+      
 
     <div class="option-section">
       <div class="notifications-section">
       <app-notifications></app-notifications>
       </div>
-      <div class="lang-section">
+      <div class="profile d-flex justify-content-between">
+        <img width="40" height="40" src="assets/images/arabian-man.png" alt="">
+        <div class="info">
+            <span class="name block bold">Ahmed Aladdin</span>
+            <span class="mail">{{'ahmedaladdin6@gmail.com'}}</span>
+        </div>
+     </div>
+      <!-- <div class="lang-section">
         <p-select [options]="langOptions" [(ngModel)]="selectedLang" (onChange)="onLangChange()" optionLabel="name"
           optionValue="code">
           <ng-template let-lang pTemplate="selectedItem">
@@ -25,7 +40,7 @@
             </div>
           </ng-template>
         </p-select>
-      </div>
+      </div> -->
 
       <div class="logout-section" (click)="logout()" routerLink='/auth/login'>
         <span class="pi pi-sign-out"></span>

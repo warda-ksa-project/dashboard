@@ -117,8 +117,6 @@
         box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   
         .logo-section {
-          border-radius: 0.8rem;
-          border: 1px solid #c0c6ce;
           padding: 7px;
           cursor: pointer;
           img {
@@ -149,11 +147,11 @@
             }
   
             .active {
-              background: linear-gradient(to right, #81ef62, #42d0b6);
+              background:#8174A0;
               border-radius: 6px;
               color: white;
               &:hover {
-                background: linear-gradient(to right, #81ef62, #42d0b6);
+                background:#8174A0;
                 border-radius: 6px;
               }
             }
