@@ -2,7 +2,7 @@
 :host ::ng-deep {
     .paginator-section {
       display: flex;
-      justify-content: flex-end;
+      justify-content: center;
 
       p-paginator {
         .p-paginator {
@@ -19,6 +19,8 @@
               border-radius: 8px;
               min-width: 2rem !important;
               height: 30px;
+              background-color: #8174A0;
+              color: #fff;
             }
           }
 
