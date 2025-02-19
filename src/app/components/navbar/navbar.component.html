@@ -11,7 +11,7 @@
           <p-autocomplete  placeholder="{{'nav.search'|translate}}" [(ngModel)]="value" [suggestions]="items"
           (completeMethod)="search($event)" />
       </div>
-      
+
 
     <div class="option-section">
       <div class="notifications-section">
@@ -24,7 +24,7 @@
             <span class="mail">{{'ahmedaladdin6@gmail.com'}}</span>
         </div>
      </div>
-      <!-- <div class="lang-section">
+      <div class="lang-section">
         <p-select [options]="langOptions" [(ngModel)]="selectedLang" (onChange)="onLangChange()" optionLabel="name"
           optionValue="code">
           <ng-template let-lang pTemplate="selectedItem">
@@ -40,7 +40,7 @@
             </div>
           </ng-template>
         </p-select>
-      </div> -->
+      </div>
 
       <div class="logout-section" (click)="logout()" routerLink='/auth/login'>
         <span class="pi pi-sign-out"></span>

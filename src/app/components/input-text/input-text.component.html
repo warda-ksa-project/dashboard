@@ -1,10 +1,13 @@
 <div class="">
-    <label class="block mb-1" for="enTitle">{{label|translate}}</label>
-    <input autocomplete="off" (ngModelChange)="onInputChange($event)"   *ngIf="type=='text'" class="w-100" pInputText id="enTitle" [formControl]="control" [readOnly]="readOnly"  [disabled]="disabled" />
-    <p-password [style]="{ width: '100%' }" (ngModelChange)="onInputChange($event)" autocomplete="off"  class="password-w-100 w-100" *ngIf="type=='password'" [disabled]="disabled" 
+  <p-floatlabel variant="on">
+
+    <input autocomplete="off" autocomplete="off" (ngModelChange)="onInputChange($event)"   *ngIf="type=='text'" class="w-100" pInputText id="enTitle" [formControl]="control" [readOnly]="readOnly"  [disabled]="disabled" />
+    <p-password autocomplete="off" [style]="{ width: '100%' }" (ngModelChange)="onInputChange($event)" autocomplete="off"  class="password-w-100 w-100" *ngIf="type=='password'" [disabled]="disabled"
     [formControl]="control" [feedback]="showPasswordWeakness" [toggleMask]="true" />
-    <div  *ngIf="control.errors && control.touched || (control.value && control.errors)">
-       
+    <label class="block mb-1" for="enTitle">{{label|translate}}</label>
+  </p-floatlabel>
+   <div  *ngIf="control.errors && control.touched || (control.value && control.errors)">
+
        <span class="text-danger"> {{control.errors|validationHandlerPipe}}</span>
     </div>
 </div>

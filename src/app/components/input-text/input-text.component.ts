@@ -5,6 +5,7 @@ import { ValidationHandlerPipePipe } from '../../pipes/validation-handler-pipe.p
 import { InputTextModule } from 'primeng/inputtext';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Password } from 'primeng/password';
+import { FloatLabelModule } from 'primeng/floatlabel';
 
 @Component({
   selector: 'app-input-text',
@@ -16,7 +17,8 @@ import { Password } from 'primeng/password';
     InputTextModule,
     TranslatePipe,
     Password,
-    JsonPipe
+    JsonPipe,
+    FloatLabelModule
   ],
   templateUrl: './input-text.component.html',
   styleUrl: './input-text.component.scss'
