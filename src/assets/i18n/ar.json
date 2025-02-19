@@ -84,6 +84,7 @@
   "side_bar": {
     "dashboard": "لوحة التحكم",
     "clients": "العملاء",
+    "category": "الفئات",
     "orders": "الطلبات",
     "special_orders": "الطلبات الخاصة",
     "technicals": "الفنيين",
@@ -133,6 +134,23 @@
       "emName": "النوع"
     }
   },
+  "category": {
+  "pageName": "الفئات",
+  "pageTitle": "الفئة",
+  "list": "قائمة الفئات",
+  "pageName_filter": "تصفية الفئات",
+  "pageName_Add_crumb": "إضافة فئة",
+  "pageName_Edit_crumb": "تعديل الفئة",
+  "pageName_View_crumb": "عرض الفئة",
+  "notActive": "غير نشط",
+  "form": {
+    "enName": "الاسم (بالإنجليزية)",
+    "arName": "الاسم (بالعربية)",
+    "parentCategoryId": "الفئة الرئيسية",
+    "enDescription": "الوصف (بالإنجليزية)",
+    "arDescription": "الوصف (بالعربية)"
+  }
+},
   "faqs": {
     "validation_english_title": "العنوان باللغة الإنجليزية فقط",
     "pageName": "الأسئلة المتكررة",

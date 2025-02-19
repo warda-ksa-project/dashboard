@@ -1,0 +1,84 @@
+.red-border {
+    border: 2px solid red !important;
+    /* Adjust the border size and color as needed */
+    border-radius: 4px;
+    /* Optional: Add rounded corners */
+  }
+  
+  
+  .title {
+    span {
+      color: red;
+      font-size: 15px !important;
+    }
+  }
+  
+  
+  .empty-state {
+    display: flex;
+    min-height: 150px;
+    justify-content: center;
+    align-items: center;
+  
+    h3 {
+      color: gray;
+    }
+  }
+  
+  .client-orders-list {
+    min-height: 200px;
+  
+    .order-card {
+      text-decoration: none;
+      border-radius: 6px;
+      box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+      padding: 10px;
+      cursor: pointer;
+  
+      .desc {
+        p {
+          font-size: 20px;
+          color: gray;
+        }
+      }
+    }
+  
+  }
+  
+  .client-wallet-section {
+  
+    padding: 10px;
+    border-radius: 12px;
+    border: 1px solid rgb(196, 196, 196);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  
+    .wallet-details {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+  
+      .desc {
+        display: flex;
+        flex-direction: column;
+  
+        .title {
+          p {
+            color: gray;
+          }
+        }
+  
+        .amount {
+          p {
+            font-size: 25px;
+  
+            span {
+              font-size: 10px;
+            }
+          }
+        }
+      }
+    }
+  }
+  

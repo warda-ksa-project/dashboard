@@ -84,6 +84,7 @@
   "side_bar": {
     "dashboard": "DASHBOARD",
     "clients": "CLIENTS",
+    "category": "CATEGORIES",
     "orders": "ORDERS",
     "special_orders": "SPECIAL ORDERS",
     "technicals": "TECHNICALS",
@@ -131,6 +132,23 @@
       "mobile": "Mobile",
       "emSpetialization": "Specialize",
       "emName": "Type"
+    }
+  },
+  "category": {
+    "pageName": "Categories",
+    "pageTitle": "Category",
+    "list": "Category List",
+    "pageName_filter": "Filter Category",
+    "pageName_Add_crumb": "Add Category",
+    "pageName_Edit_crumb": "Edit Category",
+    "pageName_View_crumb": "View Category",
+    "notActive": "Not Active",
+    "form": {
+      "enName": "Name (en)",
+      "arName": "Name (ar)",
+      "parentCategoryId": "Parent Category",
+      "enDescription": "Description (en)",
+      "arDescription": "Description (ar)"
     }
   },
   "faqs": {
