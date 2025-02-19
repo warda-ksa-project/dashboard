@@ -14,6 +14,7 @@ import { LanguageService } from '../../../services/language.service';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DialogComponent } from "../../../components/dialog/dialog.component";
 import { CategoryDetailsComponent } from '../category-details/category-details.component';
+import { PageDialogComponent } from '../../../components/page-dialog/page-dialog.component';
 
 const global_pageName = 'category.pageName';
 const global_API_Name = 'Client';
@@ -38,14 +39,11 @@ const global_API_block = global_API_Name + '/Delete?userId';
     InputTextModule,
     TableSmallScreenComponent,
     NgFor,
-    DialogComponent,
-    CategoryDetailsComponent
 ],
   templateUrl: './category-table.component.html',
   styleUrl: './category-table.component.scss'
 })
 export class CategoryTableComponent {
-  showAdd:boolean=false
   global_router_add_url_in_Table = global_router_add_url_in_Table
   pageName = signal<string>(global_pageName);
 
@@ -167,10 +165,6 @@ export class CategoryTableComponent {
     this.showFilter = false;
   }
 
-  openAddCategory(){
-    this.showAdd=true
-    console.log("CategoryTableComponent  openAddCategory  this.showAdd:", this.showAdd)
-  }
 
   API_getAll() {
     this.ApiService.post(global_API_getAll, this.objectSearch).subscribe((res: any) => {

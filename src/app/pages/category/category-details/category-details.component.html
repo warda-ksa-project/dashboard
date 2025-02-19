@@ -15,25 +15,25 @@
       <div class="reactive-form">
         <form [formGroup]="form" class="w-70" (ngSubmit)="onSubmit()">
           <div class="row">
-            <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
+            <div class="col-lg-12 col-md-12 col-sm-12 mt-4">
               <app-input-text [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'"
                 [label]="'category.form.enName'" [control]="form.get('enName')"></app-input-text>
             </div>
-            <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
+            <div class="col-lg-12 col-md-12 col-sm-12 mt-4">
               <app-input-text [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'"
                 [label]="'category.form.arName'" [control]="form.get('arName')"></app-input-text>
             </div>
-            <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
+            <div class="col-lg-12 col-md-12 col-sm-12 mt-4">
                 <app-select [placeholder]="form.get('parentCategoryId')?.value" class="w-100" [list]="parentCategoryList"
                   [label]="'category.form.parentCategoryId'" [control]="form.get('parentCategoryId')">
                 </app-select>
               </div>
             <div class="row">
-                <div class=" mt-2 col-lg-6 col-md-6 col-sm-12 mt-3">
+                <div class=" mt-2 col-lg-12 col-md-12 col-sm-12 mt-3">
                     <app-editor [label]="'about_us.form.desc_en'"
                         [control]="form.get('enDescription')"></app-editor>
                 </div>
-                <div class=" mt-2 col-lg-6 col-md-6 col-sm-12 mt-3">
+                <div class=" mt-2 col-lg-12 col-md-12 col-sm-12 mt-3">
                     <app-editor [label]="'about_us.form.desc_ar'"
                         [control]="form.get('arDescription')"></app-editor>
                 </div>
@@ -74,7 +74,7 @@
   
   
   
-  <app-dialog [visible]="showConfirmMessage">
+  <app-dialog [visible]="showConfirmMessage" >
     <button class="dialog-close-btn btn btn-default" (click)="showConfirmMessage = false">
       {{'actions.close'|translate}}</button>
     <button class="dialog-close-btn btn btn-danger" (click)="onConfirmMessage()"> {{'actions.confirm'|translate}}</button>
