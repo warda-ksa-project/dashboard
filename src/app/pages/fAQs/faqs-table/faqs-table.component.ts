@@ -29,7 +29,7 @@ export class FaqsTableComponent {
   tableActions: ITableAction[] = [
     {
       name: EAction.delete,
-      apiName_or_route: 'FAQs/Delete?requestId',
+      apiName_or_route: 'FAQ/Delete',
       autoCall: true
     },
     {
@@ -87,7 +87,7 @@ export class FaqsTableComponent {
 
   displayTableCols(currentLang: string) {
     this.columns = [
-      { keyName: 'questionId', header: this.languageService.translate('Id'), type: EType.id, show: true },
+      { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: true },
       { keyName: 'enTitle', header: this.languageService.translate('faqs.form.question_en'), type: EType.text, show: true },
       { keyName: 'arTitle', header: this.languageService.translate('faqs.form.question_ar'), type: EType.text, show: true },
       { keyName: 'enDescription', header: this.languageService.translate('faqs.form.desc_en'), type: EType.editor, show: true },
@@ -97,7 +97,7 @@ export class FaqsTableComponent {
     ]
     this.columnsSmallTable = [
       { keyName:  'enTitle', header: this.languageService.translate('faqs.form.question_en'), type: EType.text, showAs: ETableShow.header },
-      { keyName: 'questionId', header: 'Id', type: EType.id, show: false },
+      { keyName: 'id', header: 'Id', type: EType.id, show: false },
       { keyName:  'arTitle' , header: this.languageService.translate('faqs.form.question_ar'), type: EType.editor, showAs: ETableShow.content },
       { keyName:  'enDescription' , header: this.languageService.translate('faqs.form.desc_en'), type: EType.editor, showAs: ETableShow.content },
       { keyName:  'arDescription' , header: this.languageService.translate('faqs.form.desc_ar'), type: EType.editor, showAs: ETableShow.content }
@@ -126,12 +126,18 @@ export class FaqsTableComponent {
   }
 
   getAllFAQS() {
-    this.ApiService.post('FAQs/GetAllWithPagination', this.faqSearchCreteria).subscribe((res: any) => {
+    // this.ApiService.post('FAQs/GetAllWithPagination', this.faqSearchCreteria).subscribe((res: any) => {
+    //   if (res) {
+    //     this.faqsList = res.data.dataList;
+    //     this.totalCount = res.data.totalCount;
+    //     this.filteredData = [...this.faqsList];
+    //     console.log('FAQs loaded:', this.faqsList);
+    //   }
+
+    // })
+    this.ApiService.get('FAQ/GetAll').subscribe((res: any) => {
       if (res) {
-        this.faqsList = res.data.dataList;
-        this.totalCount = res.data.totalCount;
-        this.filteredData = [...this.faqsList];
-        console.log('FAQs loaded:', this.faqsList);
+        this.faqsList = res;
       }
 
     })
