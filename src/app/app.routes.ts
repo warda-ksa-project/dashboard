@@ -163,6 +163,11 @@ export const routes: Routes = [
       { path: 'city/view/:id', component: CityDetailsComponent },
       { path: 'city/edit/:id', component: CityDetailsComponent },
 
+      { path: 'faqs', component: FaqsTableComponent },
+      { path: 'faqs/add', component: FagsDetailsComponent },
+      { path: 'faqs/edit/:id', component: FagsDetailsComponent },
+      { path: 'faqs/view/:id', component: FagsDetailsComponent },
+      
       { path: 'cancel-reason', component: CancelReasonTableComponent },
       { path: 'cancel-reason/add', component: CancelReasonDetailsComponent },
       { path: 'cancel-reason/view/:id', component: CancelReasonDetailsComponent },

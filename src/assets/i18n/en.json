@@ -101,7 +101,8 @@
     "technical_sp": "TECHNICAL SPECIALIST",
     "contact": "CONTACT US",
     "about": "ABOUT US",
-    "setting": "Settings"
+    "setting": "Settings",
+    "faqs":"FAQs"
   },
   "client": {
     "pageName": "Clients",
