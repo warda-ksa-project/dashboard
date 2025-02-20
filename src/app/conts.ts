@@ -1,7 +1,8 @@
 export const menuItems =
   [
     { icon: 'pi pi-home', label: 'side_bar.dashboard', route: '/dashboard' },
-    { icon: 'pi pi-users', label: 'side_bar.category', route: '/category' },
+    // { icon: 'pi pi-users', label: 'side_bar.category', route: '/category' },
+    { icon: 'pi pi-users', label: 'side_bar.sub_category', route: '/sub-category' },
     { icon: 'pi pi-truck', label: 'side_bar.technicals', route: '/technicals' },
     { icon: 'pi pi-car', label: 'side_bar.orders', route: '/orders' },
     { icon: 'pi pi-server', label: 'side_bar.special_orders', route: '/special-order' },

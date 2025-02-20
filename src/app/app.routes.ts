@@ -62,6 +62,8 @@ import { EditProfileComponent } from './pages/profile/edit-profile/edit-profile.
 import { AddNotificationsComponent } from './pages/add-notifications/add-notifications.component';
 import { CategoryTableComponent } from './pages/category/category-table/category-table.component';
 import { CategoryDetailsComponent } from './pages/category/category-details/category-details.component';
+import { SubCategoryTableComponent } from './pages/sub-category/sub-category-table/sub-category-table.component';
+import { SubCategoryDetailsComponent } from './pages/sub-category/sub-category-details/sub-category-details.component';
 
 export const routes: Routes = [
   {
@@ -147,6 +149,11 @@ export const routes: Routes = [
       { path: 'category/add', component: CategoryDetailsComponent },
       { path: 'category/view/:id', component: CategoryDetailsComponent },
       { path: 'category/edit/:id', component: CategoryDetailsComponent },
+
+      { path: 'sub-category', component: SubCategoryTableComponent },
+      { path: 'sub-category/add', component: SubCategoryDetailsComponent },
+      { path: 'sub-category/view/:id', component: SubCategoryDetailsComponent },
+      { path: 'sub-category/edit/:id', component: SubCategoryDetailsComponent },
 
       { path: 'clients', component: ClientTableComponent },
       { path: 'client/add', component: ClientDetailsComponent },
