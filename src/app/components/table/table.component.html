@@ -3,7 +3,7 @@
     <ng-template #header let-columns>
       <tr>
         <th *ngFor="let col of columns">
-          <span *ngIf="col.show"> {{ col.header }}</span>
+          <span *ngIf="col.show" class="col-header"> {{ col.header }}</span>
         </th>
       </tr>
     </ng-template>
@@ -54,14 +54,12 @@
               <div class="d-flex" *ngIf="col.type=='actions'">
                 <div *ngFor="let action of col.actions">
                   <div class="actions-icon" (click)="onAction(action,rowData)">
-                    <span *ngIf="action.name==='view'" class="pi pi-eye" pTooltip="View" tooltipPosition="top"></span>
-                    <span *ngIf="action.name==='edit'" class="pi pi-pen-to-square" pTooltip="Edit"
+                    <img *ngIf="action.name==='delete'" src="assets/images/delete.svg"  pTooltip="delete" tooltipPosition="top" alt="edit">
+                    <img *ngIf="action.name==='edit'"  src="assets/images/edit.svg"  pTooltip="edit" tooltipPosition="top" alt="edit">
+                    <img *ngIf="action.name==='view'" src="assets/images/view.svg"  pTooltip="View" tooltipPosition="top" alt="edit">
+                    <!-- <span *ngIf="action.name==='active'" class="pi pi-bullseye" pTooltip="Active"
                       tooltipPosition="top"></span>
-                    <span *ngIf="action.name==='delete'" class="pi pi-trash" pTooltip="Delete"
-                      tooltipPosition="top"></span>
-                    <span *ngIf="action.name==='active'" class="pi pi-bullseye" pTooltip="Active"
-                      tooltipPosition="top"></span>
-                    <span *ngIf="action.name==='block'" class="pi pi-ban" pTooltip="Block" tooltipPosition="top"></span>
+                    <span *ngIf="action.name==='block'" class="pi pi-ban" pTooltip="Block" tooltipPosition="top"></span> -->
                   </div>
                 </div>
               </div>

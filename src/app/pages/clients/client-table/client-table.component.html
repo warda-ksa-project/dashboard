@@ -1,7 +1,10 @@
 <div class="table-container">
   <div class="content">
     <div class="title-bredcrumb-section">
-      <div class="title">
+      <div class="page-title">
+        <div class="images">
+          <img src="assets/images/pages-title/clients.png" alt="">
+        </div>
         <h2>{{'client.list'|translate|titlecase}}</h2>
       </div>
       <div class="breadcrumb">
@@ -10,7 +13,7 @@
     </div>
     <div class="details-container">
       <div class="action-filter">
-        <a [routerLink]="global_router_add_url_in_Table"> +{{'shared.add_new'|translate}}</a>
+        <a [routerLink]="global_router_add_url_in_Table"> <span>+</span>{{'shared.add_new'|translate}}</a>
         <span class="pi pi-filter pointer" (click)="openFilter()"> </span>
       </div>
 
@@ -85,8 +88,8 @@
     </div>
 
     <div class="search-form-actions d-flex">
-      <button type="submit" class="btn btn-primary submit-btn">{{'actions.submit'|translate}}</button>
-      <button type="button" class="btn btn-danger reset-btn" (click)="reset()">{{'actions.reset'|translate}}</button>
+      <button type="submit" class="btn drawer-submit-btn">{{'actions.submit'|translate}}</button>
+      <button type="button" class="btn btn-danger drawer-reset-btn" (click)="reset()">{{'actions.reset'|translate}}</button>
     </div>
   </form>
 </app-drawer>

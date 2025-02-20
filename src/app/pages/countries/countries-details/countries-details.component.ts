@@ -79,7 +79,7 @@ export class CountriesDetailsComponent implements OnInit {
       ]
     }),
     status: new FormControl(true),
-    img: new FormControl(null, {
+    image: new FormControl(null, {
       validators: [
         Validators.required,
       ]
@@ -143,9 +143,9 @@ export class CountriesDetailsComponent implements OnInit {
     }
   };
   getCountryDetails() {
-    this.ApiService.get(`Country/GetCountry/${this.countryID}`).subscribe((res: any) => {
+    this.ApiService.get(`Country/GetById`,{id:this.countryID}).subscribe((res: any) => {
       if (res){
-        this.form.patchValue(res.data)
+        this.form.patchValue(res)
         this.editImageProps.props.imgSrc = environment.baseImageUrl+res.data.img;
         this.editMode = true;
       }
@@ -156,7 +156,7 @@ export class CountriesDetailsComponent implements OnInit {
     console.log('ff', this.form.value)
     const payload = {
       ...this.form.value,
-      countryId: this.countryID,
+      id: this.countryID,
     }
     if (this.tyepMode() === 'Add')
       this.addCountry(payload)
@@ -166,13 +166,13 @@ export class CountriesDetailsComponent implements OnInit {
   }
 
   addCountry(payload: any) {
-    this.ApiService.post('Country/CreateCountry', payload, { showAlert: true, message: 'Add country Successfuly' }).subscribe(res => {
+    this.ApiService.post('Country/Create', payload, { showAlert: true, message: 'Add country Successfuly' }).subscribe(res => {
       if (res)
         this.router.navigateByUrl('country')
     })
   }
   editCountry(payload: any) {
-    this.ApiService.put('Country/UpdateCountry', payload, { showAlert: true, message: 'update country Successfuly' }).subscribe(res => {
+    this.ApiService.put('Country/Update', payload, { showAlert: true, message: 'update country Successfuly' }).subscribe(res => {
       if (res)
         this.router.navigateByUrl('country')
     })

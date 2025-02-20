@@ -114,10 +114,11 @@ export class CityDetailsComponent {
 getAllCountries(){
   this.ApiService.get('Country/GetAll').subscribe((res: any) => {
     if (res) {
-     res.data.map((country:any)=>{
+      this.countries=[]
+     res.map((country:any)=>{
          this.countries.push({
           name:this.selectedLang=='en'?country.enName :country.arName,
-          code:country.countryId
+          code:country.id
          })
      })
     }
@@ -145,9 +146,9 @@ getBreadCrumb() {
   }
 }
   getCityDetails() {
-    this.ApiService.get(`City/GetById/${this.cityID}`).subscribe((res: any) => {
+    this.ApiService.get(`City/GetById`,{id:this.cityID}).subscribe((res: any) => {
       if (res)
-        this.form.patchValue(res.data)
+        this.form.patchValue(res)
     })
   }
 
@@ -155,7 +156,7 @@ getBreadCrumb() {
     console.log('ff',this.form.value)
     const payload = {
       ...this.form.value,
-      cityId: this.cityID|0,
+      id: this.cityID|0,
     }
     if (this.tyepMode() === 'Add')
       this.addCity(payload)
@@ -167,13 +168,13 @@ getBreadCrumb() {
   addCity(payload: any) {
     this.ApiService.post('City/Create', payload, { showAlert: true, message: 'Add City Successfuly' }).subscribe(res => {
       if (res)
-        this.router.navigateByUrl('city')
+        this.router.navigateByUrl('/city')
     })
   }
   editCity(payload: any) {
     this.ApiService.put('City/Update', payload, { showAlert: true, message: 'Update City Successfuly' }).subscribe(res => {
       if (res)
-        this.router.navigateByUrl('city')
+        this.router.navigateByUrl('/city')
     })
   }
 

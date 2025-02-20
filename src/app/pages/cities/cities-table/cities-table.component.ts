@@ -29,7 +29,7 @@ export class CitiesTableComponent {
   tableActions: ITableAction[] = [
     {
       name: EAction.delete,
-      apiName_or_route: 'City/Delete?requestId',
+      apiName_or_route: 'City/Delete?id',
       autoCall: true
     },
     {
@@ -87,7 +87,7 @@ export class CitiesTableComponent {
 
   displayTableCols(currentLang: string) {
     this.columns = [
-      { keyName: 'cityId', header: this.languageService.translate('Id'), type: EType.id, show: true },
+      { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: true },
       { keyName: 'enName', header: this.languageService.translate('city.form.name_en'), type: EType.text, show: true },
       { keyName: 'postalCode', header: this.languageService.translate('city.form.postalCode'), type: EType.text, show: true },
       { keyName: 'latitude', header: this.languageService.translate('city.form.latitude'), type: EType.text, show: true },
@@ -99,7 +99,7 @@ export class CitiesTableComponent {
 
     this.columnsSmallTable = [
       { keyName: 'enName', header: this.languageService.translate('city.form.name_en'), type: EType.text, showAs: ETableShow.header },
-      { keyName: 'cityId', header: this.languageService.translate('Id'), type: EType.id, show: false },
+      { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: false },
       { keyName: 'postalCode', header: this.languageService.translate('city.form.postalCode'), type: EType.text, showAs: ETableShow.content },
       { keyName: 'latitude', header: this.languageService.translate('city.form.latitude'), type: EType.text, showAs: ETableShow.content },
       { keyName: 'longitude', header: this.languageService.translate('city.form.longitude'), type: EType.text, showAs: ETableShow.content },
@@ -124,11 +124,16 @@ export class CitiesTableComponent {
 
   getAllCities() {
   console.log('ggg',this.citySearch)
-    this.ApiService.post('City/GetAllWithPagination',this.citySearch).subscribe((res: any) => {
-      if (res.data) {
-        this.citiesList = res.data.dataList;
-        this.totalCount = res.data.totalCount;
-        this.filteredData = [...this.citiesList]; // Initialize filtered data
+    // this.ApiService.post('City/GetAllWithPagination',this.citySearch).subscribe((res: any) => {
+    //   if (res.data) {
+    //     this.citiesList = res.data.dataList;
+    //     this.totalCount = res.data.totalCount;
+    //     this.filteredData = [...this.citiesList]; // Initialize filtered data
+    //   }
+    // })
+     this.ApiService.get('City/GetAll').subscribe((res: any) => {
+      if (res) {
+        this.citiesList = res;
       }
     })
   }

@@ -60,6 +60,8 @@ import { AdminTableComponent } from './pages/admin/admin-table/admin-table.compo
 import { AdminDetailsComponent } from './pages/admin/admin-details/admin-details.component';
 import { EditProfileComponent } from './pages/profile/edit-profile/edit-profile.component';
 import { AddNotificationsComponent } from './pages/add-notifications/add-notifications.component';
+import { CategoryTableComponent } from './pages/category/category-table/category-table.component';
+import { CategoryDetailsComponent } from './pages/category/category-details/category-details.component';
 
 export const routes: Routes = [
   {
@@ -141,6 +143,11 @@ export const routes: Routes = [
       { path: 'country/view/:id', component: CountriesDetailsComponent },
       { path: 'country/edit/:id', component: CountriesDetailsComponent },
 
+      { path: 'category', component: CategoryTableComponent },
+      { path: 'category/add', component: CategoryDetailsComponent },
+      { path: 'category/view/:id', component: CategoryDetailsComponent },
+      { path: 'category/edit/:id', component: CategoryDetailsComponent },
+
       { path: 'clients', component: ClientTableComponent },
       { path: 'client/add', component: ClientDetailsComponent },
       { path: 'client/view/:id', component: ClientDetailsComponent },
@@ -156,6 +163,11 @@ export const routes: Routes = [
       { path: 'city/view/:id', component: CityDetailsComponent },
       { path: 'city/edit/:id', component: CityDetailsComponent },
 
+      { path: 'faqs', component: FaqsTableComponent },
+      { path: 'faqs/add', component: FagsDetailsComponent },
+      { path: 'faqs/edit/:id', component: FagsDetailsComponent },
+      { path: 'faqs/view/:id', component: FagsDetailsComponent },
+      
       { path: 'cancel-reason', component: CancelReasonTableComponent },
       { path: 'cancel-reason/add', component: CancelReasonDetailsComponent },
       { path: 'cancel-reason/view/:id', component: CancelReasonDetailsComponent },

@@ -29,30 +29,15 @@
       tr {
         transition: background-color 0.3s ease;
         div.actions-icon{
-          span{
+          img{
             margin:0px 5px;
             cursor: pointer;
           }
-          .pi-trash{
-            color:#f76262
-          }
-          .pi-pen-to-square{
-            color:#28a745;
-          }
-          .pi-eye{
-            color:#6060e7;
-          }
-          .pi-ban {
-            color:#f76262
-          }
-          .pi-bullseye {
-            color:green
-          }
         }
 
-        &:nth-child(even) {
-          background-color: #f9f9f9;
-        }
+        // &:nth-child(even) {
+        //   background-color: #f9f9f9;
+        // }
 
         &:hover {
           background-color: #f0f4fa;
@@ -63,7 +48,7 @@
         font-size: 0.9rem;
         color: #555;
         border-bottom: 1px dotted #ddd !important;
-        padding-block: 1.5rem !important;
+        padding-block: 1rem !important;
 
         &:lang(ar) {
           text-align: right !important;
@@ -118,7 +103,10 @@
   }
 }
 
-
+.col-header{
+  color:#1C1C1C66;
+  font-weight: normal!important;
+}
 
 @mixin status($text-color, $bg-color, $border-color) {
   color: $text-color;

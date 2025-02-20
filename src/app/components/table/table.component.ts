@@ -100,6 +100,7 @@ export class TableComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.filterdRecords = this.records;
+    console.log("TableComponent  ngOnInit  this.filterdRecords:", this.filterdRecords)
     this.selectedLang = this.languageService.translationService.currentLang;
 
   }

@@ -17,10 +17,10 @@ const global_pageName='country'
 const global_router_add_url_in_Table ='/'+global_pageName+'/add'
 const global_router_view_url =global_pageName+'/view'
 const global_router_edit_url =global_pageName+'/edit'
-const global_API_getAll =global_pageName+'/GetAllCountry'
-const global_API_delete=global_pageName+'/DeleteCountry?id'
+const global_API_getAll =global_pageName+'/GetAll'
+const global_API_delete=global_pageName+'/delete?id'
 const global_toggleOptions:IToggleOptions={
-apiName:global_pageName+'/UpdateCountry',
+apiName:global_pageName+'/update',
 autoCall:true,
 }
 @Component({
@@ -103,19 +103,19 @@ export class CountriesTableComponent {
 
   displayTableCols(currentLang: string) {
     this.columns = [
-      { keyName: 'countryId', header: this.languageService.translate('Id'), type: EType.id, show: true },
+      { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: true },
       { keyName: 'img', header: this.languageService.translate('country.form.image'), type: EType.image, show: false },
       { keyName: currentLang === 'ar' ? 'arName' : 'enName', header: this.languageService.translate('country.form.name_en'), type: EType.text, show: true },
       { keyName: 'phoneLength', header: this.languageService.translate('country.form.phoneLength'), type: EType.text, show: true },
       { keyName: 'phoneCode', header: this.languageService.translate('country.form.phoneCode'), type: EType.text, show: true },
-      { keyName: 'shortName', header: this.languageService.translate('country.form.shortName'), type: EType.text, show: true },
+      // { keyName: 'shortName', header: this.languageService.translate('country.form.shortName'), type: EType.text, show: true },
       { keyName: 'status', header: this.languageService.translate('country.form.status'), type: EType.toggle, toggleOptions: global_toggleOptions, show: true },
       { keyName: '', header: this.languageService.translate('Action'), type: EType.actions, actions: this.tableActions, show: true }
     ];
 
     this.columnsSmallTable = [
       { keyName: currentLang === 'ar' ? 'arName' : 'enName', header: this.languageService.translate('country.form.name_en'), type: EType.text, showAs: ETableShow.header },
-      { keyName: 'countryId', header: this.languageService.translate('Id'), type: EType.id, show: false },
+      { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: false },
       { keyName: currentLang === 'ar' ? 'arDescription' : 'enDescription', header: this.languageService.translate('country.form.content'), type: EType.editor, showAs: ETableShow.content },
       { keyName: 'status', header: this.languageService.translate('form.status'), type: EType.status, toggleOptions: global_toggleOptions, show: true },
     ];
@@ -146,11 +146,17 @@ export class CountriesTableComponent {
   }
 
   API_getAll() {
-    this.ApiService.post(global_API_getAll, this.objectSearch).subscribe((res: any) => {
+    // this.ApiService.post(global_API_getAll, this.objectSearch).subscribe((res: any) => {
+    //   if (res) {
+    //     this.dataList = res.data.dataList;
+    //     this.totalCount = res.data.totalCount;
+    //     this.filteredData = [...this.dataList];
+    //   }
+
+    // })
+    this.ApiService.get(global_API_getAll).subscribe((res: any) => {
       if (res) {
-        this.dataList = res.data.dataList;
-        this.totalCount = res.data.totalCount;
-        this.filteredData = [...this.dataList];
+        this.dataList = res;
       }
 
     })

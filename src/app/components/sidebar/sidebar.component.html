@@ -1,7 +1,7 @@
 <div class="sidebar-container">
   <div class="content">
     <div class="logo-section" routerLink="/dashboard">
-      <img width="30" src="assets/images/logo.png" alt="matlop-logo">
+      <img width="100" src="assets/images/logo.svg" alt="matlop-logo">
     </div>
     <div class="routing-section">
       <div class="pages-routing-section section-color">
@@ -22,8 +22,8 @@
             [tooltipPosition]="selectedLang == 'ar' ? 'left' : 'right'">
             <span class="pi pi-cog"></span>
           </div>
-          <div class="user-image-section" routerLink="/profile" [pTooltip]="'Profile' | translate" [tooltipPosition]="selectedLang == 'ar' ? 'left' : 'right'">
-            <img [src]="userDate.img?baseImageUrl+userDate.img:this.defaultImage" alt="user-image">
+          <div class="user-image-section" routerLink="/logout" [pTooltip]="'Profile' | translate" [tooltipPosition]="selectedLang == 'ar' ? 'left' : 'right'">
+            <img src="assets/images/side-dashbord-icons/s-logout.svg" alt="log-out">
           </div>
       </div>
     </div>

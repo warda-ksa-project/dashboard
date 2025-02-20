@@ -110,16 +110,16 @@ pageName = signal<string>(global_PageName);
   }
 
   getFaqsDetails() {
-    this.ApiService.get(`FAQs/GetById/${this.faqsID}`).subscribe((res: any) => {
+    this.ApiService.get(`FAQ/GetById/`,{id:this.faqsID}).subscribe((res: any) => {
       if (res)
-        this.form.patchValue(res.data)
+        this.form.patchValue(res)
     })
   }
 
   onSubmit() {
     const payload = {
       ...this.form.value,
-      questionId: this.faqsID,
+      id: this.faqsID,
     }
     if (this.tyepMode() === 'Add')
       this.addFQS(payload)
@@ -143,14 +143,14 @@ pageName = signal<string>(global_PageName);
   }
 
   addFQS(payload: any) {
-    this.ApiService.post('FAQs/Create', payload, { showAlert: true, message: 'Add FAQS Successfuly' }).subscribe(res => {
+    this.ApiService.post('FAQ/Create', payload, { showAlert: true, message: 'Add FAQS Successfuly' }).subscribe(res => {
       if (res)
         this.router.navigateByUrl('settings/faqs')
     })
   }
 
   editFQS(payload: any) {
-    this.ApiService.put('FAQs/Update', payload, { showAlert: true, message: 'update FAQS Successfuly' }).subscribe(res => {
+    this.ApiService.put('FAQ/Update', payload, { showAlert: true, message: 'update FAQS Successfuly' }).subscribe(res => {
       if (res)
         this.router.navigateByUrl('settings/faqs')
     })

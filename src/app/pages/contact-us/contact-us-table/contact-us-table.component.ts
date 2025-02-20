@@ -17,8 +17,8 @@ const global_pageName='contact_us.pageName'
 const global_router_add_url_in_Table ='/contact-us/add'
 const global_router_view_url ='contact-us/view'
 const global_router_edit_url ='contact-us/edit'
-const global_API_getAll ='contactUS/GetAllWithPagination'
-const global_API_delete='contactUS/Delete?id'
+const global_API_getAll ='contact/GetAll'
+const global_API_delete='contact/Delete?id'
 
 @Component({
   selector: 'app-contact-us-table',
@@ -91,7 +91,7 @@ export class ContactUsTableComponent {
 
   displayTableCols(currentLang: string) {
     this.columns = [
-      { keyName: 'contactUsId', header: this.languageService.translate('Id'), type: EType.id, show: true },
+      { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: true },
       { keyName: 'name', header: this.languageService.translate('contact_us.form.name'), type: EType.text, show: true },
       { keyName: 'email', header: this.languageService.translate('contact_us.form.email'), type: EType.text, show: true },
       { keyName: 'mobile', header: this.languageService.translate('contact_us.form.mobile'), type: EType.text, show: true },
@@ -100,7 +100,7 @@ export class ContactUsTableComponent {
     ];
 
     this.columnsSmallTable = [
-      { keyName: 'contactUsId', header: this.languageService.translate('Id'), type: EType.id, show: false },
+      { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: false },
       { keyName: 'name', header: this.languageService.translate('contact_us.form.name'), type: EType.text, showAs: ETableShow.header },
       { keyName: 'email', header: this.languageService.translate('contact_us.form.email'), type: EType.text, showAs: ETableShow.content },
       { keyName: 'mobile', header: this.languageService.translate('contact_us.form.mobile'), type: EType.text, showAs: ETableShow.content },
@@ -132,11 +132,17 @@ export class ContactUsTableComponent {
   }
 
   API_getAll() {
-    this.ApiService.post(global_API_getAll, this.objectSearch).subscribe((res: any) => {
+    // this.ApiService.post(global_API_getAll, this.objectSearch).subscribe((res: any) => {
+    //   if (res) {
+    //     this.dataList = res.data.dataList;
+    //     this.totalCount = res.data.totalCount;
+    //     this.filteredData = [...this.dataList];
+    //   }
+
+    // })
+    this.ApiService.get(global_API_getAll).subscribe((res: any) => {
       if (res) {
-        this.dataList = res.data.dataList;
-        this.totalCount = res.data.totalCount;
-        this.filteredData = [...this.dataList];
+        this.dataList = res;
       }
 
     })
