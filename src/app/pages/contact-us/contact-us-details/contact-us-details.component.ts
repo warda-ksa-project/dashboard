@@ -62,7 +62,7 @@ export class ContactUsDetailsComponent {
         Validators.required,
       ]
     }),
-    contactUsId: new FormControl(this.getID | 0),
+    id: new FormControl(this.getID | 0),
   })
 
   bredCrumb: IBreadcrumb = {

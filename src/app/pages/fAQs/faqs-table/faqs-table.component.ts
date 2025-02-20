@@ -29,7 +29,7 @@ export class FaqsTableComponent {
   tableActions: ITableAction[] = [
     {
       name: EAction.delete,
-      apiName_or_route: 'FAQ/Delete',
+      apiName_or_route: 'FAQ/Delete?id',
       autoCall: true
     },
     {

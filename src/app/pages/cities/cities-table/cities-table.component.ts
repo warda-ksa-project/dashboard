@@ -29,7 +29,7 @@ export class CitiesTableComponent {
   tableActions: ITableAction[] = [
     {
       name: EAction.delete,
-      apiName_or_route: 'City/Delete?requestId',
+      apiName_or_route: 'City/Delete?id',
       autoCall: true
     },
     {

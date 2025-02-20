@@ -37,7 +37,7 @@
                   <app-check-box [isToggle]="true" [label]="'country.form.status'" [initValue]="true" [control]="form.get('status')"></app-check-box>
                </div>
                <div class="upload-image-section mt-4 mb-4" *ngIf="!editMode">
-                  <app-upload-file formControlName="img"></app-upload-file>
+                  <app-upload-file formControlName="image"></app-upload-file>
                   <div *ngIf="isRequiredError" class="error-message mt-2">
                     Image upload is required.
                   </div>

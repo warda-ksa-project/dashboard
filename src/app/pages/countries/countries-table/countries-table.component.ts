@@ -18,9 +18,9 @@ const global_router_add_url_in_Table ='/'+global_pageName+'/add'
 const global_router_view_url =global_pageName+'/view'
 const global_router_edit_url =global_pageName+'/edit'
 const global_API_getAll =global_pageName+'/GetAll'
-const global_API_delete=global_pageName+'/DeleteCountry?id'
+const global_API_delete=global_pageName+'/delete?id'
 const global_toggleOptions:IToggleOptions={
-apiName:global_pageName+'/UpdateCountry',
+apiName:global_pageName+'/update',
 autoCall:true,
 }
 @Component({

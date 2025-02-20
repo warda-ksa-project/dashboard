@@ -119,7 +119,7 @@ pageName = signal<string>(global_PageName);
   onSubmit() {
     const payload = {
       ...this.form.value,
-      questionId: this.faqsID,
+      id: this.faqsID,
     }
     if (this.tyepMode() === 'Add')
       this.addFQS(payload)

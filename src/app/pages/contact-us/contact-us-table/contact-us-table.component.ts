@@ -18,7 +18,7 @@ const global_router_add_url_in_Table ='/contact-us/add'
 const global_router_view_url ='contact-us/view'
 const global_router_edit_url ='contact-us/edit'
 const global_API_getAll ='contact/GetAll'
-const global_API_delete='contact/Delete'
+const global_API_delete='contact/Delete?id'
 
 @Component({
   selector: 'app-contact-us-table',

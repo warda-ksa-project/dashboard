@@ -79,7 +79,7 @@ export class CountriesDetailsComponent implements OnInit {
       ]
     }),
     status: new FormControl(true),
-    img: new FormControl(null, {
+    image: new FormControl(null, {
       validators: [
         Validators.required,
       ]
@@ -156,7 +156,7 @@ export class CountriesDetailsComponent implements OnInit {
     console.log('ff', this.form.value)
     const payload = {
       ...this.form.value,
-      countryId: this.countryID,
+      id: this.countryID,
     }
     if (this.tyepMode() === 'Add')
       this.addCountry(payload)
