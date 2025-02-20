@@ -22,7 +22,7 @@ export class ApiService {
   constructor(private http: HttpClient) {}
 
   login(object: any): Observable<any> {
-    return this.http.post(baseUrl + `Authentication/login`, object).pipe(
+    return this.http.post(baseUrl + `Auth/Login`, object).pipe(
       take(1),
       catchError((error) => {
         this.toaster.errorToaster(error?.error?.message || 'shared.errors.login');
