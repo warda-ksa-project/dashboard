@@ -86,6 +86,7 @@
     "clients": "CLIENTS",
     "category": "CATEGORIES",
     "sub_category": "SUB CATEGORIES",
+    "products": "PRODUCTS",
     "orders": "ORDERS",
     "special_orders": "SPECIAL ORDERS",
     "technicals": "TECHNICALS",
@@ -168,6 +169,27 @@
       "parentCategoryId": "Parent Category",
       "enDescription": "Description (en)",
       "arDescription": "Description (ar)"
+    }
+  },
+  "products": {
+    "pageName": "products",
+    "pageTitle": "product",
+    "list": "products List",
+    "pageName_filter": "Filter products",
+    "pageName_Add_crumb": "Add product",
+    "pageName_Edit_crumb": "Edit product",
+    "pageName_View_crumb": "View product",
+    "notActive": "Not Active",
+    "form": {
+      "enName": "Name (en)",
+      "arName": "Name (ar)",
+      "enDescription": "Description (en)",
+      "arDescription": "Description (ar)",
+      "categoryId":"Category",
+      "stockQuantity":"Stock Quantity",
+      "hasDiscount":"Has Discount",
+      "discountType":"Discount Type",
+      "amount":"Amount"
     }
   },
   "faqs": {
