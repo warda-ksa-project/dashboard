@@ -1,0 +1,99 @@
+<div class="table-container">
+  <div class="content">
+    <div class="title-bredcrumb-section">
+      <div class="page-title">
+        <div class="images">
+         <span class="pi pi-users"></span>
+        </div>
+        <h2>{{'category.list'|translate|titlecase}}</h2>
+      </div>
+      <div class="breadcrumb">
+        <app-breadcrump [breadcrumbProps]="bredCrumb"></app-breadcrump>
+      </div>
+    </div>
+    <div class="details-container">
+      <div class="action-filter">
+        <a [routerLink]="global_router_add_url_in_Table"> <span>+</span>{{'shared.add_new'|translate}}</a>
+        <span class="pi pi-filter pointer" (click)="openFilter()"> </span>
+      </div>
+
+     <div class="table-view">
+      <app-table (reloadGetAllApi)="reloadGetAllApi($event)" [colsHeader]="columns" [records]="dataList" [showrecordIndex]="true" [actions]="tableActions"></app-table>
+     </div>
+     <div class="responsive-accordions">
+        <app-table-small-screen [colsHeaderSmallTable]="columnsSmallTable" [records]="dataList"  [actions]="tableActions">
+
+        </app-table-small-screen>
+    </div>
+       <app-pagination (onPageChange)="onPageChange($event)" [totalCount]="totalCount"></app-pagination>
+    </div>
+  </div>
+</div>
+<app-drawer [visible]="showFilter" header="{{pageName()}}_{{'filter'}}"  (onClose)="onCloseFilter($event)">
+  <form #myForm="ngForm" (ngSubmit)="onSubmitFilter()" body class="h-100 search-form d-flex">
+    <div class="form-content">
+      <!-- Full Name -->
+      <div class="form-group mb-3">
+        <label class="mb-1" for="enTitle">{{'category.form.fullName'|translate}}</label>
+        <input
+          type="text"
+          id="enTitle"
+          name="enTitle"
+          class="form-control"
+          [(ngModel)]="objectSearch.fullName"
+          placeholder="{{'shared.enter'|translate}} {{'category.form.fullName'|translate}}"
+        />
+      </div>
+
+      <!-- Username -->
+      <div class="form-group mb-3">
+        <label class="mb-1" for="arTitle">{{'category.form.userName'|translate}}</label>
+        <input
+          type="text"
+          id="arTitle"
+          name="arTitle"
+          class="form-control"
+          [(ngModel)]="objectSearch.userName"
+          placeholder="{{'shared.enter'|translate}} {{'category.form.fullName'|translate}}"
+        />
+      </div>
+
+      <!-- Email -->
+      <div class="form-group mb-3">
+        <label class="mb-1" for="email">{{'category.form.email'|translate}}</label>
+        <input
+          type="text"
+          id="email"
+          name="email"
+          class="form-control"
+          [(ngModel)]="objectSearch.email"
+          placeholder="{{'shared.enter'|translate}} {{'category.form.email'|translate}}"
+        />
+      </div>
+
+      <!-- Status Dropdown -->
+      <div class="form-group mb-3">
+        <label class="mb-1" for="status">{{'category.form.status'|translate}}</label>
+        <select
+          id="status"
+          name="status"
+          class="form-control"
+          [(ngModel)]="objectSearch.isActive"
+        >
+          <option *ngFor="let item of clientStatuslist" [ngValue]="item.id">
+            {{ item.name|translate }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="search-form-actions d-flex">
+      <button type="submit" class="btn drawer-submit-btn">{{'actions.submit'|translate}}</button>
+      <button type="button" class="btn btn-danger drawer-reset-btn" (click)="reset()">{{'actions.reset'|translate}}</button>
+    </div>
+  </form>
+</app-drawer>
+
+
+
+

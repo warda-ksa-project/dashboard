@@ -84,10 +84,10 @@
   "side_bar": {
     "dashboard": "DASHBOARD",
     "clients": "CLIENTS",
-    "category": "CATEGORIES",
+    "category": "SUBCATEGORIES",
     "orders": "ORDERS",
     "special_orders": "SPECIAL ORDERS",
-    "technicals": "TECHNICALS",
+    "main_category": "MAIN CATEGORY",
     "services": "SERVICES",
     "working_hours": "WORKING HOURS",
     "country": "COUNTRIES",
