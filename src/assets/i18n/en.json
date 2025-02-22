@@ -32,7 +32,9 @@
     "confirm": "Confirm",
     "close": "Close",
     "choose_image": "Choose",
-    "update": "Update"
+    "update": "Update",
+    "next":"Next",
+    "back":"Back"
   },
   "shared": {
     "errors": {
@@ -181,6 +183,8 @@
     "pageName_View_crumb": "View product",
     "notActive": "Not Active",
     "form": {
+      "general":"General",
+      "pricing":"pricing",
       "enName": "Name (en)",
       "arName": "Name (ar)",
       "enDescription": "Description (en)",

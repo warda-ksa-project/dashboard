@@ -32,7 +32,9 @@
     "confirm": "تأكيد",
     "close": "إغلاق",
     "choose_image": "اختيار",
-    "update": "تحديث"
+    "update": "تحديث",
+    "next":"التالي",
+    "back":"رجوع"
   },
   "shared": {
     "errors": {

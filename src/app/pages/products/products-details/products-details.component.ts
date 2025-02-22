@@ -17,7 +17,7 @@ import { EditModeImageComponent } from '../../../components/edit-mode-image/edit
 import { SelectComponent } from '../../../components/select/select.component';
 import { EditorComponent } from '../../../components/editor/editor.component';
 import { CheckBoxComponent } from '../../../components/check-box/check-box.component';
-
+import { StepperModule } from 'primeng/stepper';
 const global_PageName='products.pageName';
 const global_routeUrl ='product'
 const global_API_details='product'+'/GetById';
@@ -27,7 +27,7 @@ const global_API_update='product'+'/Update';
 @Component({
   selector: 'app-products-details',
   standalone: true,
-  imports: [ReactiveFormsModule,CheckBoxComponent,SelectComponent,EditorComponent,EditModeImageComponent,TitleCasePipe,TranslatePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
+  imports: [ReactiveFormsModule,CheckBoxComponent,StepperModule ,SelectComponent,EditorComponent,EditModeImageComponent,TitleCasePipe,TranslatePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
   templateUrl: './products-details.component.html',
   styleUrl: './products-details.component.scss'
 })
@@ -41,6 +41,17 @@ export class ProductsDetailsComponent {
   showConfirmMessage: boolean = false
   private confirm = inject(ConfirmMsgService)
   categoryList:any[]=[]
+  discountType:any[]=[
+    {
+      name:'Amount',
+      code:1
+    },
+    {
+      name:'Precentage',
+      code:2
+    }
+
+  ]
   hasDiscount=false
   
   form = new FormGroup({
@@ -69,10 +80,10 @@ export class ProductsDetailsComponent {
         Validators.required
       ]
     }),
-    hasDiscount:new FormControl(),
-    discountType: new FormControl(),
-     amount: new FormControl(),
-    image: new FormControl(''),
+    hasDiscount:new FormControl(false),
+    discountType: new FormControl(0),
+     amount: new FormControl(0),
+    image: new FormControl([]),
     id:new FormControl(this.getID|0),
     categoryId:new FormControl()
   })
@@ -171,7 +182,7 @@ export class ProductsDetailsComponent {
     })
   }
   API_getItemDetails() {
-    this.ApiService.get(`${global_API_details}`,{SubCategoryId:this.getID}).subscribe((res: any) => {
+    this.ApiService.get(`${global_API_details}`,{id:this.getID}).subscribe((res: any) => {
       if (res)
         this.form.patchValue(res)
     })
