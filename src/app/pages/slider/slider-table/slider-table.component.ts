@@ -18,7 +18,7 @@ const global_router_add_url_in_Table ='/settings/'+"slider"+'/add'
 const global_router_view_url ='/settings/'+"slider"+'/view'
 const global_router_edit_url ='/settings/'+"slider"+'/edit'
 const global_API_getAll ="slider"+'/GetAll'
-const global_API_delete="slider"+'/Delete?requestId'
+const global_API_delete="slider"+'/Delete?Id'
 @Component({
   selector: 'app-slider-table',
   standalone: true,
@@ -95,7 +95,7 @@ export class SliderTableComponent {
 
   displayTableCols(currentLang: string) {
     this.columns = [
-      { keyName: 'sliderId', header:  this.languageService.translate('Id'), type: EType.id, show: true },
+      { keyName: 'id', header:  this.languageService.translate('Id'), type: EType.id, show: true },
       // { keyName: 'imageEn', header: 'Image (en)', type: EType.image, show: true },
       // { keyName: 'imageAr', header: 'Image (ar)', type: EType.image, show: true },
       { keyName: 'titleEn', header:  this.languageService.translate('slider.form.title_en'), type: EType.text, show: true },
@@ -105,7 +105,7 @@ export class SliderTableComponent {
 
     ]
     this.columnsSmallTable = [
-      { keyName: 'sliderId', header:  this.languageService.translate('Id'), type: EType.id, show: false },
+      { keyName: 'id', header:  this.languageService.translate('Id'), type: EType.id, show: false },
       { keyName: 'titleEn', header:  this.languageService.translate('slider.form.title_en'), type: EType.text, showAs: ETableShow.header },
       { keyName: 'titleAr', header:  this.languageService.translate('slider.form.title_ar'), type: EType.text, showAs: ETableShow.header },
       // { keyName: 'imageEn', header: 'Image (en)', type: EType.text, showAs: ETableShow.content },
@@ -138,7 +138,7 @@ export class SliderTableComponent {
   API_getAll() {
     this.ApiService.get(global_API_getAll).subscribe((res: any) => {
       if (res) {
-        this.dataList = res.data;
+        this.dataList = res;
         this.totalCount = res.totalCount;
         this.filteredData = [...this.dataList];
       }

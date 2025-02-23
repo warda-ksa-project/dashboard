@@ -6,14 +6,11 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { NgIf, TitleCasePipe } from '@angular/common';
 import { Validations } from '../../../validations';
 import { InputTextComponent } from '../../../components/input-text/input-text.component';
-import { EditorComponent } from '../../../components/editor/editor.component';
 import { BreadcrumpComponent } from "../../../components/breadcrump/breadcrump.component";
 import { IBreadcrumb } from '../../../components/breadcrump/cerqel-breadcrumb.interface';
 import { ConfirmMsgService } from '../../../services/confirm-msg.service';
 import { DialogComponent } from '../../../components/dialog/dialog.component';
 import { UploadFileComponent } from "../../../components/upload-file/upload-file.component";
-import { DatePickerComponent } from '../../../components/date-picker/date-picker.component';
-import { CheckBoxComponent } from '../../../components/check-box/check-box.component';
 import { coponeOfferTypeList, coponeTypeList, sliderViewType } from '../../../conts';
 import { SelectComponent } from '../../../components/select/select.component';
 import { EditModeImageComponent } from '../../../components/edit-mode-image/edit-mode-image.component';
@@ -23,15 +20,15 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { LanguageService } from '../../../services/language.service';
 
 const global_PageName = 'slider.pageName';
-const global_API_deialis = 'Slider' + '/GetById';
+const global_API_deialis = 'Slider' + '/GetById?Id=';
 const global_API_create = 'Slider' + '/Create';
 const global_API_update = 'Slider' + '/Update';
-const global_routeUrl = 'settings/'+global_PageName
+const global_routeUrl = 'settings/' + global_PageName
 
 @Component({
   selector: 'app-slider-details',
   standalone: true,
-  imports: [ReactiveFormsModule,TranslatePipe, TitleCasePipe,EditModeImageComponent, ButtonModule, NgIf, DialogComponent,SelectComponent ,InputTextComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
+  imports: [ReactiveFormsModule, TranslatePipe, TitleCasePipe, EditModeImageComponent, ButtonModule, NgIf, DialogComponent, SelectComponent, InputTextComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
   templateUrl: './slider-details.component.html',
   styleUrl: './slider-details.component.scss'
 })
@@ -47,10 +44,10 @@ export class SliderDetailsComponent {
   editAttachmentMode: boolean = false;
   editAttachmentMode_ar: boolean = false;
   private confirm = inject(ConfirmMsgService)
-  offerTypeList:any[]=coponeOfferTypeList
-  coponeTypeList:any[]=coponeTypeList
-  minEndDate:Date =new Date()
-  viewTypeList=sliderViewType
+  offerTypeList: any[] = coponeOfferTypeList
+  coponeTypeList: any[] = coponeTypeList
+  minEndDate: Date = new Date()
+  viewTypeList = sliderViewType
   editImageProps: IEditImage = {
     props: {
       visible: true,
@@ -78,7 +75,7 @@ export class SliderDetailsComponent {
         Validations.editorEnglishCharsValidator()
       ],
     }),
-    titleAr: new FormControl <any>('', {
+    titleAr: new FormControl<any>('', {
       validators: [
         Validators.required,
         Validations.editorArabicCharsValidator()
@@ -100,7 +97,7 @@ export class SliderDetailsComponent {
         Validations.onlyNumberValidator()
       ]
     }),
-    viewType: new FormControl('',{
+    viewType: new FormControl('', {
       validators: [
         Validators.required,
       ]
@@ -112,6 +109,9 @@ export class SliderDetailsComponent {
   bredCrumb: IBreadcrumb = {
     crumbs: []
   }
+
+  selectedLang: any;
+  languageService = inject(LanguageService);
 
 
   get getID() {
@@ -128,8 +128,6 @@ export class SliderDetailsComponent {
     const control = this.form.get('imageAr');
     return control?.touched && control?.hasError('required') || false;
   }
-    selectedLang: any;
-    languageService = inject(LanguageService);
 
   ngOnInit() {
     this.pageName.set(global_PageName)
@@ -143,9 +141,10 @@ export class SliderDetailsComponent {
   }
 
 
-  onStartDateChange(date:Date){
-    this.minEndDate=date
+  onStartDateChange(date: Date) {
+    this.minEndDate = date
   }
+
   tyepMode() {
     const url = this.router.url;
     let result = 'Add'
@@ -154,30 +153,31 @@ export class SliderDetailsComponent {
     else result = 'Add'
     return result
   }
+
   getBreadCrumb() {
     this.bredCrumb = {
       crumbs: [
         {
-          label:  this.languageService.translate('Home'),
+          label: this.languageService.translate('Home'),
           routerLink: '/dashboard',
         },
         {
-          label: this.languageService.translate(this.pageName()+ '_'+this.tyepMode()+'_crumb'),
+          label: this.languageService.translate(this.pageName() + '_' + this.tyepMode() + '_crumb'),
         },
       ]
     }
   }
+
   API_getItemDetails() {
-    this.ApiService.get(`${global_API_deialis}/${this.getID}`).subscribe((res: any) => {
-      if (res){
-        this.form.patchValue(res.data)
-        this.editImageProps.props.imgSrc = this.imageUrl + res.data.imageEn;
+    this.ApiService.get(`${global_API_deialis}${this.getID}`).subscribe((res: any) => {
+      if (res) {
+        this.form.patchValue(res)
+        this.editImageProps.props.imgSrc = this.imageUrl + '/' + res.imageEn;
         this.editAttachmentMode = true;
 
-        this.editImageProps_ar.props.imgSrc = this.imageUrl + res.data.imageAr;
+        this.editImageProps_ar.props.imgSrc = this.imageUrl + '/' + res.imageAr;
         this.editAttachmentMode_ar = true;
       }
-
     })
   }
 
@@ -201,12 +201,10 @@ export class SliderDetailsComponent {
       this.showConfirmMessage = !this.showConfirmMessage
     else
       this.navigateToPageTable()
-
   }
 
   onConfirmMessage() {
     this.navigateToPageTable()
-
   }
 
 

@@ -35,8 +35,6 @@ import { ServicesTableComponent } from './pages/services/services-table/services
 import { ServicesDetailsComponent } from './pages/services/services-details/services-details.component';
 import { ClientTableComponent } from './pages/clients/client-table/client-table.component';
 import { ClientDetailsComponent } from './pages/clients/client-details/client-details.component';
-import { TechnicalTableComponent } from './pages/technicals/technical-table/technical-table.component';
-import { TechnicalDetailsComponent } from './pages/technicals/technical-details/technical-details.component';
 import { PackageTableComponent } from './pages/package/package-table/package-table.component';
 import { PackageDetailsComponent } from './pages/package/package-details/package-details.component';
 import { TechnicalSpecialistTableComponent } from './pages/technical-specialist/technical-specialist-table/technical-specialist-table.component';
@@ -62,6 +60,8 @@ import { EditProfileComponent } from './pages/profile/edit-profile/edit-profile.
 import { AddNotificationsComponent } from './pages/add-notifications/add-notifications.component';
 import { CategoryTableComponent } from './pages/category/category-table/category-table.component';
 import { CategoryDetailsComponent } from './pages/category/category-details/category-details.component';
+import { MainCatogoryTableComponent } from './pages/main-category/main-catogory-table/main-catogory-table.component';
+import { MainCatogoryDetailsComponent } from './pages/main-category/main-catogory-details/main-catogory-details.component';
 import { SubCategoryTableComponent } from './pages/sub-category/sub-category-table/sub-category-table.component';
 import { SubCategoryDetailsComponent } from './pages/sub-category/sub-category-details/sub-category-details.component';
 import { ProductsTableComponent } from './pages/products/products-table/products-table.component';
@@ -167,10 +167,10 @@ export const routes: Routes = [
       { path: 'client/view/:id', component: ClientDetailsComponent },
       { path: 'client/edit/:id', component: ClientDetailsComponent },
 
-      { path: 'technicals', component: TechnicalTableComponent },
-      { path: 'technical/add', component: TechnicalDetailsComponent },
-      { path: 'technical/view/:id', component: TechnicalDetailsComponent },
-      { path: 'technical/edit/:id', component: TechnicalDetailsComponent },
+      { path: 'main_category', component: MainCatogoryTableComponent },
+      { path: 'main_category/add', component: MainCatogoryDetailsComponent },
+      { path: 'main_category/view/:id', component: MainCatogoryDetailsComponent },
+      { path: 'main_category/edit/:id', component: MainCatogoryDetailsComponent },
 
       { path: 'city', component: CitiesTableComponent },
       { path: 'city/add', component: CityDetailsComponent },
@@ -181,7 +181,7 @@ export const routes: Routes = [
       { path: 'faqs/add', component: FagsDetailsComponent },
       { path: 'faqs/edit/:id', component: FagsDetailsComponent },
       { path: 'faqs/view/:id', component: FagsDetailsComponent },
-      
+
       { path: 'cancel-reason', component: CancelReasonTableComponent },
       { path: 'cancel-reason/add', component: CancelReasonDetailsComponent },
       { path: 'cancel-reason/view/:id', component: CancelReasonDetailsComponent },

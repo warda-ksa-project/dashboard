@@ -1,0 +1,59 @@
+<p>main-catogory-details works!</p>
+<div class="faqs-form-container container-fluid">
+  <div class="row">
+    <div class="page-details mb-3">
+      <div class="title mb-4">
+          <h2>{{tyepMode()|translate|titlecase}} {{'sub_category.pageTitle'|translate|titlecase}} </h2>
+      </div>
+      <div class="breadcrumb">
+        <app-breadcrump [breadcrumbProps]="bredCrumb"></app-breadcrump>
+      </div>
+    </div>
+  </div>
+  <div class=" form-container">
+    <div class="reactive-form">
+      <form [formGroup]="form" class="w-70" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
+              <app-input-text [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'"
+                [label]="'sub_category.form.enName'" [control]="form.get('enName')"></app-input-text>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
+              <app-input-text [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'"
+                [label]="'sub_category.form.arName'" [control]="form.get('arName')"></app-input-text>
+            </div>
+
+            <div class="upload-image-section mt-4 mb-4" *ngIf="!editMode">
+              <label class="mb-2">{{'shared.upload_img'|translate}}</label>
+              <app-upload-file formControlName="image"></app-upload-file>
+              <!-- <div *ngIf="isRequiredError" class="error-message mt-2">
+                {{'shared.img_required'|translate}}
+              </div> -->
+            </div>
+            <div class="edit-mode-section mt-2" *ngIf="editMode">
+              <label class="mb-2">{{'shared.uploaded_img'|translate}}</label>
+              <app-edit-mode-image [editImageProps]="editImageProps"></app-edit-mode-image>
+            </div>
+
+
+
+            <div class="actions mt-5 text-center">
+              <button type="submit" class="submit-btn" [disabled]="!form.valid" *ngIf="tyepMode()!=='View'">
+                <span *ngIf="tyepMode()=='Add'">{{'actions.add'|translate}}</span>
+                <span *ngIf="tyepMode()=='Edit'">{{'actions.edit'|translate}}</span>
+              </button>
+              <button type="button" class="cancel-btn" (click)="cancel()">
+                {{'actions.cancel'|translate}}
+              </button>
+            </div>
+          </div>
+
+        </form>
+    </div>
+  </div>
+</div>
+<app-dialog [visible]="showConfirmMessage">
+  <button class="dialog-close-btn btn btn-default" (click)="showConfirmMessage = false"> {{'actions.close'|translate}}</button>
+  <button class="dialog-close-btn btn btn-danger" (click)="onConfirmMessage()">  {{'actions.confirm'|translate}}</button>
+</app-dialog>
+
