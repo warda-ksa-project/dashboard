@@ -19,7 +19,7 @@ export class SidebarComponent {
   selectedLang: any;
   languageService = inject(LanguageService);
   userDate=JSON.parse(localStorage.getItem('userData')as any);
-  defaultImage=this.userDate.gender==1?'assets/images/arabian-man.png':'assets/images/arabian-woman.png'
+  defaultImage=this.userDate?.gender==1?'assets/images/arabian-man.png':'assets/images/arabian-woman.png'
   routingList = menuItems
 
   ngOnInit(): void {
