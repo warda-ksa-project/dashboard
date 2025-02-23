@@ -32,7 +32,9 @@
     "confirm": "Confirm",
     "close": "Close",
     "choose_image": "Choose",
-    "update": "Update"
+    "update": "Update",
+    "next":"Next",
+    "back":"Back"
   },
   "shared": {
     "errors": {
@@ -85,6 +87,8 @@
     "dashboard": "DASHBOARD",
     "clients": "CLIENTS",
     "category": "SUBCATEGORIES",
+    "sub_category": "SUB CATEGORIES",
+    "products": "PRODUCTS",
     "orders": "ORDERS",
     "special_orders": "SPECIAL ORDERS",
     "main_category": "MAIN CATEGORY",
@@ -150,6 +154,46 @@
       "parentCategoryId": "Parent Category",
       "enDescription": "Description (en)",
       "arDescription": "Description (ar)"
+    }
+  },
+  "sub_category": {
+    "pageName": "Sub Categories",
+    "pageTitle": "Sub Category",
+    "list": "Sub Category List",
+    "pageName_filter": "Filter Sub Category",
+    "pageName_Add_crumb": "Add Sub Category",
+    "pageName_Edit_crumb": "Edit Sub Category",
+    "pageName_View_crumb": "View Sub Category",
+    "notActive": "Not Active",
+    "form": {
+      "enName": "Name (en)",
+      "arName": "Name (ar)",
+      "parentCategoryId": "Parent Category",
+      "enDescription": "Description (en)",
+      "arDescription": "Description (ar)"
+    }
+  },
+  "products": {
+    "pageName": "products",
+    "pageTitle": "product",
+    "list": "products List",
+    "pageName_filter": "Filter products",
+    "pageName_Add_crumb": "Add product",
+    "pageName_Edit_crumb": "Edit product",
+    "pageName_View_crumb": "View product",
+    "notActive": "Not Active",
+    "form": {
+      "general":"General",
+      "pricing":"pricing",
+      "enName": "Name (en)",
+      "arName": "Name (ar)",
+      "enDescription": "Description (en)",
+      "arDescription": "Description (ar)",
+      "categoryId":"Category",
+      "stockQuantity":"Stock Quantity",
+      "hasDiscount":"Has Discount",
+      "discountType":"Discount Type",
+      "amount":"Amount"
     }
   },
   "faqs": {

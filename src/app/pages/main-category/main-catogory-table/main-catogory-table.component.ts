@@ -16,18 +16,17 @@ import { LanguageService } from '../../../services/language.service';
 
 
 const global_pageName = 'category.pageName';
-const global_API_Name = 'Client';
-const global_router_add_url_in_Table = '/category/add';
-const global_router_view_url = '/category/view';
-const global_router_edit_url = '/category/edit';
+const global_API_Name = 'MainCategory';
+const global_router_add_url_in_Table = '/main_category/add';
+const global_router_view_url = '/main_category/view';
+const global_router_edit_url = '/main_category/edit';
 const global_API_getAll = global_API_Name + '/GetAllWithPagination';
-const global_API_Active = global_API_Name + '/Activate?userId';
-const global_API_block = global_API_Name + '/Delete?userId';
+const global_API_block = global_API_Name + '/Delete?Id';
 
 @Component({
   selector: 'app-main-catogory-table',
   standalone: true,
-  imports: [  TableComponent,
+  imports: [TableComponent,
     TitleCasePipe,
     TranslatePipe,
     PaginationComponent,
@@ -43,7 +42,7 @@ const global_API_block = global_API_Name + '/Delete?userId';
 })
 export class MainCatogoryTableComponent {
 
- global_router_add_url_in_Table = global_router_add_url_in_Table
+  global_router_add_url_in_Table = global_router_add_url_in_Table
   pageName = signal<string>(global_pageName);
 
   showFilter: boolean = false
@@ -62,16 +61,6 @@ export class MainCatogoryTableComponent {
       name: EAction.edit,
       apiName_or_route: global_router_edit_url,
       autoCall: true
-    },
-    {
-      name: EAction.active,
-      apiName_or_route: global_API_Active,
-      autoCall: true
-    },
-    {
-      name: EAction.block,
-      apiName_or_route: global_API_block,
-      autoCall: true
     }
   ]
   private ApiService = inject(ApiService)
@@ -86,10 +75,8 @@ export class MainCatogoryTableComponent {
     "pageSize": 8,
     "sortingExpression": "",
     "sortingDirection": 0,
-    "isActive": null,
-    "fullName": "",
-    "userName": "",
-    "email": ""
+    "enName": "",
+    "arName": ""
   }
 
   clientStatuslist = [
@@ -128,7 +115,7 @@ export class MainCatogoryTableComponent {
     this.bredCrumb = {
       crumbs: [
         {
-          label:  this.languageService.translate('Home'),
+          label: this.languageService.translate('Home'),
           routerLink: '/dashboard',
         },
         {
@@ -140,18 +127,15 @@ export class MainCatogoryTableComponent {
 
   displayTableCols(currentLang: string) {
     this.columns = [
-      { keyName: 'userId', header: this.languageService.translate('Id'), type: EType.id, show: true },
-      { keyName: 'fullName', header: this.languageService.translate('client.form.name'), type: EType.text, show: true },
-      { keyName: 'username', header: this.languageService.translate('client.form.userName'), type: EType.text, show: true },
-      { keyName: 'mobileNumber', header: this.languageService.translate('client.form.mobile'), type: EType.text, show: true },
-      { keyName: 'email', header: this.languageService.translate('client.form.email'), type: EType.text, show: true },
-      { keyName: 'isActive', header: this.languageService.translate('client.form.status'), type: EType.boolean, show: true },
+      { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: true },
+      { keyName: 'enName', header: this.languageService.translate('client.form.name'), type: EType.text, show: true },
+      { keyName: 'enName', header: this.languageService.translate('client.form.userName'), type: EType.text, show: true },
       { keyName: '', header: this.languageService.translate('client.form.action'), type: EType.actions, actions: this.tableActions, show: true },
     ];
     this.columnsSmallTable = [
-      { keyName: 'userId', header: this.languageService.translate('client.form.userName'), type: EType.id, show: false },
-      { keyName: 'fullName', header: this.languageService.translate('client.form.name'), type: EType.text, showAs: ETableShow.header },
-      { keyName: 'mobileNumber', header: this.languageService.translate('client.form.mobile'), type: EType.text, showAs: ETableShow.header },
+      { keyName: 'id', header: this.languageService.translate('client.form.userName'), type: EType.id, show: false },
+      { keyName: 'enName', header: this.languageService.translate('client.form.name'), type: EType.text, showAs: ETableShow.header },
+      { keyName: 'enName', header: this.languageService.translate('client.form.mobile'), type: EType.text, showAs: ETableShow.header },
       { keyName: currentLang === 'ar' ? 'arDescription' : 'enDescription', header: this.languageService.translate('client.form.fullName'), type: EType.editor, showAs: ETableShow.content }
     ];
   }
@@ -191,10 +175,8 @@ export class MainCatogoryTableComponent {
       "pageSize": 8,
       "sortingExpression": "",
       "sortingDirection": 0,
-      "isActive": null,
-      "fullName": "",
-      "userName": "",
-      "email": ""
+      "enName": "",
+      "arName": ""
     };
     this.API_getAll();
     this.showFilter = false;

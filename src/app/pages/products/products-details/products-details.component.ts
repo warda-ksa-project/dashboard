@@ -4,9 +4,7 @@ import { ButtonModule } from 'primeng/button';
 import { ApiService } from '../../../services/api.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { NgIf, TitleCasePipe } from '@angular/common';
-import { Validations } from '../../../validations';
 import { InputTextComponent } from '../../../components/input-text/input-text.component';
-import { EditorComponent } from '../../../components/editor/editor.component';
 import { BreadcrumpComponent } from "../../../components/breadcrump/breadcrump.component";
 import { IBreadcrumb } from '../../../components/breadcrump/cerqel-breadcrumb.interface';
 import { ConfirmMsgService } from '../../../services/confirm-msg.service';
@@ -16,32 +14,46 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { LanguageService } from '../../../services/language.service';
 import { IEditImage } from '../../../components/edit-mode-image/editImage.interface';
 import { EditModeImageComponent } from '../../../components/edit-mode-image/edit-mode-image.component';
-import { environment } from '../../../../environments/environment';
+import { SelectComponent } from '../../../components/select/select.component';
+import { EditorComponent } from '../../../components/editor/editor.component';
+import { CheckBoxComponent } from '../../../components/check-box/check-box.component';
+import { StepperModule } from 'primeng/stepper';
+const global_PageName='products.pageName';
+const global_routeUrl ='product'
+const global_API_details='product'+'/GetById';
+const global_API_create='product'+'/Create';
+const global_API_update='product'+'/Update';
 
-const global_PageName='sub_category.pageName';
-const global_routeUrl ='MainCategory'
-const global_API_details='MainCategory'+'/GetMainCategoryById?Id=';
-const global_API_create='MainCategory'+'/Create';
-const global_API_update='MainCategory'+'/Update';
 @Component({
-  selector: 'app-main-catogory-details',
+  selector: 'app-products-details',
   standalone: true,
-  imports: [ReactiveFormsModule,EditModeImageComponent,TitleCasePipe,TranslatePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
-  templateUrl: './main-catogory-details.component.html',
-  styleUrl: './main-catogory-details.component.scss'
+  imports: [ReactiveFormsModule,CheckBoxComponent,StepperModule ,SelectComponent,EditorComponent,EditModeImageComponent,TitleCasePipe,TranslatePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
+  templateUrl: './products-details.component.html',
+  styleUrl: './products-details.component.scss'
 })
+export class ProductsDetailsComponent {
 
-export class MainCatogoryDetailsComponent {
 
-    private imageUrl = environment.baseImageUrl
-
-pageName =signal<string>(global_PageName);
+  pageName =signal<string>(global_PageName);
   private ApiService = inject(ApiService)
   private router = inject(Router)
   private route = inject(ActivatedRoute)
   showConfirmMessage: boolean = false
   private confirm = inject(ConfirmMsgService)
-  parentCategoryList:any[]=[]
+  categoryList:any[]=[]
+  discountType:any[]=[
+    {
+      name:'Amount',
+      code:1
+    },
+    {
+      name:'Precentage',
+      code:2
+    }
+
+  ]
+  hasDiscount=false
+  
   form = new FormGroup({
     enName: new FormControl('', {
       validators: [
@@ -53,8 +65,27 @@ pageName =signal<string>(global_PageName);
         Validators.required
       ]
     }),
-    image: new FormControl(''),
-    id:new FormControl(this.getID|0)
+    enDescription: new FormControl('', {
+      validators: [
+        Validators.required
+      ],
+    }),
+    arDescription: new FormControl('', {
+      validators: [
+        Validators.required
+      ]
+    }),
+    stockQuantity:new FormControl('', {
+      validators: [
+        Validators.required
+      ]
+    }),
+    hasDiscount:new FormControl(false),
+    discountType: new FormControl(0),
+     amount: new FormControl(0),
+    image: new FormControl([]),
+    id:new FormControl(this.getID|0),
+    categoryId:new FormControl()
   })
 
   bredCrumb: IBreadcrumb = {
@@ -77,20 +108,40 @@ pageName =signal<string>(global_PageName);
   get getID() {
     return this.route.snapshot.params['id']
   }
-
+  
     selectedLang: any;
     languageService = inject(LanguageService);
 
   ngOnInit() {
-
+   
     this.pageName.set(global_PageName)
     this.getBreadCrumb();
+    this.getMainCategory()
     this.languageService.translationService.onLangChange.subscribe(() => {
       this.selectedLang = this.languageService.translationService.currentLang;
       this.getBreadCrumb();
+      this.getMainCategory()
     });
     if (this.tyepMode() !== 'Add')
       this.API_getItemDetails()
+
+    this.form.get('hasDiscount')?.valueChanges.subscribe((value: any) => {
+      this.form.get('discountType')?.reset();
+      this.form.get('amount')?.reset();
+
+      if (value) {
+        this.hasDiscount=true
+        this.form.get('discountType')?.setValidators([Validators.required]);
+        this.form.get('amount')?.setValidators([Validators.required]);
+      } else {
+        this.hasDiscount=false
+        this.form.get('discountType')?.clearValidators();
+        this.form.get('amount')?.clearValidators();
+      }
+      this.form.get('discountType')?.updateValueAndValidity();
+      this.form.get('amount')?.updateValueAndValidity();
+
+    });
   }
 
   tyepMode() {
@@ -116,16 +167,24 @@ pageName =signal<string>(global_PageName);
     }
   }
 
-
+  getMainCategory(){
+    this.ApiService.get('MainCategory/GetAll').subscribe((res: any) => {
+      if (res){
+        this.categoryList=[]
+        res.map((item:any) => {
+          this.categoryList.push({
+            name:this.selectedLang=='en'?item.enName:item.arName,
+            code:item.id
+          })
+        })
+      }
+       
+    })
+  }
   API_getItemDetails() {
-    this.ApiService.get(`${global_API_details}${this.getID}`).subscribe((res: any) => {
+    this.ApiService.get(`${global_API_details}`,{id:this.getID}).subscribe((res: any) => {
       if (res)
-        this.form.patchValue(res);
-      this.editImageProps.props.imgSrc = this.imageUrl + '/' + res.image;
-      console.log(this.editImageProps);
-      this.editMode = true;
-
-
+        this.form.patchValue(res)
     })
   }
 
@@ -174,5 +233,4 @@ pageName =signal<string>(global_PageName);
 
 
 }
-
 

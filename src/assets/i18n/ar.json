@@ -32,7 +32,9 @@
     "confirm": "تأكيد",
     "close": "إغلاق",
     "choose_image": "اختيار",
-    "update": "تحديث"
+    "update": "تحديث",
+    "next":"التالي",
+    "back":"رجوع"
   },
   "shared": {
     "errors": {
@@ -85,6 +87,8 @@
     "dashboard": "لوحة التحكم",
     "clients": "العملاء",
     "category": "الفئات",
+    "sub_category": "الفئات الفرعية",
+    "products": "المنتجات",
     "orders": "الطلبات",
     "special_orders": "الطلبات الخاصة",
     "main_category": "الفئة الرئيسية",
@@ -152,6 +156,23 @@
     "arDescription": "الوصف (بالعربية)"
   }
 },
+"sub_category": {
+    "pageName": "الفئات الفرعية",
+    "pageTitle": "الفئة الفرعية",
+    "list": "قائمة الفئات الفرعية",
+    "pageName_filter": "تصفية الفئة الفرعية",
+    "pageName_Add_crumb": "إضافة فئة فرعية",
+    "pageName_Edit_crumb": "تعديل الفئة الفرعية",
+    "pageName_View_crumb": "عرض الفئة الفرعية",
+    "notActive": "غير نشط",
+    "form": {
+      "enName": "الاسم (بالإنجليزية)",
+      "arName": "الاسم (بالعربية)",
+      "parentCategoryId": "الفئة الرئيسية",
+      "enDescription": "الوصف (بالإنجليزية)",
+      "arDescription": "الوصف (بالعربية)"
+    }
+  },
   "faqs": {
     "validation_english_title": "العنوان باللغة الإنجليزية فقط",
     "pageName": "الأسئلة المتكررة",

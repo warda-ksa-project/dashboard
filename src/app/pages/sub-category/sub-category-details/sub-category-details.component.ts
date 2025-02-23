@@ -16,26 +16,24 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { LanguageService } from '../../../services/language.service';
 import { IEditImage } from '../../../components/edit-mode-image/editImage.interface';
 import { EditModeImageComponent } from '../../../components/edit-mode-image/edit-mode-image.component';
-import { environment } from '../../../../environments/environment';
+import { SelectComponent } from '../../../components/select/select.component';
 
 const global_PageName='sub_category.pageName';
-const global_routeUrl ='MainCategory'
-const global_API_details='MainCategory'+'/GetMainCategoryById?Id=';
-const global_API_create='MainCategory'+'/Create';
-const global_API_update='MainCategory'+'/Update';
+const global_routeUrl ='sub-category'
+const global_API_details='subCategory'+'/GetSubCategoryById';
+const global_API_create='subCategory'+'/Create';
+const global_API_update='subCategory'+'/Update';
+
 @Component({
-  selector: 'app-main-catogory-details',
+  selector: 'app-sub-category-details',
   standalone: true,
-  imports: [ReactiveFormsModule,EditModeImageComponent,TitleCasePipe,TranslatePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
-  templateUrl: './main-catogory-details.component.html',
-  styleUrl: './main-catogory-details.component.scss'
+  imports: [ReactiveFormsModule,SelectComponent,EditModeImageComponent,TitleCasePipe,TranslatePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
+  templateUrl: './sub-category-details.component.html',
+  styleUrl: './sub-category-details.component.scss'
 })
+export class SubCategoryDetailsComponent {
 
-export class MainCatogoryDetailsComponent {
-
-    private imageUrl = environment.baseImageUrl
-
-pageName =signal<string>(global_PageName);
+  pageName =signal<string>(global_PageName);
   private ApiService = inject(ApiService)
   private router = inject(Router)
   private route = inject(ActivatedRoute)
@@ -49,6 +47,11 @@ pageName =signal<string>(global_PageName);
       ],
     }),
     arName: new FormControl('', {
+      validators: [
+        Validators.required
+      ]
+    }),
+    parentCategoryId: new FormControl('',{
       validators: [
         Validators.required
       ]
@@ -77,17 +80,19 @@ pageName =signal<string>(global_PageName);
   get getID() {
     return this.route.snapshot.params['id']
   }
-
+  
     selectedLang: any;
     languageService = inject(LanguageService);
 
   ngOnInit() {
-
+   
     this.pageName.set(global_PageName)
     this.getBreadCrumb();
+    this.getMainCategory()
     this.languageService.translationService.onLangChange.subscribe(() => {
       this.selectedLang = this.languageService.translationService.currentLang;
       this.getBreadCrumb();
+      this.getMainCategory()
     });
     if (this.tyepMode() !== 'Add')
       this.API_getItemDetails()
@@ -116,16 +121,24 @@ pageName =signal<string>(global_PageName);
     }
   }
 
-
+  getMainCategory(){
+    this.ApiService.get('MainCategory/GetAll').subscribe((res: any) => {
+      if (res){
+        this.parentCategoryList=[]
+        res.map((item:any) => {
+          this.parentCategoryList.push({
+            name:this.selectedLang=='en'?item.enName:item.arName,
+            code:item.id
+          })
+        })
+      }
+       
+    })
+  }
   API_getItemDetails() {
-    this.ApiService.get(`${global_API_details}${this.getID}`).subscribe((res: any) => {
+    this.ApiService.get(`${global_API_details}`,{SubCategoryId:this.getID}).subscribe((res: any) => {
       if (res)
-        this.form.patchValue(res);
-      this.editImageProps.props.imgSrc = this.imageUrl + '/' + res.image;
-      console.log(this.editImageProps);
-      this.editMode = true;
-
-
+        this.form.patchValue(res)
     })
   }
 
@@ -174,5 +187,4 @@ pageName =signal<string>(global_PageName);
 
 
 }
-
 

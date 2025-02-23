@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SliderTableComponent } from './slider-table.component';
+import { ProductsDetailsComponent } from './products-details.component';
 
-describe('SliderTableComponent', () => {
-  let component: SliderTableComponent;
-  let fixture: ComponentFixture<SliderTableComponent>;
+describe('ProductsDetailsComponent', () => {
+  let component: ProductsDetailsComponent;
+  let fixture: ComponentFixture<ProductsDetailsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SliderTableComponent]
+      imports: [ProductsDetailsComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(SliderTableComponent);
+    fixture = TestBed.createComponent(ProductsDetailsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

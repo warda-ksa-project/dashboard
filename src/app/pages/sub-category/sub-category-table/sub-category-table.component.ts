@@ -8,62 +8,62 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { LanguageService } from '../../../services/language.service';
 import { ETableShow, IcolHeaderSmallTable, TableSmallScreenComponent } from '../../../components/table-small-screen/table-small-screen.component';
+import { DrawerComponent } from '../../../components/drawer/drawer.component';
 import { PaginationComponent } from '../../../components/pagination/pagination.component';
 import { TitleCasePipe } from '@angular/common';
-import { coponeOfferTypeList, coponeTypeList } from '../../../conts';
 import { TranslatePipe } from '@ngx-translate/core';
 
-const global_pageName='slider.pageName'
-const global_router_add_url_in_Table ='/settings/'+"slider"+'/add'
-const global_router_view_url ='/settings/'+"slider"+'/view'
-const global_router_edit_url ='/settings/'+"slider"+'/edit'
-const global_API_getAll ="slider"+'/GetAll'
-const global_API_delete="slider"+'/Delete?Id'
+const global_pageName = 'sub_category.pageName';
+const global_router_add_url_in_Table = '/sub-category/add';
+const global_router_view_url = '/sub-category/view';
+const global_router_edit_url = '/sub-category/edit';
+const global_API_getAll = 'subCategory' + '/GetSubCategoryByTraderId';
 @Component({
-  selector: 'app-slider-table',
+  selector: 'app-sub-category-table',
   standalone: true,
-  imports: [TableComponent,TitleCasePipe, PaginationComponent,TranslatePipe, FormsModule, BreadcrumpComponent, RouterModule, InputTextModule, TableSmallScreenComponent],
-  templateUrl: './slider-table.component.html',
-  styleUrl: './slider-table.component.scss'
+  imports: [TableComponent,TitleCasePipe, PaginationComponent,TranslatePipe, FormsModule, DrawerComponent, BreadcrumpComponent, RouterModule, InputTextModule, TableSmallScreenComponent],
+  templateUrl: './sub-category-table.component.html',
+  styleUrl: './sub-category-table.component.scss'
 })
-
-export class SliderTableComponent {
-  global_router_add_url_in_Table =global_router_add_url_in_Table
+export class SubCategoryTableComponent {
+ global_router_add_url_in_Table =global_router_add_url_in_Table
   pageName =signal<string>(global_pageName);
 
   showFilter: boolean = false
   tableActions: ITableAction[] = [
-    {
-      name: EAction.delete,
-      apiName_or_route: global_API_delete,
-      autoCall: true
-    },
-    {
-      name: EAction.view,
-      apiName_or_route:  global_router_view_url,
-      autoCall: true
-    },
-    {
-      name: EAction.edit,
-      apiName_or_route: global_router_edit_url,
-      autoCall: true
-    }
-  ]
+     {
+       name: EAction.delete,
+       apiName_or_route: 'subCategory/Delete?id',
+       autoCall: true
+     },
+     {
+       name: EAction.view,
+       apiName_or_route: global_router_view_url,
+       autoCall: true
+     },
+     {
+       name: EAction.edit,
+       apiName_or_route: global_router_edit_url,
+       autoCall: true
+     }
+   ]
   private ApiService = inject(ApiService)
 
 
   bredCrumb: IBreadcrumb = {
-    crumbs: []
+    crumbs: [
+    ]
   }
 
   objectSearch = {
-    pageNumber: 0,
-    pageSize: 8,
-    sortingExpression: "",
-    sortingDirection: 0,
-    code: "",
-    offerType: 0,
-    couponType: 0
+    "pageNumber": 0,
+    "pageSize": 8,
+    "sortingExpression": "",
+    "sortingDirection": 0,
+    "isActive": null,
+    "fullName": "",
+    "userName": "",
+    "email": ""
   }
 
   totalCount: number = 0;
@@ -72,8 +72,7 @@ export class SliderTableComponent {
   filteredData: any;
   dataList: any = []
   columns: IcolHeader[] = [];
-  offerTypeList:any[]=coponeOfferTypeList
-  coponeTypeList:any[]=coponeTypeList
+
   columnsSmallTable: IcolHeaderSmallTable[] = []
 
   selectedLang: any;
@@ -82,38 +81,31 @@ export class SliderTableComponent {
   ngOnInit() {
     this.pageName.set(global_pageName)
     this.API_getAll();
+    this.getBreadCrumb();
     this.selectedLang = this.languageService.translationService.currentLang;
     this.displayTableCols(this.selectedLang)
-    this.getBreadCrumb()
     this.languageService.translationService.onLangChange.subscribe(() => {
       this.selectedLang = this.languageService.translationService.currentLang;
-      this.displayTableCols(this.selectedLang)
-      this.getBreadCrumb()
-
+      this.displayTableCols(this.selectedLang);
+      this.getBreadCrumb();
     })
   }
 
   displayTableCols(currentLang: string) {
     this.columns = [
-      { keyName: 'id', header:  this.languageService.translate('Id'), type: EType.id, show: true },
-      // { keyName: 'imageEn', header: 'Image (en)', type: EType.image, show: true },
-      // { keyName: 'imageAr', header: 'Image (ar)', type: EType.image, show: true },
-      { keyName: 'titleEn', header:  this.languageService.translate('slider.form.title_en'), type: EType.text, show: true },
-      { keyName: 'titleAr', header:  this.languageService.translate('slider.form.title_ar'), type: EType.text, show: true },
-      { keyName: 'displayOrder', header: this.languageService.translate('slider.form.displayOrder'), type: EType.text, show: true },
-      { keyName: '', header:  this.languageService.translate('Actions'), type: EType.actions, actions: this.tableActions, show: true },
-
-    ]
+      { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: true },
+      { keyName: 'enName', header: this.languageService.translate('sub_category.form.enName'), type: EType.text, show: true },
+      { keyName: 'arName', header: this.languageService.translate('sub_category.form.arName'), type: EType.text, show: true },
+      { keyName: '', header: this.languageService.translate('Action'), type: EType.actions, actions: this.tableActions, show: true },
+    ];
     this.columnsSmallTable = [
-      { keyName: 'id', header:  this.languageService.translate('Id'), type: EType.id, show: false },
-      { keyName: 'titleEn', header:  this.languageService.translate('slider.form.title_en'), type: EType.text, showAs: ETableShow.header },
-      { keyName: 'titleAr', header:  this.languageService.translate('slider.form.title_ar'), type: EType.text, showAs: ETableShow.header },
-      // { keyName: 'imageEn', header: 'Image (en)', type: EType.text, showAs: ETableShow.content },
-      // { keyName: 'imageAr', header: 'Image (ar)', type: EType.text, showAs: ETableShow.content },
-      { keyName: 'displayOrder', header: this.languageService.translate('slider.form.displayOrder'), type: EType.text, showAs: ETableShow.content },
-
+      { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: false },
+      { keyName: 'enName', header: this.languageService.translate('sub_category.form.enName'), type: EType.text, showAs: ETableShow.header },
+      { keyName: 'arName', header: this.languageService.translate('sub_category.form.arName'), type: EType.text, showAs: ETableShow.header },
     ];
   }
+
+
   getBreadCrumb() {
     this.bredCrumb = {
       crumbs: [
@@ -127,6 +119,7 @@ export class SliderTableComponent {
       ]
     }
   }
+
   openFilter() {
     this.showFilter = true
   }
@@ -136,15 +129,22 @@ export class SliderTableComponent {
   }
 
   API_getAll() {
+    // this.ApiService.post(global_API_getAll, this.objectSearch).subscribe((res: any) => {
+    //   if (res) {
+    //     this.dataList = res.data.dataList;
+    //     this.totalCount = res.data.totalCount;
+    //     this.filteredData = [...this.dataList];
+    //   }
+
+    // })
     this.ApiService.get(global_API_getAll).subscribe((res: any) => {
       if (res) {
         this.dataList = res;
-        this.totalCount = res.totalCount;
-        this.filteredData = [...this.dataList];
       }
 
     })
   }
+
 
   onPageChange(event: any) {
     console.log(event);
@@ -168,23 +168,25 @@ export class SliderTableComponent {
       item.arDescription.toLowerCase().includes(search)
     );
   }
+
   onSubmitFilter() {
     this.API_getAll();
   }
 
   reset() {
     this.objectSearch = {
-      pageNumber: 0,
-      pageSize: 8,
-      sortingExpression: "",
-      sortingDirection: 0,
-      code: "",
-      offerType: 0,
-      couponType: 0
-    }
+      "pageNumber": 0,
+      "pageSize": 8,
+      "sortingExpression": "",
+      "sortingDirection": 0,
+      "isActive": null,
+      "fullName": "",
+      "userName": "",
+      "email": ""
+    };
     this.API_getAll();
     this.showFilter = false
   }
-}
 
+}
 

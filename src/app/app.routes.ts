@@ -62,6 +62,10 @@ import { CategoryTableComponent } from './pages/category/category-table/category
 import { CategoryDetailsComponent } from './pages/category/category-details/category-details.component';
 import { MainCatogoryTableComponent } from './pages/main-category/main-catogory-table/main-catogory-table.component';
 import { MainCatogoryDetailsComponent } from './pages/main-category/main-catogory-details/main-catogory-details.component';
+import { SubCategoryTableComponent } from './pages/sub-category/sub-category-table/sub-category-table.component';
+import { SubCategoryDetailsComponent } from './pages/sub-category/sub-category-details/sub-category-details.component';
+import { ProductsTableComponent } from './pages/products/products-table/products-table.component';
+import { ProductsDetailsComponent } from './pages/products/products-details/products-details.component';
 
 export const routes: Routes = [
   {
@@ -147,6 +151,16 @@ export const routes: Routes = [
       { path: 'category/add', component: CategoryDetailsComponent },
       { path: 'category/view/:id', component: CategoryDetailsComponent },
       { path: 'category/edit/:id', component: CategoryDetailsComponent },
+
+      { path: 'sub-category', component: SubCategoryTableComponent },
+      { path: 'sub-category/add', component: SubCategoryDetailsComponent },
+      { path: 'sub-category/view/:id', component: SubCategoryDetailsComponent },
+      { path: 'sub-category/edit/:id', component: SubCategoryDetailsComponent },
+
+      { path: 'product', component: ProductsTableComponent },
+      { path: 'product/add', component: ProductsDetailsComponent },
+      { path: 'product/view/:id', component: ProductsDetailsComponent },
+      { path: 'product/edit/:id', component: ProductsDetailsComponent },
 
       { path: 'clients', component: ClientTableComponent },
       { path: 'client/add', component: ClientDetailsComponent },
