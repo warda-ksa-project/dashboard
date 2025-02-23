@@ -1,5 +1,5 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component , forwardRef } from '@angular/core';
+import { Component, forwardRef, Input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { FileUpload, UploadEvent } from 'primeng/fileupload';
@@ -7,7 +7,7 @@ import { FileUpload, UploadEvent } from 'primeng/fileupload';
 @Component({
   selector: 'app-upload-file',
   standalone: true,
-  imports: [FileUpload, NgFor, NgIf,TranslatePipe],
+  imports: [FileUpload, NgFor, NgIf, TranslatePipe],
   templateUrl: './upload-file.component.html',
   styleUrl: './upload-file.component.scss',
   providers: [
@@ -21,22 +21,41 @@ import { FileUpload, UploadEvent } from 'primeng/fileupload';
 export class UploadFileComponent {
   uploadedFiles: any[] = [];
   imageBase64: string | null = null;
-
-  onChange: (value: string | null) => void = () => {};
-  onTouched: () => void = () => {};
+  @Input() isMulti: boolean = false;
+  onChange: (value: any | null) => void = () => { };
+  onTouched: () => void = () => { };
   isDisabled = false;
 
-  constructor() {}
+  constructor() { }
 
   onSelect(event: any): void {
-    const file = event.currentFiles[0];
-    if (file) {
-      this.convertFileToBase64(file).then((base64String: string) => {
-        this.imageBase64 = base64String;
-        this.onChange(this.imageBase64);
-      }).catch(error => {
-        console.error('Error converting to Base64:', error);
-      });
+    const files = event.currentFiles;
+    if (files) {
+      if (this.isMulti) {    
+        const promises = files.map((file: File) => {
+          return this.convertFileToBase64(file).then((base64String: string) => ({
+            src: base64String,
+            mediaTypeEnum: file.type.startsWith('image/') ? 1 : file.type.startsWith('video/') ? 2 : 0,
+          }));
+        });
+    
+        Promise.all(promises)
+          .then((processedFiles) => {
+            console.log(processedFiles); // Final processed array
+            this.uploadedFiles.push(...processedFiles); // Add to `uploadedFiles`
+          })
+          .catch((error) => {
+            console.error('Error processing files:', error);
+          });
+          console.log("UploadFileComponent  .then    this.uploadedFiles:",  )
+          this.onChange(this.uploadedFiles);
+      } else
+        this.convertFileToBase64(files[0]).then((base64String: string) => {
+          this.imageBase64 = base64String;
+          this.onChange(this.imageBase64);
+        }).catch(error => {
+          console.error('Error converting to Base64:', error);
+        });
     }
   }
 

@@ -17,6 +17,8 @@ import { LanguageService } from '../../../services/language.service';
 import { IEditImage } from '../../../components/edit-mode-image/editImage.interface';
 import { EditModeImageComponent } from '../../../components/edit-mode-image/edit-mode-image.component';
 import { SelectComponent } from '../../../components/select/select.component';
+import { environment } from '../../../../environments/environment';
+import { GalleryComponent } from '../../../components/gallery/gallery.component';
 
 const global_PageName='sub_category.pageName';
 const global_routeUrl ='sub-category'
@@ -27,7 +29,7 @@ const global_API_update='subCategory'+'/Update';
 @Component({
   selector: 'app-sub-category-details',
   standalone: true,
-  imports: [ReactiveFormsModule,SelectComponent,EditModeImageComponent,TitleCasePipe,TranslatePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
+  imports: [ReactiveFormsModule,GalleryComponent,SelectComponent,EditModeImageComponent,TitleCasePipe,TranslatePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
   templateUrl: './sub-category-details.component.html',
   styleUrl: './sub-category-details.component.scss'
 })
@@ -39,7 +41,14 @@ export class SubCategoryDetailsComponent {
   private route = inject(ActivatedRoute)
   showConfirmMessage: boolean = false
   private confirm = inject(ConfirmMsgService)
+  private imageUrl = environment.baseImageUrl
+  
   parentCategoryList:any[]=[]
+  imageList: any=[{
+    src: '',
+    mediaTypeEnum:1
+  }];
+
   form = new FormGroup({
     enName: new FormControl('', {
       validators: [
@@ -137,11 +146,20 @@ export class SubCategoryDetailsComponent {
   }
   API_getItemDetails() {
     this.ApiService.get(`${global_API_details}`,{SubCategoryId:this.getID}).subscribe((res: any) => {
-      if (res)
+      if (res){
         this.form.patchValue(res)
+        if (res.image) {
+          this.imageList[0].src= res.image;
+          this.addUrltoMedia(this.imageList);
+        }
+      }
     })
   }
-
+  addUrltoMedia(list: any) {
+    list.forEach((data: any) => {
+      data.src = this.imageUrl+'/' + data.src;
+    });
+  }
   onSubmit() {
     const payload = {
       ...this.form.value,

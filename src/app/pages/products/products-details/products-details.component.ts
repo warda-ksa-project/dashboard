@@ -18,6 +18,8 @@ import { SelectComponent } from '../../../components/select/select.component';
 import { EditorComponent } from '../../../components/editor/editor.component';
 import { CheckBoxComponent } from '../../../components/check-box/check-box.component';
 import { StepperModule } from 'primeng/stepper';
+import { GalleryComponent } from '../../../components/gallery/gallery.component';
+import { environment } from '../../../../environments/environment';
 const global_PageName='products.pageName';
 const global_routeUrl ='product'
 const global_API_details='product'+'/GetById';
@@ -27,7 +29,7 @@ const global_API_update='product'+'/Update';
 @Component({
   selector: 'app-products-details',
   standalone: true,
-  imports: [ReactiveFormsModule,CheckBoxComponent,StepperModule ,SelectComponent,EditorComponent,EditModeImageComponent,TitleCasePipe,TranslatePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
+  imports: [ReactiveFormsModule,CheckBoxComponent,GalleryComponent,StepperModule ,SelectComponent,EditorComponent,EditModeImageComponent,TitleCasePipe,TranslatePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
   templateUrl: './products-details.component.html',
   styleUrl: './products-details.component.scss'
 })
@@ -37,6 +39,8 @@ export class ProductsDetailsComponent {
   pageName =signal<string>(global_PageName);
   private ApiService = inject(ApiService)
   private router = inject(Router)
+    private imageUrl = environment.baseImageUrl
+
   private route = inject(ActivatedRoute)
   showConfirmMessage: boolean = false
   private confirm = inject(ConfirmMsgService)
@@ -53,7 +57,8 @@ export class ProductsDetailsComponent {
 
   ]
   hasDiscount=false
-  
+  imageList: any;
+
   form = new FormGroup({
     enName: new FormControl('', {
       validators: [
@@ -83,7 +88,7 @@ export class ProductsDetailsComponent {
     hasDiscount:new FormControl(false),
     discountType: new FormControl(0),
      amount: new FormControl(0),
-    image: new FormControl([]),
+    image: new FormControl<any>([]),
     id:new FormControl(this.getID|0),
     categoryId:new FormControl()
   })
@@ -135,6 +140,8 @@ export class ProductsDetailsComponent {
         this.form.get('amount')?.setValidators([Validators.required]);
       } else {
         this.hasDiscount=false
+        this.form.get('discountType')?.setValue(0);
+        this.form.get('amount')?.setValue(0);
         this.form.get('discountType')?.clearValidators();
         this.form.get('amount')?.clearValidators();
       }
@@ -183,19 +190,65 @@ export class ProductsDetailsComponent {
   }
   API_getItemDetails() {
     this.ApiService.get(`${global_API_details}`,{id:this.getID}).subscribe((res: any) => {
-      if (res)
+      if (res){
         this.form.patchValue(res)
+        this.imageList = res.image;
+        if (this.imageList.length != 0) {
+          this.addUrltoMedia(this.imageList);
+        }
+      }
     })
   }
+  addUrltoMedia(list: any) {
+    console.log(this.imageList);
+    list.forEach((data: any) => {
+      data.src = this.imageUrl + data.src;
+    });
+  }
+  // onSelect(event: any): void {
+  //   const files = event.currentFiles; // Array of selected files
+  //   console.log(files);
 
+  //   const promises = files.map((file: File) => {
+  //     return this.convertFileToBase64(file).then((base64String: string) => ({
+  //       src: base64String,
+  //       mediaTypeEnum: file.type.startsWith('image/') ? 1 : file.type.startsWith('video/') ? 2 : 0,
+  //     }));
+  //   });
+
+  //   Promise.all(promises)
+  //     .then((processedFiles) => {
+  //       console.log(processedFiles); // Final processed array
+  //       this.uploadedFiles.push(...processedFiles); // Add to `uploadedFiles`
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error processing files:', error);
+  //     });
+  // }
   onSubmit() {
+    if(this.form.value.image){
+      let x =   this.form.value.image.map((re:any)=>({
+           ...re,
+           "id": 0,
+           "productId": 0,
+         }))
+         this.form.patchValue({
+           image:x
+         })
+       }
     const payload = {
       ...this.form.value,
     }
-    if (this.tyepMode() == 'Add')
+
+
+    if (this.tyepMode() == 'Add'){
+
       this.API_forAddItem(payload)
-    else
+
+    }
+    else{
       this.API_forEditItem(payload)
+    }
   }
 
   navigateToPageTable(){
@@ -233,4 +286,3 @@ export class ProductsDetailsComponent {
 
 
 }
-
