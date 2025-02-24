@@ -155,8 +155,8 @@ export class CountriesTableComponent {
 
     // })
     this.ApiService.get(global_API_getAll).subscribe((res: any) => {
-      if (res) {
-        this.dataList = res;
+      if (res.data) {
+        this.dataList = res.data;
       }
 
     })

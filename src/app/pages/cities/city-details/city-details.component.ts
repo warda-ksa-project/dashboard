@@ -113,9 +113,9 @@ export class CityDetailsComponent {
   }
 getAllCountries(){
   this.ApiService.get('Country/GetAll').subscribe((res: any) => {
-    if (res) {
+    if (res.data) {
       this.countries=[]
-     res.map((country:any)=>{
+     res.data.map((country:any)=>{
          this.countries.push({
           name:this.selectedLang=='en'?country.enName :country.arName,
           code:country.id
@@ -147,8 +147,8 @@ getBreadCrumb() {
 }
   getCityDetails() {
     this.ApiService.get(`City/GetById`,{id:this.cityID}).subscribe((res: any) => {
-      if (res)
-        this.form.patchValue(res)
+      if (res.data)
+        this.form.patchValue(res.data)
     })
   }
 

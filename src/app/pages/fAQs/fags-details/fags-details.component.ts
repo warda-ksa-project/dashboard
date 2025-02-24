@@ -111,15 +111,15 @@ pageName = signal<string>(global_PageName);
 
   getFaqsDetails() {
     this.ApiService.get(`FAQ/GetById/`,{id:this.faqsID}).subscribe((res: any) => {
-      if (res)
-        this.form.patchValue(res)
+      if (res.data)
+        this.form.patchValue(res.data)
     })
   }
 
   onSubmit() {
     const payload = {
       ...this.form.value,
-      id: this.faqsID,
+      id: this.faqsID||0,
     }
     if (this.tyepMode() === 'Add')
       this.addFQS(payload)

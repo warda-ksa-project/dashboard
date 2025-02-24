@@ -132,8 +132,8 @@ export class CitiesTableComponent {
     //   }
     // })
      this.ApiService.get('City/GetAll').subscribe((res: any) => {
-      if (res) {
-        this.citiesList = res;
+      if (res.data) {
+        this.citiesList = res.data;
       }
     })
   }

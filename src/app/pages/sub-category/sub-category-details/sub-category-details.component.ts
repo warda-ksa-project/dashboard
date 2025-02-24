@@ -132,9 +132,9 @@ export class SubCategoryDetailsComponent {
 
   getMainCategory(){
     this.ApiService.get('MainCategory/GetAll').subscribe((res: any) => {
-      if (res){
+      if (res.data){
         this.parentCategoryList=[]
-        res.map((item:any) => {
+        res.data.map((item:any) => {
           this.parentCategoryList.push({
             name:this.selectedLang=='en'?item.enName:item.arName,
             code:item.id
@@ -147,9 +147,9 @@ export class SubCategoryDetailsComponent {
   API_getItemDetails() {
     this.ApiService.get(`${global_API_details}`,{SubCategoryId:this.getID}).subscribe((res: any) => {
       if (res){
-        this.form.patchValue(res)
-        if (res.image) {
-          this.imageList[0].src= res.image;
+        this.form.patchValue(res.data)
+        if (res.data.image) {
+          this.imageList[0].src= res.data.image;
           this.addUrltoMedia(this.imageList);
         }
       }
@@ -157,7 +157,7 @@ export class SubCategoryDetailsComponent {
   }
   addUrltoMedia(list: any) {
     list.forEach((data: any) => {
-      data.src = this.imageUrl+'/' + data.src;
+      data.src = this.imageUrl + data.src;
     });
   }
   onSubmit() {

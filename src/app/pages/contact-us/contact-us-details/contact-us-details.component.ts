@@ -111,8 +111,8 @@ export class ContactUsDetailsComponent {
 
   API_getItemDetails() {
     this.ApiService.get(`${global_API_deialis}`,{id:this.getID}).subscribe((res: any) => {
-      if (res)
-        this.form.patchValue(res)
+      if (res.data)
+        this.form.patchValue(res.data)
     })
   }
 

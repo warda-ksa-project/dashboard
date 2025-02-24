@@ -144,9 +144,9 @@ export class CountriesDetailsComponent implements OnInit {
   };
   getCountryDetails() {
     this.ApiService.get(`Country/GetById`,{id:this.countryID}).subscribe((res: any) => {
-      if (res){
-        this.form.patchValue(res)
-        this.editImageProps.props.imgSrc = environment.baseImageUrl+res.data.img;
+      if (res.data){
+        this.form.patchValue(res.data)
+        this.editImageProps.props.imgSrc = 'https://wardaweb-001-site1.qtempurl.com'+res.data.image;
         this.editMode = true;
       }
     })
@@ -156,7 +156,7 @@ export class CountriesDetailsComponent implements OnInit {
     console.log('ff', this.form.value)
     const payload = {
       ...this.form.value,
-      id: this.countryID,
+      id: this.countryID||0,
     }
     if (this.tyepMode() === 'Add')
       this.addCountry(payload)

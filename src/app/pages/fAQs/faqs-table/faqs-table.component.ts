@@ -136,8 +136,8 @@ export class FaqsTableComponent {
 
     // })
     this.ApiService.get('FAQ/GetAll').subscribe((res: any) => {
-      if (res) {
-        this.faqsList = res;
+      if (res.data) {
+        this.faqsList = res.data;
       }
 
     })
