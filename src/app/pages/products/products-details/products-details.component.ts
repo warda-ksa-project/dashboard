@@ -80,7 +80,7 @@ export class ProductsDetailsComponent {
         Validators.required
       ]
     }),
-    stockQuantity:new FormControl('', {
+    stockQuantity:new FormControl(0, {
       validators: [
         Validators.required
       ]
@@ -176,9 +176,9 @@ export class ProductsDetailsComponent {
 
   getMainCategory(){
     this.ApiService.get('MainCategory/GetAll').subscribe((res: any) => {
-      if (res){
+      if (res.data){
         this.categoryList=[]
-        res.map((item:any) => {
+        res.data.map((item:any) => {
           this.categoryList.push({
             name:this.selectedLang=='en'?item.enName:item.arName,
             code:item.id
@@ -190,9 +190,9 @@ export class ProductsDetailsComponent {
   }
   API_getItemDetails() {
     this.ApiService.get(`${global_API_details}`,{id:this.getID}).subscribe((res: any) => {
-      if (res){
-        this.form.patchValue(res)
-        this.imageList = res.image;
+      if (res.data){
+        this.form.patchValue(res.data)
+        this.imageList = res.data.image;
         if (this.imageList.length != 0) {
           this.addUrltoMedia(this.imageList);
         }
@@ -202,7 +202,8 @@ export class ProductsDetailsComponent {
   addUrltoMedia(list: any) {
     console.log(this.imageList);
     list.forEach((data: any) => {
-      data.src = this.imageUrl + data.src;
+      console.log("ProductsDetailsComponent  list.forEach  data:", data)
+      data.src = this.imageUrl + data.image;
     });
   }
   // onSelect(event: any): void {
@@ -230,7 +231,7 @@ export class ProductsDetailsComponent {
       let x =   this.form.value.image.map((re:any)=>({
            ...re,
            "id": 0,
-           "productId": 0,
+           "productId": +this.getID||0,
          }))
          this.form.patchValue({
            image:x
