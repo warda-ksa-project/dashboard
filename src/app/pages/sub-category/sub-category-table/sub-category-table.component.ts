@@ -17,7 +17,7 @@ const global_pageName = 'sub_category.pageName';
 const global_router_add_url_in_Table = '/sub-category/add';
 const global_router_view_url = '/sub-category/view';
 const global_router_edit_url = '/sub-category/edit';
-const global_API_getAll = 'subCategory' + '/GetSubCategoryByTraderId';
+const global_API_getAll = 'subCategory' + '/GetAllWithPagination';
 @Component({
   selector: 'app-sub-category-table',
   standalone: true,
@@ -60,10 +60,8 @@ export class SubCategoryTableComponent {
     "pageSize": 8,
     "sortingExpression": "",
     "sortingDirection": 0,
-    "isActive": null,
-    "fullName": "",
-    "userName": "",
-    "email": ""
+     "enName": "string",
+     "arName": "string"
   }
 
   totalCount: number = 0;
@@ -129,20 +127,20 @@ export class SubCategoryTableComponent {
   }
 
   API_getAll() {
-    // this.ApiService.post(global_API_getAll, this.objectSearch).subscribe((res: any) => {
-    //   if (res) {
-    //     this.dataList = res.data.dataList;
-    //     this.totalCount = res.data.totalCount;
-    //     this.filteredData = [...this.dataList];
-    //   }
-
-    // })
-    this.ApiService.get(global_API_getAll).subscribe((res: any) => {
-      if (res.data) {
-        this.dataList = res.data;
+    this.ApiService.post(global_API_getAll, this.objectSearch).subscribe((res: any) => {
+      if (res) {
+        this.dataList = res.data.dataList;
+        this.totalCount = res.data.totalCount;
+        this.filteredData = [...this.dataList];
       }
 
     })
+    // this.ApiService.get(global_API_getAll).subscribe((res: any) => {
+    //   if (res.data) {
+    //     this.dataList = res.data;
+    //   }
+
+    // })
   }
 
 
@@ -179,10 +177,8 @@ export class SubCategoryTableComponent {
       "pageSize": 8,
       "sortingExpression": "",
       "sortingDirection": 0,
-      "isActive": null,
-      "fullName": "",
-      "userName": "",
-      "email": ""
+        "enName": "string",
+        "arName": "string"
     };
     this.API_getAll();
     this.showFilter = false

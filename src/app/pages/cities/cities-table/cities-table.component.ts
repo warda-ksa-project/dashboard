@@ -68,7 +68,7 @@ export class CitiesTableComponent {
     sortingDirection: 0,
     enName: "",
     arName: "",
-    postalCode: ""
+    // postalCode: ""
   }
   selectedLang: any;
   languageService = inject(LanguageService);
@@ -124,18 +124,18 @@ export class CitiesTableComponent {
 
   getAllCities() {
   console.log('ggg',this.citySearch)
-    // this.ApiService.post('City/GetAllWithPagination',this.citySearch).subscribe((res: any) => {
-    //   if (res.data) {
-    //     this.citiesList = res.data.dataList;
-    //     this.totalCount = res.data.totalCount;
-    //     this.filteredData = [...this.citiesList]; // Initialize filtered data
-    //   }
-    // })
-     this.ApiService.get('City/GetAll').subscribe((res: any) => {
+    this.ApiService.post('City/GetAllWithPagination',this.citySearch).subscribe((res: any) => {
       if (res.data) {
-        this.citiesList = res.data;
+        this.citiesList = res.data.dataList;
+        this.totalCount = res.data.totalCount;
+        this.filteredData = [...this.citiesList]; // Initialize filtered data
       }
     })
+    //  this.ApiService.get('City/GetAll').subscribe((res: any) => {
+    //   if (res.data) {
+    //     this.citiesList = res.data;
+    //   }
+    // })
   }
 
   onPageChange(event: any) {
@@ -165,7 +165,7 @@ export class CitiesTableComponent {
       sortingDirection: 0,
       enName: "",
       arName: "",
-      postalCode: ""
+      // postalCode: ""
     }
     this.getAllCities();
     this.showFilter = false

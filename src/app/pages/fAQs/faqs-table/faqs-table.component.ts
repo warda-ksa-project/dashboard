@@ -126,21 +126,20 @@ export class FaqsTableComponent {
   }
 
   getAllFAQS() {
-    // this.ApiService.post('FAQs/GetAllWithPagination', this.faqSearchCreteria).subscribe((res: any) => {
-    //   if (res) {
-    //     this.faqsList = res.data.dataList;
-    //     this.totalCount = res.data.totalCount;
-    //     this.filteredData = [...this.faqsList];
-    //     console.log('FAQs loaded:', this.faqsList);
-    //   }
-
-    // })
-    this.ApiService.get('FAQ/GetAll').subscribe((res: any) => {
-      if (res.data) {
-        this.faqsList = res.data;
+    this.ApiService.post('FAQ/GetAllWithPagination', this.faqSearchCreteria).subscribe((res: any) => {
+      if (res) {
+        this.faqsList = res.data.dataList;
+        this.totalCount = res.data.totalCount;
+        this.filteredData = [...this.faqsList];
       }
 
     })
+    // this.ApiService.get('FAQ/GetAll').subscribe((res: any) => {
+    //   if (res.data) {
+    //     this.faqsList = res.data;
+    //   }
+
+    // })
   }
 
   onPageChange(event: any) {

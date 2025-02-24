@@ -32,56 +32,28 @@
         <div class="form-content">
           <!-- Full Name -->
           <div class="form-group mb-3">
-            <label class="mb-1" for="enTitle">{{'category.form.fullName'|translate}}</label>
+            <label class="mb-1" for="enTitle">{{'sub_category.form.enName'|translate}}</label>
             <input
               type="text"
               id="enTitle"
               name="enTitle"
               class="form-control"
-              [(ngModel)]="objectSearch.fullName"
-              placeholder="{{'shared.enter'|translate}} {{'category.form.fullName'|translate}}"
+              [(ngModel)]="objectSearch.enName"
+              placeholder="{{'shared.enter'|translate}} {{'sub_category.form.enName'|translate}}"
             />
           </div>
     
           <!-- Username -->
           <div class="form-group mb-3">
-            <label class="mb-1" for="arTitle">{{'category.form.userName'|translate}}</label>
+            <label class="mb-1" for="arTitle">{{'sub_category.form.arName'|translate}}</label>
             <input
               type="text"
               id="arTitle"
               name="arTitle"
               class="form-control"
-              [(ngModel)]="objectSearch.userName"
-              placeholder="{{'shared.enter'|translate}} {{'category.form.fullName'|translate}}"
+              [(ngModel)]="objectSearch.arName"
+              placeholder="{{'shared.enter'|translate}} {{'sub_category.form.arName'|translate}}"
             />
-          </div>
-    
-          <!-- Email -->
-          <div class="form-group mb-3">
-            <label class="mb-1" for="email">{{'category.form.email'|translate}}</label>
-            <input
-              type="text"
-              id="email"
-              name="email"
-              class="form-control"
-              [(ngModel)]="objectSearch.email"
-              placeholder="{{'shared.enter'|translate}} {{'category.form.email'|translate}}"
-            />
-          </div>
-    
-          <!-- Status Dropdown -->
-          <div class="form-group mb-3">
-            <label class="mb-1" for="status">{{'category.form.status'|translate}}</label>
-            <select
-              id="status"
-              name="status"
-              class="form-control"
-              [(ngModel)]="objectSearch.isActive"
-            >
-              <option *ngFor="let item of clientStatuslist" [ngValue]="item.id">
-                {{ item.name|translate }}
-              </option>
-            </select>
           </div>
         </div>
     

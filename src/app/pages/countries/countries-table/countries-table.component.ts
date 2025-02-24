@@ -17,7 +17,7 @@ const global_pageName='country'
 const global_router_add_url_in_Table ='/'+global_pageName+'/add'
 const global_router_view_url =global_pageName+'/view'
 const global_router_edit_url =global_pageName+'/edit'
-const global_API_getAll =global_pageName+'/GetAll'
+const global_API_getAll =global_pageName+'/GetAllWithPagination'
 const global_API_delete=global_pageName+'/delete?id'
 const global_toggleOptions:IToggleOptions={
 apiName:global_pageName+'/update',
@@ -146,20 +146,20 @@ export class CountriesTableComponent {
   }
 
   API_getAll() {
-    // this.ApiService.post(global_API_getAll, this.objectSearch).subscribe((res: any) => {
-    //   if (res) {
-    //     this.dataList = res.data.dataList;
-    //     this.totalCount = res.data.totalCount;
-    //     this.filteredData = [...this.dataList];
-    //   }
-
-    // })
-    this.ApiService.get(global_API_getAll).subscribe((res: any) => {
-      if (res.data) {
-        this.dataList = res.data;
+    this.ApiService.post(global_API_getAll, this.objectSearch).subscribe((res: any) => {
+      if (res) {
+        this.dataList = res.data.dataList;
+        this.totalCount = res.data.totalCount;
+        this.filteredData = [...this.dataList];
       }
 
     })
+    // this.ApiService.get(global_API_getAll).subscribe((res: any) => {
+    //   if (res.data) {
+    //     this.dataList = res.data;
+    //   }
+
+    // })
   }
 
   onPageChange(event: any) {
