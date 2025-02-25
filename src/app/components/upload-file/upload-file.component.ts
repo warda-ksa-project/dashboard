@@ -22,6 +22,7 @@ export class UploadFileComponent {
   uploadedFiles: any[] = [];
   imageBase64: string | null = null;
   @Input() isMulti: boolean = false;
+  @Input()accept="image/*,video/*"
   onChange: (value: any | null) => void = () => { };
   onTouched: () => void = () => { };
   isDisabled = false;
@@ -34,7 +35,7 @@ export class UploadFileComponent {
       if (this.isMulti) {    
         const promises = files.map((file: File) => {
           return this.convertFileToBase64(file).then((base64String: string) => ({
-            src: base64String,
+            image: base64String,
             mediaTypeEnum: file.type.startsWith('image/') ? 1 : file.type.startsWith('video/') ? 2 : 0,
           }));
         });

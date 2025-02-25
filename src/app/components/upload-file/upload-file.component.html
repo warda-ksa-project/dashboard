@@ -3,9 +3,10 @@
 [disabled]="isDisabled"
 (onSelect)="onSelect($event)"
 [multiple]="isMulti"
-accept="image/*,video/*" 
+[accept]="accept" 
 maxFileSize="3000000" 
 mode="advanced"
+fileLimit="3"
 chooseLabel="{{'actions.choose_image'|translate}}" 
 cancelLabel="{{'actions.cancel'|translate}}"
 >

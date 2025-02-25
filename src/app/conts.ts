@@ -13,6 +13,7 @@ export const menuItems =
     { icon: 'pi pi-shopping-bag', label: 'side_bar.contract', route: '/contract-type' },
     { icon: 'pi pi-globe', label: 'side_bar.country', route: '/country' },
     { icon: 'pi pi-building', label: 'side_bar.city', route: '/city' },
+    { icon: 'pi pi-users', label: 'side_bar.trader', route: '/trader' },
     { icon: 'pi pi-phone', label: 'side_bar.contact', route: '/contact-us' },
     { icon: 'pi pi-folder', label: 'side_bar.faqs', route: '/faqs' },
 

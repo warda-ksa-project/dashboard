@@ -85,6 +85,7 @@
   },
   "side_bar": {
     "dashboard": "لوحة التحكم",
+    "trader":"التجار",
     "clients": "العملاء",
     "category": "الفئات",
     "sub_category": "الفئات الفرعية",

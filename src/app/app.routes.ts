@@ -66,6 +66,10 @@ import { SubCategoryTableComponent } from './pages/sub-category/sub-category-tab
 import { SubCategoryDetailsComponent } from './pages/sub-category/sub-category-details/sub-category-details.component';
 import { ProductsTableComponent } from './pages/products/products-table/products-table.component';
 import { ProductsDetailsComponent } from './pages/products/products-details/products-details.component';
+import { TraderTableComponent } from './pages/traders/trader-table/trader-table.component';
+import { TraderDetailsComponent } from './pages/traders/trader-details/trader-details.component';
+import { TraderRequestsTableComponent } from './pages/traders/trader-requests-table/trader-requests-table.component';
+import { TraderRequestsDetailsComponent } from './pages/traders/trader-requests-details/trader-requests-details.component';
 
 export const routes: Routes = [
   {
@@ -146,6 +150,17 @@ export const routes: Routes = [
       { path: 'country/add', component: CountriesDetailsComponent },
       { path: 'country/view/:id', component: CountriesDetailsComponent },
       { path: 'country/edit/:id', component: CountriesDetailsComponent },
+
+      
+      { path: 'trader', component: TraderTableComponent },
+      { path: 'trader/add', component: TraderDetailsComponent },
+      { path: 'trader/view/:id', component: TraderDetailsComponent },
+      { path: 'trader/edit/:id', component: TraderDetailsComponent },
+
+      { path: 'trader-request', component: TraderRequestsTableComponent },
+      { path: 'trader-request/add', component: TraderRequestsDetailsComponent },
+      { path: 'trader-request/view/:id', component: TraderRequestsDetailsComponent },
+      { path: 'trader-request/edit/:id', component: TraderRequestsDetailsComponent },
 
       { path: 'category', component: CategoryTableComponent },
       { path: 'category/add', component: CategoryDetailsComponent },

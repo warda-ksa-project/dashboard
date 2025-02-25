@@ -85,6 +85,7 @@
   },
   "side_bar": {
     "dashboard": "DASHBOARD",
+    "trader":"TRADERS",
     "clients": "CLIENTS",
     "category": "SUBCATEGORIES",
     "sub_category": "SUB CATEGORIES",
@@ -183,6 +184,69 @@
     "pageName_View_crumb": "View product",
     "notActive": "Not Active",
     "imgs":"Products Images",
+    "form": {
+      "general":"General",
+      "pricing":"pricing",
+      "enName": "Name (en)",
+      "arName": "Name (ar)",
+      "enDescription": "Description (en)",
+      "arDescription": "Description (ar)",
+      "categoryId":"Category",
+      "stockQuantity":"Stock Quantity",
+      "hasDiscount":"Has Discount",
+      "discountType":"Discount Type",
+      "amount":"Amount"
+    }
+  },
+  "trader": {
+    "pageName": "Traders",
+    "pageTitle": "Trader",
+    "list": "Traders List",
+    "pageName_filter": "Filter Traders",
+    "pageName_Add_crumb": "Add Trader",
+    "pageName_Edit_crumb": "Edit Trader",
+    "pageName_View_crumb": "View Trader",
+    "notActive": "Not Active",
+    "imgs":"Traders Images",
+    "form": {
+      "storeName":"Store Name",
+      "store":"Store",
+      "address":"Address",
+      "personal":"personal",
+     
+        "name":"Name",
+        "email":"Email",
+        "phone":"Phone Number",
+        "password":"Password",
+        "storeName":"Store Name",
+ "numberOfBranches":"Number Of Branches",
+ "reasonForRejection":"Reason For Rejection",
+ "expalinedAddress":"Expalined Address",
+ "street":"Street",
+ "district":"District",
+ "buildNo":"Build number",
+ "floorNo":"Floor number",
+ "flatNo":"Flat number",
+ "longitude":"Longitude",
+ "latitude":"Latitude",
+ "files":"Files",
+ "iban":"IBan",
+ "license":"License",
+ "cr":"CR"
+
+       
+    }
+  },
+  "trader_request": {
+    "pageName": "Trader Requests",
+    "pageTitle": "Trader Request",
+    "list": "Trader Requests List",
+    "pageName_filter": "Filter Trader Requests",
+    "pageName_Add_crumb": "Add Trader Request",
+    "pageName_Edit_crumb": "Edit Trader Request",
+    "pageName_View_crumb": "View Trader Request",
+    "notActive": "Not Active",
+    "imgs":"Trader Requests Images",
     "form": {
       "general":"General",
       "pricing":"pricing",

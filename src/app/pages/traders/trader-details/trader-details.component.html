@@ -1,0 +1,223 @@
+<div class="faqs-form-container container-fluid">
+    <div class="row">
+      <div class="page-details mb-3">
+        <div class="title mb-4">
+          <h2>
+            {{ tyepMode() | translate | titlecase }}
+            {{ "trader.pageTitle" | translate | titlecase }}
+          </h2>
+        </div>
+        <div class="breadcrumb">
+          <app-breadcrump [breadcrumbProps]="bredCrumb"></app-breadcrump>
+        </div>
+      </div>
+    </div>
+    <div class="form-container">
+      <div class="reactive-form">
+        <form [formGroup]="form" class="w-70">
+          <p-stepper [value]="1">
+          <div class="w-100">
+            <p-step-list class="w-100">
+              <p-step [value]="1">{{'trader.form.personal'|translate}}</p-step>
+              <p-step [value]="2">{{'trader.form.store'|translate}}</p-step>
+              <p-step [value]="3">{{'trader.form.address'|translate}}</p-step>
+              <p-step [value]="4">{{'trader.form.files'|translate}}</p-step>
+
+            </p-step-list>
+          </div>
+            <p-step-panels>
+              <p-step-panel [value]="1">
+                <ng-template #content let-activateCallback="activateCallback">
+                  <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
+                      <app-input-text [readOnly]="tyepMode() == 'View'" [disabled]="tyepMode() == 'View'"
+                        [label]="'trader.form.name'" [control]="form.get('name')"></app-input-text>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
+                      <app-input-text [readOnly]="tyepMode() == 'View'" [disabled]="tyepMode() == 'View'"
+                        [label]="'trader.form.email'" [control]="form.get('email')"></app-input-text>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
+                        <app-input-text [readOnly]="tyepMode() == 'View'" [disabled]="tyepMode() == 'View'"
+                          [label]="'trader.form.phone'" [control]="form.get('phone')"></app-input-text>
+                     </div>
+                     <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
+                        <app-input-text [readOnly]="tyepMode() == 'View'" [disabled]="tyepMode() == 'View'"
+                          [label]="'trader.form.password'" [control]="form.get('password')"></app-input-text>
+                     </div>
+        
+                  </div>
+                  <div class="d-flex mt-5 justify-content-end">
+                    <button  class="btn btn-primary-bk" (click)="activateCallback(2)">{{'actions.next'|translate}}</button>
+                </div>
+                </ng-template>
+              </p-step-panel>
+  
+              <p-step-panel [value]="2">
+                <ng-template #content let-activateCallback="activateCallback">
+                  <div class="row">
+            
+                    <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
+                      <app-input-text [readOnly]="tyepMode() == 'View'" [disabled]="tyepMode() == 'View'"
+                        [label]="'trader.form.storeName'" [control]="form.get('storeName')"></app-input-text>
+                    </div>
+
+                    <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
+                        <app-input-text [readOnly]="tyepMode() == 'View'" [disabled]="tyepMode() == 'View'"
+                          [label]="'trader.form.numberOfBranches'" [control]="form.get('numberOfBranches')"></app-input-text>
+                    </div>
+    
+                    <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
+                        <app-input-text [readOnly]="tyepMode() == 'View'" [disabled]="tyepMode() == 'View'"
+                          [label]="'trader.form.reasonForRejection'" [control]="form.get('reasonForRejection')"></app-input-text>
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-between mt-5">
+                      <button  class="btn btn-primary-bk" (click)="activateCallback(1)">{{'actions.back'|translate}}</button>
+                      <button  class="btn btn-primary-bk" (click)="activateCallback(3)">{{'actions.next'|translate}}</button>
+                  </div>
+                </ng-template>
+              </p-step-panel>
+              <p-step-panel [value]="3">
+                <ng-template #content let-activateCallback="activateCallback">
+                  <div class="row">
+            
+                    <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
+                      <app-input-text [readOnly]="tyepMode() == 'View'" [disabled]="tyepMode() == 'View'"
+                        [label]="'trader.form.expalinedAddress'" [control]="form.get('expalinedAddress')"></app-input-text>
+                    </div>
+
+                    <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
+                        <app-input-text [readOnly]="tyepMode() == 'View'" [disabled]="tyepMode() == 'View'"
+                          [label]="'trader.form.street'" [control]="form.get('street')"></app-input-text>
+                    </div>
+    
+                    <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
+                        <app-input-text [readOnly]="tyepMode() == 'View'" [disabled]="tyepMode() == 'View'"
+                          [label]="'trader.form.district'" [control]="form.get('district')"></app-input-text>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
+                        <app-input-text [readOnly]="tyepMode() == 'View'" [disabled]="tyepMode() == 'View'"
+                          [label]="'trader.form.buildNo'" [control]="form.get('buildNo')"></app-input-text>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
+                        <app-input-text [readOnly]="tyepMode() == 'View'" [disabled]="tyepMode() == 'View'"
+                          [label]="'trader.form.floorNo'" [control]="form.get('floorNo')"></app-input-text>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
+                        <app-input-text [readOnly]="tyepMode() == 'View'" [disabled]="tyepMode() == 'View'"
+                          [label]="'trader.form.flatNo'" [control]="form.get('flatNo')"></app-input-text>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
+                        <app-input-text [readOnly]="tyepMode() == 'View'" [disabled]="tyepMode() == 'View'"
+                          [label]="'trader.form.longitude'" [control]="form.get('logitude')"></app-input-text>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
+                        <app-input-text [readOnly]="tyepMode() == 'View'" [disabled]="tyepMode() == 'View'"
+                          [label]="'trader.form.latitude'" [control]="form.get('latitude')"></app-input-text>
+                    </div>
+                   
+                    
+                 
+                  </div>
+                  <div class="d-flex justify-content-between mt-5">
+                    <button  class="btn btn-primary-bk" (click)="activateCallback(2)">{{'actions.back'|translate}}</button>
+                    <button  class="btn btn-primary-bk" (click)="activateCallback(4)">{{'actions.next'|translate}}</button>
+                </div>
+                </ng-template>
+              </p-step-panel>
+              <p-step-panel [value]="4">
+                <ng-template #content let-activateCallback="activateCallback">
+                  <div class="row">
+            
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="upload-image-section mt-4 mb-4" *ngIf="!editMode">
+                          <label class="mb-2">{{
+                            "trader.form.cr" | translate
+                            }}</label>
+                          <app-upload-file [isMulti]="true" formControlName="cr" [accept]="'application/pdf'"></app-upload-file>
+                          <!-- <div *ngIf="isRequiredError" class="error-message mt-2">
+                              {{'shared.img_required'|translate}}
+                            </div> -->
+                        </div>
+                        <div class="edit-mode-section mt-2" *ngIf="editMode">
+                          <label class="mb-2">{{
+                            "trader.form.cr" | translate
+                            }}</label>
+                          <app-edit-mode-image [editImageProps]="editImageProps"></app-edit-mode-image>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="upload-image-section mt-4 mb-4" *ngIf="!editMode">
+                          <label class="mb-2">{{
+                            "trader.form.license" | translate
+                            }}</label>
+                          <app-upload-file [isMulti]="true" [accept]="'application/pdf'" formControlName="license"></app-upload-file>
+                          <!-- <div *ngIf="isRequiredError" class="error-message mt-2">
+                              {{'shared.img_required'|translate}}
+                            </div> -->
+                        </div>
+                        <div class="edit-mode-section mt-2" *ngIf="editMode">
+                          <label class="mb-2">{{
+                            "trader.form.license" | translate
+                            }}</label>
+                          <app-edit-mode-image [editImageProps]="editImageLicenseProps"></app-edit-mode-image>
+                        </div>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="upload-image-section mt-4 mb-4" *ngIf="!editMode">
+                          <label class="mb-2">{{
+                            "trader.form.iban" | translate
+                            }}</label>
+                          <app-upload-file [isMulti]="true" [accept]="'application/pdf'" formControlName="iban"></app-upload-file>
+                          <!-- <div *ngIf="isRequiredError" class="error-message mt-2">
+                              {{'shared.img_required'|translate}}
+                            </div> -->
+                        </div>
+                        <div class="edit-mode-section mt-2" *ngIf="editMode">
+                          <label class="mb-2">{{
+                            "trader.form.iban" | translate
+                            }}</label>
+                          <app-edit-mode-image [editImageProps]="editImageIBanProps"></app-edit-mode-image>
+                        </div>
+                      </div>
+                    
+                 
+                  </div>
+                  <div class="d-flex justify-content-between">
+                    <div class="mt-5">
+                      <button  class="btn btn-primary-bk" (click)="activateCallback(3)">{{'actions.back'|translate}}</button>
+                  </div>
+                    <div class="actions mt-5 text-center">
+                      <button type="submit" class="submit-btn" (click)="onSubmit()" [disabled]="!form.valid" *ngIf="tyepMode() !== 'View'">
+                        <span *ngIf="tyepMode() == 'Add'">{{
+                          "actions.add" | translate
+                          }}</span>
+                        <span *ngIf="tyepMode() == 'Edit'">{{
+                          "actions.edit" | translate
+                          }}</span>
+                      </button>
+                      <button type="button" class="cancel-btn" (click)="cancel()">
+                        {{ "actions.cancel" | translate }}
+                      </button>
+                    </div>
+                  </div>
+                </ng-template>
+              </p-step-panel>
+            </p-step-panels>
+          </p-stepper>
+  
+       
+        </form>
+      </div>
+    </div>
+  </div>
+  <app-dialog [visible]="showConfirmMessage">
+    <button class="dialog-close-btn btn btn-default" (click)="showConfirmMessage = false">
+      {{ "actions.close" | translate }}
+    </button>
+    <button class="dialog-close-btn btn btn-danger" (click)="onConfirmMessage()">
+      {{ "actions.confirm" | translate }}
+    </button>
+  </app-dialog>
+  
