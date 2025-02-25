@@ -21,43 +21,43 @@ import { StepperModule } from 'primeng/stepper';
 import { GalleryComponent } from '../../../components/gallery/gallery.component';
 import { environment } from '../../../../environments/environment';
 import { Validations } from '../../../validations';
-const global_PageName='products.pageName';
-const global_routeUrl ='product'
-const global_API_details='product'+'/GetById';
-const global_API_create='product'+'/Create';
-const global_API_update='product'+'/Update';
+const global_PageName = 'products.pageName';
+const global_routeUrl = 'product'
+const global_API_details = 'product' + '/GetById';
+const global_API_create = 'product' + '/Create';
+const global_API_update = 'product' + '/Update';
 
 @Component({
   selector: 'app-products-details',
   standalone: true,
-  imports: [ReactiveFormsModule,CheckBoxComponent,GalleryComponent,StepperModule ,SelectComponent,EditorComponent,EditModeImageComponent,TitleCasePipe,TranslatePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
+  imports: [ReactiveFormsModule, CheckBoxComponent, GalleryComponent, StepperModule, SelectComponent, EditorComponent, EditModeImageComponent, TitleCasePipe, TranslatePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
   templateUrl: './products-details.component.html',
   styleUrl: './products-details.component.scss'
 })
 export class ProductsDetailsComponent {
 
 
-  pageName =signal<string>(global_PageName);
+  pageName = signal<string>(global_PageName);
   private ApiService = inject(ApiService)
   private router = inject(Router)
-    private imageUrl = environment.baseImageUrl
+  private imageUrl = environment.baseImageUrl
 
   private route = inject(ActivatedRoute)
   showConfirmMessage: boolean = false
   private confirm = inject(ConfirmMsgService)
-  categoryList:any[]=[]
-  discountType:any[]=[
+  categoryList: any[] = []
+  discountType: any[] = [
     {
-      name:'Amount',
-      code:1
+      name: 'Amount',
+      code: 1
     },
     {
-      name:'Precentage',
-      code:2
+      name: 'Precentage',
+      code: 2
     }
 
   ]
-  hasDiscount=false
+  hasDiscount = false
   imageList: any;
   form = new FormGroup({
     enName: new FormControl('', {
@@ -80,34 +80,34 @@ export class ProductsDetailsComponent {
         Validators.required
       ]
     }),
-    stockQuantity:new FormControl('', {
+    stockQuantity: new FormControl('', {
       validators: [
         Validators.required
       ]
     }),
-    hasDiscount:new FormControl<boolean>(false),
-    discountType: new FormControl<any>('',{
+    hasDiscount: new FormControl<boolean>(false),
+    discountType: new FormControl<any>('', {
       validators: [
         Validators.required,
       ],
-     }),
-     amount: new FormControl<any>('',{
+    }),
+    amount: new FormControl<any>('', {
       validators: [
         Validators.required,
         Validations.onlyNumberValidator()
       ],
-     }),
+    }),
     image: new FormControl<any>([]),
-    id:new FormControl(this.getID|0),
-    categoryId:new FormControl('',{
+    id: new FormControl(this.getID | 0),
+    categoryId: new FormControl('', {
       validators: [
         Validators.required,
       ],
-     })
+    })
   })
 
   bredCrumb: IBreadcrumb = {
-    crumbs: [ ]
+    crumbs: []
   }
 
   editImageProps: IEditImage = {
@@ -126,12 +126,12 @@ export class ProductsDetailsComponent {
   get getID() {
     return this.route.snapshot.params['id']
   }
-  
-    selectedLang: any;
-    languageService = inject(LanguageService);
+
+  selectedLang: any;
+  languageService = inject(LanguageService);
 
   ngOnInit() {
-   
+
     this.pageName.set(global_PageName)
     this.getBreadCrumb();
     this.getMainCategory()
@@ -140,21 +140,21 @@ export class ProductsDetailsComponent {
       this.getBreadCrumb();
       this.getMainCategory()
     });
- 
+
 
     this.form.get('hasDiscount')?.valueChanges.subscribe((value: any) => {
-      if(this.tyepMode()=='Add'){
+      if (this.tyepMode() == 'Add') {
         this.form.get('discountType')?.reset();
         this.form.get('amount')?.reset();
       }
-    
+
       if (value) {
-        this.hasDiscount=true
+        this.hasDiscount = true
         this.form.get('discountType')?.setValidators([Validators.required]);
         this.form.get('amount')?.setValidators([Validators.required]);
-        
+
       } else {
-        this.hasDiscount=false
+        this.hasDiscount = false
         this.form.get('discountType')?.setValue(0);
         this.form.get('amount')?.setValue(0);
         this.form.get('discountType')?.clearValidators();
@@ -162,7 +162,7 @@ export class ProductsDetailsComponent {
       }
       this.form.get('discountType')?.updateValueAndValidity();
       this.form.get('amount')?.updateValueAndValidity();
-      console.log("ProductsDetailsComponent  this.form.get   this.form.value:",  this.form.value)
+      console.log("ProductsDetailsComponent  this.form.get   this.form.value:", this.form.value)
     });
 
     if (this.tyepMode() !== 'Add')
@@ -171,10 +171,10 @@ export class ProductsDetailsComponent {
 
   tyepMode() {
     const url = this.router.url;
-    let result='Add'
-    if (url.includes('edit')) result='Edit'
-    else if (url.includes('view')) result= 'View'
-    else result= 'Add'
+    let result = 'Add'
+    if (url.includes('edit')) result = 'Edit'
+    else if (url.includes('view')) result = 'View'
+    else result = 'Add'
     return result
   }
 
@@ -182,33 +182,33 @@ export class ProductsDetailsComponent {
     this.bredCrumb = {
       crumbs: [
         {
-          label:  this.languageService.translate('Home'),
+          label: this.languageService.translate('Home'),
           routerLink: '/dashboard',
         },
         {
-          label: this.languageService.translate(this.pageName()+ '_'+this.tyepMode()+'_crumb'),
+          label: this.languageService.translate(this.pageName() + '_' + this.tyepMode() + '_crumb'),
         },
       ]
     }
   }
 
-  getMainCategory(){
+  getMainCategory() {
     this.ApiService.get('MainCategory/GetAll').subscribe((res: any) => {
-      if (res.data){
-        this.categoryList=[]
-        res.data.map((item:any) => {
+      if (res.data) {
+        this.categoryList = []
+        res.data.map((item: any) => {
           this.categoryList.push({
-            name:this.selectedLang=='en'?item.enName:item.arName,
-            code:item.id
+            name: this.selectedLang == 'en' ? item.enName : item.arName,
+            code: item.id
           })
         })
       }
-       
+
     })
   }
   API_getItemDetails() {
-    this.ApiService.get(`${global_API_details}`,{id:this.getID}).subscribe((res: any) => {
-      if (res.data){
+    this.ApiService.get(`${global_API_details}`, { id: this.getID }).subscribe((res: any) => {
+      if (res.data) {
         this.form.patchValue(res.data)
         this.imageList = res.data.image;
         if (this.imageList.length != 0) {
@@ -244,57 +244,57 @@ export class ProductsDetailsComponent {
   //       console.error('Error processing files:', error);
   //     });
   // }
-  goToActivePage_2(){
+  goToActivePage_2() {
     console.log(this.form.value)
     this.form.patchValue({
-      amount:this.form.value.amount
+      amount: this.form.value.amount
     })
   }
-  goToActivePage_1(){
-    if(this.tyepMode()=='Add'){
+  goToActivePage_1() {
+    if (this.tyepMode() == 'Add') {
       // this.imageList=this.form.value.image;
       // this.addUrltoMedia(this.imageList);
 
       // console.log("ProductsDetailsComponent  goToActivePage_1  this.form.value:", this.form.value)
       // console.log("ProductsDetailsComponent  goToActivePage_1   this.imageList:",  this.imageList)
     }
-  
 
-    
+
+
   }
   onSubmit() {
-    if(this.form.value.image){
-      let x =   this.form.value.image.map((re:any)=>({
-           ...re,
-           "id": 0,
-           "productId": +this.getID||0,
-         }))
-         this.form.patchValue({
-           image:x
-         })
-       }
+    if (this.form.value.image) {
+      let x = this.form.value.image.map((re: any) => ({
+        ...re,
+        "id": 0,
+        "productId": +this.getID || 0,
+      }))
+      this.form.patchValue({
+        image: x
+      })
+    }
     const payload = {
       ...this.form.value,
     }
 
 
-    if (this.tyepMode() == 'Add'){
+    if (this.tyepMode() == 'Add') {
 
       this.API_forAddItem(payload)
 
     }
-    else{
+    else {
       this.API_forEditItem(payload)
     }
   }
 
-  navigateToPageTable(){
+  navigateToPageTable() {
     this.router.navigateByUrl(global_routeUrl)
   }
 
   cancel() {
     const hasValue = this.confirm.formHasValue(this.form)
-    if (hasValue && this.tyepMode()=='Edit')
+    if (hasValue && this.tyepMode() == 'Edit')
       this.showConfirmMessage = !this.showConfirmMessage
     else
       this.navigateToPageTable()

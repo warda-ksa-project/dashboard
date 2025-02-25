@@ -43,7 +43,7 @@ export class CountriesDetailsComponent implements OnInit {
   private route = inject(ActivatedRoute)
   showConfirmMessage: boolean = false
   private confirm = inject(ConfirmMsgService)
-  translateService=inject(TranslateService)
+  translateService = inject(TranslateService)
   editMode: boolean = false;
 
 
@@ -98,7 +98,7 @@ export class CountriesDetailsComponent implements OnInit {
     const control = this.form.get('img');
     return control?.touched && control?.hasError('required') || false;
   }
- selectedLang: any;
+  selectedLang: any;
   languageService = inject(LanguageService);
   ngOnInit() {
     this.pageName.set('country.pageName')
@@ -107,7 +107,7 @@ export class CountriesDetailsComponent implements OnInit {
       this.selectedLang = this.languageService.translationService.currentLang;
       this.getBreadCrumb();
     });
-     if (this.tyepMode() !== 'Add')
+    if (this.tyepMode() !== 'Add')
       this.getCountryDetails()
   }
 
@@ -123,11 +123,11 @@ export class CountriesDetailsComponent implements OnInit {
     this.bredCrumb = {
       crumbs: [
         {
-          label:  this.languageService.translate('Home'),
+          label: this.languageService.translate('Home'),
           routerLink: '/dashboard',
         },
         {
-          label: this.languageService.translate(this.pageName()+ '_'+this.tyepMode()+'_crumb'),
+          label: this.languageService.translate(this.pageName() + '_' + this.tyepMode() + '_crumb'),
         },
       ]
     }
@@ -143,10 +143,10 @@ export class CountriesDetailsComponent implements OnInit {
     }
   };
   getCountryDetails() {
-    this.ApiService.get(`Country/GetById`,{id:this.countryID}).subscribe((res: any) => {
-      if (res.data){
+    this.ApiService.get(`Country/GetById`, { id: this.countryID }).subscribe((res: any) => {
+      if (res.data) {
         this.form.patchValue(res.data)
-        this.editImageProps.props.imgSrc = 'https://wardaweb-001-site1.qtempurl.com'+res.data.image;
+        this.editImageProps.props.imgSrc = 'https://wardaweb-001-site1.qtempurl.com' + res.data.image;
         this.editMode = true;
       }
     })
@@ -156,7 +156,7 @@ export class CountriesDetailsComponent implements OnInit {
     console.log('ff', this.form.value)
     const payload = {
       ...this.form.value,
-      id: this.countryID||0,
+      id: this.countryID || 0,
     }
     if (this.tyepMode() === 'Add')
       this.addCountry(payload)

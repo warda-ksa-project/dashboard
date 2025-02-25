@@ -20,33 +20,33 @@ import { SelectComponent } from '../../../components/select/select.component';
 import { environment } from '../../../../environments/environment';
 import { GalleryComponent } from '../../../components/gallery/gallery.component';
 
-const global_PageName='sub_category.pageName';
-const global_routeUrl ='sub-category'
-const global_API_details='subCategory'+'/GetSubCategoryById';
-const global_API_create='subCategory'+'/Create';
-const global_API_update='subCategory'+'/Update';
+const global_PageName = 'sub_category.pageName';
+const global_routeUrl = 'sub-category'
+const global_API_details = 'subCategory' + '/GetSubCategoryById';
+const global_API_create = 'subCategory' + '/Create';
+const global_API_update = 'subCategory' + '/Update';
 
 @Component({
   selector: 'app-sub-category-details',
   standalone: true,
-  imports: [ReactiveFormsModule,GalleryComponent,SelectComponent,EditModeImageComponent,TitleCasePipe,TranslatePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
+  imports: [ReactiveFormsModule, GalleryComponent, SelectComponent, EditModeImageComponent, TitleCasePipe, TranslatePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
   templateUrl: './sub-category-details.component.html',
   styleUrl: './sub-category-details.component.scss'
 })
 export class SubCategoryDetailsComponent {
 
-  pageName =signal<string>(global_PageName);
+  pageName = signal<string>(global_PageName);
   private ApiService = inject(ApiService)
   private router = inject(Router)
   private route = inject(ActivatedRoute)
   showConfirmMessage: boolean = false
   private confirm = inject(ConfirmMsgService)
   private imageUrl = environment.baseImageUrl
-  
-  parentCategoryList:any[]=[]
-  imageList: any=[{
+
+  parentCategoryList: any[] = []
+  imageList: any = [{
     src: '',
-    mediaTypeEnum:1
+    mediaTypeEnum: 1
   }];
 
   form = new FormGroup({
@@ -60,17 +60,17 @@ export class SubCategoryDetailsComponent {
         Validators.required
       ]
     }),
-    parentCategoryId: new FormControl('',{
+    parentCategoryId: new FormControl('', {
       validators: [
         Validators.required
       ]
     }),
     image: new FormControl(''),
-    id:new FormControl(this.getID|0)
+    id: new FormControl(this.getID | 0)
   })
 
   bredCrumb: IBreadcrumb = {
-    crumbs: [ ]
+    crumbs: []
   }
 
   editImageProps: IEditImage = {
@@ -89,12 +89,12 @@ export class SubCategoryDetailsComponent {
   get getID() {
     return this.route.snapshot.params['id']
   }
-  
-    selectedLang: any;
-    languageService = inject(LanguageService);
+
+  selectedLang: any;
+  languageService = inject(LanguageService);
 
   ngOnInit() {
-   
+
     this.pageName.set(global_PageName)
     this.getBreadCrumb();
     this.getMainCategory()
@@ -109,10 +109,10 @@ export class SubCategoryDetailsComponent {
 
   tyepMode() {
     const url = this.router.url;
-    let result='Add'
-    if (url.includes('edit')) result='Edit'
-    else if (url.includes('view')) result= 'View'
-    else result= 'Add'
+    let result = 'Add'
+    if (url.includes('edit')) result = 'Edit'
+    else if (url.includes('view')) result = 'View'
+    else result = 'Add'
     return result
   }
 
@@ -120,36 +120,36 @@ export class SubCategoryDetailsComponent {
     this.bredCrumb = {
       crumbs: [
         {
-          label:  this.languageService.translate('Home'),
+          label: this.languageService.translate('Home'),
           routerLink: '/dashboard',
         },
         {
-          label: this.languageService.translate(this.pageName()+ '_'+this.tyepMode()+'_crumb'),
+          label: this.languageService.translate(this.pageName() + '_' + this.tyepMode() + '_crumb'),
         },
       ]
     }
   }
 
-  getMainCategory(){
+  getMainCategory() {
     this.ApiService.get('MainCategory/GetAll').subscribe((res: any) => {
-      if (res.data){
-        this.parentCategoryList=[]
-        res.data.map((item:any) => {
+      if (res.data) {
+        this.parentCategoryList = []
+        res.data.map((item: any) => {
           this.parentCategoryList.push({
-            name:this.selectedLang=='en'?item.enName:item.arName,
-            code:item.id
+            name: this.selectedLang == 'en' ? item.enName : item.arName,
+            code: item.id
           })
         })
       }
-       
+
     })
   }
   API_getItemDetails() {
-    this.ApiService.get(`${global_API_details}`,{SubCategoryId:this.getID}).subscribe((res: any) => {
-      if (res){
+    this.ApiService.get(`${global_API_details}`, { SubCategoryId: this.getID }).subscribe((res: any) => {
+      if (res) {
         this.form.patchValue(res.data)
         if (res.data.image) {
-          this.imageList[0].src= res.data.image;
+          this.imageList[0].src = res.data.image;
           this.addUrltoMedia(this.imageList);
         }
       }
@@ -170,13 +170,13 @@ export class SubCategoryDetailsComponent {
       this.API_forEditItem(payload)
   }
 
-  navigateToPageTable(){
+  navigateToPageTable() {
     this.router.navigateByUrl(global_routeUrl)
   }
 
   cancel() {
     const hasValue = this.confirm.formHasValue(this.form)
-    if (hasValue && this.tyepMode()=='Edit')
+    if (hasValue && this.tyepMode() == 'Edit')
       this.showConfirmMessage = !this.showConfirmMessage
     else
       this.navigateToPageTable()

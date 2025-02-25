@@ -17,40 +17,40 @@ import { EditModeImageComponent } from '../../../components/edit-mode-image/edit
 import { StepperModule } from 'primeng/stepper';
 import { Validations } from '../../../validations';
 
-const global_PageName='trader.pageName';
-const global_routeUrl ='trader'
-const global_API_details='Trader'+'/GetById';
-const global_API_create='Trader'+'/Create';
-const global_API_update='Trader'+'/Update';
+const global_PageName = 'trader.pageName';
+const global_routeUrl = 'trader'
+const global_API_details = 'Trader' + '/GetById';
+const global_API_create = 'Trader' + '/Create';
+const global_API_update = 'Trader' + '/Update';
 
 @Component({
   selector: 'app-trader-details',
   standalone: true,
-  imports: [ReactiveFormsModule,StepperModule,EditModeImageComponent,TitleCasePipe,TranslatePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
+  imports: [ReactiveFormsModule, StepperModule, EditModeImageComponent, TitleCasePipe, TranslatePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
   templateUrl: './trader-details.component.html',
   styleUrl: './trader-details.component.scss'
 })
 export class TraderDetailsComponent {
 
-  pageName =signal<string>(global_PageName);
+  pageName = signal<string>(global_PageName);
   private ApiService = inject(ApiService)
   private router = inject(Router)
 
   private route = inject(ActivatedRoute)
   showConfirmMessage: boolean = false
   private confirm = inject(ConfirmMsgService)
-adress:any[]=[{
-  expalinedAddress:'',
-  street:'',
-  buildNo:'',
-  flatNo:'',
-  district:'',
-  floorNo:'',
-  latitude:'',
-  logitude:'',
-  userId:Number(localStorage.getItem('userId'))||0
-}]
-// isAddressValid:boolean=false
+  adress: any[] = [{
+    expalinedAddress: '',
+    street: '',
+    buildNo: '',
+    flatNo: '',
+    district: '',
+    floorNo: '',
+    latitude: '',
+    logitude: '',
+    userId: Number(localStorage.getItem('userId')) || 0
+  }]
+  // isAddressValid:boolean=false
   form = new FormGroup({
     name: new FormControl('', {
       validators: [
@@ -68,7 +68,7 @@ adress:any[]=[{
         Validators.required,
         Validations.mobileStartWithNumber_5_Validator(),
         Validators.maxLength(9),
-        Validators.minLength(9),      ],
+        Validators.minLength(9),],
     }),
     password: new FormControl('', {
       validators: [
@@ -76,85 +76,85 @@ adress:any[]=[{
       ]
     }),
 
-    storeName:new FormControl('', {
+    storeName: new FormControl('', {
       validators: [
         Validators.required
       ]
     }),
-    cr: new FormControl<any>('',{
+    cr: new FormControl<any>('', {
       validators: [
         Validators.required
       ]
     }),
-    license: new FormControl<any>('',{
+    license: new FormControl<any>('', {
       validators: [
         Validators.required
       ]
     }),
-    iban: new FormControl<any>('',{
+    iban: new FormControl<any>('', {
       validators: [
         Validators.required
       ]
     }),
 
-    numberOfBranches: new FormControl <any>('',{
+    numberOfBranches: new FormControl<any>('', {
       validators: [
         Validators.required,
         Validations.onlyNumberValidator()
       ]
     }),
-    reasonForRejection: new FormControl('',{
+    reasonForRejection: new FormControl('', {
       validators: [
         Validators.required
       ]
     }),
     adress: new FormControl([]),
-    expalinedAddress: new FormControl('',{
+    expalinedAddress: new FormControl('', {
       validators: [
-        
+
       ]
     }),
 
-    street: new FormControl('',{
+    street: new FormControl('', {
       validators: [
-        
+
       ]
     }),
-    district: new FormControl('',{
+    district: new FormControl('', {
       validators: [
-        
+
       ]
     }),
-    buildNo: new FormControl<any>('',{
-      validators: [
-        Validations.onlyNumberValidator()
-      ]
-    }),
-    floorNo: new FormControl<any>('',{
+    buildNo: new FormControl<any>('', {
       validators: [
         Validations.onlyNumberValidator()
       ]
     }),
-    flatNo: new FormControl<any>('',{
+    floorNo: new FormControl<any>('', {
       validators: [
         Validations.onlyNumberValidator()
       ]
     }),
-    logitude: new FormControl('',{
+    flatNo: new FormControl<any>('', {
+      validators: [
+        Validations.onlyNumberValidator()
+      ]
+    }),
+    logitude: new FormControl('', {
       validators: [
         Validations.decimalNumberValidators()
       ]
     }),
-    latitude: new FormControl('',{
+    latitude: new FormControl('', {
       validators: [
         Validations.decimalNumberValidators()
       ]
     }),
-    id:new FormControl(this.getID|0),
+    id: new FormControl(this.getID | 0),
   })
 
   bredCrumb: IBreadcrumb = {
-    crumbs: [ ]
+    crumbs: []
   }
 
   editImageProps: IEditImage = {
@@ -195,97 +195,97 @@ adress:any[]=[{
   get getID() {
     return this.route.snapshot.params['id']
   }
-  
-    selectedLang: any;
-    languageService = inject(LanguageService);
+
+  selectedLang: any;
+  languageService = inject(LanguageService);
 
   ngOnInit() {
-   
+
     this.pageName.set(global_PageName)
     this.getBreadCrumb();
     this.languageService.translationService.onLangChange.subscribe(() => {
       this.selectedLang = this.languageService.translationService.currentLang;
       this.getBreadCrumb();
     });
-    
-    this.form.get('street')?.valueChanges.subscribe(res=>{
-       this.adress[0].street=res;
-       this.form.patchValue({
-        adress:this.adress[0]
-       })
-    })
-    this.form.get('buildNo')?.valueChanges.subscribe(res=>{
-       this.adress[0].buildNo=+res
-        this.form.patchValue({
-        adress:this.adress[0]
-       })
 
-
+    this.form.get('street')?.valueChanges.subscribe(res => {
+      this.adress[0].street = res;
+      this.form.patchValue({
+        adress: this.adress[0]
+      })
     })
-    this.form.get('flatNo')?.valueChanges.subscribe(res=>{
-       this.adress[0].flatNo=+res
-               this.form.patchValue({
-        adress:this.adress[0]
-       })
+    this.form.get('buildNo')?.valueChanges.subscribe(res => {
+      this.adress[0].buildNo = +res
+      this.form.patchValue({
+        adress: this.adress[0]
+      })
 
 
     })
-    this.form.get('district')?.valueChanges.subscribe(res=>{
-       this.adress[0].district=res
-               this.form.patchValue({
-        adress:this.adress[0]
-       })
+    this.form.get('flatNo')?.valueChanges.subscribe(res => {
+      this.adress[0].flatNo = +res
+      this.form.patchValue({
+        adress: this.adress[0]
+      })
 
 
     })
-    this.form.get('floorNo')?.valueChanges.subscribe(res=>{
-       this.adress[0].floorNo=+res
-               this.form.patchValue({
-        adress:this.adress[0]
-       })
+    this.form.get('district')?.valueChanges.subscribe(res => {
+      this.adress[0].district = res
+      this.form.patchValue({
+        adress: this.adress[0]
+      })
 
 
     })
-    this.form.get('latitude')?.valueChanges.subscribe(res=>{
-       this.adress[0].latitude=res
-               this.form.patchValue({
-        adress:this.adress[0]
-       })
+    this.form.get('floorNo')?.valueChanges.subscribe(res => {
+      this.adress[0].floorNo = +res
+      this.form.patchValue({
+        adress: this.adress[0]
+      })
 
 
     })
-    this.form.get('logitude')?.valueChanges.subscribe(res=>{
-       this.adress[0].logitude=res
-               this.form.patchValue({
-        adress:this.adress[0]
-       })
+    this.form.get('latitude')?.valueChanges.subscribe(res => {
+      this.adress[0].latitude = res
+      this.form.patchValue({
+        adress: this.adress[0]
+      })
 
 
     })
-    this.form.get('expalinedAddress')?.valueChanges.subscribe(res=>{
-       this.adress[0].expalinedAddress=res
-               this.form.patchValue({
-        adress:this.adress[0]
-       })
+    this.form.get('logitude')?.valueChanges.subscribe(res => {
+      this.adress[0].logitude = res
+      this.form.patchValue({
+        adress: this.adress[0]
+      })
 
 
     })
-    this.form.get('adress')?.valueChanges.subscribe(res=>{
-     
-     this.isAddressVaild()
+    this.form.get('expalinedAddress')?.valueChanges.subscribe(res => {
+      this.adress[0].expalinedAddress = res
+      this.form.patchValue({
+        adress: this.adress[0]
+      })
 
 
-   })
+    })
+    this.form.get('adress')?.valueChanges.subscribe(res => {
+
+      this.isAddressVaild()
+
+
+    })
     if (this.tyepMode() !== 'Add')
       this.API_getItemDetails()
   }
 
   tyepMode() {
     const url = this.router.url;
-    let result='Add'
-    if (url.includes('edit')) result='Edit'
-    else if (url.includes('view')) result= 'View'
-    else result= 'Add'
+    let result = 'Add'
+    if (url.includes('edit')) result = 'Edit'
+    else if (url.includes('view')) result = 'View'
+    else result = 'Add'
     return result
   }
 
@@ -293,11 +293,11 @@ adress:any[]=[{
     this.bredCrumb = {
       crumbs: [
         {
-          label:  this.languageService.translate('Home'),
+          label: this.languageService.translate('Home'),
           routerLink: '/dashboard',
         },
         {
-          label: this.languageService.translate(this.pageName()+ '_'+this.tyepMode()+'_crumb'),
+          label: this.languageService.translate(this.pageName() + '_' + this.tyepMode() + '_crumb'),
         },
       ]
     }
@@ -314,12 +314,12 @@ adress:any[]=[{
   //         })
   //       })
   //     }
-       
+
   //   })
   // }
   API_getItemDetails() {
-    this.ApiService.get(`${global_API_details}`,{id:this.getID}).subscribe((res: any) => {
-      if (res.data){
+    this.ApiService.get(`${global_API_details}`, { id: this.getID }).subscribe((res: any) => {
+      if (res.data) {
         this.form.patchValue(res.data)
         // this.imageList = res.data.image;
         // if (this.imageList.length != 0) {
@@ -355,15 +355,15 @@ adress:any[]=[{
   //     });
   // }
 
-  setPayload(keysToRemove: string[],payload:any) {
-    console.log("TraderDetailsComponent  setPayload   this.form.value:",  this.form.value)
+  setPayload(keysToRemove: string[], payload: any) {
+    console.log("TraderDetailsComponent  setPayload   this.form.value:", this.form.value)
     keysToRemove.forEach((key) => {
       this.form.get(key)?.clearValidators();
       this.form.get(key)?.updateValueAndValidity();
       delete payload[key];
 
     });
-    console.log("TraderDetailsComponent  setPayload   this.form.value:",  this.form.value)
+    console.log("TraderDetailsComponent  setPayload   this.form.value:", this.form.value)
 
   }
   onSubmit() {
@@ -380,40 +380,40 @@ adress:any[]=[{
 
     const payload = {
       ...this.form.value,
-    numberOfBranches:+this.form.value.numberOfBranches,
-    cr: this.form.value.cr[0].image,
-    license: this.form.value.license[0].image,
-    iban: this.form.value.iban[0].image,
+      numberOfBranches: +this.form.value.numberOfBranches,
+      cr: this.form.value.cr[0].image,
+      license: this.form.value.license[0].image,
+      iban: this.form.value.iban[0].image,
     }
 
     this.setPayload([
       'expalinedAddress',
-      'street' ,
+      'street',
       'district',
       'buildNo',
       'floorNo',
       'flatNo',
       'logitude',
       'latitude'
-    ],payload)
-    console.log('ggg',payload)
-    
-    if (this.tyepMode() == 'Add'){
+    ], payload)
+    console.log('ggg', payload)
+
+    if (this.tyepMode() == 'Add') {
 
       this.API_forAddItem(payload)
 
     }
-    else{
+    else {
       this.API_forEditItem(payload)
     }
   }
 
-  navigateToPageTable(){
+  navigateToPageTable() {
     this.router.navigateByUrl(global_routeUrl)
   }
 
-  isAddressVaild(){
-    const isAddressValid = this.adress.every((obj:any) => 
+  isAddressVaild() {
+    const isAddressValid = this.adress.every((obj: any) =>
       Object.values(obj).every(value => value !== null && value !== undefined && value !== '')
     );
     console.log("isAddressVaild  isAddressValid:", isAddressValid)
@@ -422,7 +422,7 @@ adress:any[]=[{
   }
   cancel() {
     const hasValue = this.confirm.formHasValue(this.form)
-    if (hasValue && this.tyepMode()=='Edit')
+    if (hasValue && this.tyepMode() == 'Edit')
       this.showConfirmMessage = !this.showConfirmMessage
     else
       this.navigateToPageTable()

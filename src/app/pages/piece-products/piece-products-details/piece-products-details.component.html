@@ -1,224 +1,223 @@
 <div class="faqs-form-container container-fluid">
-    <div class="row">
-      <div class="page-details mb-3">
-        <div class="title mb-4">
-          <h2>
-            {{ tyepMode() | translate | titlecase }}
-            {{ "piece_products.pageTitle" | translate | titlecase }}
-          </h2>
-        </div>
-        <div class="breadcrumb">
-          <app-breadcrump [breadcrumbProps]="bredCrumb"></app-breadcrump>
-        </div>
+  <div class="row">
+    <div class="page-details mb-3">
+      <div class="title mb-4">
+        <h2>
+          {{ tyepMode() | translate | titlecase }}
+          {{ "piece_products.pageTitle" | translate | titlecase }}
+        </h2>
       </div>
-    </div>
-    <div class="form-container">
-      <div class="reactive-form">
-        <form [formGroup]="form" class="w-70">
-          <p-stepper [value]="1">
-            <div class="w-100">
-              <p-step-list class="w-100">
-                <p-step [value]="1">{{
-                  "piece_products.form.general" | translate
-                }}</p-step>
-                <p-step [value]="2">{{
-                  "piece_products.form.pricing" | translate
-                }}</p-step>
-              </p-step-list>
-            </div>
-            <p-step-panels>
-              <p-step-panel [value]="1">
-                <ng-template #content let-activateCallback="activateCallback">
-                  <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
-                      <app-input-text
-                        [readOnly]="tyepMode() == 'View'"
-                        [disabled]="tyepMode() == 'View'"
-                        [label]="'piece_products.form.enName'"
-                        [control]="form.get('enName')"
-                      ></app-input-text>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
-                      <app-input-text
-                        [readOnly]="tyepMode() == 'View'"
-                        [disabled]="tyepMode() == 'View'"
-                        [label]="'piece_products.form.arName'"
-                        [control]="form.get('arName')"
-                      ></app-input-text>
-                    </div>
-  
-                    <div class="mt-2 col-lg-6 col-md-6 col-sm-12 mt-4">
-                      <app-editor
-                        [readOnly]="tyepMode() == 'View'"
-                        [disabled]="tyepMode() == 'View'"
-                        [label]="'copone.form.desc_en'"
-                        [control]="form.get('enDescription')"
-                      ></app-editor>
-                    </div>
-                    <div class="mt-2 col-lg-6 col-md-6 col-sm-12 mt-4">
-                      <app-editor
-                        [readOnly]="tyepMode() == 'View'"
-                        [disabled]="tyepMode() == 'View'"
-                        [label]="'copone.form.desc_ar'"
-                        [control]="form.get('arDescription')"
-                      ></app-editor>
-                    </div>
-                    <div
-                      class="col-lg-6 col-md-6 col-sm-12 mt-3"
-                      *ngIf="tyepMode() != 'Add'"
-                    >
-                      <div class="table-container">
-                        <div class="title-section">
-                          <p>{{ "piece_products.imgs" | translate }}</p>
-                        </div>
-  
-                        <div class="order-image-desc">
-                          <ng-container *ngIf="this.imageList?.length != 0">
-                            <app-gallery [mediaList]="imageList"></app-gallery>
-                          </ng-container>
-                          <ng-container *ngIf="this.imageList?.length == 0">
-                            <img
-                              src="assets/images/empty-state.png"
-                              alt="empty state"
-                            />
-                            <p>{{ "order.no_image" | translate }}</p>
-                          </ng-container>
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <div
-                        class="upload-image-section mt-4 mb-4"
-                        *ngIf="!editMode"
-                      >
-                        <label class="mb-2">{{
-                          "shared.upload_img" | translate
-                        }}</label>
-                        <app-upload-file
-                          [isMulti]="true"
-                          formControlName="image"
-                        ></app-upload-file>
-                        <!-- <div *ngIf="isRequiredError" class="error-message mt-2">
-                            {{'shared.img_required'|translate}}
-                          </div> -->
-                      </div>
-                      <div class="edit-mode-section mt-2" *ngIf="editMode">
-                        <label class="mb-2">{{
-                          "shared.uploaded_img" | translate
-                        }}</label>
-                        <app-edit-mode-image
-                          [editImageProps]="editImageProps"
-                        ></app-edit-mode-image>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="d-flex mt-5 justify-content-end">
-                    <button
-                      class="btn btn-primary-bk"
-                      (click)="activateCallback(2);goToActivePage_2()"
-                    >
-                      {{ "actions.next" | translate }}
-                    </button>
-                  </div>
-                </ng-template>
-              </p-step-panel>
-  
-              <p-step-panel [value]="2">
-                <ng-template #content let-activateCallback="activateCallback">
-                  <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
-                      <app-select
-                        [placeholder]="form.get('categoryId')?.value"
-                        class="w-100"
-                        [list]="categoryList"
-                        [label]="'piece_products.form.categoryId'"
-                        [control]="form.get('categoryId')"
-                      >
-                      </app-select>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 mt-5 pt-1">
-                      <app-input-text
-                        [readOnly]="tyepMode() == 'View'"
-                        [disabled]="tyepMode() == 'View'"
-                        [label]="'piece_products.form.stockQuantity'"
-                        [control]="form.get('stockQuantity')"
-                      ></app-input-text>
-                    </div>
-                      <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
-                        <app-check-box
-                          [isToggle]="true"
-                          [label]="'piece_products.form.hasDiscount'"
-                          [initValue]="form.get('hasDiscount')?.value || false"
-                          [control]="form.get('hasDiscount')"
-                        ></app-check-box>
-                      </div>
-                      <div class="row" *ngIf="hasDiscount">
-                        <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
-                          <app-select
-                            [placeholder]="form.get('discountType')?.value"
-                            class="w-100"
-                            [list]="discountType"
-                            [label]="'piece_products.form.discountType'"
-                            [control]="form.get('discountType')"
-                          >
-                          </app-select>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 mt-4 pt-4">
-                          <app-input-text
-                            [readOnly]="tyepMode() == 'View'"
-                            [disabled]="tyepMode() == 'View'"
-                            [label]="'piece_products.form.amount'"
-                            [control]="form.get('amount')"
-                          ></app-input-text>
-                        </div>
-                      </div>
-                  </div>
-                  <div class="d-flex justify-content-between">
-                    <div class="mt-5">
-                      <button
-                        class="btn btn-primary-bk"
-                        (click)="activateCallback(1);goToActivePage_1()"
-                      >
-                        {{ "actions.back" | translate }}
-                      </button>
-                    </div>
-                    <div class="actions mt-5 text-center">
-                      <button
-                        type="submit"
-                        class="submit-btn"
-                        (click)="onSubmit()"
-                        [disabled]="!form.valid"
-                        *ngIf="tyepMode() !== 'View'"
-                      >
-                        <span *ngIf="tyepMode() == 'Add'">{{
-                          "actions.add" | translate
-                        }}</span>
-                        <span *ngIf="tyepMode() == 'Edit'">{{
-                          "actions.edit" | translate
-                        }}</span>
-                      </button>
-                      <button type="button" class="cancel-btn" (click)="cancel()">
-                        {{ "actions.cancel" | translate }}
-                      </button>
-                    </div>
-                  </div>
-                </ng-template>
-              </p-step-panel>
-            </p-step-panels>
-          </p-stepper>
-        </form>
+      <div class="breadcrumb">
+        <app-breadcrump [breadcrumbProps]="bredCrumb"></app-breadcrump>
       </div>
     </div>
   </div>
-  <app-dialog [visible]="showConfirmMessage">
-    <button
-      class="dialog-close-btn btn btn-default"
-      (click)="showConfirmMessage = false"
-    >
-      {{ "actions.close" | translate }}
-    </button>
-    <button class="dialog-close-btn btn btn-danger" (click)="onConfirmMessage()">
-      {{ "actions.confirm" | translate }}
-    </button>
-  </app-dialog>
-  
+  <div class="form-container">
+    <div class="reactive-form">
+      <form [formGroup]="form" class="w-70">
+        <p-stepper [value]="1">
+          <div class="w-100">
+            <p-step-list class="w-100">
+              <p-step [value]="1">{{
+                "piece_products.form.general" | translate
+              }}</p-step>
+              <p-step [value]="2">{{
+                "piece_products.form.pricing" | translate
+              }}</p-step>
+            </p-step-list>
+          </div>
+          <p-step-panels>
+            <p-step-panel [value]="1">
+              <ng-template #content let-activateCallback="activateCallback">
+                <div class="row">
+                  <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
+                    <app-input-text
+                      [readOnly]="tyepMode() == 'View'"
+                      [disabled]="tyepMode() == 'View'"
+                      [label]="'piece_products.form.enName'"
+                      [control]="form.get('enName')"
+                    ></app-input-text>
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
+                    <app-input-text
+                      [readOnly]="tyepMode() == 'View'"
+                      [disabled]="tyepMode() == 'View'"
+                      [label]="'piece_products.form.arName'"
+                      [control]="form.get('arName')"
+                    ></app-input-text>
+                  </div>
+
+                  <div class="mt-2 col-lg-6 col-md-6 col-sm-12 mt-4">
+                    <app-editor
+                      [readOnly]="tyepMode() == 'View'"
+                      [disabled]="tyepMode() == 'View'"
+                      [label]="'copone.form.desc_en'"
+                      [control]="form.get('enDescription')"
+                    ></app-editor>
+                  </div>
+                  <div class="mt-2 col-lg-6 col-md-6 col-sm-12 mt-4">
+                    <app-editor
+                      [readOnly]="tyepMode() == 'View'"
+                      [disabled]="tyepMode() == 'View'"
+                      [label]="'copone.form.desc_ar'"
+                      [control]="form.get('arDescription')"
+                    ></app-editor>
+                  </div>
+                  <div
+                    class="col-lg-6 col-md-6 col-sm-12 mt-3"
+                    *ngIf="tyepMode() != 'Add'"
+                  >
+                    <div class="table-container">
+                      <div class="title-section">
+                        <p>{{ "piece_products.imgs" | translate }}</p>
+                      </div>
+
+                      <div class="order-image-desc">
+                        <ng-container *ngIf="this.imageList?.length != 0">
+                          <app-gallery [mediaList]="imageList"></app-gallery>
+                        </ng-container>
+                        <ng-container *ngIf="this.imageList?.length == 0">
+                          <img
+                            src="assets/images/empty-state.png"
+                            alt="empty state"
+                          />
+                          <p>{{ "order.no_image" | translate }}</p>
+                        </ng-container>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <div
+                      class="upload-image-section mt-4 mb-4"
+                      *ngIf="!editMode"
+                    >
+                      <label class="mb-2">{{
+                        "shared.upload_img" | translate
+                      }}</label>
+                      <app-upload-file
+                        [isMulti]="true"
+                        formControlName="image"
+                      ></app-upload-file>
+                      <!-- <div *ngIf="isRequiredError" class="error-message mt-2">
+                            {{'shared.img_required'|translate}}
+                          </div> -->
+                    </div>
+                    <div class="edit-mode-section mt-2" *ngIf="editMode">
+                      <label class="mb-2">{{
+                        "shared.uploaded_img" | translate
+                      }}</label>
+                      <app-edit-mode-image
+                        [editImageProps]="editImageProps"
+                      ></app-edit-mode-image>
+                    </div>
+                  </div>
+                </div>
+                <div class="d-flex mt-5 justify-content-end">
+                  <button
+                    class="btn btn-primary-bk"
+                    (click)="activateCallback(2); goToActivePage_2()"
+                  >
+                    {{ "actions.next" | translate }}
+                  </button>
+                </div>
+              </ng-template>
+            </p-step-panel>
+
+            <p-step-panel [value]="2">
+              <ng-template #content let-activateCallback="activateCallback">
+                <div class="row">
+                  <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
+                    <app-select
+                      [placeholder]="form.get('categoryId')?.value"
+                      class="w-100"
+                      [list]="categoryList"
+                      [label]="'piece_products.form.categoryId'"
+                      [control]="form.get('categoryId')"
+                    >
+                    </app-select>
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-sm-6 mt-5 pt-1">
+                    <app-input-text
+                      [readOnly]="tyepMode() == 'View'"
+                      [disabled]="tyepMode() == 'View'"
+                      [label]="'piece_products.form.stockQuantity'"
+                      [control]="form.get('stockQuantity')"
+                    ></app-input-text>
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
+                    <app-check-box
+                      [isToggle]="true"
+                      [label]="'piece_products.form.hasDiscount'"
+                      [initValue]="form.get('hasDiscount')?.value || false"
+                      [control]="form.get('hasDiscount')"
+                    ></app-check-box>
+                  </div>
+                  <div class="row" *ngIf="hasDiscount">
+                    <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
+                      <app-select
+                        [placeholder]="form.get('discountType')?.value"
+                        class="w-100"
+                        [list]="discountType"
+                        [label]="'piece_products.form.discountType'"
+                        [control]="form.get('discountType')"
+                      >
+                      </app-select>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 mt-4 pt-4">
+                      <app-input-text
+                        [readOnly]="tyepMode() == 'View'"
+                        [disabled]="tyepMode() == 'View'"
+                        [label]="'piece_products.form.amount'"
+                        [control]="form.get('amount')"
+                      ></app-input-text>
+                    </div>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <div class="mt-5">
+                    <button
+                      class="btn btn-primary-bk"
+                      (click)="activateCallback(1); goToActivePage_1()"
+                    >
+                      {{ "actions.back" | translate }}
+                    </button>
+                  </div>
+                  <div class="actions mt-5 text-center">
+                    <button
+                      type="submit"
+                      class="submit-btn"
+                      (click)="onSubmit()"
+                      [disabled]="!form.valid"
+                      *ngIf="tyepMode() !== 'View'"
+                    >
+                      <span *ngIf="tyepMode() == 'Add'">{{
+                        "actions.add" | translate
+                      }}</span>
+                      <span *ngIf="tyepMode() == 'Edit'">{{
+                        "actions.edit" | translate
+                      }}</span>
+                    </button>
+                    <button type="button" class="cancel-btn" (click)="cancel()">
+                      {{ "actions.cancel" | translate }}
+                    </button>
+                  </div>
+                </div>
+              </ng-template>
+            </p-step-panel>
+          </p-step-panels>
+        </p-stepper>
+      </form>
+    </div>
+  </div>
+</div>
+<app-dialog [visible]="showConfirmMessage">
+  <button
+    class="dialog-close-btn btn btn-default"
+    (click)="showConfirmMessage = false"
+  >
+    {{ "actions.close" | translate }}
+  </button>
+  <button class="dialog-close-btn btn btn-danger" (click)="onConfirmMessage()">
+    {{ "actions.confirm" | translate }}
+  </button>
+</app-dialog>

@@ -60,8 +60,8 @@ export class SubCategoryTableComponent {
     "pageSize": 8,
     "sortingExpression": "",
     "sortingDirection": 0,
-     "enName": "string",
-     "arName": "string"
+     "enName": "",
+     "arName": ""
   }
 
   totalCount: number = 0;
@@ -177,8 +177,8 @@ export class SubCategoryTableComponent {
       "pageSize": 8,
       "sortingExpression": "",
       "sortingDirection": 0,
-        "enName": "string",
-        "arName": "string"
+        "enName": "",
+        "arName": ""
     };
     this.API_getAll();
     this.showFilter = false

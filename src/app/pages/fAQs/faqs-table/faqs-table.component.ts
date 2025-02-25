@@ -18,7 +18,7 @@ const global_pageName = 'faqs.pageName';
 @Component({
   selector: 'app-faqs',
   standalone: true,
-  imports: [TableComponent,TranslatePipe,TitleCasePipe, PaginationComponent, FormsModule, DrawerComponent, BreadcrumpComponent, RouterModule, InputTextModule, TableSmallScreenComponent],
+  imports: [TableComponent, TranslatePipe, TitleCasePipe, PaginationComponent, FormsModule, DrawerComponent, BreadcrumpComponent, RouterModule, InputTextModule, TableSmallScreenComponent],
   templateUrl: './faqs-table.component.html',
   styleUrl: './faqs-table.component.scss'
 })
@@ -48,7 +48,7 @@ export class FaqsTableComponent {
 
 
   bredCrumb: IBreadcrumb = {
-    crumbs: [ ]
+    crumbs: []
   }
 
   faqSearchCreteria = {
@@ -91,16 +91,16 @@ export class FaqsTableComponent {
       { keyName: 'enTitle', header: this.languageService.translate('faqs.form.question_en'), type: EType.text, show: true },
       { keyName: 'arTitle', header: this.languageService.translate('faqs.form.question_ar'), type: EType.text, show: true },
       { keyName: 'enDescription', header: this.languageService.translate('faqs.form.desc_en'), type: EType.editor, show: true },
-      { keyName: 'arDescription', header:  this.languageService.translate('faqs.form.desc_ar'), type: EType.editor, show: true },
+      { keyName: 'arDescription', header: this.languageService.translate('faqs.form.desc_ar'), type: EType.editor, show: true },
       { keyName: '', header: this.languageService.translate('Actions'), type: EType.actions, actions: this.tableActions, show: true },
 
     ]
     this.columnsSmallTable = [
-      { keyName:  'enTitle', header: this.languageService.translate('faqs.form.question_en'), type: EType.text, showAs: ETableShow.header },
+      { keyName: 'enTitle', header: this.languageService.translate('faqs.form.question_en'), type: EType.text, showAs: ETableShow.header },
       { keyName: 'id', header: 'Id', type: EType.id, show: false },
-      { keyName:  'arTitle' , header: this.languageService.translate('faqs.form.question_ar'), type: EType.editor, showAs: ETableShow.content },
-      { keyName:  'enDescription' , header: this.languageService.translate('faqs.form.desc_en'), type: EType.editor, showAs: ETableShow.content },
-      { keyName:  'arDescription' , header: this.languageService.translate('faqs.form.desc_ar'), type: EType.editor, showAs: ETableShow.content }
+      { keyName: 'arTitle', header: this.languageService.translate('faqs.form.question_ar'), type: EType.editor, showAs: ETableShow.content },
+      { keyName: 'enDescription', header: this.languageService.translate('faqs.form.desc_en'), type: EType.editor, showAs: ETableShow.content },
+      { keyName: 'arDescription', header: this.languageService.translate('faqs.form.desc_ar'), type: EType.editor, showAs: ETableShow.content }
 
     ];
   }
@@ -108,7 +108,7 @@ export class FaqsTableComponent {
     this.bredCrumb = {
       crumbs: [
         {
-          label:  this.languageService.translate('Home'),
+          label: this.languageService.translate('Home'),
           routerLink: '/dashboard',
         },
         {

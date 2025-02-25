@@ -16,15 +16,15 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { LanguageService } from '../../../services/language.service';
 
 const global_PageName = 'contact_us.pageName';
-const global_API_deialis =  'contact/GetById';
-const global_API_create =  'contact/Create';
-const global_API_update =  'contact/Update';
+const global_API_deialis = 'contact/GetById';
+const global_API_create = 'contact/Create';
+const global_API_update = 'contact/Update';
 const global_routeUrl = 'contact-us'
 
 @Component({
   selector: 'app-contact-us-details',
   standalone: true,
-  imports: [ReactiveFormsModule,TranslatePipe, ButtonModule, NgIf, DialogComponent, TitleCasePipe, InputTextComponent, EditorComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
+  imports: [ReactiveFormsModule, TranslatePipe, ButtonModule, NgIf, DialogComponent, TitleCasePipe, InputTextComponent, EditorComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
   templateUrl: './contact-us-details.component.html',
   styleUrl: './contact-us-details.component.scss'
 })
@@ -36,14 +36,14 @@ export class ContactUsDetailsComponent {
   showConfirmMessage: boolean = false
   private confirm = inject(ConfirmMsgService)
 
-  minEndDate:Date =new Date()
+  minEndDate: Date = new Date()
   form = new FormGroup({
     name: new FormControl('', {
       validators: [
         Validators.required,
       ],
     }),
-    email: new FormControl <any>('', {
+    email: new FormControl<any>('', {
       validators: [
         Validators.required,
         Validations.emailValidator()
@@ -66,13 +66,13 @@ export class ContactUsDetailsComponent {
   })
 
   bredCrumb: IBreadcrumb = {
-    crumbs: [ ]
+    crumbs: []
   }
 
   get getID() {
     return this.route.snapshot.params['id']
   }
- selectedLang: any;
+  selectedLang: any;
   languageService = inject(LanguageService);
   ngOnInit() {
     this.pageName.set(global_PageName)
@@ -80,7 +80,7 @@ export class ContactUsDetailsComponent {
     this.languageService.translationService.onLangChange.subscribe(() => {
       this.selectedLang = this.languageService.translationService.currentLang;
       this.getBreadCrumb();
-    }); 
+    });
     if (this.tyepMode() !== 'Add')
       this.API_getItemDetails()
   }
@@ -88,17 +88,17 @@ export class ContactUsDetailsComponent {
     this.bredCrumb = {
       crumbs: [
         {
-          label:  this.languageService.translate('Home'),
+          label: this.languageService.translate('Home'),
           routerLink: '/dashboard',
         },
         {
-          label: this.languageService.translate(this.pageName()+ '_'+this.tyepMode()+'_crumb'),
+          label: this.languageService.translate(this.pageName() + '_' + this.tyepMode() + '_crumb'),
         },
       ]
     }
   }
-  onStartDateChange(date:Date){
-    this.minEndDate=date
+  onStartDateChange(date: Date) {
+    this.minEndDate = date
   }
   tyepMode() {
     const url = this.router.url;
@@ -110,7 +110,7 @@ export class ContactUsDetailsComponent {
   }
 
   API_getItemDetails() {
-    this.ApiService.get(`${global_API_deialis}`,{id:this.getID}).subscribe((res: any) => {
+    this.ApiService.get(`${global_API_deialis}`, { id: this.getID }).subscribe((res: any) => {
       if (res.data)
         this.form.patchValue(res.data)
     })

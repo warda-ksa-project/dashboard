@@ -33,8 +33,8 @@
     "close": "Close",
     "choose_image": "Choose",
     "update": "Update",
-    "next":"Next",
-    "back":"Back"
+    "next": "Next",
+    "back": "Back"
   },
   "shared": {
     "errors": {
@@ -85,7 +85,7 @@
   },
   "side_bar": {
     "dashboard": "DASHBOARD",
-    "trader":"TRADERS",
+    "trader": "TRADERS",
     "clients": "CLIENTS",
     "category": "SUBCATEGORIES",
     "sub_category": "SUB CATEGORIES",
@@ -108,7 +108,7 @@
     "contact": "CONTACT US",
     "about": "ABOUT US",
     "setting": "Settings",
-    "faqs":"FAQs"
+    "faqs": "FAQs"
   },
   "client": {
     "pageName": "Clients",
@@ -184,19 +184,19 @@
     "pageName_Edit_crumb": "Edit product",
     "pageName_View_crumb": "View product",
     "notActive": "Not Active",
-    "imgs":"Products Images",
+    "imgs": "Products Images",
     "form": {
-      "general":"General",
-      "pricing":"pricing",
+      "general": "General",
+      "pricing": "pricing",
       "enName": "Name (en)",
       "arName": "Name (ar)",
       "enDescription": "Description (en)",
       "arDescription": "Description (ar)",
-      "categoryId":"Category",
-      "stockQuantity":"Stock Quantity",
-      "hasDiscount":"Has Discount",
-      "discountType":"Discount Type",
-      "amount":"Amount"
+      "categoryId": "Category",
+      "stockQuantity": "Stock Quantity",
+      "hasDiscount": "Has Discount",
+      "discountType": "Discount Type",
+      "amount": "Amount"
     }
   },
   "piece_products": {
@@ -208,19 +208,19 @@
     "pageName_Edit_crumb": "Edit Piece product",
     "pageName_View_crumb": "View  Piece product",
     "notActive": "Not Active",
-    "imgs":"Piece Products Images",
+    "imgs": "Piece Products Images",
     "form": {
-      "general":"General",
-      "pricing":"pricing",
+      "general": "General",
+      "pricing": "pricing",
       "enName": "Name (en)",
       "arName": "Name (ar)",
       "enDescription": "Description (en)",
       "arDescription": "Description (ar)",
-      "categoryId":"Category",
-      "stockQuantity":"Stock Quantity",
-      "hasDiscount":"Has Discount",
-      "discountType":"Discount Type",
-      "amount":"Amount"
+      "categoryId": "Category",
+      "stockQuantity": "Stock Quantity",
+      "hasDiscount": "Has Discount",
+      "discountType": "Discount Type",
+      "amount": "Amount"
     }
   },
   "trader": {
@@ -232,32 +232,30 @@
     "pageName_Edit_crumb": "Edit Trader",
     "pageName_View_crumb": "View Trader",
     "notActive": "Not Active",
-    "imgs":"Traders Images",
+    "imgs": "Traders Images",
     "form": {
-      "storeName":"Store Name",
-      "store":"Store",
-      "address":"Address",
-      "personal":"personal",
-             "name":"Name",
-        "email":"Email",
-        "phone":"Phone Number",
-        "password":"Password",
- "numberOfBranches":"Number Of Branches",
- "reasonForRejection":"Reason For Rejection",
- "expalinedAddress":"Expalined Address",
- "street":"Street",
- "district":"District",
- "buildNo":"Build number",
- "floorNo":"Floor number",
- "flatNo":"Flat number",
- "longitude":"Longitude",
- "latitude":"Latitude",
- "files":"Files",
- "iban":"IBan",
- "license":"License",
- "cr":"CR"
-
-       
+      "storeName": "Store Name",
+      "store": "Store",
+      "address": "Address",
+      "personal": "personal",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone Number",
+      "password": "Password",
+      "numberOfBranches": "Number Of Branches",
+      "reasonForRejection": "Reason For Rejection",
+      "expalinedAddress": "Expalined Address",
+      "street": "Street",
+      "district": "District",
+      "buildNo": "Build number",
+      "floorNo": "Floor number",
+      "flatNo": "Flat number",
+      "longitude": "Longitude",
+      "latitude": "Latitude",
+      "files": "Files",
+      "iban": "IBan",
+      "license": "License",
+      "cr": "CR"
     }
   },
   "trader_request": {
@@ -269,19 +267,19 @@
     "pageName_Edit_crumb": "Edit Trader Request",
     "pageName_View_crumb": "View Trader Request",
     "notActive": "Not Active",
-    "imgs":"Trader Requests Images",
+    "imgs": "Trader Requests Images",
     "form": {
-      "general":"General",
-      "pricing":"pricing",
+      "general": "General",
+      "pricing": "pricing",
       "enName": "Name (en)",
       "arName": "Name (ar)",
       "enDescription": "Description (en)",
       "arDescription": "Description (ar)",
-      "categoryId":"Category",
-      "stockQuantity":"Stock Quantity",
-      "hasDiscount":"Has Discount",
-      "discountType":"Discount Type",
-      "amount":"Amount"
+      "categoryId": "Category",
+      "stockQuantity": "Stock Quantity",
+      "hasDiscount": "Has Discount",
+      "discountType": "Discount Type",
+      "amount": "Amount"
     }
   },
   "faqs": {
@@ -537,9 +535,9 @@
     "driver": "Driver",
     "no_image": "No Image Available",
     "item_schedule": "Order Time Schedule",
-    "total_additional_price" : "Additinal Item Price",
-    "total_tech_number" : "Total Tech Number",
-    "map":"Map",
+    "total_additional_price": "Additinal Item Price",
+    "total_tech_number": "Total Tech Number",
+    "map": "Map",
     "tool_tip": {
       "add_tech": "Add New Technical",
       "add_driver": "Add New Driver",
@@ -554,7 +552,7 @@
       "add_price": "Additional Price",
       "desc": "Description",
       "edit": "Edit",
-      "specialize" : "Specialization",
+      "specialize": "Specialization",
       "mobile": "Mobile"
     },
     "form": {
@@ -728,7 +726,7 @@
       "status": "Status",
       "used_x": "Used For X Times",
       "used": "Used",
-      "hasMaxAmount":"has Max Amount",
+      "hasMaxAmount": "has Max Amount",
       "maxUsagePerUser": "Max Usage Per User",
       "maxAmount": "Max Amount"
     }
@@ -824,7 +822,7 @@
   "PACKAGE_NAME": "Package Name",
   "SERVICE_NAME": "Service Name",
   "NO_ORDERS_AVAILABLE": "No Orders Available",
-  "visitNumber" : "Visits Number",
+  "visitNumber": "Visits Number",
   "nextVisit": "Next Visit",
   "SAR": "SAR",
   "Status_Action": "Status Action",
