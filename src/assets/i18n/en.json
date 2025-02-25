@@ -90,6 +90,7 @@
     "category": "SUBCATEGORIES",
     "sub_category": "SUB CATEGORIES",
     "products": "PRODUCTS",
+    "piece_products": "PIECE PRODUCTS",
     "orders": "ORDERS",
     "special_orders": "SPECIAL ORDERS",
     "main_category": "MAIN CATEGORY",
@@ -198,6 +199,30 @@
       "amount":"Amount"
     }
   },
+  "piece_products": {
+    "pageName": "Piece products",
+    "pageTitle": "Piece product",
+    "list": "Piece products List",
+    "pageName_filter": "Filter Piece products",
+    "pageName_Add_crumb": "Add Piece product",
+    "pageName_Edit_crumb": "Edit Piece product",
+    "pageName_View_crumb": "View  Piece product",
+    "notActive": "Not Active",
+    "imgs":"Piece Products Images",
+    "form": {
+      "general":"General",
+      "pricing":"pricing",
+      "enName": "Name (en)",
+      "arName": "Name (ar)",
+      "enDescription": "Description (en)",
+      "arDescription": "Description (ar)",
+      "categoryId":"Category",
+      "stockQuantity":"Stock Quantity",
+      "hasDiscount":"Has Discount",
+      "discountType":"Discount Type",
+      "amount":"Amount"
+    }
+  },
   "trader": {
     "pageName": "Traders",
     "pageTitle": "Trader",
@@ -213,12 +238,10 @@
       "store":"Store",
       "address":"Address",
       "personal":"personal",
-     
-        "name":"Name",
+             "name":"Name",
         "email":"Email",
         "phone":"Phone Number",
         "password":"Password",
-        "storeName":"Store Name",
  "numberOfBranches":"Number Of Branches",
  "reasonForRejection":"Reason For Rejection",
  "expalinedAddress":"Expalined Address",

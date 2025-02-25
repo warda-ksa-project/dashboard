@@ -70,6 +70,8 @@ import { TraderTableComponent } from './pages/traders/trader-table/trader-table.
 import { TraderDetailsComponent } from './pages/traders/trader-details/trader-details.component';
 import { TraderRequestsTableComponent } from './pages/traders/trader-requests-table/trader-requests-table.component';
 import { TraderRequestsDetailsComponent } from './pages/traders/trader-requests-details/trader-requests-details.component';
+import { PieceProductsTableComponent } from './pages/piece-products/piece-products-table/piece-products-table.component';
+import { PieceProductsDetailsComponent } from './pages/piece-products/piece-products-details/piece-products-details.component';
 
 export const routes: Routes = [
   {
@@ -176,6 +178,11 @@ export const routes: Routes = [
       { path: 'product/add', component: ProductsDetailsComponent },
       { path: 'product/view/:id', component: ProductsDetailsComponent },
       { path: 'product/edit/:id', component: ProductsDetailsComponent },
+
+      { path: 'piece-product', component: PieceProductsTableComponent },
+      { path: 'piece-product/add', component: PieceProductsDetailsComponent },
+      { path: 'piece-product/view/:id', component: PieceProductsDetailsComponent },
+      { path: 'piece-product/edit/:id', component: PieceProductsDetailsComponent },
 
       { path: 'clients', component: ClientTableComponent },
       { path: 'client/add', component: ClientDetailsComponent },
