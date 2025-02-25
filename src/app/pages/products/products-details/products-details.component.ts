@@ -20,6 +20,7 @@ import { CheckBoxComponent } from '../../../components/check-box/check-box.compo
 import { StepperModule } from 'primeng/stepper';
 import { GalleryComponent } from '../../../components/gallery/gallery.component';
 import { environment } from '../../../../environments/environment';
+import { Validations } from '../../../validations';
 const global_PageName='products.pageName';
 const global_routeUrl ='product'
 const global_API_details='product'+'/GetById';
@@ -58,7 +59,6 @@ export class ProductsDetailsComponent {
   ]
   hasDiscount=false
   imageList: any;
-
   form = new FormGroup({
     enName: new FormControl('', {
       validators: [
@@ -80,17 +80,30 @@ export class ProductsDetailsComponent {
         Validators.required
       ]
     }),
-    stockQuantity:new FormControl(0, {
+    stockQuantity:new FormControl('', {
       validators: [
         Validators.required
       ]
     }),
-    hasDiscount:new FormControl(false),
-    discountType: new FormControl(0),
-     amount: new FormControl(0),
+    hasDiscount:new FormControl<boolean>(false),
+    discountType: new FormControl<any>('',{
+      validators: [
+        Validators.required,
+      ],
+     }),
+     amount: new FormControl<any>('',{
+      validators: [
+        Validators.required,
+        Validations.onlyNumberValidator()
+      ],
+     }),
     image: new FormControl<any>([]),
     id:new FormControl(this.getID|0),
-    categoryId:new FormControl()
+    categoryId:new FormControl('',{
+      validators: [
+        Validators.required,
+      ],
+     })
   })
 
   bredCrumb: IBreadcrumb = {
@@ -127,17 +140,19 @@ export class ProductsDetailsComponent {
       this.getBreadCrumb();
       this.getMainCategory()
     });
-    if (this.tyepMode() !== 'Add')
-      this.API_getItemDetails()
+ 
 
     this.form.get('hasDiscount')?.valueChanges.subscribe((value: any) => {
-      this.form.get('discountType')?.reset();
-      this.form.get('amount')?.reset();
-
+      if(this.tyepMode()=='Add'){
+        this.form.get('discountType')?.reset();
+        this.form.get('amount')?.reset();
+      }
+    
       if (value) {
         this.hasDiscount=true
         this.form.get('discountType')?.setValidators([Validators.required]);
         this.form.get('amount')?.setValidators([Validators.required]);
+        
       } else {
         this.hasDiscount=false
         this.form.get('discountType')?.setValue(0);
@@ -147,8 +162,11 @@ export class ProductsDetailsComponent {
       }
       this.form.get('discountType')?.updateValueAndValidity();
       this.form.get('amount')?.updateValueAndValidity();
-
+      console.log("ProductsDetailsComponent  this.form.get   this.form.value:",  this.form.value)
     });
+
+    if (this.tyepMode() !== 'Add')
+      this.API_getItemDetails()
   }
 
   tyepMode() {
@@ -226,6 +244,24 @@ export class ProductsDetailsComponent {
   //       console.error('Error processing files:', error);
   //     });
   // }
+  goToActivePage_2(){
+    console.log(this.form.value)
+    this.form.patchValue({
+      amount:this.form.value.amount
+    })
+  }
+  goToActivePage_1(){
+    if(this.tyepMode()=='Add'){
+      // this.imageList=this.form.value.image;
+      // this.addUrltoMedia(this.imageList);
+
+      // console.log("ProductsDetailsComponent  goToActivePage_1  this.form.value:", this.form.value)
+      // console.log("ProductsDetailsComponent  goToActivePage_1   this.imageList:",  this.imageList)
+    }
+  
+
+    
+  }
   onSubmit() {
     if(this.form.value.image){
       let x =   this.form.value.image.map((re:any)=>({
