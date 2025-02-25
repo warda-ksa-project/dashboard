@@ -59,7 +59,10 @@ export class UploadFileComponent {
         });
     }
   }
-
+  onRemove(event:any){
+    this.imageBase64 = "";
+    this.onChange(this.imageBase64);
+  }
   private convertFileToBase64(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
