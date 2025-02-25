@@ -189,7 +189,7 @@
                       <button  class="btn btn-primary-bk" (click)="activateCallback(3)">{{'actions.back'|translate}}</button>
                   </div>
                     <div class="actions mt-5 text-center">
-                      <button type="submit" class="submit-btn" (click)="onSubmit()" [disabled]="!form.valid" *ngIf="tyepMode() !== 'View'">
+                      <button type="submit" class="submit-btn" (click)="onSubmit()" [disabled]="!form.valid||!isAddressVaild()" *ngIf="tyepMode() !== 'View'">
                         <span *ngIf="tyepMode() == 'Add'">{{
                           "actions.add" | translate
                           }}</span>

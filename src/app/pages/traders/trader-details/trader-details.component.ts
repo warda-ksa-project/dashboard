@@ -14,12 +14,9 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { LanguageService } from '../../../services/language.service';
 import { IEditImage } from '../../../components/edit-mode-image/editImage.interface';
 import { EditModeImageComponent } from '../../../components/edit-mode-image/edit-mode-image.component';
-import { SelectComponent } from '../../../components/select/select.component';
-import { EditorComponent } from '../../../components/editor/editor.component';
-import { CheckBoxComponent } from '../../../components/check-box/check-box.component';
 import { StepperModule } from 'primeng/stepper';
-import { GalleryComponent } from '../../../components/gallery/gallery.component';
-import { environment } from '../../../../environments/environment';
+import { Validations } from '../../../validations';
+
 const global_PageName='trader.pageName';
 const global_routeUrl ='trader'
 const global_API_details='Trader'+'/GetById';
@@ -42,7 +39,18 @@ export class TraderDetailsComponent {
   private route = inject(ActivatedRoute)
   showConfirmMessage: boolean = false
   private confirm = inject(ConfirmMsgService)
-adress:any={}
+adress:any[]=[{
+  expalinedAddress:'',
+  street:'',
+  buildNo:'',
+  flatNo:'',
+  district:'',
+  floorNo:'',
+  latitude:'',
+  logitude:'',
+  userId:Number(localStorage.getItem('userId'))||0
+}]
+// isAddressValid:boolean=false
   form = new FormGroup({
     name: new FormControl('', {
       validators: [
@@ -51,13 +59,16 @@ adress:any={}
     }),
     email: new FormControl('', {
       validators: [
-        Validators.required
+        Validators.required,
+        Validations.emailValidator()
       ]
     }),
     phone: new FormControl('', {
       validators: [
-        Validators.required
-      ],
+        Validators.required,
+        Validations.mobileStartWithNumber_5_Validator(),
+        Validators.maxLength(9),
+        Validators.minLength(9),      ],
     }),
     password: new FormControl('', {
       validators: [
@@ -65,27 +76,80 @@ adress:any={}
       ]
     }),
 
-    storeName:new FormControl(0, {
+    storeName:new FormControl('', {
       validators: [
         Validators.required
       ]
     }),
-    cr: new FormControl<any>(''),
-    license: new FormControl<any>(''),
-    iban: new FormControl<any>(''),
+    cr: new FormControl<any>('',{
+      validators: [
+        Validators.required
+      ]
+    }),
+    license: new FormControl<any>('',{
+      validators: [
+        Validators.required
+      ]
+    }),
+    iban: new FormControl<any>('',{
+      validators: [
+        Validators.required
+      ]
+    }),
 
-    numberOfBranches: new FormControl <any>(''),
-    reasonForRejection: new FormControl(0),
+    numberOfBranches: new FormControl <any>('',{
+      validators: [
+        Validators.required,
+        Validations.onlyNumberValidator()
+      ]
+    }),
+    reasonForRejection: new FormControl('',{
+      validators: [
+        Validators.required
+      ]
+    }),
     adress: new FormControl([]),
-    expalinedAddress: new FormControl(''),
+    expalinedAddress: new FormControl('',{
+      validators: [
+        
+      ]
+    }),
 
-    street: new FormControl(''),
-    district: new FormControl(''),
-    buildNo: new FormControl<any>(''),
-    floorNo: new FormControl<any>(''),
-    flatNo: new FormControl<any>(''),
-    logitude: new FormControl(''),
-    latitude: new FormControl(''),
+    street: new FormControl('',{
+      validators: [
+        
+      ]
+    }),
+    district: new FormControl('',{
+      validators: [
+        
+      ]
+    }),
+    buildNo: new FormControl<any>('',{
+      validators: [
+        Validations.onlyNumberValidator()
+      ]
+    }),
+    floorNo: new FormControl<any>('',{
+      validators: [
+        Validations.onlyNumberValidator()
+      ]
+    }),
+    flatNo: new FormControl<any>('',{
+      validators: [
+        Validations.onlyNumberValidator()
+      ]
+    }),
+    logitude: new FormControl('',{
+      validators: [
+        Validations.decimalNumberValidators()
+      ]
+    }),
+    latitude: new FormControl('',{
+      validators: [
+        Validations.decimalNumberValidators()
+      ]
+    }),
     id:new FormControl(this.getID|0),
   })
 
@@ -143,6 +207,75 @@ adress:any={}
       this.selectedLang = this.languageService.translationService.currentLang;
       this.getBreadCrumb();
     });
+    
+    this.form.get('street')?.valueChanges.subscribe(res=>{
+       this.adress[0].street=res;
+       this.form.patchValue({
+        adress:this.adress[0]
+       })
+    })
+    this.form.get('buildNo')?.valueChanges.subscribe(res=>{
+       this.adress[0].buildNo=+res
+        this.form.patchValue({
+        adress:this.adress[0]
+       })
+
+
+    })
+    this.form.get('flatNo')?.valueChanges.subscribe(res=>{
+       this.adress[0].flatNo=+res
+               this.form.patchValue({
+        adress:this.adress[0]
+       })
+
+
+    })
+    this.form.get('district')?.valueChanges.subscribe(res=>{
+       this.adress[0].district=res
+               this.form.patchValue({
+        adress:this.adress[0]
+       })
+
+
+    })
+    this.form.get('floorNo')?.valueChanges.subscribe(res=>{
+       this.adress[0].floorNo=+res
+               this.form.patchValue({
+        adress:this.adress[0]
+       })
+
+
+    })
+    this.form.get('latitude')?.valueChanges.subscribe(res=>{
+       this.adress[0].latitude=res
+               this.form.patchValue({
+        adress:this.adress[0]
+       })
+
+
+    })
+    this.form.get('logitude')?.valueChanges.subscribe(res=>{
+       this.adress[0].logitude=res
+               this.form.patchValue({
+        adress:this.adress[0]
+       })
+
+
+    })
+    this.form.get('expalinedAddress')?.valueChanges.subscribe(res=>{
+       this.adress[0].expalinedAddress=res
+               this.form.patchValue({
+        adress:this.adress[0]
+       })
+
+
+    })
+    this.form.get('adress')?.valueChanges.subscribe(res=>{
+     
+     this.isAddressVaild()
+
+
+   })
     if (this.tyepMode() !== 'Add')
       this.API_getItemDetails()
   }
@@ -223,9 +356,15 @@ adress:any={}
   // }
 
   setPayload(keysToRemove: string[],payload:any) {
+    console.log("TraderDetailsComponent  setPayload   this.form.value:",  this.form.value)
     keysToRemove.forEach((key) => {
+      this.form.get(key)?.clearValidators();
+      this.form.get(key)?.updateValueAndValidity();
       delete payload[key];
+
     });
+    console.log("TraderDetailsComponent  setPayload   this.form.value:",  this.form.value)
+
   }
   onSubmit() {
     // if(this.form.value.image){
@@ -241,19 +380,6 @@ adress:any={}
 
     const payload = {
       ...this.form.value,
-    adress:[
-      {
-        expalinedAddress: this.form.value.expalinedAddress,
-        street: this.form.value.street,
-        district: this.form.value.district,
-        buildNo: +this.form.value.buildNo,
-        floorNo: +this.form.value.floorNo,
-        flatNo: +this.form.value.flatNo,
-        logitude: this.form.value.logitude,
-        latitude: this.form.value.latitude,
-        userId:Number(localStorage.getItem('userId'))
-      }
-    ],
     numberOfBranches:+this.form.value.numberOfBranches,
     cr: this.form.value.cr[0].image,
     license: this.form.value.license[0].image,
@@ -271,6 +397,7 @@ adress:any={}
       'latitude'
     ],payload)
     console.log('ggg',payload)
+    
     if (this.tyepMode() == 'Add'){
 
       this.API_forAddItem(payload)
@@ -285,6 +412,14 @@ adress:any={}
     this.router.navigateByUrl(global_routeUrl)
   }
 
+  isAddressVaild(){
+    const isAddressValid = this.adress.every((obj:any) => 
+      Object.values(obj).every(value => value !== null && value !== undefined && value !== '')
+    );
+    console.log("isAddressVaild  isAddressValid:", isAddressValid)
+
+    return isAddressValid
+  }
   cancel() {
     const hasValue = this.confirm.formHasValue(this.form)
     if (hasValue && this.tyepMode()=='Edit')
