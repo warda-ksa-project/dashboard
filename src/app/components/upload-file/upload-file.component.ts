@@ -60,8 +60,17 @@ export class UploadFileComponent {
     }
   }
   onRemove(event:any){
-    this.imageBase64 = "";
-    this.onChange(this.imageBase64);
+     if(this.isMulti){
+      this.convertFileToBase64(event.file).then((base64String: string) => {
+        this.uploadedFiles=  this.uploadedFiles.filter(res=>res.image !==base64String)     
+        this.onChange(this.uploadedFiles);
+
+      }).catch(error => {
+        console.error('Error converting to Base64:', error);
+      });
+     }else
+     this.onChange("");
+   
   }
   private convertFileToBase64(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
