@@ -19,7 +19,7 @@ import { Validations } from '../../../validations';
 
 const global_PageName = 'trader.pageName';
 const global_routeUrl = 'trader'
-const global_API_details = 'Trader' + '/GetById';
+const global_API_details = 'Trader' + '/GetTraderById';
 const global_API_create = 'Trader' + '/Create';
 const global_API_update = 'Trader' + '/Update';
 
@@ -50,6 +50,13 @@ export class TraderDetailsComponent {
     logitude: '',
     userId: Number(localStorage.getItem('userId')) || 0
   }]
+  files:any[]=[
+    {
+      iban:'',
+      license:'',
+      cr:''
+    }
+  ]
   // isAddressValid:boolean=false
   form = new FormGroup({
     name: new FormControl('', {
@@ -82,19 +89,13 @@ export class TraderDetailsComponent {
       ]
     }),
     cr: new FormControl<any>('', {
-      validators: [
-        Validators.required
-      ]
+     
     }),
     license: new FormControl<any>('', {
-      validators: [
-        Validators.required
-      ]
+     
     }),
     iban: new FormControl<any>('', {
-      validators: [
-        Validators.required
-      ]
+     
     }),
 
     numberOfBranches: new FormControl<any>('', {
@@ -103,26 +104,21 @@ export class TraderDetailsComponent {
         Validations.onlyNumberValidator()
       ]
     }),
-    reasonForRejection: new FormControl('', {
-      validators: [
-        Validators.required
-      ]
-    }),
-    adress: new FormControl([]),
+    addresses: new FormControl<any>(''),
     expalinedAddress: new FormControl('', {
       validators: [
-
+        Validators.required,
       ]
     }),
 
     street: new FormControl('', {
       validators: [
-
+        Validators.required,
       ]
     }),
     district: new FormControl('', {
       validators: [
-
+        Validators.required,
       ]
     }),
     buildNo: new FormControl<any>('', {
@@ -132,21 +128,25 @@ export class TraderDetailsComponent {
     }),
     floorNo: new FormControl<any>('', {
       validators: [
+        Validators.required,
         Validations.onlyNumberValidator()
       ]
     }),
     flatNo: new FormControl<any>('', {
       validators: [
+        Validators.required,
         Validations.onlyNumberValidator()
       ]
     }),
     logitude: new FormControl('', {
       validators: [
+        Validators.required,
         Validations.decimalNumberValidators()
       ]
     }),
     latitude: new FormControl('', {
       validators: [
+        Validators.required,
         Validations.decimalNumberValidators()
       ]
     }),
@@ -208,16 +208,20 @@ export class TraderDetailsComponent {
       this.getBreadCrumb();
     });
 
+    this.form.valueChanges.subscribe(res => {
+      console.log('d---d',this.form.value)
+      console.log('d===d',(!this.form.valid || !this.isAddressVaild()))
+    })
     this.form.get('street')?.valueChanges.subscribe(res => {
       this.adress[0].street = res;
       this.form.patchValue({
-        adress: this.adress[0]
+        addresses: this.adress
       })
     })
     this.form.get('buildNo')?.valueChanges.subscribe(res => {
       this.adress[0].buildNo = +res
       this.form.patchValue({
-        adress: this.adress[0]
+        addresses: this.adress
       })
 
 
@@ -225,7 +229,7 @@ export class TraderDetailsComponent {
     this.form.get('flatNo')?.valueChanges.subscribe(res => {
       this.adress[0].flatNo = +res
       this.form.patchValue({
-        adress: this.adress[0]
+        addresses: this.adress
       })
 
 
@@ -233,7 +237,7 @@ export class TraderDetailsComponent {
     this.form.get('district')?.valueChanges.subscribe(res => {
       this.adress[0].district = res
       this.form.patchValue({
-        adress: this.adress[0]
+        addresses: this.adress
       })
 
 
@@ -241,15 +245,16 @@ export class TraderDetailsComponent {
     this.form.get('floorNo')?.valueChanges.subscribe(res => {
       this.adress[0].floorNo = +res
       this.form.patchValue({
-        adress: this.adress[0]
+        addresses: this.adress
       })
+      console.log('dd',this.form.value)
 
 
     })
     this.form.get('latitude')?.valueChanges.subscribe(res => {
       this.adress[0].latitude = res
       this.form.patchValue({
-        adress: this.adress[0]
+        addresses: this.adress
       })
 
 
@@ -257,7 +262,7 @@ export class TraderDetailsComponent {
     this.form.get('logitude')?.valueChanges.subscribe(res => {
       this.adress[0].logitude = res
       this.form.patchValue({
-        adress: this.adress[0]
+        addresses: this.adress
       })
 
 
@@ -265,16 +270,25 @@ export class TraderDetailsComponent {
     this.form.get('expalinedAddress')?.valueChanges.subscribe(res => {
       this.adress[0].expalinedAddress = res
       this.form.patchValue({
-        adress: this.adress[0]
+        addresses: this.adress
       })
 
 
     })
-    this.form.get('adress')?.valueChanges.subscribe(res => {
-
+    this.form.get('addresses')?.valueChanges.subscribe(res => {
       this.isAddressVaild()
-
-
+    })
+    this.form.get('iban')?.valueChanges.subscribe(res => {
+      this.files[0].iban=res
+      this.isFilesValid()
+    })
+    this.form.get('cr')?.valueChanges.subscribe(res => {
+      this.files[0].cr=res
+      this.isFilesValid()
+    })
+    this.form.get('license')?.valueChanges.subscribe(res => {
+      this.files[0].license=res
+      this.isFilesValid()
     })
     if (this.tyepMode() !== 'Add')
       this.API_getItemDetails()
@@ -320,7 +334,31 @@ export class TraderDetailsComponent {
   API_getItemDetails() {
     this.ApiService.get(`${global_API_details}`, { id: this.getID }).subscribe((res: any) => {
       if (res.data) {
-        this.form.patchValue(res.data)
+        this.form.patchValue({
+          ...res.data,
+          expalinedAddress:res.data.addresses[0].expalinedAddress,
+          street:res.data.addresses[0].street,
+          buildNo:res.data.addresses[0].buildNo,
+          flatNo:res.data.addresses[0].flatNo,
+          district:res.data.addresses[0].district,
+          floorNo:res.data.addresses[0].floorNo,
+          latitude:res.data.addresses[0].latitude,
+          logitude:res.data.addresses[0].logitude,
+        })
+
+        this.adress = [{
+          expalinedAddress:res.data.addresses[0].expalinedAddress,
+          street:res.data.addresses[0].street,
+          buildNo:res.data.addresses[0].buildNo,
+          flatNo:res.data.addresses[0].flatNo,
+          district:res.data.addresses[0].district,
+          floorNo:res.data.addresses[0].floorNo,
+          latitude:res.data.addresses[0].latitude,
+          logitude:res.data.addresses[0].logitude,
+          userId: Number(localStorage.getItem('userId')) || 0
+        }]
+        console.log("TraderDetailsComponent  this.ApiService.get    this.adress:",   this.form.value)
+
         // this.imageList = res.data.image;
         // if (this.imageList.length != 0) {
         //   this.addUrltoMedia(this.imageList);
@@ -419,6 +457,15 @@ export class TraderDetailsComponent {
     console.log("isAddressVaild  isAddressValid:", isAddressValid)
 
     return isAddressValid
+  }
+
+  isFilesValid(){
+    const isFileValid = this.files.every((obj: any) =>
+      Object.values(obj).every(value => value !== null && value !== undefined && value !== '')
+    );
+    console.log("isAddressVaild  isAddressValid:", isFileValid)
+
+    return isFileValid
   }
   cancel() {
     const hasValue = this.confirm.formHasValue(this.form)

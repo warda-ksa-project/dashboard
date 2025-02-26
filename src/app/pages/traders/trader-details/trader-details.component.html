@@ -97,14 +97,7 @@
                     ></app-input-text>
                   </div>
 
-                  <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
-                    <app-input-text
-                      [readOnly]="tyepMode() == 'View'"
-                      [disabled]="tyepMode() == 'View'"
-                      [label]="'trader.form.reasonForRejection'"
-                      [control]="form.get('reasonForRejection')"
-                    ></app-input-text>
-                  </div>
+
                 </div>
                 <div class="d-flex justify-content-between mt-5">
                   <button
@@ -304,7 +297,7 @@
                       type="submit"
                       class="submit-btn"
                       (click)="onSubmit()"
-                      [disabled]="!form.valid || !isAddressVaild()"
+                      [disabled]="!form.valid || !isAddressVaild()||!isFilesValid()"
                       *ngIf="tyepMode() !== 'View'"
                     >
                       <span *ngIf="tyepMode() == 'Add'">{{
