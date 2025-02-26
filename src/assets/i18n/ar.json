@@ -33,9 +33,12 @@
     "choose_image": "اختر",
     "update": "تحديث",
     "next": "التالي",
-    "back": "السابق"
+    "back": "السابق",
+     "approve":"قبول",
+    "reject":"رفض"
   },
   "shared": {
+    "download":"تحميل",
     "errors": {
       "login": "فشل تسجيل الدخول",
       "post_request": "فشل تنفيذ عملية POST",
@@ -85,6 +88,7 @@
   "side_bar": {
     "dashboard": "لوحة التحكم",
     "trader": "التجار",
+    "trader_request":"طلبات التجار",
     "clients": "العملاء",
     "category": "الفئات الفرعية",
     "sub_category": "الفئات الفرعية",
@@ -268,17 +272,8 @@
     "notActive": "غير نشط",
     "imgs": "صور طلبات التجار",
     "form": {
-      "general": "عام",
-      "pricing": "التسعير",
-      "enName": "الاسم (إنجليزي)",
-      "arName": "الاسم (عربي)",
-      "enDescription": "الوصف (إنجليزي)",
-      "arDescription": "الوصف (عربي)",
-      "categoryId": "الفئة",
-      "stockQuantity": "الكمية المتاحة",
-      "hasDiscount": "يحتوي على خصم",
-      "discountType": "نوع الخصم",
-      "amount": "القيمة"
+       "traderName":"اسم التاجر",
+      "addedDate":"تاريخ الاضافة"
     }
   },
 

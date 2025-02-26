@@ -9,10 +9,7 @@
       </div>
     </div>
     <div class="details-container">
-      <div class="action-filter">
-        <a [routerLink]="global_router_add_url_in_Table">
-          +{{ "shared.add_new" | translate }}</a
-        >
+      <div class="action-filter w-100 d-flex justify-content-end">
         <span class="pi pi-filter pointer" (click)="openFilter()"> </span>
       </div>
 
@@ -54,36 +51,21 @@
       <!-- Full Name -->
       <div class="form-group mb-3">
         <label class="mb-1" for="enTitle">{{
-          "trader_request.form.enName" | translate
+          "trader.form.storeName" | translate
         }}</label>
         <input
           type="text"
           id="enTitle"
           name="enTitle"
           class="form-control"
-          [(ngModel)]="objectSearch.enName"
+          [(ngModel)]="objectSearch.storeName"
           placeholder="{{ 'shared.enter' | translate }} {{
-            'trader_request.form.enName' | translate
+            'trader.form.storeName' | translate
           }}"
         />
       </div>
 
-      <!-- Username -->
-      <div class="form-group mb-3">
-        <label class="mb-1" for="arTitle">{{
-          "trader_request.form.arName" | translate
-        }}</label>
-        <input
-          type="text"
-          id="arTitle"
-          name="arTitle"
-          class="form-control"
-          [(ngModel)]="objectSearch.arName"
-          placeholder="{{ 'shared.enter' | translate }} {{
-            'trader_request.form.arName' | translate
-          }}"
-        />
-      </div>
+ 
     </div>
 
     <div class="search-form-actions d-flex">

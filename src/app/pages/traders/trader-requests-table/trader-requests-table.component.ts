@@ -23,11 +23,11 @@ import { PaginationComponent } from '../../../components/pagination/pagination.c
 import { TitleCasePipe } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 
-const global_pageName = 'products.pageName';
-const global_router_add_url_in_Table = '/product/add';
-const global_router_view_url = '/product/view';
-const global_router_edit_url = '/product/edit';
-const global_API_getAll = 'product' + '/GetAllWithPagination';
+const global_pageName = 'trader_request.pageName';
+const global_router_add_url_in_Table = '/trader-request/add';
+const global_router_view_url = '/trader-request/view';
+const global_router_edit_url = '/trader-request/edit';
+const global_API_getAll = 'Trader' + '/TraderRequestsWithPagination';
 @Component({
   selector: 'app-trader-requests-table',
   standalone: true,
@@ -53,20 +53,15 @@ export class TraderRequestsTableComponent {
   showFilter: boolean = false;
   tableActions: ITableAction[] = [
     {
-      name: EAction.delete,
-      apiName_or_route: 'product/Delete?id',
-      autoCall: true,
-    },
-    {
       name: EAction.view,
       apiName_or_route: global_router_view_url,
       autoCall: true,
     },
-    {
-      name: EAction.edit,
-      apiName_or_route: global_router_edit_url,
-      autoCall: true,
-    },
+    // {
+    //   name: EAction.edit,
+    //   apiName_or_route: global_router_edit_url,
+    //   autoCall: true,
+    // },
   ];
   private ApiService = inject(ApiService);
 
@@ -79,8 +74,7 @@ export class TraderRequestsTableComponent {
     pageSize: 8,
     sortingExpression: '',
     sortingDirection: 0,
-    enName: '',
-    arName: '',
+    storeName:''
   };
 
   totalCount: number = 0;
@@ -111,21 +105,21 @@ export class TraderRequestsTableComponent {
   displayTableCols(currentLang: string) {
     this.columns = [
       {
-        keyName: 'id',
+        keyName: 'userId',
         header: this.languageService.translate('Id'),
         type: EType.id,
         show: true,
       },
       {
-        keyName: 'enName',
-        header: this.languageService.translate('sub_category.form.enName'),
+        keyName: 'traderName',
+        header: this.languageService.translate('trader_request.form.traderName'),
         type: EType.text,
         show: true,
       },
       {
-        keyName: 'arName',
-        header: this.languageService.translate('sub_category.form.arName'),
-        type: EType.text,
+        keyName: 'addedDate',
+        header: this.languageService.translate('trader_request.form.addedDate'),
+        type: EType.date,
         show: true,
       },
       {
@@ -138,21 +132,21 @@ export class TraderRequestsTableComponent {
     ];
     this.columnsSmallTable = [
       {
-        keyName: 'id',
+        keyName: 'userId',
         header: this.languageService.translate('Id'),
         type: EType.id,
         show: false,
       },
       {
-        keyName: 'enName',
-        header: this.languageService.translate('sub_category.form.enName'),
+        keyName: 'traderName',
+        header: this.languageService.translate('trader_request.form.traderName'),
         type: EType.text,
         showAs: ETableShow.header,
       },
       {
-        keyName: 'arName',
-        header: this.languageService.translate('sub_category.form.arName'),
-        type: EType.text,
+        keyName: 'addedDate',
+        header: this.languageService.translate('trader_request.form.addedDate'),
+        type: EType.date,
         showAs: ETableShow.header,
       },
     ];
@@ -226,8 +220,8 @@ export class TraderRequestsTableComponent {
       pageSize: 8,
       sortingExpression: '',
       sortingDirection: 0,
-      enName: '',
-      arName: '',
+      storeName:''
+
     };
     this.API_getAll();
     this.showFilter = false;

@@ -387,6 +387,27 @@ small {
         }
       }
 
+      .reject-btn {
+        padding: 6px 30px;
+        color: white;
+        background: #bc0808;
+        border-radius: 4px;
+        border: none;
+        font-size: 20px;
+
+        &:hover {
+          background: #bc0808;
+        }
+
+        &:disabled {
+          background: rgb(209, 209, 209);
+          color: #a2a1a1;
+          border: 1px solid #cac6c6;
+          cursor: not-allowed;
+        }
+      }
+
+
       .cancel-btn {
         background: #ffffff00;
         border: 1px solid red;

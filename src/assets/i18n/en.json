@@ -34,9 +34,12 @@
     "choose_image": "Choose",
     "update": "Update",
     "next": "Next",
-    "back": "Back"
+    "back": "Back",
+    "approve":"Approve",
+    "reject":"Reject"
   },
   "shared": {
+    "download":"download",
     "errors": {
       "login": "Login failed",
       "post_request": "Failed to perform POST operation",
@@ -86,6 +89,7 @@
   "side_bar": {
     "dashboard": "DASHBOARD",
     "trader": "TRADERS",
+    "trader_request":"TRADER REQUESTS",
     "clients": "CLIENTS",
     "category": "SUBCATEGORIES",
     "sub_category": "SUB CATEGORIES",
@@ -269,17 +273,8 @@
     "notActive": "Not Active",
     "imgs": "Trader Requests Images",
     "form": {
-      "general": "General",
-      "pricing": "pricing",
-      "enName": "Name (en)",
-      "arName": "Name (ar)",
-      "enDescription": "Description (en)",
-      "arDescription": "Description (ar)",
-      "categoryId": "Category",
-      "stockQuantity": "Stock Quantity",
-      "hasDiscount": "Has Discount",
-      "discountType": "Discount Type",
-      "amount": "Amount"
+        "traderName":"Trader Name",
+      "addedDate":"Added Date"
     }
   },
   "faqs": {

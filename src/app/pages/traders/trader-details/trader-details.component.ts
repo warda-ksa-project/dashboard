@@ -16,6 +16,7 @@ import { IEditImage } from '../../../components/edit-mode-image/editImage.interf
 import { EditModeImageComponent } from '../../../components/edit-mode-image/edit-mode-image.component';
 import { StepperModule } from 'primeng/stepper';
 import { Validations } from '../../../validations';
+import { environment } from '../../../../environments/environment';
 
 const global_PageName = 'trader.pageName';
 const global_routeUrl = 'trader'
@@ -343,7 +344,10 @@ export class TraderDetailsComponent {
           latitude:res.data.addresses[0].latitude,
           logitude:res.data.addresses[0].logitude,
         })
-
+        this.editImageIBanProps.props.imgSrc = environment.baseImageUrl + res.data.iban;
+        this.editImageProps .props.imgSrc = environment.baseImageUrl + res.data.cr;
+        this.editImageLicenseProps.props.imgSrc = environment.baseImageUrl + res.data.license;
+        this.editMode = true;
         this.adress = [{
           expalinedAddress:res.data.addresses[0].expalinedAddress,
           street:res.data.addresses[0].street,
