@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { ApiService } from '../../../services/api.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -17,6 +17,7 @@ import { EditModeImageComponent } from '../../../components/edit-mode-image/edit
 import { StepperModule } from 'primeng/stepper';
 import { Validations } from '../../../validations';
 import { environment } from '../../../../environments/environment';
+import { Dialog, DialogModule } from 'primeng/dialog';
 
 const global_PageName = 'trader_request.pageName';
 const global_routeUrl = 'trader-request'
@@ -27,7 +28,7 @@ const global_API_update = 'Trader' + '/Update';
 @Component({
   selector: 'app-trader-requests-details',
   standalone: true,
-  imports: [ReactiveFormsModule, StepperModule, EditModeImageComponent, TitleCasePipe, TranslatePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
+  imports: [ReactiveFormsModule, FormsModule,Dialog,DialogModule,ButtonModule, StepperModule, EditModeImageComponent, TitleCasePipe, TranslatePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
   templateUrl: './trader-requests-details.component.html',
   styleUrl: './trader-requests-details.component.scss'
 })
@@ -36,7 +37,8 @@ export class TraderRequestsDetailsComponent {
   pageName = signal<string>(global_PageName);
   private ApiService = inject(ApiService)
   private router = inject(Router)
-
+action=''
+header=''
   private route = inject(ActivatedRoute)
   showConfirmMessage: boolean = false
   private confirm = inject(ConfirmMsgService)
@@ -58,6 +60,7 @@ export class TraderRequestsDetailsComponent {
       cr:''
     }
   ]
+  reasonForRejectionValue=''
   // isAddressValid:boolean=false
   form = new FormGroup({
     userName: new FormControl('', {
@@ -467,16 +470,42 @@ export class TraderRequestsDetailsComponent {
   }
 
   onConfirmMessage() {
-    this.navigateToPageTable()
+   if(this.action=='approve')
+    this.approve()
+  else
+  this.reject()
+
+  }
+
+  openDialog(value:string){
+  this.action=value
+    this.showConfirmMessage=true
+    if(this.action=='approve')
+      this.header='trader_request.q_approve'
+    else
+    this.header='trader_request.q_reject'
 
   }
 
   approve(){
-
+    let payload={
+       id: +this.getID,
+    }
+   this.ApiService.post('trader/ApproveTrader',payload).subscribe(res=>{
+         if(res)
+          this.navigateToPageTable()
+   })
   }
 
   reject(){
-    
+    let payload={
+       "userId": +this.getID,
+       "rejectionReason": this.reasonForRejectionValue
+    }
+    this.ApiService.post('trader/RejectTrader',payload).subscribe(res=>{
+      if(res)
+        this.navigateToPageTable()
+    })
   }
 
   API_forAddItem(payload: any) {

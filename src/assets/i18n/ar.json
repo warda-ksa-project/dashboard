@@ -199,7 +199,8 @@
       "stockQuantity": "الكمية المتاحة",
       "hasDiscount": "يحتوي على خصم",
       "discountType": "نوع الخصم",
-      "amount": "القيمة"
+      "amount": "القيمة",
+      "price":"السعر"
     }
   },
   "piece_products": {
@@ -273,7 +274,9 @@
     "imgs": "صور طلبات التجار",
     "form": {
        "traderName":"اسم التاجر",
-      "addedDate":"تاريخ الاضافة"
+      "addedDate":"تاريخ الاضافة",
+      "reasonForRejection":"سبب الرفض"
+
     }
   },
 

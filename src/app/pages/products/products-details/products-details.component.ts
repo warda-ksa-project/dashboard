@@ -82,7 +82,8 @@ export class ProductsDetailsComponent {
     }),
     stockQuantity: new FormControl('', {
       validators: [
-        Validators.required
+        Validators.required,
+        Validations.onlyNumberValidator()
       ]
     }),
     hasDiscount: new FormControl<boolean>(false),
@@ -97,13 +98,19 @@ export class ProductsDetailsComponent {
         Validations.onlyNumberValidator()
       ],
     }),
-    image: new FormControl<any>([]),
-    id: new FormControl(this.getID | 0),
-    categoryId: new FormControl('', {
+    price: new FormControl('',{
       validators: [
         Validators.required,
+        Validations.onlyNumberValidator()
       ],
-    })
+    }),
+    image: new FormControl<any>([]),
+    id: new FormControl(this.getID | 0),
+    // categoryId: new FormControl('', {
+    //   validators: [
+    //     Validators.required,
+    //   ],
+    // })
   })
 
   bredCrumb: IBreadcrumb = {
@@ -275,6 +282,9 @@ export class ProductsDetailsComponent {
     }
     const payload = {
       ...this.form.value,
+      amount:+this.form.value.amount,
+      price:Number(this.form.value.price),
+      stockQuantity:Number(this.form.value.stockQuantity),
     }
 
 

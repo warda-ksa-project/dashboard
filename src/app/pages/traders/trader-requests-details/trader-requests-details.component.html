@@ -310,10 +310,10 @@
                       <button type="button" class="cancel-btn" (click)="cancel()">
                         {{ "actions.cancel" | translate }}
                       </button>
-                      <button type="button" class="reject-btn" (click)="reject()">
+                      <button type="button" class="reject-btn" (click)="openDialog('reject')">
                         {{ "actions.reject" | translate }}
                       </button>
-                      <button type="button" class="submit-btn" (click)="approve()">
+                      <button type="button" class="submit-btn" (click)="openDialog('approve')">
                         {{ "actions.approve" | translate }}
                       </button>
                     </div>
@@ -326,15 +326,32 @@
       </div>
     </div>
   </div>
-  <app-dialog [visible]="showConfirmMessage">
-    <button
-      class="dialog-close-btn btn btn-default"
-      (click)="showConfirmMessage = false"
-    >
-      {{ "actions.close" | translate }}
-    </button>
-    <button class="dialog-close-btn btn btn-danger" (click)="onConfirmMessage()">
-      {{ "actions.confirm" | translate }}
-    </button>
-  </app-dialog>
-  
+  <!-- <app-dialog [visible]="showConfirmMessage">
+   
+  </app-dialog> -->
+ 
+ 
+  <p-dialog  [header]="header|translate" [(visible)]="showConfirmMessage"  [style]="{ width: '25rem' }">
+    
+        <div *ngIf="action=='reject'" class="mt-2 col-lg-12 col-md-12 col-sm-12 mt-3">
+            <div class="title-section mb-2">
+              <p>{{'trader_request.form.reasonForRejection'|translate}}</p>
+            </div>
+              <textarea pTextarea id="over_label" rows="6" style="resize: none" class="h-full w-full"
+             [(ngModel)]="reasonForRejectionValue" [style]="{ width: '100%' }"></textarea>
+            </div>
+      <div class="d-flex mt-5">
+        <button
+        class="dialog-close-btn btn btn-default"
+        (click)="showConfirmMessage = false"
+      >
+        {{ "actions.close" | translate }}
+      </button>
+      <button   *ngIf="action=='approve'"class="dialog-close-btn btn btn-danger"  (click)="onConfirmMessage()">
+        {{ "actions.approve" | translate }}
+      </button>
+      <button  *ngIf="action=='reject'" class="dialog-close-btn btn btn-danger"  [disabled]="reasonForRejectionValue==''" (click)="onConfirmMessage()">
+        {{ "actions.reject" | translate }}
+     </button>
+      </div>
+</p-dialog>

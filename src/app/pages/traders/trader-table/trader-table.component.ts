@@ -54,7 +54,7 @@ export class TraderTableComponent {
   tableActions: ITableAction[] = [
     {
       name: EAction.delete,
-      apiName_or_route: 'trader/Delete?TraderId',
+      apiName_or_route: 'trader/DeleteTrader?TraderId',
       autoCall: true,
     },
     {

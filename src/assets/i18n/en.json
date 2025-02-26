@@ -200,7 +200,8 @@
       "stockQuantity": "Stock Quantity",
       "hasDiscount": "Has Discount",
       "discountType": "Discount Type",
-      "amount": "Amount"
+      "amount": "Amount",
+      "price":"Price"
     }
   },
   "piece_products": {
@@ -272,9 +273,12 @@
     "pageName_View_crumb": "View Trader Request",
     "notActive": "Not Active",
     "imgs": "Trader Requests Images",
+    "q_approve":"Are you sure to approve this request ?",
+    "q_reject":"Are you sure to reject this request ?",
     "form": {
         "traderName":"Trader Name",
-      "addedDate":"Added Date"
+      "addedDate":"Added Date",
+      "reasonForRejection":"Reason For Rejection"
     }
   },
   "faqs": {
