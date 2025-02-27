@@ -27,7 +27,7 @@ const global_pageName = 'piece_products.pageName';
 const global_router_add_url_in_Table = '/piece-product/add';
 const global_router_view_url = '/piece-product/view';
 const global_router_edit_url = '/piece-product/edit';
-const global_API_getAll = 'pieceProduct' + '/GetAllWithPagination';
+const global_API_getAll = 'pieceproducts' + '/GetAllWithPagination';
 @Component({
   selector: 'app-piece-products-table',
   standalone: true,
@@ -54,7 +54,7 @@ export class PieceProductsTableComponent {
   tableActions: ITableAction[] = [
     {
       name: EAction.delete,
-      apiName_or_route: 'pieceProduct/Delete?id',
+      apiName_or_route: 'pieceproducts/Delete?id',
       autoCall: true,
     },
     {

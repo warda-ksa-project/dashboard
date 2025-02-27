@@ -23,9 +23,9 @@ import { environment } from '../../../../environments/environment';
 import { Validations } from '../../../validations';
 const global_PageName = 'piece_products.pageName';
 const global_routeUrl = 'piece-product'
-const global_API_details = 'piece-product' + '/GetById';
-const global_API_create = 'piece-product' + '/Create';
-const global_API_update = 'piece-product' + '/Update';
+const global_API_details = 'pieceproducts' + '/GetById';
+const global_API_create = 'pieceproducts' + '/Create';
+const global_API_update = 'pieceproducts' + '/Update';
 
 @Component({
   selector: 'app-piece-products-details',
@@ -58,6 +58,7 @@ export class PieceProductsDetailsComponent {
   ]
   hasDiscount = false
   imageList: any;
+
   form = new FormGroup({
     enName: new FormControl('', {
       validators: [
@@ -84,6 +85,11 @@ export class PieceProductsDetailsComponent {
         Validators.required
       ]
     }),
+    price: new FormControl('', {
+      validators: [
+        Validators.required
+      ]
+    }),
     hasDiscount: new FormControl<boolean>(false),
     discountType: new FormControl<any>('', {
       validators: [
@@ -98,11 +104,7 @@ export class PieceProductsDetailsComponent {
     }),
     image: new FormControl<any>([]),
     id: new FormControl(this.getID | 0),
-    categoryId: new FormControl('', {
-      validators: [
-        Validators.required,
-      ],
-    })
+    categoryId: new FormControl(0)
   })
 
   bredCrumb: IBreadcrumb = {
@@ -274,7 +276,12 @@ export class PieceProductsDetailsComponent {
     }
     const payload = {
       ...this.form.value,
+      amount:+this.form.value.amount,
+      price:Number(this.form.value.price),
+      stockQuantity:Number(this.form.value.stockQuantity),
+  
     }
+    console.log("PieceProductsDetailsComponent  onSubmit  payload:", payload)
 
 
     if (this.tyepMode() == 'Add') {
