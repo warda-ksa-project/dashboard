@@ -607,3 +607,6 @@ input:-internal-autofill-selected {
   background-color: transparent !important;
   color: fieldtext !important;
 }
+.p-inputtext,.p-select{
+  border-radius: 16px!important;
+}

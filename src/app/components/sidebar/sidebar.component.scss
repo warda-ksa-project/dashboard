@@ -46,7 +46,7 @@
 
             &:hover {
               background-color: rgb(208, 207, 207);
-              border-radius: 6px;
+              border-radius: 16px;
             }
 
             .pi {
@@ -56,12 +56,12 @@
 
           .active {
             background: #8174A0;
-            border-radius: 6px;
+            border-radius: 16px;
             color: white;
 
             &:hover {
               background: #8174A0;
-              border-radius: 6px;
+              border-radius: 16px;
             }
           }
         }
@@ -78,31 +78,30 @@
 
             &:hover {
               background-color: rgb(208, 207, 207);
-              border-radius: 6px;
+              border-radius: 16px;
             }
           }
 
           .user-image-section {
-            border-top: 1px solid rgb(186, 184, 184);
+            // border-top: 1px solid rgb(186, 184, 184);
             padding-top: 10px;
             position: relative;
             cursor: pointer;
 
-            img {
-              width: 40px;
-              height: 40px;
-              border-radius: 50%;
-            }
+            // img {
+            //   width: 30px;
+            //   height: 30px;
+            // }
           }
 
           .active {
             background: #8174A0;
-            border-radius: 6px;
+            border-radius: 16px;
             color: white;
 
             &:hover {
               background: #8174A0;
-              border-radius: 6px;
+              border-radius: 16px;
             }
           }
         }
@@ -110,6 +109,14 @@
         .section-color {
           color: #64748b;
         }
+      }
+      div.log-out{
+        display: flex;
+        justify-items: center;
+        img{
+          margin:0px 5px;
+        }
+        
       }
     }
   }

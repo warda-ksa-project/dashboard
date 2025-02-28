@@ -38,6 +38,7 @@
     "reject":"رفض"
   },
   "shared": {
+    "log_out":"تسجيل خروج",
     "download":"تحميل",
     "errors": {
       "login": "فشل تسجيل الدخول",
@@ -88,7 +89,7 @@
   "side_bar": {
     "dashboard": "لوحة التحكم",
     "trader": "التجار",
-    "trader_request":"طلبات التجار",
+    "trader_request":"الطلبات ",
     "clients": "العملاء",
     "category": "الفئات الفرعية",
     "sub_category": "الفئات الفرعية",

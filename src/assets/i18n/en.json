@@ -39,6 +39,7 @@
     "reject":"Reject"
   },
   "shared": {
+    "log_out":"Logout",
     "download":"download",
     "errors": {
       "login": "Login failed",
@@ -89,7 +90,7 @@
   "side_bar": {
     "dashboard": "DASHBOARD",
     "trader": "TRADERS",
-    "trader_request":"TRADER REQUESTS",
+    "trader_request":"REQUESTS",
     "clients": "CLIENTS",
     "category": "SUBCATEGORIES",
     "sub_category": "SUB CATEGORIES",

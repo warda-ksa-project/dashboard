@@ -9,9 +9,9 @@
           background-color: transparent !important;
 
           .p-paginator-pages .p-paginator-page.p-highlight {
-            background: #253858 !important;
-            border-color: #EFF6FF !important;
-            color: white !important;
+            // background: #253858 !important;
+            // border-color: #EFF6FF !important;
+            // color: white !important;
           }
 
           .p-paginator-pages {
@@ -19,9 +19,14 @@
               border-radius: 8px;
               min-width: 2rem !important;
               height: 30px;
-              background-color: #8174A0;
-              color: #fff;
+              background-color: #F7F9FB;
+              color: #8174A0;
             }
+          }
+
+          .p-paginator-page-selected{
+            background-color: #8174A0!important;
+            color: #fff!important;
           }
 
           .p-paginator-first,

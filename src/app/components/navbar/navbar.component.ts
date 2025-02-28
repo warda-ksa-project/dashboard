@@ -72,6 +72,17 @@ export class NavbarComponent {
       }
 
   }
+  toggleLanguage() {
+    this.selectedLang = this.selectedLang === 'en' ? 'ar' : 'en';
+    this.languageService.translationService.currentLang = this.selectedLang;
+    this.languageService.change(this.selectedLang);
+
+    this.document.body.dir = this.selectedLang === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.setAttribute('lang', this.selectedLang);
+    document.documentElement.setAttribute('dir', this.selectedLang === 'ar' ? 'rtl' : 'ltr');
+    window.location.reload()
+  }
+  
 
   logout() {
     localStorage.removeItem('token');

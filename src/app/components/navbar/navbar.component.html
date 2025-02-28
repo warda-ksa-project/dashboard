@@ -17,6 +17,7 @@
       <div class="notifications-section">
       <app-notifications></app-notifications>
       </div>
+  
       <div class="profile d-flex justify-content-between">
         <img width="40" height="40" src="assets/images/arabian-man.png" alt="">
         <div class="info">
@@ -24,6 +25,9 @@
             <span class="mail">{{'ahmedaladdin6@gmail.com'}}</span>
         </div>
      </div>
+     <button class="lang-btn" (click)="toggleLanguage()">
+      {{ selectedLang.toUpperCase() == 'AR' ? 'EN' : 'AR' }}
+    </button>
       <!-- <div class="lang-section">
         <p-select [options]="langOptions" [(ngModel)]="selectedLang" (onChange)="onLangChange()" optionLabel="name"
           optionValue="code">
@@ -42,9 +46,9 @@
         </p-select>
       </div> -->
 
-      <div class="logout-section" (click)="logout()" routerLink='/auth/login'>
+      <!-- <div class="logout-section" (click)="logout()" routerLink='/auth/login'>
         <span class="pi pi-sign-out"></span>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>
