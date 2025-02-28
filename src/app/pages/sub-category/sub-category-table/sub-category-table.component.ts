@@ -92,6 +92,7 @@ export class SubCategoryTableComponent {
   displayTableCols(currentLang: string) {
     this.columns = [
       { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: true },
+      // { keyName: 'enName', header: this.languageService.translate('sub_category.form.enName'), type: EType.imageWithText,nested:{img:'image',text:''}, show: true },
       { keyName: 'enName', header: this.languageService.translate('sub_category.form.enName'), type: EType.text, show: true },
       { keyName: 'arName', header: this.languageService.translate('sub_category.form.arName'), type: EType.text, show: true },
       { keyName: '', header: this.languageService.translate('Action'), type: EType.actions, actions: this.tableActions, show: true },

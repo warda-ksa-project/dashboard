@@ -34,6 +34,7 @@ export enum EType {
   id = "id",
   text = "text",
   image = "image",
+  imageWithText = "image_text",
   object = "object",
   date = "date",
   time = "time",

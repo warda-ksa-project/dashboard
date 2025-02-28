@@ -19,6 +19,12 @@
             <span *ngIf="col.type=='id'"> {{ rowData[col.keyName]? rowData[col.keyName]:'-' }}</span>
             <span *ngIf="col.type=='text'"> {{ rowData[col.keyName]? rowData[col.keyName]:'-' }}</span>
             <span *ngIf="col.type=='boolean'"> {{ rowData[col.keyName]? true: false }}</span>
+            <span *ngIf="col.type=='image_text'"> 
+              <img class="rounded"  [src]="imageBaseUrl+rowData[col.nested.img]" width="60px"
+              height="auto" alt="image">
+              {{ rowData[col.keyName]? rowData[col.keyName]:'-' }}
+            </span>
+
             <span *ngIf="col.type=='orderStatus'" class="order-status"
               [style.backgroundColor]="getOrderStatusColorById(rowData?.orderStatusEnum)"> {{ rowData[col.keyName]?
               rowData[col.keyName]:'-' }}</span>
