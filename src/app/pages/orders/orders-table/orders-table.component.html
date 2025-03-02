@@ -11,11 +11,11 @@
     <div class="details-container">
       <div class="action-filter" *ngIf="dataList.length>0">
         <!-- <a [routerLink]="global_router_add_url_in_Table"> + Add New {{pageName()}}</a> -->
-        <span class="pi pi-filter pointer" (click)="openFilter()"> </span>
+        <!-- <span class="pi pi-filter pointer" (click)="openFilter()"> </span> -->
       </div>
 
       <div class="table-view">
-        <app-table (reloadGetAllApi)="reloadGetAllApi($event)" [colsHeader]="columns" [records]="dataList" [showrecordIndex]="true"
+        <app-table (onActionCliked)="onEditOrder($event)" (reloadGetAllApi)="reloadGetAllApi($event)" [colsHeader]="columns" [records]="dataList" [showrecordIndex]="true"
           [actions]="tableActions"></app-table>
       </div>
       <div class="responsive-accordions">
@@ -29,7 +29,7 @@
     </div>
   </div>
 </div>
-<app-drawer [visible]="showFilter" header="{{pageName()}}_{{'filter'}}" (onClose)="onCloseFilter($event)">
+<!-- <app-drawer [visible]="showFilter" header="{{pageName()}}_{{'filter'}}" (onClose)="onCloseFilter($event)">
   <form #myForm="ngForm" (ngSubmit)="onSubmit()" body class="h-100 search-form d-flex">
     <div class="form-content">
 
@@ -63,4 +63,27 @@
     </div>
 
   </form>
-</app-drawer>
+</app-drawer> -->
+<p-dialog  class="order-status" [header]="'order.pageName_Edit_crumb'|translate" [(visible)]="openEditDialog"  [style]="{ width: '25rem'}">
+    
+  <div class="h-auto col-lg-12 col-md-12 col-sm-12 mt-2">
+    <!-- <app-select [placeholder]="form.get('countryId')?.value==''?'':getSelectValue('countryId','countryId',countries)" class="w-100" [list]="countries" [label]="'city.form.country'" -->
+
+    <app-select [placeholder]="form.get('orderStatusId')?.value" class="w-100" [list]="orderStatusList" [label]="'order.form.status'"
+       [control]="form.get('orderStatusId')"></app-select>
+ </div>
+<div class="footer mt-5">
+  <button  class="dialog-close-btn btn btn-primary-bk  w-100 block" 
+   (click)="API_Edit()">
+    {{ "actions.edit" | translate }}
+  </button>
+  <button
+  class="dialog-close-btn btn btn-danger w-100 block b-raduis-16 mt-3"
+  (click)="openEditDialog = false"
+>
+  {{ "actions.close" | translate }}
+</button>
+
+
+</div>
+</p-dialog>

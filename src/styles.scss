@@ -556,12 +556,32 @@ small {
     color: black !important;
   }
 }
+p-dialog.order-status{
+  position: relative;
+  .p-dialog-content{
+    min-height: 288px!important;
+  }
+  div.footer{
+    position: absolute;
+    bottom: 30px;
+    left: 10px;
+    right: 20px;
+   }
+}
 
 .btn-primary-bk{
   background: #8174A0;
   color: white;
-  border-radius: 17px;
+  border-radius: 16px;
   padding: 8px 35px;
+  &:hover{
+    background: #887e9e;
+    color: white;
+  }
+}
+.b-raduis-16{
+  border-radius: 16px;
+
 }
 .action-filter {
   a {
@@ -609,4 +629,24 @@ input:-internal-autofill-selected {
 }
 .p-inputtext,.p-select{
   border-radius: 16px!important;
+}
+
+p-table.order{
+  th{
+    color:#1C1C1C66!important;
+    font-weight: 100!important;
+
+  }
+}
+.gray-text{
+  color:gray!important
+}
+.black{
+  color:#000!important
+}
+.rounded-icon {
+  background-color: #B79CC2;
+  color:#fff;
+  border-radius: 50%;
+  padding: 8px;
 }
