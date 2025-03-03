@@ -6,6 +6,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Password } from 'primeng/password';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import { DatePickerModule } from 'primeng/datepicker';
 
 @Component({
   selector: 'app-input-text',
@@ -17,8 +18,8 @@ import { FloatLabelModule } from 'primeng/floatlabel';
     InputTextModule,
     TranslatePipe,
     Password,
-    JsonPipe,
-    FloatLabelModule
+    FloatLabelModule,
+    DatePickerModule
   ],
   templateUrl: './input-text.component.html',
   styleUrl: './input-text.component.scss'

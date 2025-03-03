@@ -21,6 +21,7 @@ import { StepperModule } from 'primeng/stepper';
 import { GalleryComponent } from '../../../components/gallery/gallery.component';
 import { environment } from '../../../../environments/environment';
 import { Validations } from '../../../validations';
+
 const global_PageName = 'products.pageName';
 const global_routeUrl = 'product'
 const global_API_details = 'product' + '/GetById';
@@ -106,6 +107,18 @@ export class ProductsDetailsComponent {
     }),
     image: new FormControl<any>([]),
     id: new FormControl(this.getID | 0),
+    start:new FormControl('',
+      {
+        validators: [
+          Validators.required,
+        ]
+      }
+    ),
+    end:new FormControl('',{
+      validators: [
+        Validators.required
+      ]
+    })
     // categoryId: new FormControl('', {
     //   validators: [
     //     Validators.required,
@@ -153,22 +166,32 @@ export class ProductsDetailsComponent {
       if (this.tyepMode() == 'Add') {
         this.form.get('discountType')?.reset();
         this.form.get('amount')?.reset();
+        this.form.get('start')?.reset();
+        this.form.get('end')?.reset();
       }
 
       if (value) {
         this.hasDiscount = true
         this.form.get('discountType')?.setValidators([Validators.required]);
         this.form.get('amount')?.setValidators([Validators.required]);
+        this.form.get('start')?.setValidators([Validators.required]);
+        this.form.get('end')?.setValidators([Validators.required]);
 
       } else {
         this.hasDiscount = false
         this.form.get('discountType')?.setValue(0);
         this.form.get('amount')?.setValue(0);
+        this.form.get('start')?.setValue('');
+        this.form.get('end')?.setValue('');
         this.form.get('discountType')?.clearValidators();
         this.form.get('amount')?.clearValidators();
+        this.form.get('start')?.clearValidators();
+        this.form.get('end')?.clearValidators();
       }
       this.form.get('discountType')?.updateValueAndValidity();
       this.form.get('amount')?.updateValueAndValidity();
+      this.form.get('start')?.updateValueAndValidity();
+      this.form.get('end')?.updateValueAndValidity();
       console.log("ProductsDetailsComponent  this.form.get   this.form.value:", this.form.value)
     });
 
@@ -284,7 +307,7 @@ export class ProductsDetailsComponent {
       ...this.form.value,
       amount:+this.form.value.amount,
       price:Number(this.form.value.price),
-      stockQuantity:Number(this.form.value.stockQuantity),
+      stockQuantity:Number(this.form.value.stockQuantity)
     }
 
 

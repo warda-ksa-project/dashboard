@@ -203,7 +203,9 @@
       "hasDiscount": "يحتوي على خصم",
       "discountType": "نوع الخصم",
       "amount": "القيمة",
-      "price":"السعر"
+      "price":"السعر",
+      "start":"تاريخ البدء",
+      "end":"تاريخ الانتهاء"
     }
   },
   "piece_products": {

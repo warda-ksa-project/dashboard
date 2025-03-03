@@ -204,7 +204,9 @@
       "hasDiscount": "Has Discount",
       "discountType": "Discount Type",
       "amount": "Amount",
-      "price":"Price"
+      "price":"Price",
+      "start":"Start Date",
+      "end":"End Date"
     }
   },
   "piece_products": {

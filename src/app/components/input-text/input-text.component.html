@@ -1,6 +1,6 @@
 <div class="">
   <p-floatlabel variant="on">
-
+    <p-datepicker *ngIf="type=='date'" [formControl]="control" />
     <input autocomplete="off" autocomplete="off" (ngModelChange)="onInputChange($event)"   *ngIf="type=='text'" class="w-100" pInputText id="enTitle" [formControl]="control" [readOnly]="readOnly"  [disabled]="disabled" />
     <p-password autocomplete="off" [style]="{ width: '100%' }" (ngModelChange)="onInputChange($event)" autocomplete="off"  class="password-w-100 w-100" *ngIf="type=='password'" [disabled]="disabled"
     [formControl]="control" [feedback]="showPasswordWeakness" [toggleMask]="true" />

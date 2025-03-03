@@ -1,5 +1,5 @@
-    <label>{{label|translate}}</label>
-    <ng-container *ngIf="type=='single'">
+    <p-floatlabel variant="on">
+      <ng-container *ngIf="type=='single'">
         <div class="mt-1">
           <p-select class="w-100"
            [formControl]="control" 
@@ -29,4 +29,7 @@
     class="w-100" />
     </div>
    </ng-container>
+       <label>{{label|translate}}</label>
+    </p-floatlabel>
+   
    <!-- [maxSelectedLabels]="3"  -->
