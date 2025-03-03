@@ -25,6 +25,8 @@ import { DatePickerModule } from 'primeng/datepicker';
   styleUrl: './input-text.component.scss'
 })
 export class InputTextComponent {
+  @Input() minDate:any='';
+  @Input() maxDate:any='';
   @Input() type: string='text';
   @Input() label!: string;
   @Input() readOnly: boolean = false;

@@ -194,6 +194,8 @@
                       </div>
                       <div class="col-lg-6 col-md-6 col-sm-6 mt-4 pt-1">
                         <app-input-text
+                          [disabled]="form.get('start')?.value==''"
+                          [minDate]="form.get('start')?.value"
                           [type]="'date'"
                           [readOnly]="tyepMode() == 'View'"
                           [disabled]="tyepMode() == 'View'"
