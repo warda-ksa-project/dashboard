@@ -43,11 +43,10 @@ export class ProductsDetailsComponent {
   private ApiService = inject(ApiService)
   private router = inject(Router)
   private imageUrl = environment.baseImageUrl
-  currentDate=new Date();
+  minEndDate=new Date()
   private route = inject(ActivatedRoute)
   showConfirmMessage: boolean = false
   private confirm = inject(ConfirmMsgService)
-  private datePipe=inject(DatePipe)
   categoryList: any[] = []
   discountType: any[] = [
     {
@@ -151,7 +150,15 @@ export class ProductsDetailsComponent {
 
   selectedLang: any;
   languageService = inject(LanguageService);
+  isPastDate(date: Date): boolean {
+    const today = new Date();
+    
+    // Remove time from today's date for accurate comparison
+    today.setHours(0, 0, 0, 0);
+    console.log("ProductsDetailsComponent  isPastDate  date < today:", date < today)
 
+    return date < today;
+  }
   ngOnInit() {
 
     this.pageName.set(global_PageName)
@@ -163,6 +170,18 @@ export class ProductsDetailsComponent {
       this.getMainCategory()
     });
 
+   this.form.get('startDate')?.valueChanges.subscribe((res:any) => {
+    this.form.get('endDate')?.setValue('')
+        if(this.isPastDate(res)==true){
+          this.minEndDate=new Date()
+        }
+        if(this.isPastDate(res)==false){
+          this.minEndDate=new Date(res)
+        }
+        
+      
+      
+   })
 
     this.form.get('hasDiscount')?.valueChanges.subscribe((value: any) => {
       if (this.tyepMode() == 'Add') {

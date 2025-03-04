@@ -82,12 +82,14 @@ export class PieceProductsDetailsComponent {
     }),
     stockQuantity: new FormControl('', {
       validators: [
-        Validators.required
+        Validators.required,
+        Validations.onlyNumberValidator()
       ]
     }),
     price: new FormControl('', {
       validators: [
-        Validators.required
+        Validators.required,
+        Validations.onlyNumberValidator()
       ]
     }),
     hasDiscount: new FormControl<boolean>(false),
@@ -104,6 +106,18 @@ export class PieceProductsDetailsComponent {
     }),
     image: new FormControl<any>([]),
     id: new FormControl(this.getID | 0),
+    startDate:new FormControl('',
+      {
+        validators: [
+          Validators.required,
+        ]
+      }
+    ),
+    endDate:new FormControl('',{
+      validators: [
+        Validators.required
+      ]
+    }),
     categoryId: new FormControl(0)
   })
 
@@ -127,10 +141,19 @@ export class PieceProductsDetailsComponent {
   get getID() {
     return this.route.snapshot.params['id']
   }
-
+  minEndDate=new Date()
   selectedLang: any;
   languageService = inject(LanguageService);
 
+  isPastDate(date: Date): boolean {
+    const today = new Date();
+    
+    // Remove time from today's date for accurate comparison
+    today.setHours(0, 0, 0, 0);
+    console.log("ProductsDetailsComponent  isPastDate  date < today:", date < today)
+
+    return date < today;
+  }
   ngOnInit() {
 
     this.pageName.set(global_PageName)
@@ -142,27 +165,48 @@ export class PieceProductsDetailsComponent {
       this.getMainCategory()
     });
 
-
+    this.form.get('startDate')?.valueChanges.subscribe((res:any) => {
+      this.form.get('endDate')?.setValue('')
+          if(this.isPastDate(res)==true){
+            this.minEndDate=new Date()
+          }
+          if(this.isPastDate(res)==false){
+            this.minEndDate=new Date(res)
+          }
+          
+        
+        
+     })
     this.form.get('hasDiscount')?.valueChanges.subscribe((value: any) => {
       if (this.tyepMode() == 'Add') {
         this.form.get('discountType')?.reset();
         this.form.get('amount')?.reset();
+        this.form.get('startDate')?.reset();
+        this.form.get('endDate')?.reset();
       }
 
       if (value) {
         this.hasDiscount = true
         this.form.get('discountType')?.setValidators([Validators.required]);
         this.form.get('amount')?.setValidators([Validators.required]);
+        this.form.get('startDate')?.setValidators([Validators.required]);
+        this.form.get('endDate')?.setValidators([Validators.required]);
 
       } else {
         this.hasDiscount = false
         this.form.get('discountType')?.setValue(0);
         this.form.get('amount')?.setValue(0);
+        this.form.get('startDate')?.setValue('');
+        this.form.get('endDate')?.setValue('');
         this.form.get('discountType')?.clearValidators();
         this.form.get('amount')?.clearValidators();
+        this.form.get('startDate')?.clearValidators();
+        this.form.get('endDate')?.clearValidators();
       }
       this.form.get('discountType')?.updateValueAndValidity();
       this.form.get('amount')?.updateValueAndValidity();
+      this.form.get('startDate')?.updateValueAndValidity();
+      this.form.get('endDate')?.updateValueAndValidity();
       console.log("ProductsDetailsComponent  this.form.get   this.form.value:", this.form.value)
     });
 
@@ -210,7 +254,11 @@ export class PieceProductsDetailsComponent {
   API_getItemDetails() {
     this.ApiService.get(`${global_API_details}`, { id: this.getID }).subscribe((res: any) => {
       if (res.data) {
-        this.form.patchValue(res.data)
+        this.form.patchValue({
+          ...res.data,
+          startDate:new Date(res.data.startDate),
+          endDate:new Date(res.data.endDate)
+        })
         this.imageList = res.data.image;
         if (this.imageList.length != 0) {
           this.addUrltoMedia(this.imageList);
