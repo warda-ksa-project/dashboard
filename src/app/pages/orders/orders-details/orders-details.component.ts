@@ -121,7 +121,7 @@ pageName =signal<string>(global_PageName);
         this.form.patchValue({
           ...res.data,
           address:res.data.address.expalinedAddress,
-          status:this.selectedLang=='en'?res.data.orderStatusDto.titleEn:res.data.orderStatusDto.titleAr
+          status:this.selectedLang=='en'?res.data.statusEn:res.data.statusAr
         });
         this.data.products=res.data.orderItemResponseDtos
       }

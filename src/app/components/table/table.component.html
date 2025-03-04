@@ -53,6 +53,9 @@
               <span *ngIf="col.type=='status'">
                 <button [class]="rowData[col.keyName]"> {{ rowData[col.keyName]}}</button>
               </span>
+              <span *ngIf="col.type=='status_id'">
+                <button [class]="rowData[col.statusId]"> {{ rowData[col.keyName]}}</button>
+              </span>
               <span *ngIf="col.type ==='toggle'">
                 <app-check-box [initValue]="rowData[col.keyName]" (toggleValue)="onToggleChange($event,rowData,col)"
                   [isToggle]="true"></app-check-box>

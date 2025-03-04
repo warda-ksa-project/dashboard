@@ -116,11 +116,22 @@
   padding: 5px;
   width: 100px;
 }
-.complete {
+.complete ,.Completed{
   @include status(green, #e3f5e3, #90d290);
 }
+.Pending{
+  @include status(rgb(202, 216, 0), #d7d7f2, #e1f484);
 
-.inProgress {
+}
+.Preparing{
+  @include status(rgb(152, 4, 152), #f2cff9, #f6b0f6);
+
+}
+.Delivering{
+  @include status(rgb(6, 82, 84), #bffbff, #92ddf9);
+
+}
+.inProgress ,.Pending {
   @include status(blue, #d7d7f2, #6f6fd5);
 }
 

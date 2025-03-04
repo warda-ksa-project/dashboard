@@ -206,7 +206,7 @@ export class OrdersTableComponent {
       { keyName: 'paymentWay', header: this.languageService.translate('order.form.paymentWay'), type: EType.text, show: true },
       { keyName: 'totalPrice', header: this.languageService.translate('order.form.price'), type: EType.text, show: true },
       { keyName: 'addedDate', header: this.languageService.translate('order.form.date'), type: EType.date, show: true },
-      { keyName: currentLang === 'ar' ? 'statusAr' : 'statusEn', header: this.languageService.translate('order.form.status'), type: EType.text, show: true },
+      { keyName: currentLang === 'ar' ? 'statusAr' : 'statusEn', header: this.languageService.translate('order.form.status'), type: EType.status,statusId:'statusEn', show: true },
       // { keyName: 'showOrderStatusButton', header: this.languageService.translate('Status_Action'), type: EType.changeOrderStatus, show: true },
       { keyName: '', header: this.languageService.translate('Action'), type: EType.actions, actions: this.tableActions, show: true },
     ];
@@ -248,6 +248,7 @@ export class OrdersTableComponent {
   API_getStatus(){
     this.ApiService.get('order/getStatus').subscribe((res:any)=>{
       if(res.data){
+        this.orderStatusList=[]
         res.data.map((item:any)=>{
           this.orderStatusList.push({
             name:this.selectedLang=='en'?item.titleEn:item.titleAr,
@@ -367,11 +368,12 @@ export class OrdersTableComponent {
   }
 
   onEditOrder(e:any){
+  console.log("OrdersTableComponent  onEditOrder  e:", e)
   if(e.action.name=='edit'){
     this.openEditDialog=true;
     this.form.patchValue({
       orderId:e.record?.id,
-      orderStatusId:e.record.orderStatusDto.id,
+      orderStatusId:e.record.statusId,
     })
   }
   console.log("OrdersTableComponent  onEditOrder  e:", this.form.value)
@@ -381,7 +383,7 @@ export class OrdersTableComponent {
   API_Edit(){
     this.ApiService.put('order/Update',this.form.value).subscribe(res=>{
       if(res){
-        this.router.navigate(['/orders/']);
+       this.API_getAll()
         this.openEditDialog=false
       }
 

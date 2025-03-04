@@ -39,6 +39,7 @@ export enum EType {
   date = "date",
   time = "time",
   status = "status",
+  status_id="status_id",
   index = "index",
   actions = "actions",
   editor = 'editor',
@@ -61,7 +62,8 @@ export interface IcolHeader {
   nested?: INested,
   actions?: any[],
   show?: boolean,
-  toggleOptions?: IToggleOptions
+  toggleOptions?: IToggleOptions,
+  statusId?:any
 }
 
 @Component({
