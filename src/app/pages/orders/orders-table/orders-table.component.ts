@@ -42,7 +42,7 @@ export class OrdersTableComponent {
   tableActions: ITableAction[] = [
     {
       name: EAction.delete,
-      apiName_or_route: 'Order/Deleteorder/',
+      apiName_or_route: 'Order/Delete?id',
       autoCall: true
     },
     {
@@ -206,7 +206,7 @@ export class OrdersTableComponent {
       { keyName: 'paymentWay', header: this.languageService.translate('order.form.paymentWay'), type: EType.text, show: true },
       { keyName: 'totalPrice', header: this.languageService.translate('order.form.price'), type: EType.text, show: true },
       { keyName: 'addedDate', header: this.languageService.translate('order.form.date'), type: EType.date, show: true },
-      { keyName: currentLang === 'ar' ? 'orderStatusAr' : 'orderStatusEn', header: this.languageService.translate('order.form.order_status'), type: EType.orderStatus, show: false },
+      { keyName: currentLang === 'ar' ? 'statusAr' : 'statusEn', header: this.languageService.translate('order.form.status'), type: EType.text, show: true },
       // { keyName: 'showOrderStatusButton', header: this.languageService.translate('Status_Action'), type: EType.changeOrderStatus, show: true },
       { keyName: '', header: this.languageService.translate('Action'), type: EType.actions, actions: this.tableActions, show: true },
     ];
@@ -367,13 +367,11 @@ export class OrdersTableComponent {
   }
 
   onEditOrder(e:any){
-  console.log("OrdersTableComponent  onEditOrder  e:", e)
-
   if(e.action.name=='edit'){
     this.openEditDialog=true;
     this.form.patchValue({
+      orderId:e.record?.id,
       orderStatusId:e.record.orderStatusDto.id,
-      orderId:e.record.id
     })
   }
   console.log("OrdersTableComponent  onEditOrder  e:", this.form.value)
