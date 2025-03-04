@@ -3,7 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ButtonModule } from 'primeng/button';
 import { ApiService } from '../../../services/api.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { NgIf, TitleCasePipe } from '@angular/common';
+import { DatePipe, NgIf, TitleCasePipe } from '@angular/common';
 import { InputTextComponent } from '../../../components/input-text/input-text.component';
 import { BreadcrumpComponent } from "../../../components/breadcrump/breadcrump.component";
 import { IBreadcrumb } from '../../../components/breadcrump/cerqel-breadcrumb.interface';
@@ -32,6 +32,7 @@ const global_API_update = 'product' + '/Update';
   selector: 'app-products-details',
   standalone: true,
   imports: [ReactiveFormsModule, CheckBoxComponent, GalleryComponent, StepperModule, SelectComponent, EditorComponent, EditModeImageComponent, TitleCasePipe, TranslatePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
+  providers:[DatePipe],
   templateUrl: './products-details.component.html',
   styleUrl: './products-details.component.scss'
 })
@@ -42,10 +43,11 @@ export class ProductsDetailsComponent {
   private ApiService = inject(ApiService)
   private router = inject(Router)
   private imageUrl = environment.baseImageUrl
-
+  currentDate=new Date();
   private route = inject(ActivatedRoute)
   showConfirmMessage: boolean = false
   private confirm = inject(ConfirmMsgService)
+  private datePipe=inject(DatePipe)
   categoryList: any[] = []
   discountType: any[] = [
     {
@@ -107,14 +109,14 @@ export class ProductsDetailsComponent {
     }),
     image: new FormControl<any>([]),
     id: new FormControl(this.getID | 0),
-    start:new FormControl('',
+    startDate:new FormControl('',
       {
         validators: [
           Validators.required,
         ]
       }
     ),
-    end:new FormControl('',{
+    endDate:new FormControl('',{
       validators: [
         Validators.required
       ]
@@ -166,32 +168,32 @@ export class ProductsDetailsComponent {
       if (this.tyepMode() == 'Add') {
         this.form.get('discountType')?.reset();
         this.form.get('amount')?.reset();
-        this.form.get('start')?.reset();
-        this.form.get('end')?.reset();
+        this.form.get('startDate')?.reset();
+        this.form.get('endDate')?.reset();
       }
 
       if (value) {
         this.hasDiscount = true
         this.form.get('discountType')?.setValidators([Validators.required]);
         this.form.get('amount')?.setValidators([Validators.required]);
-        this.form.get('start')?.setValidators([Validators.required]);
-        this.form.get('end')?.setValidators([Validators.required]);
+        this.form.get('startDate')?.setValidators([Validators.required]);
+        this.form.get('endDate')?.setValidators([Validators.required]);
 
       } else {
         this.hasDiscount = false
         this.form.get('discountType')?.setValue(0);
         this.form.get('amount')?.setValue(0);
-        this.form.get('start')?.setValue('');
-        this.form.get('end')?.setValue('');
+        this.form.get('startDate')?.setValue('');
+        this.form.get('endDate')?.setValue('');
         this.form.get('discountType')?.clearValidators();
         this.form.get('amount')?.clearValidators();
-        this.form.get('start')?.clearValidators();
-        this.form.get('end')?.clearValidators();
+        this.form.get('startDate')?.clearValidators();
+        this.form.get('endDate')?.clearValidators();
       }
       this.form.get('discountType')?.updateValueAndValidity();
       this.form.get('amount')?.updateValueAndValidity();
-      this.form.get('start')?.updateValueAndValidity();
-      this.form.get('end')?.updateValueAndValidity();
+      this.form.get('startDate')?.updateValueAndValidity();
+      this.form.get('endDate')?.updateValueAndValidity();
       console.log("ProductsDetailsComponent  this.form.get   this.form.value:", this.form.value)
     });
 
@@ -239,7 +241,11 @@ export class ProductsDetailsComponent {
   API_getItemDetails() {
     this.ApiService.get(`${global_API_details}`, { id: this.getID }).subscribe((res: any) => {
       if (res.data) {
-        this.form.patchValue(res.data)
+        this.form.patchValue({
+          ...res.data,
+          startDate:new Date(res.data.startDate),
+          endDate:new Date(res.data.endDate)
+        })
         this.imageList = res.data.image;
         if (this.imageList.length != 0) {
           this.addUrltoMedia(this.imageList);
@@ -261,7 +267,7 @@ export class ProductsDetailsComponent {
   //   const promises = files.map((file: File) => {
   //     return this.convertFileToBase64(file).then((base64String: string) => ({
   //       src: base64String,
-  //       mediaTypeEnum: file.type.startsWith('image/') ? 1 : file.type.startsWith('video/') ? 2 : 0,
+  //       mediaTypeEnum: file.type.startDatesWith('image/') ? 1 : file.type.startDatesWith('video/') ? 2 : 0,
   //     }));
   //   });
 
@@ -280,6 +286,8 @@ export class ProductsDetailsComponent {
       amount: this.form.value.amount
     })
   }
+
+
   goToActivePage_1() {
     if (this.tyepMode() == 'Add') {
       // this.imageList=this.form.value.image;

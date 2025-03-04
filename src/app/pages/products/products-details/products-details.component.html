@@ -189,18 +189,18 @@
                           [readOnly]="tyepMode() == 'View'"
                           [disabled]="tyepMode() == 'View'"
                           [label]="'products.form.start'"
-                          [control]="form.get('start')"
+                          [control]="form.get('startDate')"
                         ></app-input-text>
                       </div>
                       <div class="col-lg-6 col-md-6 col-sm-6 mt-4 pt-1">
                         <app-input-text
-                          [disabled]="form.get('start')?.value==''"
-                          [minDate]="form.get('start')?.value"
+                          [disabled]="form.get('startDate')?.value==''"
+                          [minDate]="currentDate"
                           [type]="'date'"
                           [readOnly]="tyepMode() == 'View'"
                           [disabled]="tyepMode() == 'View'"
                           [label]="'products.form.end'"
-                          [control]="form.get('end')"
+                          [control]="form.get('endDate')"
                         ></app-input-text>
                       </div>
                     
