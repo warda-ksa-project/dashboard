@@ -48,11 +48,11 @@ export class PaymentWayTableComponent {
 
   showFilter: boolean = false
   tableActions: ITableAction[] = [
-    {
-      name: EAction.delete,
-      apiName_or_route: global_API_delete,
-      autoCall: true
-    },
+    // {
+    //   name: EAction.delete,
+    //   apiName_or_route: global_API_delete,
+    //   autoCall: true
+    // },
     {
       name: EAction.view,
       apiName_or_route:  global_router_view_url,
@@ -77,7 +77,7 @@ export class PaymentWayTableComponent {
     sortingExpression: "",
     sortingDirection: 0,
     enName: "",
-    arName: ""
+    arName: "",
   }
 
   totalCount: number = 0;
@@ -187,7 +187,7 @@ export class PaymentWayTableComponent {
       sortingExpression: "",
       sortingDirection: 0,
       enName: "",
-      arName: ""
+      arName: "",
     }
     this.API_getAll();
     this.showFilter = false

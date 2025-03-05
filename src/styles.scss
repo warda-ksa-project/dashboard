@@ -654,3 +654,31 @@ p-table.order{
   border: 1px dotted;
   border-radius: 16px;
 }
+.p-toggleswitch .p-toggleswitch-slider {
+  background-color:#8174A0 !important;
+}
+
+.p-toggleswitch.p-highlight .p-toggleswitch-slider {
+  background-color:#8174A0 !important;
+}
+
+.p-step-active .p-step-title  {
+  color: #6d54a9!important;
+  font-weight: bolder;
+}
+.p-step:has(~ .p-step-active) .p-stepper-separator {
+  background-color:#8174A0 !important;
+}
+.p-step-active .p-step-number {
+  color: #fff!important;
+  background-color: #6d54a9!important;
+}
+.p-datepicker-day-selected {
+  background-color: #6d54a9!important;
+}
+.p-button-text.p-button-secondary{
+  color: #fff!important;
+}
+.p-inputtext:enabled:focus{
+border-color: #6d54a9!important;
+}

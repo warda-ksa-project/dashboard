@@ -167,24 +167,6 @@
                </div>
                   <div class="row" *ngIf="hasDiscount">
                     <div class="col-lg-6 col-md-6 col-sm-6 mt-4 pt-1">
-                      <app-select
-                        [placeholder]="form.get('discountType')?.value"
-                        class="w-100"
-                        [list]="discountType"
-                        [label]="'products.form.discountType'"
-                        [control]="form.get('discountType')"
-                      >
-                      </app-select>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 mt-4 pt-1">
-                      <app-input-text
-                        [readOnly]="tyepMode() == 'View'"
-                        [disabled]="tyepMode() == 'View'"
-                        [label]="'products.form.amount'"
-                        [control]="form.get('amount')"
-                      ></app-input-text>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 mt-4 pt-1">
                       <app-input-text
                         [type]="'date'"
                         [readOnly]="tyepMode() == 'View'"
@@ -204,6 +186,25 @@
                         [control]="form.get('endDate')"
                       ></app-input-text>
                     </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 mt-4 pt-1">
+                      <app-select
+                        [placeholder]="form.get('discountType')?.value"
+                        class="w-100"
+                        [list]="discountType"
+                        [label]="'products.form.discountType'"
+                        [control]="form.get('discountType')"
+                      >
+                      </app-select>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 mt-4 pt-1">
+                      <app-input-text
+                        [readOnly]="tyepMode() == 'View'"
+                        [disabled]="tyepMode() == 'View'"
+                        [label]="'products.form.amount'"
+                        [control]="form.get('amount')"
+                      ></app-input-text>
+                    </div>
+              
                   
                   </div>
                 </div>

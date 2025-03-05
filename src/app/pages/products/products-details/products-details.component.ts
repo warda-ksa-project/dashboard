@@ -155,8 +155,6 @@ export class ProductsDetailsComponent {
     
     // Remove time from today's date for accurate comparison
     today.setHours(0, 0, 0, 0);
-    console.log("ProductsDetailsComponent  isPastDate  date < today:", date < today)
-
     return date < today;
   }
   ngOnInit() {
@@ -171,16 +169,14 @@ export class ProductsDetailsComponent {
     });
 
    this.form.get('startDate')?.valueChanges.subscribe((res:any) => {
+    if(this.isFirstDateAfter(res,this.form.get('endDate')?.value))
     this.form.get('endDate')?.setValue('')
         if(this.isPastDate(res)==true){
           this.minEndDate=new Date()
         }
         if(this.isPastDate(res)==false){
           this.minEndDate=new Date(res)
-        }
-        
-      
-      
+        }      
    })
 
     this.form.get('hasDiscount')?.valueChanges.subscribe((value: any) => {
@@ -213,13 +209,14 @@ export class ProductsDetailsComponent {
       this.form.get('amount')?.updateValueAndValidity();
       this.form.get('startDate')?.updateValueAndValidity();
       this.form.get('endDate')?.updateValueAndValidity();
-      console.log("ProductsDetailsComponent  this.form.get   this.form.value:", this.form.value)
     });
 
     if (this.tyepMode() !== 'Add')
       this.API_getItemDetails()
   }
-
+  isFirstDateAfter(start:any, end:any) {
+    return new Date(start) > new Date(end);
+}
   tyepMode() {
     const url = this.router.url;
     let result = 'Add'
@@ -273,15 +270,12 @@ export class ProductsDetailsComponent {
     })
   }
   addUrltoMedia(list: any) {
-    console.log(this.imageList);
     list.forEach((data: any) => {
-      console.log("ProductsDetailsComponent  list.forEach  data:", data)
       data.src = this.imageUrl + data.image;
     });
   }
   // onSelect(event: any): void {
   //   const files = event.currentFiles; // Array of selected files
-  //   console.log(files);
 
   //   const promises = files.map((file: File) => {
   //     return this.convertFileToBase64(file).then((base64String: string) => ({
@@ -292,15 +286,12 @@ export class ProductsDetailsComponent {
 
   //   Promise.all(promises)
   //     .then((processedFiles) => {
-  //       console.log(processedFiles); // Final processed array
   //       this.uploadedFiles.push(...processedFiles); // Add to `uploadedFiles`
   //     })
   //     .catch((error) => {
-  //       console.error('Error processing files:', error);
   //     });
   // }
   goToActivePage_2() {
-    console.log(this.form.value)
     this.form.patchValue({
       amount: this.form.value.amount
     })
@@ -312,8 +303,6 @@ export class ProductsDetailsComponent {
       // this.imageList=this.form.value.image;
       // this.addUrltoMedia(this.imageList);
 
-      // console.log("ProductsDetailsComponent  goToActivePage_1  this.form.value:", this.form.value)
-      // console.log("ProductsDetailsComponent  goToActivePage_1   this.imageList:",  this.imageList)
     }
 
 

@@ -154,6 +154,9 @@ export class PieceProductsDetailsComponent {
 
     return date < today;
   }
+  isFirstDateAfter(start:any, end:any) {
+    return new Date(start) > new Date(end);
+}
   ngOnInit() {
 
     this.pageName.set(global_PageName)
@@ -166,8 +169,9 @@ export class PieceProductsDetailsComponent {
     });
 
     this.form.get('startDate')?.valueChanges.subscribe((res:any) => {
-      this.form.get('endDate')?.setValue('')
-          if(this.isPastDate(res)==true){
+      if(this.isFirstDateAfter(res,this.form.get('endDate')?.value))
+        this.form.get('endDate')?.setValue('')
+      if(this.isPastDate(res)==true){
             this.minEndDate=new Date()
           }
           if(this.isPastDate(res)==false){

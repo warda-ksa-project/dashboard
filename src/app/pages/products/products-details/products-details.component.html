@@ -165,6 +165,26 @@
                     </div>
                   </div>
                   <div class="row " *ngIf="hasDiscount">
+                    <div class="col-lg-6 col-md-6 col-sm-6 mt-4 pt-1">
+                      <app-input-text
+                        [type]="'date'"
+                        [readOnly]="tyepMode() == 'View'"
+                        [disabled]="tyepMode() == 'View'"
+                        [label]="'products.form.start'"
+                        [control]="form.get('startDate')"
+                      ></app-input-text>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 mt-4 pt-1">
+                      <app-input-text
+                        [disabled]="form.get('startDate')?.value==''"
+                        [minDate]="minEndDate"
+                        [type]="'date'"
+                        [readOnly]="tyepMode() == 'View'"
+                        [disabled]="tyepMode() == 'View'"
+                        [label]="'products.form.end'"
+                        [control]="form.get('endDate')"
+                      ></app-input-text>
+                    </div>
                       <div class="col-lg-6 col-md-6 col-sm-6 mt-4 pt-1">
                         <app-select
                           [placeholder]="form.get('discountType')?.value"
@@ -183,26 +203,7 @@
                           [control]="form.get('amount')"
                         ></app-input-text>
                       </div>
-                      <div class="col-lg-6 col-md-6 col-sm-6 mt-4 pt-1">
-                        <app-input-text
-                          [type]="'date'"
-                          [readOnly]="tyepMode() == 'View'"
-                          [disabled]="tyepMode() == 'View'"
-                          [label]="'products.form.start'"
-                          [control]="form.get('startDate')"
-                        ></app-input-text>
-                      </div>
-                      <div class="col-lg-6 col-md-6 col-sm-6 mt-4 pt-1">
-                        <app-input-text
-                          [disabled]="form.get('startDate')?.value==''"
-                          [minDate]="minEndDate"
-                          [type]="'date'"
-                          [readOnly]="tyepMode() == 'View'"
-                          [disabled]="tyepMode() == 'View'"
-                          [label]="'products.form.end'"
-                          [control]="form.get('endDate')"
-                        ></app-input-text>
-                      </div>
+               
                     
              
                   </div>

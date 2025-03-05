@@ -100,7 +100,7 @@ export class PaymentWayDetailsComponent {
   }
 
   API_getItemDetails() {
-    this.ApiService.get(`${global_API_details}/${this.getID}`).subscribe((res: any) => {
+    this.ApiService.get(`${global_API_details}`,{id:this.getID}).subscribe((res: any) => {
       if (res)
         this.form.patchValue(res.data)
     })
