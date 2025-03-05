@@ -34,7 +34,7 @@ export const menuItems =
     // { icon: 'pi pi-times', label: 'side_bar.reason', route: '/cancel-reason' },
     // { icon: 'pi pi-book', label: 'side_bar.complaint', route: '/complaint' },
     // { icon: 'pi pi-qrcode', label: 'side_bar.copone', route: '/copone' },
-    // { icon: 'pi pi-credit-card', label: 'side_bar.payment', route: '/paymentWay' },
+    { icon: 'pi pi-credit-card', label: 'side_bar.payment', route: '/paymentWay' },
     // { icon: 'pi pi-trophy', label: 'side_bar.technical_sp', route: '/technical-specialist' },
     // { icon: 'pi pi-phone', label: 'side_bar.contact', route: '/contact-us' },
     // { icon: 'pi pi-database', label: 'side_bar.about', route: '/about-us' }

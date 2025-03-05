@@ -543,6 +543,22 @@
 
     }
    },
+   "payment": {
+    "pageName": "Payment Way",
+    "list": "Payment Way List",
+    "title": "Payment Way",
+    "pageName_filter": "Filter Payment Way",
+    "pageName_Add_crumb": "Add Payment Way",
+    "pageName_Edit_crumb": "Edit Payment Way",
+    "pageName_View_crumb": "View Payment Way",
+    "form": {
+      "name_ar": "Name (ar)",
+      "name_en": "Name (en)",
+      "desc_ar": "Description (ar)",
+      "desc_en": "Description (en)",
+      "isEnabled":"Enabled"
+    }
+  },
   "profile": {
     "pageName": "Profile",
     "pageName_Edit_crumb": "Edit Profile",
@@ -694,21 +710,6 @@
       "hasMaxAmount": "has Max Amount",
       "maxUsagePerUser": "Max Usage Per User",
       "maxAmount": "Max Amount"
-    }
-  },
-  "payment": {
-    "pageName": "Payment Way",
-    "list": "Payment Way List",
-    "title": "Payment Way",
-    "pageName_filter": "Filter Payment Way",
-    "pageName_Add_crumb": "Add Payment Way",
-    "pageName_Edit_crumb": "Edit Payment Way",
-    "pageName_View_crumb": "View Payment Way",
-    "form": {
-      "name_ar": "Name (ar)",
-      "name_en": "Name (en)",
-      "desc_ar": "Description (ar)",
-      "desc_en": "Description (en)"
     }
   },
   "termsAndConditions": {

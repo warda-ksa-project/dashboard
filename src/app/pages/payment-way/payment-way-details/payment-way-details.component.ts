@@ -14,18 +14,19 @@ import { DialogComponent } from '../../../components/dialog/dialog.component';
 import { UploadFileComponent } from "../../../components/upload-file/upload-file.component";
 import { TranslatePipe } from '@ngx-translate/core';
 import { LanguageService } from '../../../services/language.service';
+import { CheckBoxComponent } from '../../../components/check-box/check-box.component';
 
 const global_PageName ='payment.pageName';
 const global_API_Name ='paymentWay';
-const global_API_deialis = global_API_Name + '/GetPaymentWay';
-const global_API_create = global_API_Name + '/CreatePaymentWay';
-const global_API_update = global_API_Name + '/UpdatePaymentWay';
+const global_API_details = global_API_Name + '/GetById';
+const global_API_create = global_API_Name + '/create';
+const global_API_update = global_API_Name + '/update';
 const global_routeUrl = global_API_Name
 
 @Component({
   selector: 'app-payment-way-details',
   standalone: true,
-  imports: [ReactiveFormsModule,NgIf,TranslatePipe,TitleCasePipe,DialogComponent, ButtonModule, InputTextComponent, EditorComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
+  imports: [ReactiveFormsModule,NgIf,CheckBoxComponent,TranslatePipe,TitleCasePipe,DialogComponent, ButtonModule, InputTextComponent, EditorComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
   templateUrl: './payment-way-details.component.html',
   styleUrl: './payment-way-details.component.scss'
 })
@@ -50,17 +51,8 @@ export class PaymentWayDetailsComponent {
         Validations.arabicCharsValidator()
       ]
     }),
-    enDescription: new FormControl('', {
-      validators: [
-        Validators.required,
-      ]
-    }),
-    arDescription: new FormControl('', {
-      validators: [
-        Validators.required,
-      ]
-    }),
-    paymentId: new FormControl(this.getID|0, {
+    isEnabled: new FormControl(false),
+    id: new FormControl(this.getID|0, {
     }),
   })
 
@@ -108,7 +100,7 @@ export class PaymentWayDetailsComponent {
   }
 
   API_getItemDetails() {
-    this.ApiService.get(`${global_API_deialis}/${this.getID}`).subscribe((res: any) => {
+    this.ApiService.get(`${global_API_details}/${this.getID}`).subscribe((res: any) => {
       if (res)
         this.form.patchValue(res.data)
     })

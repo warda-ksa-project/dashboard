@@ -526,6 +526,22 @@
     "totalPrice": "السعر الإجمالي"
   }
 },
+"payment": {
+  "pageName": "طريقة الدفع",
+  "list": "قائمة طرق الدفع",
+  "title": "طريقة الدفع",
+  "pageName_filter": "تصفية طرق الدفع",
+  "pageName_Add_crumb": "إضافة طريقة دفع",
+  "pageName_Edit_crumb": "تعديل طريقة الدفع",
+  "pageName_View_crumb": "عرض طريقة الدفع",
+  "form": {
+    "name_ar": "الاسم (عربي)",
+    "name_en": "الاسم (إنجليزي)",
+    "desc_ar": "الوصف (عربي)",
+    "desc_en": "الوصف (إنجليزي)",
+    "isEnabled": "مُفعّل"
+  }
+},
   "profile": {
     "pageName": "الملف الشخصي",
     "pageName_Edit_crumb": "تعديل الملف الشخصي",

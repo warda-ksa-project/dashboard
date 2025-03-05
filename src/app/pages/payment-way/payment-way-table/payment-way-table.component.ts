@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { TitleCasePipe } from '@angular/common';
-import { EAction, EType, IcolHeader, ITableAction, TableComponent } from '../../../components/table/table.component';
+import { EAction, EType, IcolHeader, ITableAction, IToggleOptions, TableComponent } from '../../../components/table/table.component';
 import { PaginationComponent } from '../../../components/pagination/pagination.component';
 import { DrawerComponent } from '../../../components/drawer/drawer.component';
 import { BreadcrumpComponent } from '../../../components/breadcrump/breadcrump.component';
@@ -19,8 +19,11 @@ const global_router_add_url_in_Table ='/'+global_API_Name+'/add'
 const global_router_view_url =global_API_Name+'/view'
 const global_router_edit_url =global_API_Name+'/edit'
 const global_API_getAll =global_API_Name+'/GetAllWithPagination'
-const global_API_delete=global_API_Name+'/DeletepaymentWay?id'
-
+const global_API_delete=global_API_Name+'/changeStatus?id'
+const global_toggleOptions:IToggleOptions={
+  apiName:'paymentWay/Update',
+  autoCall:true,
+  }
 @Component({
   selector: 'app-payment-way-table',
   standalone: true,
@@ -104,21 +107,19 @@ export class PaymentWayTableComponent {
 
   displayTableCols(currentLang: string) {
     this.columns = [
-      { keyName: 'paymentId', header: this.languageService.translate('Id'), type: EType.id, show: true },
+      { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: true },
       { keyName: 'enName', header: this.languageService.translate('payment.form.name_en'), type: EType.text, show: true },
       { keyName: 'arName', header: this.languageService.translate('payment.form.name_ar'), type: EType.text, show: true },
-      { keyName: 'enDescription', header: this.languageService.translate('payment.form.desc_en'), type: EType.editor, show: true },
-      { keyName: 'arDescription', header: this.languageService.translate('payment.form.desc_ar'), type: EType.editor, show: true },
+      { keyName: 'isEnabled', header: this.languageService.translate('payment.form.isEnabled'), type: EType.toggle,toggleOptions:global_toggleOptions, show: true },
       { keyName: '', header: this.languageService.translate('Action'), type: EType.actions, actions: this.tableActions, show: true },
 
     ]
     this.columnsSmallTable = [
       { keyName:  'enName', header: this.languageService.translate('payment.form.name_en'), type: EType.text, showAs: ETableShow.header },
       { keyName: 'arName' , header: this.languageService.translate('payment.form.name_ar'), type: EType.text, showAs: ETableShow.header },
-      { keyName: 'paymentId', header: 'Id', type: EType.id, show: false },
-      { keyName: 'enDescription', header: this.languageService.translate('payment.form.desc_en'), type: EType.editor, showAs: ETableShow.content },
-      { keyName:  'arDescription' , header: this.languageService.translate('payment.form.desc_ar'), type: EType.editor, showAs: ETableShow.content }
-    ];
+      { keyName: 'isEnabled', header: this.languageService.translate('payment.form.isEnabled'), type: EType.toggle,toggleOptions:global_toggleOptions, show: true },
+      { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: false },
+        ];
   }
 
   openFilter() {

@@ -21,12 +21,16 @@
                   <app-input-text [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'" [label]="'payment.form.name_ar'"
                     [control]="form.get('arName')"></app-input-text>
                 </div>
-                  <div class=" mt-2 col-lg-6 col-md-6 col-sm-12 mt-4">
-                    <app-editor [label]="'payment.form.desc_en'" [control]="form.get('enDescription')"></app-editor>
+                <div class="row">
+                  <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
+                    <app-check-box
+                      [isToggle]="true"
+                      [label]="'payment.form.isEnabled'"
+                      [initValue]="form.get('isEnabled')?.value || false"
+                      [control]="form.get('isEnabled')"
+                    ></app-check-box>
                   </div>
-                  <div class=" mt-2 col-lg-6 col-md-6 col-sm-12 mt-4">
-                    <app-editor [label]="'payment.form.desc_ar'" [control]="form.get('arDescription')"></app-editor>
-                  </div>
+                 </div>
                 <div class="actions mt-5 text-center">
                   <button type="submit" class="submit-btn" [disabled]="!form.valid" *ngIf="tyepMode()!=='View'">
                     <span *ngIf="tyepMode()=='Add'">{{'actions.add'|translate}}</span>
