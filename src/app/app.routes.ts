@@ -72,6 +72,8 @@ import { TraderRequestsTableComponent } from './pages/traders/trader-requests-ta
 import { TraderRequestsDetailsComponent } from './pages/traders/trader-requests-details/trader-requests-details.component';
 import { PieceProductsTableComponent } from './pages/piece-products/piece-products-table/piece-products-table.component';
 import { PieceProductsDetailsComponent } from './pages/piece-products/piece-products-details/piece-products-details.component';
+import { ArticleTableComponent } from './pages/article/article-table/article-table.component';
+import { ArticleDetailsComponent } from './pages/article/article-details/article-details.component';
 
 export const routes: Routes = [
   {
@@ -188,6 +190,11 @@ export const routes: Routes = [
       { path: 'client/add', component: ClientDetailsComponent },
       { path: 'client/view/:id', component: ClientDetailsComponent },
       { path: 'client/edit/:id', component: ClientDetailsComponent },
+
+      { path: 'article', component: ArticleTableComponent },
+      { path: 'article/add', component: ArticleDetailsComponent },
+      { path: 'article/view/:id', component: ArticleDetailsComponent },
+      { path: 'article/edit/:id', component: ArticleDetailsComponent },
 
       { path: 'main_category', component: MainCatogoryTableComponent },
       { path: 'main_category/add', component: MainCatogoryDetailsComponent },

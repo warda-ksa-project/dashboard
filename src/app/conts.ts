@@ -7,6 +7,7 @@ export const menuItems =
     { icon: 'pi pi-hashtag', label: 'side_bar.sub_category', route: '/sub-category' },
     { icon: 'pi pi-gauge', label: 'side_bar.products', route: '/product' },
     { icon: 'pi pi-crown', label: 'side_bar.piece_products', route: '/piece-product' },
+    { icon: 'pi pi-crown', label: 'side_bar.article', route: '/article' },
 
     // { icon: 'pi pi-truck', label: 'side_bar.technicals', route: '/technicals' },
     // { icon: 'pi pi-car', label: 'side_bar.orders', route: '/orders' },

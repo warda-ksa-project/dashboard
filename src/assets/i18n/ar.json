@@ -91,6 +91,7 @@
   "side_bar": {
     "dashboard": "لوحة التحكم",
     "trader": "التجار",
+    "article":"المقالات",
     "trader_request":"الطلبات ",
     "clients": "العملاء",
     "category": "الفئات الفرعية",

@@ -92,6 +92,7 @@
   "side_bar": {
     "dashboard": "DASHBOARD",
     "trader": "TRADERS",
+    "article":"Article",
     "trader_request":"REQUESTS",
     "clients": "CLIENTS",
     "category": "SUBCATEGORIES",
@@ -557,6 +558,23 @@
       "desc_ar": "Description (ar)",
       "desc_en": "Description (en)",
       "isEnabled":"Enabled"
+    }
+  },
+  "article": {
+    "pageName": "Article",
+    "list": "Article List",
+    "title": "Article",
+    "pageName_filter": "Filter Article",
+    "pageName_Add_crumb": "Add Article",
+    "pageName_Edit_crumb": "Edit Article",
+    "pageName_View_crumb": "View Article",
+    "form": {
+      "enTitle": "Title (en)",
+      "arTitle": "Title (ar)",
+      "desc_ar": "Description (ar)",
+      "desc_en": "Description (en)",
+      "displayOrder":"displayOrder",
+       "imgs":"image"
     }
   },
   "profile": {
