@@ -18,8 +18,8 @@ import { IEditImage } from '../../../components/edit-mode-image/editImage.interf
 import { EditModeImageComponent } from '../../../components/edit-mode-image/edit-mode-image.component';
 import { environment } from '../../../../environments/environment';
 
-const global_PageName='sub_category.pageName';
-const global_routeUrl ='MainCategory'
+const global_PageName='category.pageName';
+const global_routeUrl ='main_category'
 const global_API_details='MainCategory'+'/GetMainCategoryById?Id=';
 const global_API_create='MainCategory'+'/Create';
 const global_API_update='MainCategory'+'/Update';
@@ -119,11 +119,13 @@ pageName =signal<string>(global_PageName);
 
   API_getItemDetails() {
     this.ApiService.get(`${global_API_details}${this.getID}`).subscribe((res: any) => {
-      if (res)
-        this.form.patchValue(res);
-      this.editImageProps.props.imgSrc = this.imageUrl + '/' + res.image;
-      console.log(this.editImageProps);
-      this.editMode = true;
+      if (res){
+        this.form.patchValue(res.data);
+        this.editImageProps.props.imgSrc = this.imageUrl + '/' + res.data.image;
+        console.log(this.editImageProps);
+        this.editMode = true;
+      }
+      
 
 
     })

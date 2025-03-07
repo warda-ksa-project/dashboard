@@ -198,8 +198,8 @@ export class ProductsDetailsComponent {
         this.hasDiscount = false
         this.form.get('discountType')?.setValue(0);
         this.form.get('amount')?.setValue(0);
-        this.form.get('startDate')?.setValue('');
-        this.form.get('endDate')?.setValue('');
+        this.form.get('startDate')?.setValue(null);
+        this.form.get('endDate')?.setValue(null);
         this.form.get('discountType')?.clearValidators();
         this.form.get('amount')?.clearValidators();
         this.form.get('startDate')?.clearValidators();
