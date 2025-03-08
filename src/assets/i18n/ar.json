@@ -543,6 +543,23 @@
     "isEnabled": "مُفعّل"
   }
 },
+"article": {
+  "pageName": "مقال",
+  "list": "قائمة المقالات",
+  "title": "مقال",
+  "pageName_filter": "تصفية المقالات",
+  "pageName_Add_crumb": "إضافة مقال",
+  "pageName_Edit_crumb": "تعديل مقال",
+  "pageName_View_crumb": "عرض المقال",
+  "form": {
+    "enTitle": "العنوان (إنجليزي)",
+    "arTitle": "العنوان (عربي)",
+    "desc_ar": "الوصف (عربي)",
+    "desc_en": "الوصف (إنجليزي)",
+    "displayOrder": "ترتيب العرض",
+    "imgs": "صورة"
+  }
+},
   "profile": {
     "pageName": "الملف الشخصي",
     "pageName_Edit_crumb": "تعديل الملف الشخصي",

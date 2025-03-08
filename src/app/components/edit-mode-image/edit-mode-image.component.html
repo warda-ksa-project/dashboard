@@ -8,7 +8,9 @@
     </div>
     <div class="action">
       <div class="mt-3 w-100" *ngIf="hideEditBtn">{{'shared.download'|translate}}</div>
-      <button  *ngIf="!hideEditBtn" type="button" class="btn btn-primary" (click)="editImageProps.onEditBtn()">{{'actions.edit'|translate}}</button>
+      <ng-container *ngIf="action!='View'">
+        <button  *ngIf="!hideEditBtn" type="button" class="btn btn-primary" (click)="editImageProps.onEditBtn()">{{'actions.edit'|translate}}</button>
+      </ng-container>
     </div>
   </div>
 </div>

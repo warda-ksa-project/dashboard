@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { EAction, EType, IcolHeader, ITableAction, TableComponent } from '../../../components/table/table.component';
 import { ApiService } from '../../../services/api.service';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { IBreadcrumb } from '../../../components/breadcrump/cerqel-breadcrumb.interface';
 import { BreadcrumpComponent } from '../../../components/breadcrump/breadcrump.component';
 import { InputTextModule } from 'primeng/inputtext';
@@ -12,25 +12,26 @@ import { PaginationComponent } from '../../../components/pagination/pagination.c
 import { TitleCasePipe } from '@angular/common';
 import { coponeOfferTypeList, coponeTypeList } from '../../../conts';
 import { TranslatePipe } from '@ngx-translate/core';
+import { DrawerComponent } from '../../../components/drawer/drawer.component';
 
-const global_pageName='slider.pageName'
-const global_router_add_url_in_Table ='/settings/'+"slider"+'/add'
-const global_router_view_url ='/settings/'+"slider"+'/view'
-const global_router_edit_url ='/settings/'+"slider"+'/edit'
-const global_API_getAll ="slider"+'/GetAll'
-const global_API_delete="slider"+'/Delete?Id'
+const global_pageName = 'slider.pageName'
+const global_router_add_url_in_Table = "slider/add"
+const global_router_view_url = "slider" + '/view'
+const global_router_edit_url = "slider" + '/edit'
+const global_API_getAll = "slider" + '/GetAllWithPagination'
+const global_API_delete = "slider" + '/Delete?Id'
 @Component({
   selector: 'app-slider-table',
   standalone: true,
-  imports: [TableComponent,TitleCasePipe, PaginationComponent,TranslatePipe, FormsModule, BreadcrumpComponent, RouterModule, InputTextModule, TableSmallScreenComponent],
+  imports: [TableComponent, TitleCasePipe, PaginationComponent,DrawerComponent, TranslatePipe, FormsModule, BreadcrumpComponent, RouterModule, InputTextModule, TableSmallScreenComponent],
   templateUrl: './slider-table.component.html',
   styleUrl: './slider-table.component.scss'
 })
 
 export class SliderTableComponent {
-  global_router_add_url_in_Table =global_router_add_url_in_Table
-  pageName =signal<string>(global_pageName);
-
+  global_router_add_url_in_Table = global_router_add_url_in_Table
+  pageName = signal<string>(global_pageName);
+ private router =inject(Router)
   showFilter: boolean = false
   tableActions: ITableAction[] = [
     {
@@ -40,7 +41,7 @@ export class SliderTableComponent {
     },
     {
       name: EAction.view,
-      apiName_or_route:  global_router_view_url,
+      apiName_or_route: global_router_view_url,
       autoCall: true
     },
     {
@@ -61,9 +62,8 @@ export class SliderTableComponent {
     pageSize: 8,
     sortingExpression: "",
     sortingDirection: 0,
-    code: "",
-    offerType: 0,
-    couponType: 0
+    titleEn: "",
+    titleAr: ""
   }
 
   totalCount: number = 0;
@@ -72,8 +72,8 @@ export class SliderTableComponent {
   filteredData: any;
   dataList: any = []
   columns: IcolHeader[] = [];
-  offerTypeList:any[]=coponeOfferTypeList
-  coponeTypeList:any[]=coponeTypeList
+  offerTypeList: any[] = coponeOfferTypeList
+  coponeTypeList: any[] = coponeTypeList
   columnsSmallTable: IcolHeaderSmallTable[] = []
 
   selectedLang: any;
@@ -95,21 +95,21 @@ export class SliderTableComponent {
 
   displayTableCols(currentLang: string) {
     this.columns = [
-      { keyName: 'id', header:  this.languageService.translate('Id'), type: EType.id, show: true },
-      // { keyName: 'imageEn', header: 'Image (en)', type: EType.image, show: true },
-      // { keyName: 'imageAr', header: 'Image (ar)', type: EType.image, show: true },
-      { keyName: 'titleEn', header:  this.languageService.translate('slider.form.title_en'), type: EType.text, show: true },
-      { keyName: 'titleAr', header:  this.languageService.translate('slider.form.title_ar'), type: EType.text, show: true },
+      { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: true },
+      { keyName: 'imageEn', header: 'Image (en)', type: EType.image, show: true },
+      { keyName: 'imageAr', header: 'Image (ar)', type: EType.image, show: true },
+      { keyName: 'titleEn', header: this.languageService.translate('slider.form.title_en'), type: EType.text, show: true },
+      { keyName: 'titleAr', header: this.languageService.translate('slider.form.title_ar'), type: EType.text, show: true },
       { keyName: 'displayOrder', header: this.languageService.translate('slider.form.displayOrder'), type: EType.text, show: true },
-      { keyName: '', header:  this.languageService.translate('Actions'), type: EType.actions, actions: this.tableActions, show: true },
+      { keyName: '', header: this.languageService.translate('Actions'), type: EType.actions, actions: this.tableActions, show: true },
 
     ]
     this.columnsSmallTable = [
-      { keyName: 'id', header:  this.languageService.translate('Id'), type: EType.id, show: false },
-      { keyName: 'titleEn', header:  this.languageService.translate('slider.form.title_en'), type: EType.text, showAs: ETableShow.header },
-      { keyName: 'titleAr', header:  this.languageService.translate('slider.form.title_ar'), type: EType.text, showAs: ETableShow.header },
-      // { keyName: 'imageEn', header: 'Image (en)', type: EType.text, showAs: ETableShow.content },
-      // { keyName: 'imageAr', header: 'Image (ar)', type: EType.text, showAs: ETableShow.content },
+      { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: false },
+      { keyName: 'titleEn', header: this.languageService.translate('slider.form.title_en'), type: EType.text, showAs: ETableShow.header },
+      { keyName: 'titleAr', header: this.languageService.translate('slider.form.title_ar'), type: EType.text, showAs: ETableShow.header },
+      // { keyName: 'imageEn', header: 'Image (en)', type: EType.image, showAs: ETableShow.content },
+      // { keyName: 'imageAr', header: 'Image (ar)', type: EType.image, showAs: ETableShow.content },
       { keyName: 'displayOrder', header: this.languageService.translate('slider.form.displayOrder'), type: EType.text, showAs: ETableShow.content },
 
     ];
@@ -118,7 +118,7 @@ export class SliderTableComponent {
     this.bredCrumb = {
       crumbs: [
         {
-          label:  this.languageService.translate('Home'),
+          label: this.languageService.translate('Home'),
           routerLink: '/dashboard',
         },
         {
@@ -136,10 +136,18 @@ export class SliderTableComponent {
   }
 
   API_getAll() {
-    this.ApiService.get(global_API_getAll).subscribe((res: any) => {
+    // this.ApiService.get(global_API_getAll).subscribe((res: any) => {
+    //   if (res) {
+    //     this.dataList = res;
+    //     this.totalCount = res.totalCount;
+    //     this.filteredData = [...this.dataList];
+    //   }
+
+    // })
+    this.ApiService.post(global_API_getAll, this.objectSearch).subscribe((res: any) => {
       if (res) {
-        this.dataList = res;
-        this.totalCount = res.totalCount;
+        this.dataList = res.data.dataList;
+        this.totalCount = res.data.totalCount;
         this.filteredData = [...this.dataList];
       }
 
@@ -172,15 +180,18 @@ export class SliderTableComponent {
     this.API_getAll();
   }
 
+  addPage(){
+    this.router.navigateByUrl(global_router_add_url_in_Table)
+  }
   reset() {
     this.objectSearch = {
       pageNumber: 0,
       pageSize: 8,
       sortingExpression: "",
       sortingDirection: 0,
-      code: "",
-      offerType: 0,
-      couponType: 0
+      titleEn: "",
+      titleAr: ""
+
     }
     this.API_getAll();
     this.showFilter = false

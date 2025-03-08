@@ -10,8 +10,8 @@
       </div>
       <div class="details-container">
         <div class="action-filter">
-          <a [routerLink]="global_router_add_url_in_Table">  + {{'shared.add_new'|translate}}</a>
-          <!-- <span class="pi pi-filter pointer" (click)="openFilter()"> </span> -->
+          <a class="text-white" (click)="addPage()">  + {{'shared.add_new'|translate}}</a>
+          <span class="pi pi-filter pointer" (click)="openFilter()"> </span>
         </div>
       
        <div class="table-view">
@@ -27,45 +27,66 @@
       </div>
     </div>
   </div>
-  <!-- <app-drawer [visible]="showFilter"  [header]="'Filter '+pageName()" (onClose)="onCloseFilter($event)">
-    <form #myForm="ngForm" (ngSubmit)="onSubmitFilter()" body class="h-100 search-form d-flex">
+   <app-drawer
+    [visible]="showFilter"
+    header="{{ pageName() }}_{{ 'filter' }}"
+    (onClose)="onCloseFilter($event)"
+  >
+    <form
+      #myForm="ngForm"
+      (ngSubmit)="onSubmitFilter()"
+      body
+      class="h-100 search-form d-flex"
+    >
       <div class="form-content">
-       <div class="form-group mb-3">
-         <label class="mb-1" for="enTitle">Code</label>
-         <input
-           type="text"
-           id="enTitle"
-           name="enTitle"
-           class="form-control"
-           [(ngModel)]="objectSearch.code"
-           placeholder="Enter  Code"
-         />
-       </div>
- 
-       <div  class="form-group mb-3">
-         <app-select [placeholder]="objectSearch.couponType?objectSearch.couponType:'Select Copone Type'"
-        [(ngModel)]="objectSearch.couponType"
-         class="w-100" [list]="coponeTypeList" 
-         [label]="'Copone Type'">
-        </app-select>
-       </div>
-
-       <div  class="form-group mb-3">
-        <app-select [placeholder]="objectSearch.offerType?objectSearch.offerType:'Select Offer Type'"
-        [(ngModel)]="objectSearch.offerType"
-         class="w-100" [list]="offerTypeList" 
-         [label]="'Offer Type'">
-        </app-select>
+        <div class="form-group mb-3">
+          <label class="mb-1" for="enTitle">{{
+            "slider.form.enTitle" | translate
+          }}</label>
+          <input
+            type="text"
+            id="enTitle"
+            name="enTitle"
+            class="form-control"
+            [(ngModel)]="objectSearch.titleEn"
+            placeholder="{{ 'shared.enter' | translate }} {{
+              'slider.form.enTitle' | translate
+            }}"
+          />
+        </div>
+  
+        <div class="form-group mb-3">
+          <label class="mb-1" for="arTitle">{{
+            "article.form.arTitle" | translate
+          }}</label>
+          <input
+            type="text"
+            id="arTitle"
+            name="arTitle"
+            class="form-control"
+            [(ngModel)]="objectSearch.titleAr"
+            placeholder="{{ 'shared.enter' | translate }} {{
+              'article.form.arTitle' | translate
+            }}"
+          />
+        </div>
       </div>
-      
+  
+      <div class="search-form-actions d-flex">
+        <button type="submit" class="btn drawer-submit-btn">
+          {{ "actions.submit" | translate }}
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger drawer-reset-btn"
+          (click)="reset()"
+        >
+          {{ "actions.reset" | translate }}
+        </button>
       </div>
-       <div class="search-form-actions d-flex">
-         <button type="submit" class="btn btn-primary submit-btn">Submit</button>
-         <button type="button" class="btn btn-danger reset-btn" (click)="reset()">Reset</button>
-       </div>
- 
-     </form>
-  </app-drawer> -->
+    </form>
+  </app-drawer> 
+  
   
   
   

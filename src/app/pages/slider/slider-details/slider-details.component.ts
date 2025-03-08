@@ -23,7 +23,7 @@ const global_PageName = 'slider.pageName';
 const global_API_deialis = 'Slider' + '/GetById?Id=';
 const global_API_create = 'Slider' + '/Create';
 const global_API_update = 'Slider' + '/Update';
-const global_routeUrl = 'settings/' + global_PageName
+const global_routeUrl = '/slider' 
 
 @Component({
   selector: 'app-slider-details',
@@ -103,7 +103,7 @@ export class SliderDetailsComponent {
       ]
     }),
 
-    sliderId: new FormControl(this.getID | 0),
+    id: new FormControl(this.getID | 0),
   })
 
   bredCrumb: IBreadcrumb = {
@@ -170,12 +170,12 @@ export class SliderDetailsComponent {
 
   API_getItemDetails() {
     this.ApiService.get(`${global_API_deialis}${this.getID}`).subscribe((res: any) => {
-      if (res) {
-        this.form.patchValue(res)
-        this.editImageProps.props.imgSrc = this.imageUrl + '/' + res.imageEn;
+      if (res.data) {
+        this.form.patchValue(res.data)
+        this.editImageProps.props.imgSrc = this.imageUrl +  res.data.imageEn;
         this.editAttachmentMode = true;
 
-        this.editImageProps_ar.props.imgSrc = this.imageUrl + '/' + res.imageAr;
+        this.editImageProps_ar.props.imgSrc = this.imageUrl +  res.data.imageAr;
         this.editAttachmentMode_ar = true;
       }
     })

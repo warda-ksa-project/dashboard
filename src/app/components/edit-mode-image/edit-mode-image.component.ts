@@ -15,8 +15,8 @@ export class EditModeImageComponent implements OnInit{
   @Input() imgWidth="50"
   @Input()type='image'
   @Input()hideEditBtn=false
-
+@Input()action='Add'
   ngOnInit(): void {
-      console.log('ffdd',this.editImageProps)
+      console.log('ffdd',this.action)
   }
 }

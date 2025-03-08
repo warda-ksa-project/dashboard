@@ -196,6 +196,11 @@ export const routes: Routes = [
       { path: 'article/view/:id', component: ArticleDetailsComponent },
       { path: 'article/edit/:id', component: ArticleDetailsComponent },
 
+      { path: 'slider', component: SliderTableComponent },
+      { path: 'slider/add', component: SliderDetailsComponent },
+      { path: 'slider/edit/:id', component: SliderDetailsComponent },
+      { path: 'slider/view/:id', component: SliderDetailsComponent },
+
       { path: 'main_category', component: MainCatogoryTableComponent },
       { path: 'main_category/add', component: MainCatogoryDetailsComponent },
       { path: 'main_category/view/:id', component: MainCatogoryDetailsComponent },
