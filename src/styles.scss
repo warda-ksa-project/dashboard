@@ -654,11 +654,10 @@ p-table.order{
   border: 1px dotted;
   border-radius: 16px;
 }
-.p-toggleswitch .p-toggleswitch-slider {
-  background-color:#8174A0 !important;
-}
-
-.p-toggleswitch.p-highlight .p-toggleswitch-slider {
+// .p-toggleswitch .p-toggleswitch-slider {
+//   background-color:#8174A0 !important;
+// }
+.p-toggleswitch.p-toggleswitch-checked .p-toggleswitch-slider {
   background-color:#8174A0 !important;
 }
 
@@ -682,3 +681,5 @@ p-table.order{
 .p-inputtext:enabled:focus{
 border-color: #6d54a9!important;
 }
+
+

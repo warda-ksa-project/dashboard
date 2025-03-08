@@ -1,30 +1,34 @@
+enum Roles {
+  admin="Admin",
+  trader="Trader"
+}
 export const menuItems =
   [
-    { icon: 'pi pi-home', label: 'side_bar.dashboard', route: '/dashboard' },
+    { icon: 'pi pi-home', label: 'side_bar.dashboard', route: '/dashboard',type:[Roles.admin,Roles.trader] },
     // { icon: 'pi pi-users', label: 'side_bar.category', route: '/category' },
-    { icon: 'pi pi-truck', label: 'side_bar.main_category', route: '/main_category' },
+    { icon: 'pi pi-truck', label: 'side_bar.main_category', route: '/main_category',type:[Roles.admin] },
     // { icon: 'pi pi-users', label: 'side_bar.category', route: '/category' },
-    { icon: 'pi pi-hashtag', label: 'side_bar.sub_category', route: '/sub-category' },
-    { icon: 'pi pi-gauge', label: 'side_bar.products', route: '/product' },
-    { icon: 'pi pi-crown', label: 'side_bar.piece_products', route: '/piece-product' },
-    { icon: 'pi pi-list', label: 'side_bar.article', route: '/article' },
+    { icon: 'pi pi-hashtag', label: 'side_bar.sub_category', route: '/sub-category',type:[Roles.admin,Roles.trader]  },
+    { icon: 'pi pi-gauge', label: 'side_bar.products', route: '/product',type:[Roles.admin,Roles.trader]  },
+    { icon: 'pi pi-crown', label: 'side_bar.piece_products', route: '/piece-product',type:[Roles.admin,Roles.trader]  },
+    { icon: 'pi pi-list', label: 'side_bar.article', route: '/article',type:[Roles.admin] },
 
     // { icon: 'pi pi-truck', label: 'side_bar.technicals', route: '/technicals' },
     // { icon: 'pi pi-car', label: 'side_bar.orders', route: '/orders' },
     // { icon: 'pi pi-server', label: 'side_bar.special_orders', route: '/special-order' },
     // { icon: 'pi pi-folder', label: 'side_bar.services', route: '/services' },
     // { icon: 'pi pi-shopping-bag', label: 'side_bar.contract', route: '/contract-type' },
-    { icon: 'pi pi-globe', label: 'side_bar.country', route: '/country' },
-    { icon: 'pi pi-building', label: 'side_bar.city', route: '/city' },
-    { icon: 'pi pi-bullseye', label: 'side_bar.trader', route: '/trader' },
-    { icon: 'pi pi-users', label: 'side_bar.trader_request', route: '/trader-request' },
-    { icon: 'pi pi-phone', label: 'side_bar.contact', route: '/contact-us' },
-    { icon: 'pi pi-folder', label: 'side_bar.faqs', route: '/faqs' },
+    { icon: 'pi pi-globe', label: 'side_bar.country', route: '/country',type:[Roles.admin] },
+    { icon: 'pi pi-building', label: 'side_bar.city', route: '/city',type:[Roles.admin]  },
+    { icon: 'pi pi-bullseye', label: 'side_bar.trader', route: '/trader',type:[Roles.admin]  },
+    { icon: 'pi pi-users', label: 'side_bar.trader_request', route: '/trader-request',type:[Roles.admin]  },
+    { icon: 'pi pi-phone', label: 'side_bar.contact', route: '/contact-us',type:[Roles.admin]  },
+    { icon: 'pi pi-folder', label: 'side_bar.faqs', route: '/faqs',type:[Roles.admin]  },
 
     // { icon: 'pi pi-home', label: 'side_bar.dashboard', route: '/dashboard' },
     // { icon: 'pi pi-users', label: 'side_bar.clients', route: '/clients' },
     // { icon: 'pi pi-users', label: 'side_bar.technicals', route: '/technicals' },
-    { icon: 'pi pi-truck', label: 'side_bar.orders', route: '/orders' },
+    { icon: 'pi pi-truck', label: 'side_bar.orders', route: '/orders' ,type:[Roles.admin,Roles.trader] },
     // { icon: 'pi pi-car', label: 'side_bar.special_orders', route: '/special-order' },
     // { icon: 'pi pi-server', label: 'side_bar.services', route: '/services' },
     // { icon: 'pi pi-folder', label: 'side_bar.contract', route: '/contract-type' },
@@ -35,11 +39,12 @@ export const menuItems =
     // { icon: 'pi pi-times', label: 'side_bar.reason', route: '/cancel-reason' },
     // { icon: 'pi pi-book', label: 'side_bar.complaint', route: '/complaint' },
     // { icon: 'pi pi-qrcode', label: 'side_bar.copone', route: '/copone' },
-    { icon: 'pi pi-credit-card', label: 'side_bar.payment', route: '/paymentWay' },
+    { icon: 'pi pi-credit-card', label: 'side_bar.payment', route: '/paymentWay',type:[Roles.admin]  },
     // { icon: 'pi pi-trophy', label: 'side_bar.technical_sp', route: '/technical-specialist' },
     // { icon: 'pi pi-phone', label: 'side_bar.contact', route: '/contact-us' },
     // { icon: 'pi pi-database', label: 'side_bar.about', route: '/about-us' }
   ]
+
 
 export const sliderViewType = [
   {

@@ -37,8 +37,8 @@ export class LoginComponent {
 
   constructor(private fb: FormBuilder,@Inject(DOCUMENT) private document: Document, private api: ApiService, private translate: TranslateService, private router: Router) {
     this.loginForm = this.fb.group({
-      mobile: ['01012785545', [Validators.required]],
-      password: ['Pa$$w0rd', [Validators.required]]
+      mobile: ['565664343', [Validators.required]],
+      password: ['Admin@VL', [Validators.required]]
     });
 
     this.translate.setDefaultLang('en');
@@ -81,11 +81,13 @@ export class LoginComponent {
       // this.openOtpModal = res.data.status;
       if (!res.data.token) {
         localStorage.removeItem('token');
+        localStorage.removeItem('role');
         this.toaster.errorToaster(res.message)
       } else {
         // localStorage.setItem('userData', JSON.stringify(dataUser))
         localStorage.setItem('token', res.data.token);
         localStorage.setItem('userId',res.data.id)
+        localStorage.setItem('role',res.data.role)
         this.router.navigate(['/dashboard']);
       }
     })

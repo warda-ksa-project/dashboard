@@ -8,10 +8,10 @@
         <!-- [pTooltip]="route.label | translate"
             [tooltipPosition]="selectedLang == 'ar' ? 'left' : 'right'" -->
         <ng-container *ngFor="let route of routingList">
-          <div [routerLink]="route.route" class="routing-action" routerLinkActive="active"
+          <div *ngIf="route.type.includes(role)" [routerLink]="route.route" class="routing-action" routerLinkActive="active"
             [routerLinkActiveOptions]="{ exact: true }" >
             <span [class]="route.icon"></span>
-            <p>{{route.label | translate}}</p>
+            <p  >{{route.label | translate}}</p>
           </div>
         </ng-container>
 
