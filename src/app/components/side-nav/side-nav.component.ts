@@ -5,6 +5,7 @@ import { LanguageService } from '../../services/language.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterLinkActive, RouterModule } from '@angular/router';
 import { menuItems } from '../../conts';
+import { ApiService } from '../../services/api.service';
 @Component({
   selector: 'app-side-nav',
   standalone: true,
@@ -80,16 +81,24 @@ export class SideNavComponent {
 
   selectedLang: any;
   languageService = inject(LanguageService);
-
+   apiService=inject(ApiService)
   routingList = menuItems
 
   ngOnInit(): void {
+    console.log('ffffffffffffff')
+    this.getRoles()
     this.selectedLang = this.languageService.translationService.currentLang;
     this.languageService.translationService.onLangChange.subscribe(() => {
+      this.getRoles()
       this.selectedLang = this.languageService.translationService.currentLang;
     })
   }
 
+getRoles(){
+  this.apiService.get('Auth/getRoles').subscribe(res=>{
+    console.log("SideNavComponent  this.apiService.get  res:", res)
 
+  })
+}
 
 }

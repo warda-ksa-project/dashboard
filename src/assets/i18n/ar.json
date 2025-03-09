@@ -206,6 +206,7 @@
       "discountType": "نوع الخصم",
       "amount": "القيمة",
       "price":"السعر",
+      "priceAfterDiscount":"السعر بعد الخصم",
       "start":"تاريخ البدء",
       "end":"تاريخ الانتهاء"
     }

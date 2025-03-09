@@ -21,8 +21,8 @@ export class DashboardComponent {
   staticDetails: any;
 
   ngOnInit(): void {
-    this.getDashboardDetails();
-    this.getStaticData();
+    // this.getDashboardDetails();
+    // this.getStaticData();
   }
 
   items: any[] = [

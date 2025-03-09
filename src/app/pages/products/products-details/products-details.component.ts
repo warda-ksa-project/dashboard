@@ -106,6 +106,12 @@ export class ProductsDetailsComponent {
         Validations.onlyNumberValidator()
       ],
     }),
+    priceAfterDiscount: new FormControl('',{
+      validators: [
+   
+      ],
+    }),
+
     image: new FormControl<any>([]),
     id: new FormControl(this.getID | 0),
     startDate:new FormControl('',
@@ -119,12 +125,12 @@ export class ProductsDetailsComponent {
       validators: [
         Validators.required
       ]
+    }),
+    categoryId: new FormControl('', {
+      validators: [
+        Validators.required,
+      ],
     })
-    // categoryId: new FormControl('', {
-    //   validators: [
-    //     Validators.required,
-    //   ],
-    // })
   })
 
   bredCrumb: IBreadcrumb = {
@@ -161,11 +167,11 @@ export class ProductsDetailsComponent {
 
     this.pageName.set(global_PageName)
     this.getBreadCrumb();
-    this.getMainCategory()
+    this.getAllCategory()
     this.languageService.translationService.onLangChange.subscribe(() => {
       this.selectedLang = this.languageService.translationService.currentLang;
       this.getBreadCrumb();
-      this.getMainCategory()
+      this.getAllCategory()
     });
 
    this.form.get('startDate')?.valueChanges.subscribe((res:any) => {
@@ -240,8 +246,29 @@ export class ProductsDetailsComponent {
     }
   }
 
+  getAllCategory(){
+    if(localStorage.getItem('role')=='Trader')
+      this.getSubCategory()
+    else
+     this.getMainCategory()
+  }
   getMainCategory() {
     this.ApiService.get('MainCategory/GetAll').subscribe((res: any) => {
+      if (res.data) {
+        this.categoryList = []
+        res.data.map((item: any) => {
+          this.categoryList.push({
+            name: this.selectedLang == 'en' ? item.enName : item.arName,
+            code: item.id
+          })
+        })
+      }
+
+    })
+  }
+
+  getSubCategory() {
+    this.ApiService.get('SubCategory/GetSubCategoryByTraderId').subscribe((res: any) => {
       if (res.data) {
         this.categoryList = []
         res.data.map((item: any) => {

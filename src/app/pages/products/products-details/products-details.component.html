@@ -126,34 +126,43 @@
             <p-step-panel [value]="2">
               <ng-template #content let-activateCallback="activateCallback">
                 <div class="row">
-                  <!-- <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
-                    <app-select
-                      [placeholder]="form.get('categoryId')?.value"
-                      class="w-100"
-                      [list]="categoryList"
-                      [label]="'products.form.categoryId'"
-                      [control]="form.get('categoryId')"
-                    >
-                    </app-select>
-                  </div> -->
-              <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-6 mt-5 pt-1">
-                  <app-input-text
-                    [readOnly]="tyepMode() == 'View'"
-                    [disabled]="tyepMode() == 'View'"
-                    [label]="'products.form.stockQuantity'"
-                    [control]="form.get('stockQuantity')"
-                  ></app-input-text>
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-6 mt-5 pt-1">
-                  <app-input-text
-                    [readOnly]="tyepMode() == 'View'"
-                    [disabled]="tyepMode() == 'View'"
-                    [label]="'products.form.price'"
-                    [control]="form.get('price')"
-                  ></app-input-text>
-                </div>
-              </div>
+                 
+                  <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 mt-5 pt-1">
+                      <app-input-text
+                        [readOnly]="tyepMode() == 'View'"
+                        [disabled]="tyepMode() == 'View'"
+                        [label]="'products.form.stockQuantity'"
+                        [control]="form.get('stockQuantity')"
+                      ></app-input-text>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 mt-5 pt-1">
+                      <app-select
+                        [placeholder]="form.get('categoryId')?.value"
+                        class="w-100"
+                        [list]="categoryList"
+                        [label]="'products.form.categoryId'"
+                        [control]="form.get('categoryId')"
+                      >
+                      </app-select>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 mt-5 pt-1">
+                      <app-input-text
+                        [readOnly]="tyepMode() == 'View'"
+                        [disabled]="tyepMode() == 'View'"
+                        [label]="'products.form.price'"
+                        [control]="form.get('price')"
+                      ></app-input-text>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 mt-5 pt-1" *ngIf="tyepMode() != 'Add'">
+                      <app-input-text
+                        [readOnly]="true"
+                        [disabled]="true"
+                        [label]="'products.form.priceAfterDiscount'"
+                        [control]="form.get('priceAfterDiscount')"
+                      ></app-input-text>
+                    </div>
+                  </div>
                   <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
                       <app-check-box
@@ -164,7 +173,7 @@
                       ></app-check-box>
                     </div>
                   </div>
-                  <div class="row " *ngIf="hasDiscount">
+                  <div class="row" *ngIf="hasDiscount">
                     <div class="col-lg-6 col-md-6 col-sm-6 mt-4 pt-1">
                       <app-input-text
                         [type]="'date'"
@@ -176,7 +185,7 @@
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 mt-4 pt-1">
                       <app-input-text
-                        [disabled]="form.get('startDate')?.value==''"
+                        [disabled]="form.get('startDate')?.value == ''"
                         [minDate]="minEndDate"
                         [type]="'date'"
                         [readOnly]="tyepMode() == 'View'"
@@ -185,27 +194,24 @@
                         [control]="form.get('endDate')"
                       ></app-input-text>
                     </div>
-                      <div class="col-lg-6 col-md-6 col-sm-6 mt-4 pt-1">
-                        <app-select
-                          [placeholder]="form.get('discountType')?.value"
-                          class="w-100"
-                          [list]="discountType"
-                          [label]="'products.form.discountType'"
-                          [control]="form.get('discountType')"
-                        >
-                        </app-select>
-                      </div>
-                      <div class="col-lg-6 col-md-6 col-sm-6 mt-4 pt-1">
-                        <app-input-text
-                          [readOnly]="tyepMode() == 'View'"
-                          [disabled]="tyepMode() == 'View'"
-                          [label]="'products.form.amount'"
-                          [control]="form.get('amount')"
-                        ></app-input-text>
-                      </div>
-               
-                    
-             
+                    <div class="col-lg-6 col-md-6 col-sm-6 mt-4 pt-1">
+                      <app-select
+                        [placeholder]="form.get('discountType')?.value"
+                        class="w-100"
+                        [list]="discountType"
+                        [label]="'products.form.discountType'"
+                        [control]="form.get('discountType')"
+                      >
+                      </app-select>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 mt-4 pt-1">
+                      <app-input-text
+                        [readOnly]="tyepMode() == 'View'"
+                        [disabled]="tyepMode() == 'View'"
+                        [label]="'products.form.amount'"
+                        [control]="form.get('amount')"
+                      ></app-input-text>
+                    </div>
                   </div>
                 </div>
                 <div class="d-flex justify-content-between">

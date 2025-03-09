@@ -207,6 +207,7 @@
       "discountType": "Discount Type",
       "amount": "Amount",
       "price":"Price",
+      "priceAfterDiscount":"Price After Discount",
       "start":"Start Date",
       "end":"End Date"
     }

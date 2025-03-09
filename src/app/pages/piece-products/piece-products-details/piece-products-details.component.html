@@ -141,16 +141,24 @@
                       <app-input-text
                         [readOnly]="tyepMode() == 'View'"
                         [disabled]="tyepMode() == 'View'"
-                        [label]="'products.form.stockQuantity'"
-                        [control]="form.get('stockQuantity')"
+                        [label]="'products.form.price'"
+                        [control]="form.get('price')"
+                      ></app-input-text>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 mt-5 pt-1" *ngIf="tyepMode() != 'Add'">
+                      <app-input-text
+                        [readOnly]="true"
+                        [disabled]="true"
+                        [label]="'products.form.priceAfterDiscount'"
+                        [control]="form.get('priceAfterDiscount')"
                       ></app-input-text>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 mt-5 pt-1">
                       <app-input-text
                         [readOnly]="tyepMode() == 'View'"
                         [disabled]="tyepMode() == 'View'"
-                        [label]="'products.form.price'"
-                        [control]="form.get('price')"
+                        [label]="'products.form.stockQuantity'"
+                        [control]="form.get('stockQuantity')"
                       ></app-input-text>
                     </div>
                   </div>
