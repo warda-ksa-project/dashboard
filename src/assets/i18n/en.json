@@ -93,6 +93,7 @@
     "dashboard": "DASHBOARD",
     "trader": "TRADERS",
     "article":"Article",
+    "slider":"Slider",
     "trader_request":"REQUESTS",
     "clients": "CLIENTS",
     "category": "SUBCATEGORIES",

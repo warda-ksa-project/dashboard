@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { AfterViewInit, Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { ApiService } from '../../../services/api.service';
@@ -17,6 +17,7 @@ import { EditModeImageComponent } from '../../../components/edit-mode-image/edit
 import { StepperModule } from 'primeng/stepper';
 import { Validations } from '../../../validations';
 import { environment } from '../../../../environments/environment';
+import { MapComponent } from '../../../components/map/map.component';
 
 const global_PageName = 'trader.pageName';
 const global_routeUrl = 'trader'
@@ -27,26 +28,23 @@ const global_API_update = 'Trader' + '/Update';
 @Component({
   selector: 'app-trader-details',
   standalone: true,
-  imports: [ReactiveFormsModule, StepperModule, EditModeImageComponent, TitleCasePipe, TranslatePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
+  imports: [ReactiveFormsModule, StepperModule,MapComponent, EditModeImageComponent, TitleCasePipe, TranslatePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
   templateUrl: './trader-details.component.html',
   styleUrl: './trader-details.component.scss'
 })
-export class TraderDetailsComponent {
+export class TraderDetailsComponent  {
 
   pageName = signal<string>(global_PageName);
   private ApiService = inject(ApiService)
   private router = inject(Router)
-
+  lat:any=0
+  lng:any=0
+  showMap=false
   private route = inject(ActivatedRoute)
   showConfirmMessage: boolean = false
   private confirm = inject(ConfirmMsgService)
   adress: any[] = [{
     expalinedAddress: '',
-    street: '',
-    buildNo: '',
-    flatNo: '',
-    district: '',
-    floorNo: '',
     latitude: '',
     logitude: '',
     userId: Number(localStorage.getItem('userId')) || 0
@@ -110,33 +108,33 @@ export class TraderDetailsComponent {
       ]
     }),
 
-    street: new FormControl('', {
-      validators: [
-        Validators.required,
-      ]
-    }),
-    district: new FormControl('', {
-      validators: [
-        Validators.required,
-      ]
-    }),
-    buildNo: new FormControl<any>('', {
-      validators: [
-        Validations.onlyNumberValidator()
-      ]
-    }),
-    floorNo: new FormControl<any>('', {
-      validators: [
-        Validators.required,
-        Validations.onlyNumberValidator()
-      ]
-    }),
-    flatNo: new FormControl<any>('', {
-      validators: [
-        Validators.required,
-        Validations.onlyNumberValidator()
-      ]
-    }),
+    // street: new FormControl('', {
+    //   validators: [
+    //     Validators.required,
+    //   ]
+    // }),
+    // district: new FormControl('', {
+    //   validators: [
+    //     Validators.required,
+    //   ]
+    // }),
+    // buildNo: new FormControl<any>('', {
+    //   validators: [
+    //     Validations.onlyNumberValidator()
+    //   ]
+    // }),
+    // floorNo: new FormControl<any>('', {
+    //   validators: [
+    //     Validators.required,
+    //     Validations.onlyNumberValidator()
+    //   ]
+    // }),
+    // flatNo: new FormControl<any>('', {
+    //   validators: [
+    //     Validators.required,
+    //     Validations.onlyNumberValidator()
+    //   ]
+    // }),
     logitude: new FormControl('', {
       validators: [
         Validators.required,
@@ -209,7 +207,7 @@ export class TraderDetailsComponent {
 
     this.form.valueChanges.subscribe(res => {
       console.log('d---d',this.form.value)
-      console.log('d===d',(!this.form.valid || !this.isAddressVaild()))
+      // console.log('d===d',(!this.form.valid || !this.isAddressVaild()))
     })
     this.form.get('street')?.valueChanges.subscribe(res => {
       this.adress[0].street = res;
@@ -217,39 +215,39 @@ export class TraderDetailsComponent {
         addresses: this.adress
       })
     })
-    this.form.get('buildNo')?.valueChanges.subscribe(res => {
-      this.adress[0].buildNo = +res
-      this.form.patchValue({
-        addresses: this.adress
-      })
+    // this.form.get('buildNo')?.valueChanges.subscribe(res => {
+    //   this.adress[0].buildNo = +res
+    //   this.form.patchValue({
+    //     addresses: this.adress
+    //   })
 
 
-    })
-    this.form.get('flatNo')?.valueChanges.subscribe(res => {
-      this.adress[0].flatNo = +res
-      this.form.patchValue({
-        addresses: this.adress
-      })
+    // })
+    // this.form.get('flatNo')?.valueChanges.subscribe(res => {
+    //   this.adress[0].flatNo = +res
+    //   this.form.patchValue({
+    //     addresses: this.adress
+    //   })
 
 
-    })
-    this.form.get('district')?.valueChanges.subscribe(res => {
-      this.adress[0].district = res
-      this.form.patchValue({
-        addresses: this.adress
-      })
+    // })
+    // this.form.get('district')?.valueChanges.subscribe(res => {
+    //   this.adress[0].district = res
+    //   this.form.patchValue({
+    //     addresses: this.adress
+    //   })
 
 
-    })
-    this.form.get('floorNo')?.valueChanges.subscribe(res => {
-      this.adress[0].floorNo = +res
-      this.form.patchValue({
-        addresses: this.adress
-      })
-      console.log('dd',this.form.value)
+    // })
+    // this.form.get('floorNo')?.valueChanges.subscribe(res => {
+    //   this.adress[0].floorNo = +res
+    //   this.form.patchValue({
+    //     addresses: this.adress
+    //   })
+    //   console.log('dd',this.form.value)
 
 
-    })
+    // })
     this.form.get('latitude')?.valueChanges.subscribe(res => {
       this.adress[0].latitude = res
       this.form.patchValue({
@@ -302,6 +300,12 @@ export class TraderDetailsComponent {
     return result
   }
 
+  onChangeLocation(event:any){
+    this.form.patchValue({
+      latitude:String(event.lat),
+      logitude:String(event.lng)
+    })
+  }
   getBreadCrumb() {
     this.bredCrumb = {
       crumbs: [
@@ -336,27 +340,31 @@ export class TraderDetailsComponent {
         this.form.patchValue({
           ...res.data,
           expalinedAddress:res.data.addresses[0].expalinedAddress,
-          street:res.data.addresses[0].street,
-          buildNo:res.data.addresses[0].buildNo,
-          flatNo:res.data.addresses[0].flatNo,
-          district:res.data.addresses[0].district,
-          floorNo:res.data.addresses[0].floorNo,
-          latitude:res.data.addresses[0].latitude,
-          logitude:res.data.addresses[0].logitude,
+          // street:res.data.addresses[0].street,
+          // buildNo:res.data.addresses[0].buildNo,
+          // flatNo:res.data.addresses[0].flatNo,
+          // district:res.data.addresses[0].district,
+          // floorNo:res.data.addresses[0].floorNo,
+          latitude:String(res.data.addresses[0].latitude),
+          logitude:String(res.data.addresses[0].logitude),
+          
         })
+        this.lat=String(res.data.addresses[0].latitude);
+        this.lng=String(res.data.addresses[0].logitude);
+        this.showMap=true
         this.editImageIBanProps.props.imgSrc = environment.baseImageUrl + res.data.iban;
         this.editImageProps .props.imgSrc = environment.baseImageUrl + res.data.cr;
         this.editImageLicenseProps.props.imgSrc = environment.baseImageUrl + res.data.license;
         this.editMode = true;
         this.adress = [{
           expalinedAddress:res.data.addresses[0].expalinedAddress,
-          street:res.data.addresses[0].street,
-          buildNo:res.data.addresses[0].buildNo,
-          flatNo:res.data.addresses[0].flatNo,
-          district:res.data.addresses[0].district,
-          floorNo:res.data.addresses[0].floorNo,
-          latitude:res.data.addresses[0].latitude,
-          logitude:res.data.addresses[0].logitude,
+          // street:res.data.addresses[0].street,
+          // buildNo:res.data.addresses[0].buildNo,
+          // flatNo:res.data.addresses[0].flatNo,
+          // district:res.data.addresses[0].district,
+          // floorNo:res.data.addresses[0].floorNo,
+          latitude:String(res.data.addresses[0].latitude),
+          logitude:String(res.data.addresses[0].logitude),
           userId: Number(localStorage.getItem('userId')) || 0
         }]
         console.log("TraderDetailsComponent  this.ApiService.get    this.adress:",   this.form.value)
@@ -428,11 +436,11 @@ export class TraderDetailsComponent {
 
     this.setPayload([
       'expalinedAddress',
-      'street',
-      'district',
-      'buildNo',
-      'floorNo',
-      'flatNo',
+      // 'street',
+      // 'district',
+      // 'buildNo',
+      // 'floorNo',
+      // 'flatNo',
       'logitude',
       'latitude'
     ], payload)
@@ -498,5 +506,5 @@ export class TraderDetailsComponent {
     })
   }
 
-
+ 
 }
