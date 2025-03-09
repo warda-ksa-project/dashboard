@@ -19,11 +19,7 @@
 
       </div>
       <div class="setting-section section-color">
-        <!-- <div routerLink="/settings/faqs" class="routing-action" routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true }" pTooltip="{{'side_bar.setting' | translate|uppercase}}"
-            [tooltipPosition]="selectedLang == 'ar' ? 'left' : 'right'">
-            <span class="pi pi-cog"></span>
-          </div> -->
+      
           <div class="log-out user-image-section mt-5" width="30px" (click)="logOut()" routerLink="/auth/login" [pTooltip]="'Profile' | translate" [tooltipPosition]="selectedLang == 'ar' ? 'left' : 'right'">
             <img src="assets/images/side-dashbord-icons/s-logout.svg" alt="log-out">
             <span class="text-danger">{{'shared.log_out'|translate}}</span>

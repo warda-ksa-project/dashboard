@@ -24,20 +24,20 @@ languageService = inject(LanguageService);
   userDate=JSON.parse(localStorage.getItem('userData')as any);
   defaultImage=this.userDate?.gender==1?'assets/images/arabian-man.png':'assets/images/arabian-woman.png'
   routingList = menuItems
-  role:any=localStorage.getItem('role')
+  role:any=''
   ngOnInit(): void {
-    // this.getRoles()
+    this.getRoles()
     this.selectedLang = this.languageService.translationService.currentLang;
     this.languageService.translationService.onLangChange.subscribe(() => {
-    //  this.getRoles()
+     this.getRoles()
       this.selectedLang = this.languageService.translationService.currentLang;
     })
   }
   getRoles(){
-    this.apiService.get('Auth/getRoles').subscribe(res=>{
+    this.apiService.get('Auth/getRoles').subscribe((res:any)=>{
       console.log("SidebarComponent  this.apiService.get  res:", res)
 
-    this.role=res
+    this.role=res.message
     console.log("SidebarComponent  this.apiService.get  this.role:", this.role)
     })
   }

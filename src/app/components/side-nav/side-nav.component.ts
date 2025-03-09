@@ -1,4 +1,4 @@
-import { NgFor, TitleCasePipe } from '@angular/common';
+import { NgFor, NgIf, TitleCasePipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Tooltip } from 'primeng/tooltip';
 import { LanguageService } from '../../services/language.service';
@@ -9,7 +9,7 @@ import { ApiService } from '../../services/api.service';
 @Component({
   selector: 'app-side-nav',
   standalone: true,
-  imports: [NgFor , Tooltip , TranslateModule , RouterModule , RouterLinkActive,TitleCasePipe],
+  imports: [NgFor , Tooltip , TranslateModule , RouterModule , RouterLinkActive,NgIf],
   templateUrl: './side-nav.component.html',
   styleUrl: './side-nav.component.scss'
 })
@@ -83,9 +83,10 @@ export class SideNavComponent {
   languageService = inject(LanguageService);
    apiService=inject(ApiService)
   routingList = menuItems
+  role:any=''
 
   ngOnInit(): void {
-    console.log('ffffffffffffff')
+    console.log('ffffffffffffffuuu--------------')
     this.getRoles()
     this.selectedLang = this.languageService.translationService.currentLang;
     this.languageService.translationService.onLangChange.subscribe(() => {
@@ -94,11 +95,17 @@ export class SideNavComponent {
     })
   }
 
-getRoles(){
-  this.apiService.get('Auth/getRoles').subscribe(res=>{
-    console.log("SideNavComponent  this.apiService.get  res:", res)
+  getRoles(){
+    this.apiService.get('Auth/getRoles').subscribe((res:any)=>{
+      console.log("SidebarComponent  this.apiService.get  res:", res)
 
-  })
+    this.role=res.message
+    console.log("SidebarComponent  this.apiService.get  this.role:", this.role)
+    })
+  }
+
+logOut(){
+  localStorage.clear()
+  
 }
-
 }

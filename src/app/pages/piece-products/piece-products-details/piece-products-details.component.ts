@@ -92,6 +92,9 @@ export class PieceProductsDetailsComponent {
         Validations.onlyNumberValidator()
       ]
     }),
+    priceAfterDiscount: new FormControl('', {
+      
+    }),
     hasDiscount: new FormControl<boolean>(false),
     discountType: new FormControl<any>('', {
       validators: [

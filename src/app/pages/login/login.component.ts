@@ -81,13 +81,13 @@ export class LoginComponent {
       // this.openOtpModal = res.data.status;
       if (!res.data.token) {
         localStorage.removeItem('token');
-        localStorage.removeItem('role');
+        // localStorage.removeItem('role');
         this.toaster.errorToaster(res.message)
       } else {
         // localStorage.setItem('userData', JSON.stringify(dataUser))
         localStorage.setItem('token', res.data.token);
         localStorage.setItem('userId',res.data.id)
-        localStorage.setItem('role',res.data.role)
+        // localStorage.setItem('role',res.data.role)
         this.router.navigate(['/dashboard']);
       }
     })
