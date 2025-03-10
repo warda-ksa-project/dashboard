@@ -1,76 +1,221 @@
-<div class="dashboard-container container-fluid">
+<div class="table-container">
+  <div class="content"></div>
   <div class="title-bredcrumb-section">
     <div class="page-title">
       <div class="images">
         <span class="pi pi-home"></span>
-       </div>
-       <h2 class="mt-4">{{'dashboard.pageName'|translate}}</h2>
       </div>
-   
+      <h2 class="mt-4">{{ "dashboard.pageName" | translate }}</h2>
+    </div>
+    <!-- <div class="breadcrumb">
+        <app-breadcrump [breadcrumbProps]="bredCrumb"></app-breadcrump>
+      </div> -->
   </div>
-  <div class="static-dashboard-data mt-3 mb-3" *ngIf="staticDetails">
-    <div class="row">
-      <div class="page-title col-lg-12">
-        <h4>{{ 'dashboard.ORDERS_DETAILS' | translate }}</h4>
+
+  <!-- <ng-container *ngIf="'admin'"></ng-container> -->
+
+  <div class="page-trader-container mt-4">
+    <div class="card-container d-flex justify-content-start flex-wrap">
+      <div *ngFor="let item of items">
+        <div class="card">
+          <div class="item-header">
+            <span class="icon" [class]="item.icon"></span>
+            <span class="color-gray title">{{ item.titleEn }}</span>
+          </div>
+          <div class="item-content text-center">
+            <div class="price">
+              <span class="bold fz-20">{{ item.price }} </span
+              ><span class="color-gray"> {{ item.type | translate }}</span>
+            </div>
+          </div>
+          <div class="item-footer">
+            <img
+              *ngIf="item.price < 20"
+              src="assets/images/arrow-down-circle.svg"
+            />
+            <img
+              *ngIf="item.price > 20"
+              src="assets/images/arrow-up-circle.svg"
+            />
+            <span> {{ item.status }}</span>
+          </div>
+        </div>
       </div>
     </div>
-      
-    <div class="row"*ngIf="false">
-      <div class="static-section-data mt-3 mb-3 col-lg-3 col-md-6 col-sm-12">
-        <div class="static-card">
-          <div class="content">
-            <!-- <div class="data">
+
+    <div class="pop-products">
+      <div class="details-container">
+        <div class="d-flex justify-content-between">
+         
+          <h2 class="prod">
+            <span class="pi pi-shopping-cart"></span>
+            {{ "Products" | translate }}
+          </h2>
+          <span class="pi pi-filter pointer p-1" (click)="openFilter()"> </span>
+        </div>
+        <div class="table-view">
+          <app-table
+            [colsHeader]="columns"
+            [records]="dataList"
+            [showrecordIndex]="true"
+            [actions]="tableActions"
+          ></app-table>
+        </div>
+        <div class="responsive-accordions" *ngIf="false">
+          <app-table-small-screen
+            [colsHeaderSmallTable]="columnsSmallTable"
+            [records]="dataList"
+            [actions]="tableActions"
+          >
+          </app-table-small-screen>
+        </div>
+        <app-pagination
+          (onPageChange)="onPageChange($event)"
+          [totalCount]="totalCount"
+        ></app-pagination>
+      </div>
+    </div>
+ 
+  </div>
+</div>
+
+<app-drawer
+  [visible]="showFilter"
+  header="{{ pageName() }}_{{ 'filter' }}"
+  (onClose)="onCloseFilter($event)"
+>
+  <form
+    #myForm="ngForm"
+    (ngSubmit)="onSubmitFilter()"
+    body
+    class="h-100 search-form d-flex"
+  >
+    <div class="form-content">
+      <!-- Full Name -->
+      <div class="form-group mb-3">
+        <label class="mb-1" for="enTitle">{{
+          "products.form.enName" | translate
+        }}</label>
+        <input
+          type="text"
+          id="enTitle"
+          name="enTitle"
+          class="form-control"
+          [(ngModel)]="objectSearch.enName"
+          placeholder="{{ 'shared.enter' | translate }} {{
+            'products.form.enName' | translate
+          }}"
+        />
+      </div>
+
+      <!-- Username -->
+      <div class="form-group mb-3">
+        <label class="mb-1" for="arTitle">{{
+          "products.form.arName" | translate
+        }}</label>
+        <input
+          type="text"
+          id="arTitle"
+          name="arTitle"
+          class="form-control"
+          [(ngModel)]="objectSearch.arName"
+          placeholder="{{ 'shared.enter' | translate }} {{
+            'products.form.arName' | translate
+          }}"
+        />
+      </div>
+    </div>
+
+    <div class="search-form-actions d-flex">
+      <button type="submit" class="btn drawer-submit-btn">
+        {{ "actions.submit" | translate }}
+      </button>
+      <button
+        type="button"
+        class="btn btn-danger drawer-reset-btn"
+        (click)="reset()"
+      >
+        {{ "actions.reset" | translate }}
+      </button>
+    </div>
+  </form>
+</app-drawer>
+
+<div class="static-dashboard-data mt-3 mb-3" *ngIf="staticDetails">
+  <div class="row">
+    <div class="page-title col-lg-12">
+      <h4>{{ "dashboard.ORDERS_DETAILS" | translate }}</h4>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="false">
+    <div class="static-section-data mt-3 mb-3 col-lg-3 col-md-6 col-sm-12">
+      <div class="static-card">
+        <div class="content">
+          <!-- <div class="data">
               <p-knob [(ngModel)]="staticDetails.totalOrdersPrice" valueColor="#e64747" rangeColor="#F2F3F5"
                 [disabled]="true" />
             </div> -->
-            <div class="title">
-              <p>{{ 'dashboard.TOTAL_ORDERS_AMOUNT' | translate }}</p>
-            </div>
+          <div class="title">
+            <p>{{ "dashboard.TOTAL_ORDERS_AMOUNT" | translate }}</p>
           </div>
         </div>
       </div>
-      <div class="static-section-data mt-3 mb-3 col-lg-3 col-md-6 col-sm-12">
-        <div class="static-card">
-          <div class="content">
-            <div class="data">
-              <p-knob [(ngModel)]="staticDetails.totalOrdersPricePerDay" valueColor="#81ef62" rangeColor="#F2F3F5"
-                [disabled]="true" />
-            </div>
-            <div class="title">
-              <p>{{ 'dashboard.TOTAL_ORDERS_PER_DAY_AMOUNT' | translate }}</p>
-            </div>
+    </div>
+    <div class="static-section-data mt-3 mb-3 col-lg-3 col-md-6 col-sm-12">
+      <div class="static-card">
+        <div class="content">
+          <div class="data">
+            <p-knob
+              [(ngModel)]="staticDetails.totalOrdersPricePerDay"
+              valueColor="#81ef62"
+              rangeColor="#F2F3F5"
+              [disabled]="true"
+            />
+          </div>
+          <div class="title">
+            <p>{{ "dashboard.TOTAL_ORDERS_PER_DAY_AMOUNT" | translate }}</p>
           </div>
         </div>
       </div>
-      <div class="static-section-data mt-3 mb-3 col-lg-3 col-md-6 col-sm-12">
-        <div class="static-card">
-          <div class="content">
-            <div class="data">
-              <p-knob [(ngModel)]="staticDetails.totalOrdersPricePerWeek" valueColor="yellow" rangeColor="#F2F3F5"
-                [disabled]="true" />
-            </div>
-            <div class="title">
-              <p>{{ 'dashboard.TOTAL_ORDERS_PER_WEEK_AMOUNT' | translate }}</p>
-            </div>
+    </div>
+    <div class="static-section-data mt-3 mb-3 col-lg-3 col-md-6 col-sm-12">
+      <div class="static-card">
+        <div class="content">
+          <div class="data">
+            <p-knob
+              [(ngModel)]="staticDetails.totalOrdersPricePerWeek"
+              valueColor="yellow"
+              rangeColor="#F2F3F5"
+              [disabled]="true"
+            />
+          </div>
+          <div class="title">
+            <p>{{ "dashboard.TOTAL_ORDERS_PER_WEEK_AMOUNT" | translate }}</p>
           </div>
         </div>
       </div>
-      <div class="static-section-data mt-3 mb-3 col-lg-3 col-md-6 col-sm-12">
-        <div class="static-card">
-          <div class="content">
-            <div class="data">
-              <p-knob [(ngModel)]="staticDetails.totalOrdersPricePerMonth" valueColor="#628ada" rangeColor="#F2F3F5"
-                [disabled]="true" />
-            </div>
-            <div class="title">
-              <p>{{ 'dashboard.TOTAL_ORDERS_PER_MONTH_AMOUNT' | translate }}</p>
-            </div>
+    </div>
+    <div class="static-section-data mt-3 mb-3 col-lg-3 col-md-6 col-sm-12">
+      <div class="static-card">
+        <div class="content">
+          <div class="data">
+            <p-knob
+              [(ngModel)]="staticDetails.totalOrdersPricePerMonth"
+              valueColor="#628ada"
+              rangeColor="#F2F3F5"
+              [disabled]="true"
+            />
+          </div>
+          <div class="title">
+            <p>{{ "dashboard.TOTAL_ORDERS_PER_MONTH_AMOUNT" | translate }}</p>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <!-- <div class="row">
+</div>
+<!-- <div class="row">
     <div class="content mt-3 mb-3 col-lg-4 col-md-6 col-sm-12" *ngFor="let item of items">
       <div class=" card">
         <div class="static-section d-flex justify-content-between align-items-center">
@@ -99,4 +244,3 @@
       </div>
     </div>
   </div> -->
-</div>

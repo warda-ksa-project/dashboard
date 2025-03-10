@@ -1,54 +1,162 @@
 import { NgFor, NgIf, TitleCasePipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { RouterModule } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Knob } from 'primeng/knob';
 import { FormsModule } from '@angular/forms';
+import { EAction, EType, IcolHeader, ITableAction, TableComponent } from '../../components/table/table.component';
+import { DrawerComponent } from '../../components/drawer/drawer.component';
+import { ETableShow, IcolHeaderSmallTable, TableSmallScreenComponent } from '../../components/table-small-screen/table-small-screen.component';
+import { PaginationComponent } from '../../components/pagination/pagination.component';
+import { LanguageService } from '../../services/language.service';
+import { IBreadcrumb } from '../../components/breadcrump/cerqel-breadcrumb.interface';
+import { BreadcrumpComponent } from '../../components/breadcrump/breadcrump.component';
 
-
+const global_pageName = 'products.pageName';
+const global_router_add_url_in_Table = '/product/add';
+const global_router_view_url = '/product/view';
+const global_router_edit_url = '/product/edit';
+const global_API_getAll = 'product' + '/GetAllWithPagination';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [NgFor, RouterModule, NgIf, TranslatePipe, TitleCasePipe, Knob ,FormsModule],
+  imports: [NgFor, RouterModule,PaginationComponent, NgIf,TableSmallScreenComponent, TranslatePipe, TableComponent,DrawerComponent, Knob ,FormsModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent {
-
+ global_router_add_url_in_Table = global_router_add_url_in_Table;
+  pageName = signal<string>(global_pageName);
   private ApiService = inject(ApiService);
 
   staticDetails: any;
+  totalCount: number = 0;
+  filteredData: any;
+    dataList: any = [];
+    columns: IcolHeader[] = [];
+    showFilter: boolean = false;
+    searchValue: any = '';
+  
+    columnsSmallTable: IcolHeaderSmallTable[] = [];
+    bredCrumb: IBreadcrumb = {
+      crumbs: [],
+    };
+    selectedLang: any;
+    languageService = inject(LanguageService);
+    objectSearch = {
+      pageNumber: 0,
+      pageSize: 8,
+      sortingExpression: '',
+      sortingDirection: 0,
+      enName: '',
+      arName: '',
+    };
+   
+    tableActions: ITableAction[] = [
+      {
+        name: EAction.delete,
+        apiName_or_route: 'product/Delete?id',
+        autoCall: true,
+      },
+      {
+        name: EAction.view,
+        apiName_or_route: global_router_view_url,
+        autoCall: true,
+      },
+      {
+        name: EAction.edit,
+        apiName_or_route: global_router_edit_url,
+        autoCall: true,
+      },
+    ];
+  items:any=[
+    {
+      titleAr:'اجمالي المبيعات',
+      titleEn:'Total Sales',
+      icon:'pi pi-database',
+      price:'2500',
+      status:'60%',
+      type:'SAR'
+    },
+    {
+      titleAr:'المنتجات المتاحة',
+      titleEn:'Available Items',
+      icon:'pi pi-shop',
+      price:'150',
+      status:'60%',
+      type:'product'
+    
+    },
+    {
+      titleAr:'الطلبات الجديدة',
+      titleEn:'New Orders',
+      icon:'pi pi-shopping-cart',
+      price:'12',
+      status:'60%',
+      type:'New Order'
 
+    }, {
+      titleAr:'الطلبات المكتملة',
+      titleEn:'Total',
+      icon:'pi pi-inbox',
+      price:'230',
+      status:'60%',
+      type:'Complete Order'
+    }
+  ]
   ngOnInit(): void {
+    this.pageName.set(global_pageName);
+    this.API_getAll();
+    this.getBreadCrumb();
+    this.selectedLang = this.languageService.translationService.currentLang;
+    this.displayTableCols(this.selectedLang);
+    this.languageService.translationService.onLangChange.subscribe(() => {
+      this.selectedLang = this.languageService.translationService.currentLang;
+      this.displayTableCols(this.selectedLang);
+      this.getBreadCrumb();
+    });
     // this.getDashboardDetails();
-    // this.getStaticData();
+    this.getStaticData();
   }
 
-  items: any[] = [
-    { name: 'dashboard.client', value: 0, img: 'assets/images/dashboard/client.png', route: '/clients', id: 'clientCount' },
-    { name: 'dashboard.technical', value: 0, img: 'assets/images/dashboard/technical-support.png', route: '/technicals', id: 'technicalCount' },
-    { name: 'dashboard.order', value: 0, img: 'assets/images/dashboard/checklist.png', route: '/orders', id: 'orderCount' },
-    { name: 'dashboard.contractType', value: 0, img: 'assets/images/dashboard/contract.png', route: '/contract-type', id: 'contractTypeCount' },
-    { name: 'dashboard.package', value: 0, img: 'assets/images/dashboard/package.png', route: '/package', id: 'packageCount' },
-    { name: 'dashboard.paymentWay', value: 0, img: 'assets/images/dashboard/payment-method.png', route: '/paymentWay', id: 'paymentWayCount' },
-    { name: 'dashboard.service', value: 0, img: 'assets/images/dashboard/customer-service.png', route: '/services', id: 'serviceCount' },
-    { name: 'dashboard.workingTime', value: 0, img: 'assets/images/dashboard/timetable.png', route: '/working_hours', id: 'workingTimeCount' },
-    { name: 'dashboard.termsAndConditions', value: 0, img: 'assets/images/dashboard/terms-and-conditions.png', route: '/settings/terms_conditions', id: 'termsAndConditionsCount' },
-    { name: 'dashboard.technicalSpecialist', value: 0, img: 'assets/images/dashboard/public-relations.png', route: '/technical-specialist', id: 'technicalSpecialistCount' },
-    // { name: 'dashboard.orderAdditionalItems', value: 0, img: 'assets/images/dashboard/checklist.png', route: '/dashboard', id: 'orderAdditionalItemsCount' },
-    { name: 'dashboard.FAQs', value: 0, img: 'assets/images/dashboard/faq.png', route: '/settings/faqs', id: 'faQsCount' },
-    { name: 'dashboard.country', value: 0, img: 'assets/images/dashboard/coronavirus.png', route: '/country', id: 'countryCount' },
-    { name: 'dashboard.coupon', value: 0, img: 'assets/images/dashboard/coupons.png', route: '/copone', id: 'coponeCount' },
-    { name: 'dashboard.complaint', value: 0, img: 'assets/images/dashboard/bad.png', route: '/complaint', id: 'complaintCount' },
-    { name: 'dashboard.city', value: 0, img: 'assets/images/dashboard/cityscape.png', route: '/city', id: 'cityCount' },
-    { name: 'dashboard.admin', value: 0, img: 'assets/images/dashboard/no-data.png', route: '/settings/admin', id: 'adminCount' },
-    { name: 'dashboard.driver', value: 0, img: 'assets/images/dashboard/package.png', route: '/technicals', id: 'driverCount' },
-    { name: 'dashboard.specialOrder', value: 0, img: 'assets/images/dashboard/coronavirus.png', route: '/special-order', id: 'specialOrderCount' },
 
-  ];
+  // items: any[] = [
+  //   { name: 'dashboard.client', value: 0, img: 'assets/images/dashboard/client.png', route: '/clients', id: 'clientCount' },
+  //   { name: 'dashboard.technical', value: 0, img: 'assets/images/dashboard/technical-support.png', route: '/technicals', id: 'technicalCount' },
+  //   { name: 'dashboard.order', value: 0, img: 'assets/images/dashboard/checklist.png', route: '/orders', id: 'orderCount' },
+  //   { name: 'dashboard.contractType', value: 0, img: 'assets/images/dashboard/contract.png', route: '/contract-type', id: 'contractTypeCount' },
+  //   { name: 'dashboard.package', value: 0, img: 'assets/images/dashboard/package.png', route: '/package', id: 'packageCount' },
+  //   { name: 'dashboard.paymentWay', value: 0, img: 'assets/images/dashboard/payment-method.png', route: '/paymentWay', id: 'paymentWayCount' },
+  //   { name: 'dashboard.service', value: 0, img: 'assets/images/dashboard/customer-service.png', route: '/services', id: 'serviceCount' },
+  //   { name: 'dashboard.workingTime', value: 0, img: 'assets/images/dashboard/timetable.png', route: '/working_hours', id: 'workingTimeCount' },
+  //   { name: 'dashboard.termsAndConditions', value: 0, img: 'assets/images/dashboard/terms-and-conditions.png', route: '/settings/terms_conditions', id: 'termsAndConditionsCount' },
+  //   { name: 'dashboard.technicalSpecialist', value: 0, img: 'assets/images/dashboard/public-relations.png', route: '/technical-specialist', id: 'technicalSpecialistCount' },
+  //   // { name: 'dashboard.orderAdditionalItems', value: 0, img: 'assets/images/dashboard/checklist.png', route: '/dashboard', id: 'orderAdditionalItemsCount' },
+  //   { name: 'dashboard.FAQs', value: 0, img: 'assets/images/dashboard/faq.png', route: '/settings/faqs', id: 'faQsCount' },
+  //   { name: 'dashboard.country', value: 0, img: 'assets/images/dashboard/coronavirus.png', route: '/country', id: 'countryCount' },
+  //   { name: 'dashboard.coupon', value: 0, img: 'assets/images/dashboard/coupons.png', route: '/copone', id: 'coponeCount' },
+  //   { name: 'dashboard.complaint', value: 0, img: 'assets/images/dashboard/bad.png', route: '/complaint', id: 'complaintCount' },
+  //   { name: 'dashboard.city', value: 0, img: 'assets/images/dashboard/cityscape.png', route: '/city', id: 'cityCount' },
+  //   { name: 'dashboard.admin', value: 0, img: 'assets/images/dashboard/no-data.png', route: '/settings/admin', id: 'adminCount' },
+  //   { name: 'dashboard.driver', value: 0, img: 'assets/images/dashboard/package.png', route: '/technicals', id: 'driverCount' },
+  //   { name: 'dashboard.specialOrder', value: 0, img: 'assets/images/dashboard/coronavirus.png', route: '/special-order', id: 'specialOrderCount' },
 
+  // ];
 
+  getBreadCrumb() {
+    this.bredCrumb = {
+      crumbs: [
+        {
+          label: this.languageService.translate('Home'),
+          routerLink: '/dashboard',
+        },
+        {
+          label: this.languageService.translate(this.pageName()),
+        },
+      ],
+    };
+  }
 
 
   getDashboardDetails() {
@@ -59,7 +167,7 @@ export class DashboardComponent {
   }
 
   getStaticData() {
-    this.ApiService.get('Dashborad/GetAllOrderStatistics').subscribe((res: any) => {
+    this.ApiService.get('Dashboard/GetAllDashboardStatistics').subscribe((res: any) => {
       console.log(res);
       this.staticDetails = res.data
     })
@@ -73,4 +181,116 @@ export class DashboardComponent {
     });
   }
 
+
+ displayTableCols(currentLang: string) {
+    this.columns = [
+      {
+        keyName: 'id',
+        header: this.languageService.translate('Id'),
+        type: EType.id,
+        show: true,
+      },
+      {
+        keyName: 'enName',
+        header: this.languageService.translate('sub_category.form.enName'),
+        type: EType.text,
+        show: true,
+      },
+      {
+        keyName: 'arName',
+        header: this.languageService.translate('sub_category.form.arName'),
+        type: EType.text,
+        show: true,
+      },
+      {
+        keyName: '',
+        header: this.languageService.translate('Action'),
+        type: EType.actions,
+        actions: this.tableActions,
+        show: true,
+      },
+    ];
+    this.columnsSmallTable = [
+      {
+        keyName: 'id',
+        header: this.languageService.translate('Id'),
+        type: EType.id,
+        show: false,
+      },
+      {
+        keyName: 'enName',
+        header: this.languageService.translate('sub_category.form.enName'),
+        type: EType.text,
+        showAs: ETableShow.header,
+      },
+      {
+        keyName: 'arName',
+        header: this.languageService.translate('sub_category.form.arName'),
+        type: EType.text,
+        showAs: ETableShow.header,
+      },
+    ];
+  }
+
+  
+  openFilter() {
+    this.showFilter = true;
+  }
+
+  onCloseFilter(event: any) {
+    this.showFilter = false;
+  }
+
+  API_getAll() {
+      this.ApiService.post(global_API_getAll, this.objectSearch).subscribe(
+        (res: any) => {
+          if (res) {
+            this.dataList = res.data.dataList;
+            this.totalCount = res.data.totalCount;
+            this.filteredData = [...this.dataList];
+          }
+        }
+      );
+    }
+  
+    onPageChange(event: any) {
+      console.log(event);
+      this.objectSearch.pageNumber = event;
+      this.API_getAll();
+    }
+  
+    filterData() {
+      this.dataList = this.filteredData;
+      const search = this.searchValue.toLowerCase();
+  
+      if (this.searchValue.length == 1) {
+        this.dataList = this.filteredData;
+        return;
+      }
+  
+      this.dataList = this.dataList.filter(
+        (item: any) =>
+          item.enTitle.toLowerCase().includes(search) ||
+          item.arTitle.toLowerCase().includes(search) ||
+          item.enDescription.toLowerCase().includes(search) ||
+          item.arDescription.toLowerCase().includes(search)
+      );
+    }
+  
+    onSubmitFilter() {
+      this.API_getAll();
+    }
+  
+    reset() {
+      this.objectSearch = {
+        pageNumber: 0,
+        pageSize: 8,
+        sortingExpression: '',
+        sortingDirection: 0,
+        enName: '',
+        arName: '',
+      };
+      this.API_getAll();
+      this.showFilter = false;
+    }
 }
