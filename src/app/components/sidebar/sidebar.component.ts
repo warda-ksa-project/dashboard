@@ -35,10 +35,7 @@ languageService = inject(LanguageService);
   }
   getRoles(){
     this.apiService.get('Auth/getRoles').subscribe((res:any)=>{
-      console.log("SidebarComponent  this.apiService.get  res:", res)
-
     this.role=res.message
-    console.log("SidebarComponent  this.apiService.get  this.role:", this.role)
     })
   }
 

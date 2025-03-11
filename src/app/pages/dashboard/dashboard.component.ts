@@ -12,6 +12,7 @@ import { PaginationComponent } from '../../components/pagination/pagination.comp
 import { LanguageService } from '../../services/language.service';
 import { IBreadcrumb } from '../../components/breadcrump/cerqel-breadcrumb.interface';
 import { BreadcrumpComponent } from '../../components/breadcrump/breadcrump.component';
+import { Roles } from '../../conts';
 
 const global_pageName = 'products.pageName';
 const global_router_add_url_in_Table = '/product/add';
@@ -37,7 +38,9 @@ export class DashboardComponent {
     columns: IcolHeader[] = [];
     showFilter: boolean = false;
     searchValue: any = '';
-  
+    apiService=inject(ApiService)
+    role:any=''
+    RolesEnum=Roles
     columnsSmallTable: IcolHeaderSmallTable[] = [];
     bredCrumb: IBreadcrumb = {
       crumbs: [],
@@ -72,52 +75,59 @@ export class DashboardComponent {
     ];
   items:any=[
     {
-      titleAr:'اجمالي المبيعات',
-      titleEn:'Total Sales',
+      titleAr:'عدد الطلبات',
+      titleEn:'Orders Count',
       icon:'pi pi-database',
-      price:'2500',
+      price:'0',
       status:'60%',
-      type:'SAR'
+      type:'order',
+       typeAr:'طلب'
     },
     {
-      titleAr:'المنتجات المتاحة',
-      titleEn:'Available Items',
+      titleAr:' عدد المنتجات',
+      titleEn:'Products Count',
       icon:'pi pi-shop',
-      price:'150',
+      price:'0',
       status:'60%',
-      type:'product'
+      type:'product',
+      typeAr:'منتج'
     
     },
     {
-      titleAr:'الطلبات الجديدة',
-      titleEn:'New Orders',
+      titleAr:'عدد الفئات الفرعية',
+      titleEn:'SubCategories Count',
       icon:'pi pi-shopping-cart',
-      price:'12',
+      price:'0',
       status:'60%',
-      type:'New Order'
+      type:'subCategory',
+      typeAr:'فئة فرعية'
 
-    }, {
-      titleAr:'الطلبات المكتملة',
-      titleEn:'Total',
-      icon:'pi pi-inbox',
-      price:'230',
-      status:'60%',
-      type:'Complete Order'
     }
+    // , {
+    //   titleAr:'الطلبات المكتملة',
+    //   titleEn:'Total',
+    //   icon:'pi pi-inbox',
+    //   price:'230',
+    //   status:'60%',
+    //   type:'Complete Order'
+    // }
   ]
   ngOnInit(): void {
     this.pageName.set(global_pageName);
     this.API_getAll();
     this.getBreadCrumb();
+    this.getStaticData();
+    this.getRoles();
     this.selectedLang = this.languageService.translationService.currentLang;
     this.displayTableCols(this.selectedLang);
     this.languageService.translationService.onLangChange.subscribe(() => {
       this.selectedLang = this.languageService.translationService.currentLang;
       this.displayTableCols(this.selectedLang);
       this.getBreadCrumb();
+      this.getStaticData();
+      this.getRoles();
     });
     // this.getDashboardDetails();
-    this.getStaticData();
   }
 
 
@@ -161,15 +171,16 @@ export class DashboardComponent {
 
   getDashboardDetails() {
     this.ApiService.get('Dashborad/GetAll').subscribe((res: any) => {
-      console.log(res);
       this.updateItemsWithData(res.data);
     })
   }
 
   getStaticData() {
     this.ApiService.get('Dashboard/GetAllDashboardStatistics').subscribe((res: any) => {
-      console.log(res);
-      this.staticDetails = res.data
+      this.staticDetails = res
+      this.items[0].price=res.ordersCount
+      this.items[1].price=res.productCount
+      this.items[2].price=res.subCategoryCount
     })
   }
 
@@ -253,8 +264,12 @@ export class DashboardComponent {
       );
     }
   
+    getRoles(){
+      this.apiService.get('Auth/getRoles').subscribe((res:any)=>{
+      this.role=res.message
+      })
+    }
     onPageChange(event: any) {
-      console.log(event);
       this.objectSearch.pageNumber = event;
       this.API_getAll();
     }

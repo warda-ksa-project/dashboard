@@ -13,19 +13,19 @@
   </div>
 
   <!-- <ng-container *ngIf="'admin'"></ng-container> -->
-
+<ng-container *ngIf="role==RolesEnum.trader">
   <div class="page-trader-container mt-4">
     <div class="card-container d-flex justify-content-start flex-wrap">
       <div *ngFor="let item of items">
         <div class="card">
           <div class="item-header">
             <span class="icon" [class]="item.icon"></span>
-            <span class="color-gray title">{{ item.titleEn }}</span>
+            <span class="color-gray title">{{selectedLang=='en'? item.titleEn: item.titleAr }}</span>
           </div>
           <div class="item-content text-center">
             <div class="price">
               <span class="bold fz-20">{{ item.price }} </span
-              ><span class="color-gray"> {{ item.type | translate }}</span>
+              ><span class="color-gray"> {{selectedLang=='en'? item.type:item.typeAr }}</span>
             </div>
           </div>
           <div class="item-footer">
@@ -77,9 +77,11 @@
     </div>
  
   </div>
+</ng-container>
+ 
 </div>
 
-<app-drawer
+<app-drawer *ngIf="role==RolesEnum.trader"
   [visible]="showFilter"
   header="{{ pageName() }}_{{ 'filter' }}"
   (onClose)="onCloseFilter($event)"
@@ -141,7 +143,7 @@
   </form>
 </app-drawer>
 
-<div class="static-dashboard-data mt-3 mb-3" *ngIf="staticDetails">
+<div class="static-dashboard-data mt-3 mb-3" *ngIf="false">
   <div class="row">
     <div class="page-title col-lg-12">
       <h4>{{ "dashboard.ORDERS_DETAILS" | translate }}</h4>
