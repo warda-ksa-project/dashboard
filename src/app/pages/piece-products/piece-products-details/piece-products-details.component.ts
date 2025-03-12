@@ -44,7 +44,6 @@ export class PieceProductsDetailsComponent {
   private route = inject(ActivatedRoute)
   showConfirmMessage: boolean = false
   private confirm = inject(ConfirmMsgService)
-  categoryList: any[] = []
   discountType: any[] = [
     {
       name: 'Amount',
@@ -164,11 +163,9 @@ export class PieceProductsDetailsComponent {
 
     this.pageName.set(global_PageName)
     this.getBreadCrumb();
-    this.getMainCategory()
     this.languageService.translationService.onLangChange.subscribe(() => {
       this.selectedLang = this.languageService.translationService.currentLang;
       this.getBreadCrumb();
-      this.getMainCategory()
     });
 
     this.form.get('startDate')?.valueChanges.subscribe((res:any) => {
@@ -244,20 +241,7 @@ export class PieceProductsDetailsComponent {
     }
   }
 
-  getMainCategory() {
-    this.ApiService.get('MainCategory/GetAll').subscribe((res: any) => {
-      if (res.data) {
-        this.categoryList = []
-        res.data.map((item: any) => {
-          this.categoryList.push({
-            name: this.selectedLang == 'en' ? item.enName : item.arName,
-            code: item.id
-          })
-        })
-      }
 
-    })
-  }
   API_getItemDetails() {
     this.ApiService.get(`${global_API_details}`, { id: this.getID }).subscribe((res: any) => {
       if (res.data) {

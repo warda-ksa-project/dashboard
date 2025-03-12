@@ -81,12 +81,12 @@
                             src="assets/images/empty-state.png"
                             alt="empty state"
                           />
-                          <p>{{ "order.no_image" | translate }}</p>
+                          <p>{{ "no_image" | translate }}</p>
                         </ng-container>
                       </div>
                     </div>
                   </div>
-                  <div>
+                  <div *ngIf="tyepMode()!='View'">
                     <div
                       class="upload-image-section mt-4 mb-4"
                       *ngIf="!editMode"
@@ -138,6 +138,8 @@
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 mt-5 pt-1">
                       <app-select
+                      [readOnly]="tyepMode() == 'View'"
+                      [disabled]="tyepMode() == 'View'"
                         [placeholder]="form.get('categoryId')?.value"
                         class="w-100"
                         [list]="categoryList"
@@ -166,6 +168,8 @@
                   <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
                       <app-check-box
+                      [readOnly]="tyepMode() == 'View'"
+                      [disabled]="tyepMode() == 'View'"
                         [isToggle]="true"
                         [label]="'products.form.hasDiscount'"
                         [initValue]="form.get('hasDiscount')?.value || false"
@@ -188,7 +192,7 @@
                         [disabled]="form.get('startDate')?.value == ''"
                         [minDate]="minEndDate"
                         [type]="'date'"
-                        [readOnly]="tyepMode() == 'View'"
+                        [readOnly]="true"
                         [disabled]="tyepMode() == 'View'"
                         [label]="'products.form.end'"
                         [control]="form.get('endDate')"
@@ -196,6 +200,8 @@
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 mt-4 pt-1">
                       <app-select
+                      [readOnly]="tyepMode() == 'View'"
+                      [disabled]="tyepMode() == 'View'"
                         [placeholder]="form.get('discountType')?.value"
                         class="w-100"
                         [list]="discountType"

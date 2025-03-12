@@ -169,13 +169,18 @@ export class ProductsDetailsComponent {
 
     this.pageName.set(global_PageName)
     this.getBreadCrumb();
-    // this.getRoles();
+    this.getRoles();
     this.languageService.translationService.onLangChange.subscribe(() => {
       this.selectedLang = this.languageService.translationService.currentLang;
       this.getBreadCrumb();
       this.getRoles();
     });
 
+    // this.form.valueChanges.subscribe(res=>{
+    //   console.log("Pr-------------es:", res)
+      
+      
+    // })
    this.form.get('startDate')?.valueChanges.subscribe((res:any) => {
     if(this.isFirstDateAfter(res,this.form.get('endDate')?.value))
     this.form.get('endDate')?.setValue('')
@@ -336,13 +341,14 @@ getRoles(){
 
 
   goToActivePage_1() {
-    if (this.tyepMode() == 'Add') {
-      // this.imageList=this.form.value.image;
-      // this.addUrltoMedia(this.imageList);
+    // if (this.tyepMode() == 'Add') {
+    //   // this.imageList=this.form.value.image;
+    //   // this.addUrltoMedia(this.imageList);
 
-    }
-
-
+    // }
+   
+    // this.imageList=this.form.value.image;
+    console.log('fff',this.form.value)
 
   }
   onSubmit() {

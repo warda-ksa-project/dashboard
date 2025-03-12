@@ -17,6 +17,22 @@
     <div class="page-trader-container mt-4">
       <div class="d-flex justify-content-between flex-wrap">
         <div class="card-container d-flex justify-content-start flex-wrap">
+          <div class="card">
+            <div class="item-header">
+              <span class="icon" class="pi pi-home"></span>
+              <span class="color-gray title">
+                {{ "sales" | translate }}</span>
+            </div>
+            <div class="item-content text-center">
+              <div class="price">
+                <span class="bold fz-20"> {{ staticDetails }} </span
+                ><span class="color-gray">
+                  {{ "SAR" | translate }}</span
+                >
+              </div>
+            </div>
+           
+          </div>
           <div *ngFor="let item of items">
             <div class="card">
               <div class="item-header">
@@ -46,10 +62,11 @@
             </div>
             </div>
           </div>
+         
         </div>
         <div class="card-container">
           <div class="card">
-            <div class="item-header d-flex justify-content-between">
+            <!-- <div class="item-header d-flex justify-content-between">
             <div>
               <span class="icon" class="pi pi-home"></span>
               <span class="color-gray title">{{ "sales" | translate }}</span>
@@ -60,10 +77,15 @@
                 </span>
                 <span class="color-gray"> {{ "SAR" | translate }}</span>
               </div>
-            </div>
+            </div> -->
             <div class="item-content">
               <div class="chart mt-3">
-                <app-chart></app-chart>
+                <app-chart [labels]="this.labels" 
+                [firstData]="this.allMonthSales"
+                 [secondData]="allTargetMonth" 
+                 [firstDataNAme]="''"
+                 [secondDataName]="''"
+                ></app-chart>
               </div>
             </div>
           </div>

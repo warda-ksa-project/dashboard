@@ -12,7 +12,12 @@ export class ChartComponent {
   @Input() data: any
   @Input() options: any
   @Input() type: any = 'bar'
-
+  @Input()labels:string[]=[]
+  @Input() firstData: number[] = []
+  @Input() secondData: number[] = []
+@Input()aspectRatio:number=0.8
+@Input()firstDataNAme=''
+@Input()secondDataName=''
   platformId = inject(PLATFORM_ID);
 
   // configService = inject(AppConfigService);
@@ -34,65 +39,75 @@ export class ChartComponent {
   }
 
   initChart() {
-      if (isPlatformBrowser(this.platformId)) {
-          const documentStyle = getComputedStyle(document.documentElement);
-          const textColor = documentStyle.getPropertyValue('--p-text-color');
-          const textColorSecondary = documentStyle.getPropertyValue('--p-text-muted-color');
-          const surfaceBorder = documentStyle.getPropertyValue('--p-content-border-color');
+    if (isPlatformBrowser(this.platformId)) {
+        const documentStyle = getComputedStyle(document.documentElement);
+        const textColor = documentStyle.getPropertyValue('--p-text-color');
+        const textColorSecondary = documentStyle.getPropertyValue('--p-text-muted-color');
+        const surfaceBorder = documentStyle.getPropertyValue('--p-content-border-color');
 
-          this.data = {
-              labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-              datasets: [
-                  {
-                      label: 'My First dataset',
-                      backgroundColor: documentStyle.getPropertyValue('--p-cyan-500'),
-                      borderColor: documentStyle.getPropertyValue('--p-cyan-500'),
-                      data: [65, 59, 80, 81, 56, 55, 40]
-                  },
-                  {
-                      label: 'My Second dataset',
-                      backgroundColor: documentStyle.getPropertyValue('--p-gray-500'),
-                      borderColor: documentStyle.getPropertyValue('--p-gray-500'),
-                      data: [28, 48, 40, 19, 86, 27, 90]
-                  }
-              ]
-          };
+        this.data = {
+            labels: this.labels,
+            datasets: [
+                {
+                    type: 'bar',
+                    label: this.firstDataNAme,
+                    backgroundColor: '#B49ABF',
+                    data: this.firstData,
 
-          this.options = {
-              maintainAspectRatio: false,
-              aspectRatio: 0.8,
-              plugins: {
-                  legend: {
-                      labels: {
-                          color: textColor
-                      }
-                  }
-              },
-              scales: {
-                  x: {
-                      ticks: {
-                          color: textColorSecondary,
-                          font: {
-                              weight: 500
-                          }
-                      },
-                      grid: {
-                          color: surfaceBorder,
-                          drawBorder: false
-                      }
-                  },
-                  y: {
-                      ticks: {
-                          color: textColorSecondary
-                      },
-                      grid: {
-                          color: surfaceBorder,
-                          drawBorder: false
-                      }
-                  }
-              }
-          };
-          this.cd.markForCheck()
-      }
-  }
+                },
+                {
+                    type: 'bar',
+                    label: this.secondDataName,
+                    backgroundColor: '#DBCDE0',
+                    data: this.secondData
+                },
+                // {
+                //     type: 'bar',
+                //     label: 'Dataset 3',
+                //     backgroundColor: documentStyle.getPropertyValue('--p-orange-500'),
+                //     data: [41, 52, 24, 74, 23, 21, 32]
+                // }
+            ]
+        };
+
+        this.options = {
+            maintainAspectRatio: false,
+            aspectRatio:this.aspectRatio,
+            plugins: {
+                tooltip: {
+                    mode: 'index',
+                    intersect: false
+                },
+                legend: {
+                    labels: {
+                        color: textColor
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    stacked: true,
+                    ticks: {
+                        color: textColorSecondary
+                    },
+                    grid: {
+                        color: surfaceBorder,
+                        drawBorder: false
+                    }
+                },
+                y: {
+                    stacked: true,
+                    ticks: {
+                        color: textColorSecondary
+                    },
+                    grid: {
+                        color: surfaceBorder,
+                        drawBorder: false
+                    }
+                }
+            }
+        };
+        this.cd.markForCheck()
+    }
+}
 }

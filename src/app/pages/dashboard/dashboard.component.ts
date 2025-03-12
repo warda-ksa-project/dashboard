@@ -42,6 +42,8 @@ export class DashboardComponent {
     apiService=inject(ApiService)
     role:any=''
     RolesEnum=Roles
+    allMonthSales:any[]=[]
+    allTargetMonth:number[]=[]
     columnsSmallTable: IcolHeaderSmallTable[] = [];
     bredCrumb: IBreadcrumb = {
       crumbs: [],
@@ -56,7 +58,8 @@ export class DashboardComponent {
       enName: '',
       arName: '',
     };
-   
+    labels:any=[]
+
     tableActions: ITableAction[] = [
       {
         name: EAction.delete,
@@ -142,22 +145,45 @@ export class DashboardComponent {
     this.getBreadCrumb();
     this.getStaticData();
     this.getRoles();
-    this.getAllSalesOrderDashboardStatistics()
+    this.getAllSalesOrderDashboardStatistics();
+    this.getAllSalesPerMonth()
     this.selectedLang = this.languageService.translationService.currentLang;
+    this.labels=[
+      this.selectedLang=='en'?'January':'يناير',
+      this.selectedLang=='en'? 'February':'فبراير', 
+      this.selectedLang=='en'? 'March':'مارس', 
+       this.selectedLang=='en'?'April':'ابريل', 
+       this.selectedLang=='en'?'May':'مايو', 
+       this.selectedLang=='en'?'June':'يونيو', 
+       this.selectedLang=='en'?'July':'يوليو',
+       this.selectedLang=='en'?'August':'اغسطس',
+       this.selectedLang=='en'?'September':'سبتمبر',
+       this.selectedLang=='en'?'October':'اكتوبر',
+       this.selectedLang=='en'?'November':'نوفمبر',
+       this.selectedLang=='en'?'December':'ديسمبر']
+
     this.displayTableCols(this.selectedLang);
     this.languageService.translationService.onLangChange.subscribe(() => {
       this.selectedLang = this.languageService.translationService.currentLang;
-      this.displayTableCols(this.selectedLang);
-      this.getBreadCrumb();
-      this.getStaticData();
-      this.getRoles();
-      this.getAllSalesOrderDashboardStatistics()
+      // this.displayTableCols(this.selectedLang);
+      // this.getBreadCrumb();
+      // this.getStaticData();
+      // this.getRoles();
+      // this.getAllSalesOrderDashboardStatistics()
+      // this.getAllSalesPerMonth()
 
     });
     // this.getDashboardDetails();
   }
 
-
+  getAllSalesPerMonth(){
+  
+  this.ApiService.get('DashboardTrader/GetAllSalesPerMonth').subscribe((res: any) => {
+    //  this.allMonthSales=Object.values(res).sort((a:any, b:any) => a - b);
+    this.allMonthSales=Object.values(res).sort((a:any, b:any) => a - b);
+    this.allTargetMonth=[5,10,15,20,30,40,50,60,70,80,90,100]
+  })
+}
   // items: any[] = [
   //   { name: 'dashboard.client', value: 0, img: 'assets/images/dashboard/client.png', route: '/clients', id: 'clientCount' },
   //   { name: 'dashboard.technical', value: 0, img: 'assets/images/dashboard/technical-support.png', route: '/technicals', id: 'technicalCount' },
@@ -196,11 +222,11 @@ export class DashboardComponent {
   }
 
 
-  getDashboardDetails() {
-    this.ApiService.get('Dashborad/GetAll').subscribe((res: any) => {
-      this.updateItemsWithData(res.data);
-    })
-  }
+  // getDashboardDetails() {
+  //   this.ApiService.get('Dashborad/GetAll').subscribe((res: any) => {
+  //     this.updateItemsWithData(res.data);
+  //   })
+  // }
 
   getStaticData() {
     this.ApiService.get('DashboardTrader/GetAllTraderDashboardStatistics').subscribe((res: any) => {

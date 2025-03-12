@@ -24,7 +24,7 @@ export class EditorComponent implements OnChanges {
   }
 
   ngOnChanges(){
-    console.log("InputTextComponent  control:", this.control)
+    // console.log("InputTextComponent  control:", this.control)
 
   }
 }

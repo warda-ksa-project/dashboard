@@ -10,6 +10,7 @@
   "totalPrice":"Total Price",
   "Action": "Action",
   "Actions": "Actions",
+  "no_image":"No Image Found",
   "validation_message": {
     "minlength_validation": "length should be more than",
     "maxlength_validation": "length should be more less than",
