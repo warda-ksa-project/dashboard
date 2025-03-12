@@ -8,6 +8,11 @@
   --main-text-color: redF2F3E;
 }
 
+@font-face {
+    font-family: 'tajawal';
+    src: url('assets/fonts/tajawal/Tajawal-Regular.ttf') format('ttf'),
+       
+}
 .toast-success {
   width: 400px !important;
   background-color: #F1FDF5 !important;
@@ -71,7 +76,7 @@ body {
   background: #F2F3F5;
 
   &:lang(ar) {
-    font-family: 'Bahij', sans-serif;
+    font-family: 'tajawal', sans-serif;
   }
 
   p,

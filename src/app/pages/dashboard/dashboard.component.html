@@ -15,33 +15,60 @@
   <!-- <ng-container *ngIf="'admin'"></ng-container> -->
 <ng-container *ngIf="role==RolesEnum.trader">
   <div class="page-trader-container mt-4">
-    <div class="card-container d-flex justify-content-start flex-wrap">
-      <div *ngFor="let item of items">
-        <div class="card">
-          <div class="item-header">
-            <span class="icon" [class]="item.icon"></span>
-            <span class="color-gray title">{{selectedLang=='en'? item.titleEn: item.titleAr }}</span>
-          </div>
-          <div class="item-content text-center">
-            <div class="price">
-              <span class="bold fz-20">{{ item.price }} </span
-              ><span class="color-gray"> {{selectedLang=='en'? item.type:item.typeAr }}</span>
+     <div class="d-flex justify-content-between flex-wrap">
+      <div class="card-container d-flex justify-content-start flex-wrap">
+        <div *ngFor="let item of items">
+          <div class="card">
+            <div class="item-header">
+              <span class="icon" [class]="item.icon"></span>
+              <span class="color-gray title">{{selectedLang=='en'? item.titleEn: item.titleAr }}</span>
             </div>
-          </div>
-          <div class="item-footer">
-            <img
-              *ngIf="item.price < 20"
-              src="assets/images/arrow-down-circle.svg"
-            />
-            <img
-              *ngIf="item.price > 20"
-              src="assets/images/arrow-up-circle.svg"
-            />
-            <span> {{ item.status }}</span>
+            <div class="item-content text-center">
+              <div class="price">
+                <span class="bold fz-20">{{ item.price }} </span
+                ><span class="color-gray"> {{selectedLang=='en'? item.type:item.typeAr }}</span>
+              </div>
+            </div>
+            <!-- <div class="item-footer">
+              <img
+                *ngIf="item.price < 20"
+                src="assets/images/arrow-down-circle.svg"
+              />
+              <img
+                *ngIf="item.price > 20"
+                src="assets/images/arrow-up-circle.svg"
+              />
+              <span> {{ item.status }}</span>
+            </div> -->
           </div>
         </div>
       </div>
-    </div>
+      <div class="card-container d-flex justify-content-start flex-wrap">
+          <div class="card">
+            <div class="item-header">
+              <span class="icon" class="item.icon"></span>
+              <span class="color-gray title">{{'sales'|translate}}</span>
+            </div>
+            <div class="item-content text-center">
+              <div class="price">
+                <span class="bold fz-20">{{ staticDetails }} </span
+                ><span class="color-gray"> {{'SAR'|translate}}</span>
+              </div>
+            </div>
+            <!-- <div class="item-footer">
+              <img
+                *ngIf="item.price < 20"
+                src="assets/images/arrow-down-circle.svg"
+              />
+              <img
+                *ngIf="item.price > 20"
+                src="assets/images/arrow-up-circle.svg"
+              />
+              <span> {{ item.status }}</span>
+            </div> -->
+          </div>
+      </div>
+     </div>
 
     <div class="pop-products">
       <div class="details-container">

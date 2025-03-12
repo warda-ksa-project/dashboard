@@ -37,8 +37,10 @@ export class LoginComponent {
 
   constructor(private fb: FormBuilder,@Inject(DOCUMENT) private document: Document, private api: ApiService, private translate: TranslateService, private router: Router) {
     this.loginForm = this.fb.group({
-      mobile: ['565664343', [Validators.required]],
-      password: ['Admin@VL', [Validators.required]]
+      // mobile: ['565664343', [Validators.required]],
+      // password: ['Admin@VL', [Validators.required]],
+      mobile: ['0548397', [Validators.required]],
+      password: ['Pa$$w0rd', [Validators.required]]
     });
 
     this.translate.setDefaultLang('en');

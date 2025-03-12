@@ -73,34 +73,57 @@ export class DashboardComponent {
         autoCall: true,
       },
     ];
+//     completeOrdersCount
+// : 
+// 2
+// pendingOrdersCount
+// : 
+// 0
+// productCount
+// : 
+// 0
+// productPieceCount
+// : 
+// 1
+
   items:any=[
     {
-      titleAr:'عدد الطلبات',
-      titleEn:'Orders Count',
+      titleAr:'عدد الطلبات المكتملة',
+      titleEn:'Complete Orders Count',
       icon:'pi pi-database',
       price:'0',
       status:'60%',
       type:'order',
-       typeAr:'طلب'
+       typeAr:'طلب '
     },
     {
-      titleAr:' عدد المنتجات',
-      titleEn:'Products Count',
+      titleAr:' عدد الطلبات تحت الاجراء',
+      titleEn:'Pending Order Count',
       icon:'pi pi-shop',
+      price:'0',
+      status:'60%',
+      type:'order',
+      typeAr:'طلب  '
+    
+    },
+    {
+      titleAr:'عدد المنتجات  ',
+      titleEn:'Product Count',
+      icon:'pi pi-shopping-cart',
       price:'0',
       status:'60%',
       type:'product',
       typeAr:'منتج'
-    
+
     },
     {
-      titleAr:'عدد الفئات الفرعية',
-      titleEn:'SubCategories Count',
+      titleAr:'عدد  الطلبات بالقطعة',
+      titleEn:'Product Piece Count',
       icon:'pi pi-shopping-cart',
       price:'0',
       status:'60%',
-      type:'subCategory',
-      typeAr:'فئة فرعية'
+      type:'product',
+      typeAr:' منتج '
 
     }
     // , {
@@ -118,6 +141,7 @@ export class DashboardComponent {
     this.getBreadCrumb();
     this.getStaticData();
     this.getRoles();
+    this.getAllSalesOrderDashboardStatistics()
     this.selectedLang = this.languageService.translationService.currentLang;
     this.displayTableCols(this.selectedLang);
     this.languageService.translationService.onLangChange.subscribe(() => {
@@ -126,6 +150,8 @@ export class DashboardComponent {
       this.getBreadCrumb();
       this.getStaticData();
       this.getRoles();
+      this.getAllSalesOrderDashboardStatistics()
+
     });
     // this.getDashboardDetails();
   }
@@ -176,11 +202,25 @@ export class DashboardComponent {
   }
 
   getStaticData() {
-    this.ApiService.get('Dashboard/GetAllDashboardStatistics').subscribe((res: any) => {
-      this.staticDetails = res
-      this.items[0].price=res.ordersCount
-      this.items[1].price=res.productCount
-      this.items[2].price=res.subCategoryCount
+    this.ApiService.get('DashboardTrader/GetAllTraderDashboardStatistics').subscribe((res: any) => {
+      // this.staticDetails = res
+      this.items[0].price=res.completeOrdersCount
+      this.items[1].price=res.pendingOrdersCount
+      this.items[2].price=res.productCount
+      this.items[3].price=res.productPieceCount
+
+    })
+  }
+
+  getAllSalesOrderDashboardStatistics(){
+    
+    this.ApiService.get('DashboardTrader/GetAllSalesOrderDashboardStatistics').subscribe((res: any) => {
+       this.staticDetails = res
+      // this.items[0].price=res.completeOrdersCount
+      // this.items[1].price=res.pendingOrdersCount
+      // this.items[2].price=res.productCount
+      // this.items[3].price=res.productPieceCount
+
     })
   }
 

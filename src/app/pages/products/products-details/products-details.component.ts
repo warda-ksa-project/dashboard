@@ -21,6 +21,7 @@ import { StepperModule } from 'primeng/stepper';
 import { GalleryComponent } from '../../../components/gallery/gallery.component';
 import { environment } from '../../../../environments/environment';
 import { Validations } from '../../../validations';
+import { Roles } from '../../../conts';
 
 const global_PageName = 'products.pageName';
 const global_routeUrl = 'product'
@@ -149,7 +150,8 @@ export class ProductsDetailsComponent {
   };
 
   editMode: boolean = false;
-
+    apiService=inject(ApiService)
+    role:any=''
   get getID() {
     return this.route.snapshot.params['id']
   }
@@ -167,11 +169,11 @@ export class ProductsDetailsComponent {
 
     this.pageName.set(global_PageName)
     this.getBreadCrumb();
-    this.getAllCategory()
+    // this.getRoles();
     this.languageService.translationService.onLangChange.subscribe(() => {
       this.selectedLang = this.languageService.translationService.currentLang;
       this.getBreadCrumb();
-      this.getAllCategory()
+      this.getRoles();
     });
 
    this.form.get('startDate')?.valueChanges.subscribe((res:any) => {
@@ -223,6 +225,14 @@ export class ProductsDetailsComponent {
   isFirstDateAfter(start:any, end:any) {
     return new Date(start) > new Date(end);
 }
+
+getRoles(){
+  this.apiService.get('Auth/getRoles').subscribe((res:any)=>{
+  this.role=res.message
+  if(this.role)
+  this.getAllCategory()
+  })
+}
   tyepMode() {
     const url = this.router.url;
     let result = 'Add'
@@ -247,7 +257,7 @@ export class ProductsDetailsComponent {
   }
 
   getAllCategory(){
-    if(localStorage.getItem('role')=='Trader')
+    if(this.role==Roles.trader)
       this.getSubCategory()
     else
      this.getMainCategory()
