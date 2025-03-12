@@ -13,6 +13,7 @@ import { LanguageService } from '../../services/language.service';
 import { IBreadcrumb } from '../../components/breadcrump/cerqel-breadcrumb.interface';
 import { BreadcrumpComponent } from '../../components/breadcrump/breadcrump.component';
 import { Roles } from '../../conts';
+import { ChartComponent } from "../../components/chart/chart.component";
 
 const global_pageName = 'products.pageName';
 const global_router_add_url_in_Table = '/product/add';
@@ -22,7 +23,7 @@ const global_API_getAll = 'product' + '/GetAllWithPagination';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [NgFor, RouterModule,PaginationComponent, NgIf,TableSmallScreenComponent, TranslatePipe, TableComponent,DrawerComponent, Knob ,FormsModule],
+  imports: [NgFor, RouterModule, PaginationComponent,ChartComponent, NgIf, TableSmallScreenComponent, TranslatePipe, TableComponent, DrawerComponent, Knob, FormsModule, ChartComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })

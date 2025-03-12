@@ -13,23 +13,27 @@
   </div>
 
   <!-- <ng-container *ngIf="'admin'"></ng-container> -->
-<ng-container *ngIf="role==RolesEnum.trader">
-  <div class="page-trader-container mt-4">
-     <div class="d-flex justify-content-between flex-wrap">
-      <div class="card-container d-flex justify-content-start flex-wrap">
-        <div *ngFor="let item of items">
-          <div class="card">
-            <div class="item-header">
-              <span class="icon" [class]="item.icon"></span>
-              <span class="color-gray title">{{selectedLang=='en'? item.titleEn: item.titleAr }}</span>
-            </div>
-            <div class="item-content text-center">
-              <div class="price">
-                <span class="bold fz-20">{{ item.price }} </span
-                ><span class="color-gray"> {{selectedLang=='en'? item.type:item.typeAr }}</span>
+  <ng-container *ngIf="role == RolesEnum.trader">
+    <div class="page-trader-container mt-4">
+      <div class="d-flex justify-content-between flex-wrap">
+        <div class="card-container d-flex justify-content-start flex-wrap">
+          <div *ngFor="let item of items">
+            <div class="card">
+              <div class="item-header">
+                <span class="icon" [class]="item.icon"></span>
+                <span class="color-gray title">{{
+                  selectedLang == "en" ? item.titleEn : item.titleAr
+                }}</span>
               </div>
-            </div>
-            <!-- <div class="item-footer">
+              <div class="item-content text-center">
+                <div class="price">
+                  <span class="bold fz-20">{{ item.price }} </span
+                  ><span class="color-gray">
+                    {{ selectedLang == "en" ? item.type : item.typeAr }}</span
+                  >
+                </div>
+              </div>
+              <div class="item-footer">
               <img
                 *ngIf="item.price < 20"
                 src="assets/images/arrow-down-circle.svg"
@@ -39,76 +43,71 @@
                 src="assets/images/arrow-up-circle.svg"
               />
               <span> {{ item.status }}</span>
-            </div> -->
+            </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-container">
+          <div class="card">
+            <div class="item-header d-flex justify-content-between">
+            <div>
+              <span class="icon" class="pi pi-home"></span>
+              <span class="color-gray title">{{ "sales" | translate }}</span>
+            </div>
+              <div class="price">
+                <span class="bold fz-20">
+                  {{ staticDetails }}
+                </span>
+                <span class="color-gray"> {{ "SAR" | translate }}</span>
+              </div>
+            </div>
+            <div class="item-content">
+              <div class="chart mt-3">
+                <app-chart></app-chart>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="card-container d-flex justify-content-start flex-wrap">
-          <div class="card">
-            <div class="item-header">
-              <span class="icon" class="item.icon"></span>
-              <span class="color-gray title">{{'sales'|translate}}</span>
-            </div>
-            <div class="item-content text-center">
-              <div class="price">
-                <span class="bold fz-20">{{ staticDetails }} </span
-                ><span class="color-gray"> {{'SAR'|translate}}</span>
-              </div>
-            </div>
-            <!-- <div class="item-footer">
-              <img
-                *ngIf="item.price < 20"
-                src="assets/images/arrow-down-circle.svg"
-              />
-              <img
-                *ngIf="item.price > 20"
-                src="assets/images/arrow-up-circle.svg"
-              />
-              <span> {{ item.status }}</span>
-            </div> -->
-          </div>
-      </div>
-     </div>
 
-    <div class="pop-products">
-      <div class="details-container">
-        <div class="d-flex justify-content-between">
-         
-          <h2 class="prod">
-            <span class="pi pi-shopping-cart"></span>
-            {{ "Products" | translate }}
-          </h2>
-          <span class="pi pi-filter pointer p-1" (click)="openFilter()"> </span>
+      <div class="pop-products">
+        <div class="details-container">
+          <div class="d-flex justify-content-between">
+            <h2 class="prod">
+              <span class="pi pi-shopping-cart"></span>
+              {{ "Products" | translate }}
+            </h2>
+            <span class="pi pi-filter pointer p-1" (click)="openFilter()">
+            </span>
+          </div>
+          <div class="table-view">
+            <app-table
+              [colsHeader]="columns"
+              [records]="dataList"
+              [showrecordIndex]="true"
+              [actions]="tableActions"
+            ></app-table>
+          </div>
+          <div class="responsive-accordions" *ngIf="false">
+            <app-table-small-screen
+              [colsHeaderSmallTable]="columnsSmallTable"
+              [records]="dataList"
+              [actions]="tableActions"
+            >
+            </app-table-small-screen>
+          </div>
+          <app-pagination
+            (onPageChange)="onPageChange($event)"
+            [totalCount]="totalCount"
+          ></app-pagination>
         </div>
-        <div class="table-view">
-          <app-table
-            [colsHeader]="columns"
-            [records]="dataList"
-            [showrecordIndex]="true"
-            [actions]="tableActions"
-          ></app-table>
-        </div>
-        <div class="responsive-accordions" *ngIf="false">
-          <app-table-small-screen
-            [colsHeaderSmallTable]="columnsSmallTable"
-            [records]="dataList"
-            [actions]="tableActions"
-          >
-          </app-table-small-screen>
-        </div>
-        <app-pagination
-          (onPageChange)="onPageChange($event)"
-          [totalCount]="totalCount"
-        ></app-pagination>
       </div>
     </div>
- 
-  </div>
-</ng-container>
- 
+  </ng-container>
 </div>
 
-<app-drawer *ngIf="role==RolesEnum.trader"
+<app-drawer
+  *ngIf="role == RolesEnum.trader"
   [visible]="showFilter"
   header="{{ pageName() }}_{{ 'filter' }}"
   (onClose)="onCloseFilter($event)"
