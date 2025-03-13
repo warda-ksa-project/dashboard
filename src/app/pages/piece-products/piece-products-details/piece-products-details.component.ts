@@ -108,14 +108,14 @@ export class PieceProductsDetailsComponent {
     }),
     image: new FormControl<any>([]),
     id: new FormControl(this.getID | 0),
-    startDate:new FormControl('',
+    startDate:new FormControl<any>('',
       {
         validators: [
           Validators.required,
         ]
       }
     ),
-    endDate:new FormControl('',{
+    endDate:new FormControl <any>('',{
       validators: [
         Validators.required
       ]
@@ -313,6 +313,20 @@ export class PieceProductsDetailsComponent {
         image: x
       })
     }
+   if(this.form.value.startDate){
+    const start_year = this.form.value.startDate.getFullYear();
+    const start_month = this.form.value.startDate.getMonth();
+    const start_day = this.form.value.startDate.getDate();
+    const start_date  = new Date(start_year, start_month, start_day, 12);
+    const end_year = this.form.value.endDate.getFullYear();
+    const end_month = this.form.value.endDate.getMonth();
+    const end_day = this.form.value.endDate.getDate();
+    const end_date  = new Date(end_year, end_month, end_day, 12);
+    this.form.patchValue({
+      startDate:start_date,
+      endDate:end_date
+    })
+   }
     const payload = {
       ...this.form.value,
       amount:+this.form.value.amount,
