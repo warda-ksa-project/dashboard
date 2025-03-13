@@ -29,6 +29,7 @@
           padding: 10px;
           background-color: #fff;
           transition: transform 0.3s ease, box-shadow 0.3s ease;
+          box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
           .item-header {
             display: flex;
             justify-items: center;
@@ -55,6 +56,10 @@
       .chart-container{
         width: 50%;
         min-width: 274px;
+        .card{
+          border: unset;
+          box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+        }
        .chart{
         padding: 10px;
 
@@ -67,6 +72,8 @@
       padding: 10px;
       border-radius: 8px;
       margin-top: 30px;
+      box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
       h2.prod{
         span{
           background: #8174a0;
