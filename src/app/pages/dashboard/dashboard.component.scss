@@ -1,3 +1,6 @@
+.showSmallTable{
+  display: none;
+}
 .fz-20 {
   font-size: 20px;
 }
@@ -51,7 +54,7 @@
       }
       .chart-container{
         width: 50%;
-        min-width: 350px;
+        min-width: 274px;
 
        .chart{
 
@@ -79,6 +82,33 @@
     }
   }
 }
+
+@media only screen and (max-width:990px) {
+  .card-container{
+    width: auto!important;
+  }
+  .chart-container{
+    width: 100%!important;
+    margin-top: 10px;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // .dashboard-container {
 //   h2 {
