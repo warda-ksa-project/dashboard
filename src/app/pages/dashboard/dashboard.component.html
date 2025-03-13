@@ -78,7 +78,7 @@
                 <span class="color-gray"> {{ "SAR" | translate }}</span>
               </div>
             </div> -->
-            <div class="item-content">
+            <div class="item-content" *ngIf="allMonthSales.length>0">
               <div class="chart mt-3">
                 <app-chart [labels]="this.labels" 
                 [firstData]="this.allMonthSales"
@@ -97,10 +97,10 @@
           <div class="d-flex justify-content-between">
             <h2 class="prod">
               <span class="pi pi-shopping-cart"></span>
-              {{ "Products" | translate }}
+              {{ "products.best.title" | translate }}
             </h2>
-            <span class="pi pi-filter pointer p-1" (click)="openFilter()">
-            </span>
+            <!-- <span class="pi pi-filter pointer p-1" (click)="openFilter()">
+            </span> -->
           </div>
           <div class="table-view">
             <app-table

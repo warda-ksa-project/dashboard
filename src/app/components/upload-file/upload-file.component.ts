@@ -1,5 +1,5 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component, forwardRef, Input } from '@angular/core';
+import { Component, forwardRef, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { FileUpload, UploadEvent } from 'primeng/fileupload';
@@ -18,19 +18,41 @@ import { FileUpload, UploadEvent } from 'primeng/fileupload';
     }
   ]
 })
-export class UploadFileComponent {
+export class UploadFileComponent implements OnChanges{
   uploadedFiles: any[] = [];
   imageBase64: string | null = null;
   @Input() isMulti: boolean = false;
   @Input()accept="image/*,video/*"
+  @Input()defaultImages:any
   onChange: (value: any | null) => void = () => { };
   onTouched: () => void = () => { };
   isDisabled = false;
 
-  constructor() { }
 
+
+  ngOnChanges(changes: any): void {
+    if (changes.defaultImages && changes.defaultImages.currentValue) {
+      // console.log("UploadFileComponent  ngOnChanges  changes:", changes.defaultImages.currentValue)
+
+    }
+  }
+
+  private setDefaultImages(images: any): void {
+    if (this.isMulti) {
+      this.uploadedFiles = Array.isArray(images) ? images : [];
+      this.onChange(this.uploadedFiles);
+    } else {
+      this.imageBase64 = typeof images === 'string' ? images : null;
+      this.onChange(this.imageBase64);
+    }
+  }
   onSelect(event: any): void {
     const files = event.currentFiles;
+    console.log("UploadFileComponent  onSelect  files:", files)
+   this.selectFile(files)
+  }
+
+  selectFile(files:any){
     if (files) {
       if (this.isMulti) {    
         const promises = files.map((file: File) => {
@@ -83,6 +105,9 @@ export class UploadFileComponent {
 
   writeValue(value: string | null): void {
     this.imageBase64 = value;
+    console.log("UploadFileComponent  ****   this.imageBase64:",  this.imageBase64)
+    this.setDefaultImages(value);
+
   }
 
   registerOnChange(fn: (value: string | null) => void): void {

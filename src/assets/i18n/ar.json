@@ -211,7 +211,17 @@
       "priceAfterDiscount":"السعر بعد الخصم",
       "start":"تاريخ البدء",
       "end":"تاريخ الانتهاء"
-    }
+    },
+    "best": {
+      "title":"المنتجات الاكثر مبيعاَ",
+  "name": "اسم المنتج",
+  "catg": "اسم الفئة",
+  "revenue": "إجمالي الإيرادات",
+  "totalSold": "إجمالي المبيعات",
+  "isAvaliable": "متاح",
+  "lastOrderDate": "تاريخ آخر طلب",
+  "image": "صورة"
+}
   },
   "piece_products": {
     "pageName": "المنتجات القطعية",

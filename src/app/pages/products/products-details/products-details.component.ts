@@ -176,11 +176,11 @@ export class ProductsDetailsComponent {
       this.getRoles();
     });
 
-    // this.form.valueChanges.subscribe(res=>{
-    //   console.log("Pr-------------es:", res)
+    this.form.valueChanges.subscribe(res=>{
+      console.log("Pr-------------es:", res)
       
       
-    // })
+    })
    this.form.get('startDate')?.valueChanges.subscribe((res:any) => {
     if(this.isFirstDateAfter(res,this.form.get('endDate')?.value))
     this.form.get('endDate')?.setValue('')

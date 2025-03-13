@@ -212,6 +212,17 @@
       "priceAfterDiscount":"Price After Discount",
       "start":"Start Date",
       "end":"End Date"
+    },
+    "best":{
+      "title":"Best Selling Products",
+      "name":"Product Name",
+      "catg":"Category Name",
+      "revenue":"Total Revenue",
+      "totalSold":"Total Solid",
+      "isAvaliable":"Is Available",
+      "lastOrderDate":"LasTOrder Date",
+      "image":"Image"
+
     }
   },
   "piece_products": {

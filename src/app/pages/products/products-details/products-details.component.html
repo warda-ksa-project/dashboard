@@ -96,6 +96,7 @@
                       }}</label>
                       <app-upload-file
                         [isMulti]="true"
+                        [defaultImages]="form.value.image"
                         formControlName="image"
                       ></app-upload-file>
                       <!-- <div *ngIf="isRequiredError" class="error-message mt-2">

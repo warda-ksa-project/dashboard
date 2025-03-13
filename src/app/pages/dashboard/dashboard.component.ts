@@ -19,7 +19,8 @@ const global_pageName = 'products.pageName';
 const global_router_add_url_in_Table = '/product/add';
 const global_router_view_url = '/product/view';
 const global_router_edit_url = '/product/edit';
-const global_API_getAll = 'product' + '/GetAllWithPagination';
+const global_API_getAll = 'Product/BestSellerReport?count=10';
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -61,21 +62,21 @@ export class DashboardComponent {
     labels:any=[]
 
     tableActions: ITableAction[] = [
-      {
-        name: EAction.delete,
-        apiName_or_route: 'product/Delete?id',
-        autoCall: true,
-      },
-      {
-        name: EAction.view,
-        apiName_or_route: global_router_view_url,
-        autoCall: true,
-      },
-      {
-        name: EAction.edit,
-        apiName_or_route: global_router_edit_url,
-        autoCall: true,
-      },
+      // {
+      //   name: EAction.delete,
+      //   apiName_or_route: 'product/Delete?id',
+      //   autoCall: true,
+      // },
+      // {
+      //   name: EAction.view,
+      //   apiName_or_route: global_router_view_url,
+      //   autoCall: true,
+      // },
+      // {
+      //   name: EAction.edit,
+      //   apiName_or_route: global_router_edit_url,
+      //   autoCall: true,
+      // },
     ];
 //     completeOrdersCount
 // : 
@@ -161,9 +162,10 @@ export class DashboardComponent {
        this.selectedLang=='en'?'November':'نوفمبر',
        this.selectedLang=='en'?'December':'ديسمبر']
 
-    this.displayTableCols(this.selectedLang);
     this.languageService.translationService.onLangChange.subscribe(() => {
       this.selectedLang = this.languageService.translationService.currentLang;
+      this.displayTableCols(this.selectedLang);
+
       // this.displayTableCols(this.selectedLang);
       // this.getBreadCrumb();
       // this.getStaticData();
@@ -180,6 +182,7 @@ export class DashboardComponent {
   this.ApiService.get('DashboardTrader/GetAllSalesPerMonth').subscribe((res: any) => {
     //  this.allMonthSales=Object.values(res).sort((a:any, b:any) => a - b);
     this.allMonthSales=Object.values(res).sort((a:any, b:any) => a - b);
+    console.log("DashboardComponent  this.ApiService.get   this.allMonthSales:",  this.allMonthSales)
     this.allTargetMonth=[5,10,15,20,30,40,50,60,70,80,90,100]
   })
 }
@@ -262,49 +265,98 @@ export class DashboardComponent {
  displayTableCols(currentLang: string) {
     this.columns = [
       {
-        keyName: 'id',
+        keyName: 'productId',
         header: this.languageService.translate('Id'),
         type: EType.id,
         show: true,
       },
       {
-        keyName: 'enName',
-        header: this.languageService.translate('sub_category.form.enName'),
+        keyName: 'image',
+        header: this.languageService.translate('products.best.image'),
+        type: EType.image,
+        show: true,
+      },
+      {
+        keyName: this.selectedLang=='en'?'enName':'arName',
+        header: this.languageService.translate('products.best.name'),
         type: EType.text,
         show: true,
       },
       {
-        keyName: 'arName',
-        header: this.languageService.translate('sub_category.form.arName'),
+        keyName:  this.selectedLang=='en'?'categoryEnName':'categoryArName',
+        header: this.languageService.translate('products.best.catg'),
         type: EType.text,
         show: true,
       },
       {
-        keyName: '',
-        header: this.languageService.translate('Action'),
-        type: EType.actions,
-        actions: this.tableActions,
+        keyName:  'revenue',
+        header: this.languageService.translate('products.best.revenue'),
+        type: EType.text,
         show: true,
       },
+      
+      {
+        keyName: 'totalSold',
+        header: this.languageService.translate('products.best.totalSold'),
+        type: EType.text,
+        show: true,
+      },
+      {
+        keyName: 'isAvaliable',
+        header: this.languageService.translate('products.best.isAvaliable'),
+        type: EType.text,
+        show: true,
+      },
+      {
+        keyName: 'lastOrderDate',
+        header: this.languageService.translate('products.best.lastOrderDate'),
+        type: EType.date,
+        show: true,
+      },
+    
     ];
     this.columnsSmallTable = [
       {
-        keyName: 'id',
+        keyName: 'productId',
         header: this.languageService.translate('Id'),
         type: EType.id,
         show: false,
       },
       {
-        keyName: 'enName',
-        header: this.languageService.translate('sub_category.form.enName'),
+        keyName: this.selectedLang=='en'?'enName':'arName',
+        header: this.languageService.translate('products.best.name'),
         type: EType.text,
         showAs: ETableShow.header,
       },
       {
-        keyName: 'arName',
-        header: this.languageService.translate('sub_category.form.arName'),
+        keyName: this.selectedLang=='en'?'categoryEnName':'categoryArName',
+        header: this.languageService.translate('products.best.catg'),
         type: EType.text,
-        showAs: ETableShow.header,
+        showAs: ETableShow.content,
+      },
+      {
+        keyName: 'revenue',
+        header: this.languageService.translate('products.best.revenue'),
+        type: EType.text,
+        showAs: ETableShow.content,
+      },
+      {
+        keyName: 'totalSold',
+        header: this.languageService.translate('products.best.totalSold'),
+        type: EType.text,
+        showAs: ETableShow.content,
+      },
+      {
+        keyName: 'isAvaliable',
+        header: this.languageService.translate('products.best.isAvaliable'),
+        type: EType.text,
+        showAs: ETableShow.content,
+      },
+      {
+        keyName: 'lastOrderDate',
+        header: this.languageService.translate('products.best.lastOrderDate'),
+        type: EType.date,
+        showAs: ETableShow.content,
       },
     ];
   }
@@ -318,13 +370,24 @@ export class DashboardComponent {
     this.showFilter = false;
   }
 
+  
+
   API_getAll() {
-      this.ApiService.post(global_API_getAll, this.objectSearch).subscribe(
+      // this.ApiService.post(global_API_getAll, this.objectSearch).subscribe(
+      //   (res: any) => {
+      //     if (res) {
+      //       this.dataList = res.data.dataList;
+      //       this.totalCount = res.data.totalCount;
+      //       this.filteredData = [...this.dataList];
+      //     }
+      //   }
+      // );
+        this.ApiService.get(global_API_getAll).subscribe(
         (res: any) => {
           if (res) {
-            this.dataList = res.data.dataList;
-            this.totalCount = res.data.totalCount;
-            this.filteredData = [...this.dataList];
+            this.dataList = res.data;
+            // this.totalCount = res.data.totalCount;
+            // this.filteredData = [...this.dataList];
           }
         }
       );

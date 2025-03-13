@@ -20,19 +20,8 @@ export class ChartComponent {
 @Input()secondDataName=''
   platformId = inject(PLATFORM_ID);
 
-  // configService = inject(AppConfigService);
-
-  // designerService = inject(DesignerService);
 
   constructor(private cd: ChangeDetectorRef) {}
-
-  // themeEffect = effect(() => {
-  //     if (this.configService.transitionComplete()) {
-  //         if (this.designerService.preset()) {
-  //             this.initChart();
-  //         }
-  //     }
-  // });
 
   ngOnInit() {
       this.initChart();
@@ -109,5 +98,8 @@ export class ChartComponent {
         };
         this.cd.markForCheck()
     }
+    console.log('ggg',this.firstData)
+    console.log('ggg',this.secondData)
+
 }
 }
