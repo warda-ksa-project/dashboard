@@ -10,6 +10,7 @@
   "totalPrice":"اجمالي السعر",
   "Actions": "الإجراءات",
   "no_image":"لا يوجد صور",
+  "select":"اختر",
   "validation_message": {
     "minlength_validation": "يجب أن يكون الطول أكثر من",
     "maxlength_validation": "يجب أن يكون الطول أقل من",

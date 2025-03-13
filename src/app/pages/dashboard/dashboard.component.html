@@ -16,8 +16,8 @@
   <ng-container *ngIf="role == RolesEnum.trader">
     <div class="page-trader-container mt-4">
       <div class="header">
-        <div class="card-container d-flex justify-content-start flex-wrap">
-          <div class="card">
+        <div class="card-container d-flex justify-content-between flex-wrap">
+          <div class="card w-100">
             <div class="item-header">
               <span class="icon pi pi-home"></span>
               <span class="color-gray title">
@@ -33,38 +33,40 @@
             </div>
            
           </div>
-          <div *ngFor="let item of items">
-            <div class="card">
-              <div class="item-header">
-                <span class="icon" [class]="item.icon"></span>
-                <span class="color-gray title">{{
-                  selectedLang == "en" ? item.titleEn : item.titleAr
-                }}</span>
-              </div>
-              <div class="item-content text-center">
-                <div class="price">
-                  <span class="bold fz-20">{{ item.price }} </span
-                  ><span class="color-gray">
-                    {{ selectedLang == "en" ? item.type : item.typeAr }}</span
-                  >
+          <div class="d-flex justify-content-between flex-wrap">
+            <div class="flex-grow-1" *ngFor="let item of items">
+              <div class="card">
+                <div class="item-header">
+                  <span class="icon" [class]="item.icon"></span>
+                  <span class="color-gray title">{{
+                    selectedLang == "en" ? item.titleEn : item.titleAr
+                  }}</span>
                 </div>
+                <div class="item-content text-center">
+                  <div class="price">
+                    <span class="bold fz-20">{{ item.price }} </span
+                    ><span class="color-gray">
+                      {{ selectedLang == "en" ? item.type : item.typeAr }}</span
+                    >
+                  </div>
+                </div>
+                <div class="item-footer">
+                <img
+                  *ngIf="item.price < 20"
+                  src="assets/images/arrow-down-circle.svg"
+                />
+                <img
+                  *ngIf="item.price > 20"
+                  src="assets/images/arrow-up-circle.svg"
+                />
+                <span> {{ item.status }}</span>
               </div>
-              <div class="item-footer">
-              <img
-                *ngIf="item.price < 20"
-                src="assets/images/arrow-down-circle.svg"
-              />
-              <img
-                *ngIf="item.price > 20"
-                src="assets/images/arrow-up-circle.svg"
-              />
-              <span> {{ item.status }}</span>
-            </div>
+              </div>
             </div>
           </div>
          
         </div>
-        <div class="chart-container">
+        <div class="chart-container mt-2">
           <div class="card">
             <!-- <div class="item-header d-flex justify-content-between">
             <div>
@@ -79,7 +81,7 @@
               </div>
             </div> -->
             <div class="item-content" *ngIf="allMonthSales.length>0">
-              <div class="chart mt-3">
+              <div class="chart">
                 <app-chart [labels]="this.labels" 
                 [firstData]="this.allMonthSales"
                  [secondData]="allTargetMonth" 
@@ -99,10 +101,11 @@
               <span class="pi pi-shopping-cart"></span>
               {{ "products.best.title" | translate }}
             </h2>
+            <app-select [list]="pageinationList" placeholder="{{'select'|translate}}" (onSelectedValue)="onPageSelected($event)" optionLabel="optionLabel" ></app-select>
             <!-- <span class="pi pi-filter pointer p-1" (click)="openFilter()">
             </span> -->
           </div>
-          <div class="table-view">
+          <div class="table-view"*ngIf="dataList.length>0">
             <app-table
               [colsHeader]="columns"
               [records]="dataList"
@@ -110,7 +113,7 @@
               [actions]="tableActions"
             ></app-table>
           </div>
-          <div class="responsive-accordions showSmallTable">
+          <div *ngIf="dataList.length>0" class="responsive-accordions showSmallTable">
             <app-table-small-screen
               [colsHeaderSmallTable]="columnsSmallTable"
               [records]="dataList"
@@ -118,17 +121,17 @@
             >
             </app-table-small-screen>
           </div>
-          <app-pagination
+          <!-- <app-pagination
             (onPageChange)="onPageChange($event)"
             [totalCount]="totalCount"
-          ></app-pagination>
+          ></app-pagination> -->
         </div>
       </div>
     </div>
   </ng-container>
 </div>
 
-<app-drawer
+<!-- <app-drawer
   *ngIf="role == RolesEnum.trader"
   [visible]="showFilter"
   header="{{ pageName() }}_{{ 'filter' }}"
@@ -141,7 +144,6 @@
     class="h-100 search-form d-flex"
   >
     <div class="form-content">
-      <!-- Full Name -->
       <div class="form-group mb-3">
         <label class="mb-1" for="enTitle">{{
           "products.form.enName" | translate
@@ -158,7 +160,6 @@
         />
       </div>
 
-      <!-- Username -->
       <div class="form-group mb-3">
         <label class="mb-1" for="arTitle">{{
           "products.form.arName" | translate
@@ -189,7 +190,7 @@
       </button>
     </div>
   </form>
-</app-drawer>
+</app-drawer> -->
 
 
 

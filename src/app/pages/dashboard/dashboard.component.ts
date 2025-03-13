@@ -14,17 +14,17 @@ import { IBreadcrumb } from '../../components/breadcrump/cerqel-breadcrumb.inter
 import { BreadcrumpComponent } from '../../components/breadcrump/breadcrump.component';
 import { Roles } from '../../conts';
 import { ChartComponent } from "../../components/chart/chart.component";
+import { SelectComponent } from '../../components/select/select.component';
 
 const global_pageName = 'products.pageName';
 const global_router_add_url_in_Table = '/product/add';
 const global_router_view_url = '/product/view';
 const global_router_edit_url = '/product/edit';
-const global_API_getAll = 'Product/BestSellerReport?count=10';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [NgFor, RouterModule, PaginationComponent,ChartComponent, NgIf, TableSmallScreenComponent, TranslatePipe, TableComponent, DrawerComponent, Knob, FormsModule, ChartComponent],
+  imports: [NgFor, RouterModule, SelectComponent,PaginationComponent,ChartComponent, NgIf, TableSmallScreenComponent, TranslatePipe, TableComponent, DrawerComponent, Knob, FormsModule, ChartComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
@@ -90,7 +90,25 @@ export class DashboardComponent {
 // productPieceCount
 // : 
 // 1
-
+selectedPaginationValue=10
+pageinationList:any[]=[
+  {
+    name:10,
+    code:10
+  },
+  {
+    name:20,
+    code:20
+  },
+  {
+    name:30,
+    code:30
+  },
+  {
+    name:40,
+    code:40
+  }
+]
   items:any=[
     {
       titleAr:'عدد الطلبات المكتملة',
@@ -142,7 +160,7 @@ export class DashboardComponent {
   ]
   ngOnInit(): void {
     this.pageName.set(global_pageName);
-    this.API_getAll();
+    this.API_getAll(10);
     this.getBreadCrumb();
     this.getRoles();
   
@@ -161,6 +179,7 @@ export class DashboardComponent {
        this.selectedLang=='en'?'October':'اكتوبر',
        this.selectedLang=='en'?'November':'نوفمبر',
        this.selectedLang=='en'?'December':'ديسمبر']
+       this.displayTableCols(this.selectedLang);
 
     this.languageService.translationService.onLangChange.subscribe(() => {
       this.selectedLang = this.languageService.translationService.currentLang;
@@ -185,6 +204,10 @@ export class DashboardComponent {
     console.log("DashboardComponent  this.ApiService.get   this.allMonthSales:",  this.allMonthSales)
     this.allTargetMonth=[1000,2000,3000,6000,4000,3000,6000,8000,3000,2000,1000,5000]
   })
+}
+
+onPageSelected(number:any){
+  this.API_getAll(number)
 }
   // items: any[] = [
   //   { name: 'dashboard.client', value: 0, img: 'assets/images/dashboard/client.png', route: '/clients', id: 'clientCount' },
@@ -372,7 +395,7 @@ export class DashboardComponent {
 
   
 
-  API_getAll() {
+  API_getAll(pageNumber:any) {
       // this.ApiService.post(global_API_getAll, this.objectSearch).subscribe(
       //   (res: any) => {
       //     if (res) {
@@ -382,7 +405,7 @@ export class DashboardComponent {
       //     }
       //   }
       // );
-        this.ApiService.get(global_API_getAll).subscribe(
+        this.ApiService.get(`Product/BestSellerReport?count=${pageNumber}`).subscribe(
         (res: any) => {
           if (res) {
             this.dataList = res.data;
@@ -403,10 +426,10 @@ export class DashboardComponent {
       }
       })
     }
-    onPageChange(event: any) {
-      this.objectSearch.pageNumber = event;
-      this.API_getAll();
-    }
+    // onPageChange(event: any) {
+    //   this.objectSearch.pageNumber = event;
+    //   this.API_getAll();
+    // }
   
     filterData() {
       this.dataList = this.filteredData;
@@ -426,9 +449,9 @@ export class DashboardComponent {
       );
     }
   
-    onSubmitFilter() {
-      this.API_getAll();
-    }
+    // onSubmitFilter() {
+    //   this.API_getAll();
+    // }
   
     reset() {
       this.objectSearch = {
@@ -439,7 +462,7 @@ export class DashboardComponent {
         enName: '',
         arName: '',
       };
-      this.API_getAll();
+      // this.API_getAll();
       this.showFilter = false;
     }
 }

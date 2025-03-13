@@ -11,6 +11,7 @@
   "Action": "Action",
   "Actions": "Actions",
   "no_image":"No Image Found",
+  "select":"Select",
   "validation_message": {
     "minlength_validation": "length should be more than",
     "maxlength_validation": "length should be more less than",

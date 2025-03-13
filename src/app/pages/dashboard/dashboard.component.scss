@@ -55,8 +55,8 @@
       .chart-container{
         width: 50%;
         min-width: 274px;
-
        .chart{
+        padding: 10px;
 
        }
       }
@@ -90,6 +90,9 @@
   .chart-container{
     width: 100%!important;
     margin-top: 10px;
+  }
+  .showSmallTable{
+    display: block!important;
   }
 }
 
