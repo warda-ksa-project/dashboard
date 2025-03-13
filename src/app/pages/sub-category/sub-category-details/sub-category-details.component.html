@@ -64,6 +64,7 @@
               </div>
             </div>
           </div>
+        <ng-container *ngIf="tyepMode()!='View'">
           <div class="upload-image-section mt-4 mb-4" *ngIf="!editMode">
             <label class="mb-2">{{ "shared.upload_img" | translate }}</label>
             <app-upload-file formControlName="image"></app-upload-file>
@@ -71,6 +72,7 @@
                   {{'shared.img_required'|translate}}
                 </div> -->
           </div>
+        </ng-container>
           <div class="edit-mode-section mt-2" *ngIf="editMode">
             <label class="mb-2">{{ "shared.uploaded_img" | translate }}</label>
             <app-edit-mode-image

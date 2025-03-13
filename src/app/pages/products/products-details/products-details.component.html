@@ -193,7 +193,7 @@
                         [disabled]="form.get('startDate')?.value == ''"
                         [minDate]="minEndDate"
                         [type]="'date'"
-                        [readOnly]="true"
+                        [readOnly]="tyepMode() == 'View'"
                         [disabled]="tyepMode() == 'View'"
                         [label]="'products.form.end'"
                         [control]="form.get('endDate')"
