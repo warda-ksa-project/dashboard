@@ -183,7 +183,7 @@ export class DashboardComponent {
     //  this.allMonthSales=Object.values(res).sort((a:any, b:any) => a - b);
     this.allMonthSales=Object.values(res).sort((a:any, b:any) => a - b);
     console.log("DashboardComponent  this.ApiService.get   this.allMonthSales:",  this.allMonthSales)
-    this.allTargetMonth=[5,10,15,20,30,40,50,60,70,80,90,100]
+    this.allTargetMonth=[1000,2000,3000,6000,4000,3000,6000,8000,3000,2000,1000,5000]
   })
 }
   // items: any[] = [
