@@ -4,45 +4,61 @@
 .color-gray {
   color: #b8b2b2;
 }
+
 .table-container {
   h2 {
     color: #7d7d7d;
     margin-bottom: 20px;
   }
   .page-trader-container {
-    .card-container {
-       width: 50%;
-      .card {
-        min-width: 250px;
-        border-radius: 15px;
-        min-height: 100px;
-        border: unset;
-        margin: 10px;
-        padding: 10px;
-        background-color: #fff;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        .item-header {
-          display: flex;
-          justify-items: center;
-          margin-bottom: 10px;
-          .title {
-            margin: 0px 5px;
+    .header{
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      .card-container {
+         width: 50%;
+        .card {
+          min-width: 240px;
+          border-radius: 15px;
+          min-height: 100px;
+          border: unset;
+          margin: 10px;
+          padding: 10px;
+          background-color: #fff;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+          .item-header {
+            display: flex;
+            justify-items: center;
+            margin-bottom: 10px;
+            .title {
+              margin: 0px 5px;
+            }
+            .icon {
+              background: #8174a0;
+              padding: 8px;
+              color: #fff;
+              border-radius: 50%;
+            }
           }
-          .icon {
-            background: #8174a0;
-            padding: 8px;
-            color: #fff;
-            border-radius: 50%;
+          .item-footer {
+            text-align: end;
+          }
+          &:hover {
+            transform: translateY(-10px);
           }
         }
-        .item-footer {
-          text-align: end;
-        }
-        &:hover {
-          transform: translateY(-10px);
-        }
+      
+      }
+      .chart-container{
+        width: 50%;
+        min-width: 350px;
+
+       .chart{
+
+       }
       }
     }
+   
     .pop-products {
       background-color: #fff;
       padding: 10px;
