@@ -143,10 +143,9 @@ export class DashboardComponent {
     this.pageName.set(global_pageName);
     this.API_getAll();
     this.getBreadCrumb();
-    this.getStaticData();
     this.getRoles();
-    this.getAllSalesOrderDashboardStatistics();
-    this.getAllSalesPerMonth()
+  
+
     this.selectedLang = this.languageService.translationService.currentLang;
     this.labels=[
       this.selectedLang=='en'?'January':'يناير',
@@ -334,6 +333,11 @@ export class DashboardComponent {
     getRoles(){
       this.apiService.get('Auth/getRoles').subscribe((res:any)=>{
       this.role=res.message
+      if(this.role==Roles.trader){
+        this.getAllSalesOrderDashboardStatistics();
+        this.getAllSalesPerMonth()
+        this.getStaticData();
+      }
       })
     }
     onPageChange(event: any) {
