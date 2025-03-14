@@ -80,13 +80,13 @@
                 <span class="color-gray"> {{ "SAR" | translate }}</span>
               </div>
             </div> -->
-            <div class="item-content" *ngIf="allMonthSales.length>0">
+            <div class="item-content" *ngIf="allTargetMonth.length>0">
               <div class="chart">
                 <app-chart [labels]="this.labels" 
                 [firstData]="this.allMonthSales"
                  [secondData]="allTargetMonth" 
-                 [firstDataNAme]="''"
-                 [secondDataName]="''"
+                 firstDataNAme="{{'dashboard.chart.firstDataName'|translate}}"
+                 secondDataName="{{'dashboard.chart.secondDataName'|translate}}"
                 ></app-chart>
               </div>
             </div>

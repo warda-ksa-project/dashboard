@@ -373,7 +373,12 @@
       "TOTAL_ORDERS_AMOUNT": "إجمالي قيمة الطلبات",
       "TOTAL_ORDERS_PER_DAY_AMOUNT": "إجمالي قيمة الطلبات اليومية",
       "TOTAL_ORDERS_PER_WEEK_AMOUNT": "إجمالي قيمة الطلبات الأسبوعية",
-      "TOTAL_ORDERS_PER_MONTH_AMOUNT": "إجمالي قيمة الطلبات الشهرية"
+      "TOTAL_ORDERS_PER_MONTH_AMOUNT": "إجمالي قيمة الطلبات الشهرية",
+      "chart":{
+        "firstDataName":"هدف السنة الحالية",
+        "secondDataName":"هدف السنة الماضية"
+      }
+   
     },
     "cancel_reason": {
       "pageName": "سبب الإلغاء",

@@ -197,14 +197,26 @@ pageinationList:any[]=[
   }
 
   getAllSalesPerMonth(){
-  
+
   this.ApiService.get('DashboardTrader/GetAllSalesPerMonth').subscribe((res: any) => {
     //  this.allMonthSales=Object.values(res).sort((a:any, b:any) => a - b);
     this.allMonthSales=Object.values(res).sort((a:any, b:any) => a - b);
-    console.log("DashboardComponent  this.ApiService.get   this.allMonthSales:",  this.allMonthSales)
-    this.allTargetMonth=[1000,2000,3000,6000,4000,3000,6000,8000,3000,2000,1000,5000]
+  this.getAllTargetAPI()
   })
 }
+
+getAllTargetAPI(){
+  this.ApiService.get('target/GetAll').subscribe((res: any) => {
+    console.log("DashboardComponent  this.ApiService.get  res:", res)
+    this.allTargetMonth= this.getTarget(res.data)   
+    console.log("DashboardComponent  this.ApiService.get      this.allTargetMonth:",     this.allTargetMonth)
+  })
+ 
+}
+getTarget(data:any){
+  return data.sort((a:any, b:any) => a.month - b.month).map((item:any) => item.target);
+}
+
 
 onPageSelected(number:any){
   this.API_getAll(number)

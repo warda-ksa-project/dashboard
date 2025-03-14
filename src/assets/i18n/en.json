@@ -375,7 +375,11 @@
     "TOTAL_ORDERS_AMOUNT": "Total Orders Amount",
     "TOTAL_ORDERS_PER_DAY_AMOUNT": "Total Orders per Day Amount",
     "TOTAL_ORDERS_PER_WEEK_AMOUNT": "Total Orders per Week Amount",
-    "TOTAL_ORDERS_PER_MONTH_AMOUNT": "Total Orders per Month Amount"
+    "TOTAL_ORDERS_PER_MONTH_AMOUNT": "Total Orders per Month Amount",
+    "chart":{
+      "firstDataName":"Target current year",
+      "secondDataName":"Target past year"
+    }
   },
   "cancel_reason": {
     "pageName": "Cancel Reason",
