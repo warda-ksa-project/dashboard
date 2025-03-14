@@ -63,7 +63,34 @@
                       [control]="form.get('arDescription')"
                     ></app-editor>
                   </div>
-                  <div
+          
+                </div>
+                <div class="d-flex mt-5 justify-content-end">
+                  <button
+                    class="btn btn-primary-bk"
+                    (click)="activateCallback(2); goToActivePage_2()"
+                  >
+                    {{ "actions.next" | translate }}
+                  </button>
+                </div>
+              </ng-template>
+            </p-step-panel>
+
+            <p-step-panel [value]="2">
+              <ng-template #content let-activateCallback="activateCallback">
+                <div class="row">
+                  <!-- <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
+                    <app-select
+                      [placeholder]="form.get('categoryId')?.value"
+                      class="w-100"
+                      [list]="categoryList"
+                      [label]="'piece_products.form.categoryId'"
+                      [control]="form.get('categoryId')"
+                    >
+                    </app-select>
+                  </div> -->
+                  <div class="row">
+                    <div
                     class="col-lg-6 col-md-6 col-sm-12 mt-3"
                     *ngIf="tyepMode() != 'Add'"
                   >
@@ -111,33 +138,9 @@
                       ></app-edit-mode-image>
                     </div>
                   </div>
-                </div>
-                <div class="d-flex mt-5 justify-content-end">
-                  <button
-                    class="btn btn-primary-bk"
-                    (click)="activateCallback(2); goToActivePage_2()"
-                  >
-                    {{ "actions.next" | translate }}
-                  </button>
-                </div>
-              </ng-template>
-            </p-step-panel>
-
-            <p-step-panel [value]="2">
-              <ng-template #content let-activateCallback="activateCallback">
-                <div class="row">
-                  <!-- <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
-                    <app-select
-                      [placeholder]="form.get('categoryId')?.value"
-                      class="w-100"
-                      [list]="categoryList"
-                      [label]="'piece_products.form.categoryId'"
-                      [control]="form.get('categoryId')"
-                    >
-                    </app-select>
-                  </div> -->
+                  </div>
                   <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-6 mt-5 pt-1">
+                    <div class="col-lg-6 col-md-6 col-sm-6 mt-3 pt-1">
                       <app-input-text
                         [readOnly]="tyepMode() == 'View'"
                         [disabled]="tyepMode() == 'View'"
@@ -145,7 +148,7 @@
                         [control]="form.get('price')"
                       ></app-input-text>
                     </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 mt-5 pt-1" *ngIf="tyepMode() != 'Add'">
+                    <div class="col-lg-6 col-md-6 col-sm-6 mt-3 pt-1" *ngIf="tyepMode() != 'Add'">
                       <app-input-text
                         [readOnly]="true"
                         [disabled]="true"
@@ -153,7 +156,7 @@
                         [control]="form.get('priceAfterDiscount')"
                       ></app-input-text>
                     </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 mt-5 pt-1">
+                    <div class="col-lg-6 col-md-6 col-sm-6 mt-3 pt-1">
                       <app-input-text
                         [readOnly]="tyepMode() == 'View'"
                         [disabled]="tyepMode() == 'View'"
