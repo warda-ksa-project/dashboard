@@ -120,7 +120,12 @@
     "contact": "CONTACT US",
     "about": "ABOUT US",
     "setting": "Settings",
-    "faqs": "FAQs"
+    "faqs": "FAQs",
+    "target":"Target"
+  },
+  "target":{
+    "pageName": "Target",
+    "pageName_Edit_crumb": "Edit Target"
   },
   "client": {
     "pageName": "Clients",

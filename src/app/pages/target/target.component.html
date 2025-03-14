@@ -1,0 +1,141 @@
+<div class="page-form-container container-fluid">
+  <div class="row">
+    <div class="page-details mb-3">
+      <div class="title">
+        <h2>
+          {{ tyepMode() | translate | titlecase }}
+          {{ pageName() | translate | titlecase }}
+        </h2>
+      </div>
+      <div class="breadcrumb">
+        <app-breadcrump [breadcrumbProps]="bredCrumb"></app-breadcrump>
+      </div>
+    </div>
+  </div>
+  <div class="form-container">
+    <div class="reactive-form">
+      <form [formGroup]="form" class="w-70" (ngSubmit)="onSubmit()" *ngIf="months.length>0">
+        <div class="row">
+            <ng-container *ngFor="let item of months;let i=index">
+                <div class="col-lg-6 col-md-6 col-sm-12 mt-2">
+                    <app-input-text
+                      [readOnly]="tyepMode() === 'View'"
+                      [disabled]="tyepMode() === 'View'"
+                      [label]="item.month"
+                      [control]="form.get(item?.control)"
+                    ></app-input-text>
+                  </div>
+            </ng-container>
+        
+          <!-- <div class="col-lg-6 col-md-6 col-sm-12 mt-2">
+            <app-input-text
+              [readOnly]="tyepMode() === 'View'"
+              [disabled]="tyepMode() === 'View'"
+              [label]="months[1]"
+              [control]="form.get('enName')"
+            ></app-input-text>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-12 mt-2">
+            <app-input-text
+              [readOnly]="tyepMode() === 'View'"
+              [disabled]="tyepMode() === 'View'"
+              [label]="months[2]"
+              [control]="form.get('enName')"
+            ></app-input-text>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-12 mt-2">
+            <app-input-text
+              [readOnly]="tyepMode() === 'View'"
+              [disabled]="tyepMode() === 'View'"
+              [label]="months[3]"
+              [control]="form.get('enName')"
+            ></app-input-text>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-12 mt-2">
+            <app-input-text
+              [readOnly]="tyepMode() === 'View'"
+              [disabled]="tyepMode() === 'View'"
+              [label]="months[4]"
+              [control]="form.get('enName')"
+            ></app-input-text>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-12 mt-2">
+            <app-input-text
+              [readOnly]="tyepMode() === 'View'"
+              [disabled]="tyepMode() === 'View'"
+              [label]="months[5]"
+              [control]="form.get('enName')"
+            ></app-input-text>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-12 mt-2">
+            <app-input-text
+              [readOnly]="tyepMode() === 'View'"
+              [disabled]="tyepMode() === 'View'"
+              [label]="months[6]"
+              [control]="form.get('enName')"
+            ></app-input-text>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-12 mt-2">
+            <app-input-text
+              [readOnly]="tyepMode() === 'View'"
+              [disabled]="tyepMode() === 'View'"
+              [label]="months[7]"
+              [control]="form.get('enName')"
+            ></app-input-text>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-12 mt-2">
+            <app-input-text
+              [readOnly]="tyepMode() === 'View'"
+              [disabled]="tyepMode() === 'View'"
+              [label]="months[8]"
+              [control]="form.get('enName')"
+            ></app-input-text>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-12 mt-2">
+            <app-input-text
+              [readOnly]="tyepMode() === 'View'"
+              [disabled]="tyepMode() === 'View'"
+              [label]="months[9]"
+              [control]="form.get('enName')"
+            ></app-input-text>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-12 mt-2">
+            <app-input-text
+              [readOnly]="tyepMode() === 'View'"
+              [disabled]="tyepMode() === 'View'"
+              [label]="months[10]"
+              [control]="form.get('enName')"
+            ></app-input-text>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-12 mt-2">
+            <app-input-text
+              [readOnly]="tyepMode() === 'View'"
+              [disabled]="tyepMode() === 'View'"
+              [label]="months[11]"
+              [control]="form.get('enName')"
+            ></app-input-text>
+          </div> -->
+
+          <div class="actions mt-5 text-center">
+            <button
+              type="submit"
+              class="submit-btn"
+              [disabled]="!form.valid"
+              *ngIf="tyepMode() !== 'View'"
+            >
+              <span *ngIf="tyepMode() == 'Add'">{{
+                "actions.add" | translate
+              }}</span>
+              <span *ngIf="tyepMode() == 'Edit'">{{
+                "actions.edit" | translate
+              }}</span>
+            </button>
+            <button type="button" class="cancel-btn" (click)="cancel()">
+              {{ "actions.cancel" | translate }}
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

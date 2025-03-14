@@ -74,6 +74,7 @@ import { PieceProductsTableComponent } from './pages/piece-products/piece-produc
 import { PieceProductsDetailsComponent } from './pages/piece-products/piece-products-details/piece-products-details.component';
 import { ArticleTableComponent } from './pages/article/article-table/article-table.component';
 import { ArticleDetailsComponent } from './pages/article/article-details/article-details.component';
+import { TargetComponent } from './pages/target/target.component';
 
 export const routes: Routes = [
   {
@@ -220,6 +221,9 @@ export const routes: Routes = [
       { path: 'cancel-reason/add', component: CancelReasonDetailsComponent },
       { path: 'cancel-reason/view/:id', component: CancelReasonDetailsComponent },
       { path: 'cancel-reason/edit/:id', component: CancelReasonDetailsComponent },
+
+      { path: 'target', component: TargetComponent },
+
 
       { path: 'complaint', component: ComplaintTableComponent },
       { path: 'complaint/add', component: ComplaintDetailsComponent },
