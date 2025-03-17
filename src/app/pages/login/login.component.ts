@@ -11,6 +11,7 @@ import { Router, RouterModule } from '@angular/router';
 import { OtpModalComponent } from '../../components/otp-modal/otp-modal.component';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../services/language.service';
+import { Roles } from '../../conts';
 
 @Component({
   selector: 'app-login',
@@ -37,10 +38,10 @@ export class LoginComponent {
 
   constructor(private fb: FormBuilder,@Inject(DOCUMENT) private document: Document, private api: ApiService, private translate: TranslateService, private router: Router) {
     this.loginForm = this.fb.group({
-      // mobile: ['565664343', [Validators.required]],
-      // password: ['Admin@VL', [Validators.required]],
-      mobile: ['0548397', [Validators.required]],
-      password: ['Pa$$w0rd', [Validators.required]]
+      mobile: ['565664343', [Validators.required]],
+      password: ['Admin@VL', [Validators.required]],
+      // mobile: ['0548397', [Validators.required]],
+      // password: ['Pa$$w0rd', [Validators.required]]
     });
 
     this.translate.setDefaultLang('en');
@@ -90,7 +91,11 @@ export class LoginComponent {
         localStorage.setItem('token', res.data.token);
         localStorage.setItem('userId',res.data.id)
         // localStorage.setItem('role',res.data.role)
-        this.router.navigate(['/dashboard']);
+        if(res.data.role==Roles.admin)
+        this.router.navigate(['/dashboard-admin']);
+      else
+      this.router.navigate(['/dashboard-trader']);
+
       }
     })
   }
