@@ -4,8 +4,8 @@ export enum Roles {
 }
 export const menuItems =
   [
-    { icon: 'pi pi-home', label: 'side_bar.dashboard', route: '/dashboard',type:[Roles.admin,Roles.trader] },
-    // { icon: 'pi pi-users', label: 'side_bar.category', route: '/category' },
+    { icon: 'pi pi-home', label: 'side_bar.dashboard', route: '/dashboard-admin',type:[Roles.admin] },
+    { icon: 'pi pi-home', label: 'side_bar.dashboard', route: '/dashboard-trader',type:[Roles.trader] },
     { icon: 'pi pi-truck', label: 'side_bar.main_category', route: '/main_category',type:[Roles.admin] },
     // { icon: 'pi pi-users', label: 'side_bar.category', route: '/category' },
     { icon: 'pi pi-hashtag', label: 'side_bar.sub_category', route: '/sub-category',type:[Roles.admin,Roles.trader]  },

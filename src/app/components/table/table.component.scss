@@ -135,7 +135,7 @@
   @include status(blue, #d7d7f2, #6f6fd5);
 }
 
-.cancel {
+.cancel ,.Canceled{
   @include status(red, #ffd1d1, #d59595);
 }
 

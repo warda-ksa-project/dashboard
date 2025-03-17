@@ -348,6 +348,17 @@
         "service_type": "الخدمات"
       }
     },
+    "dashboard_admin": {
+  "revenue": "إجمالي الإيرادات حسب المدن",
+  "users": "المستخدمون",
+  "total_users": "إجمالي المستخدمين",
+  "active_users": "المستخدمون النشطون",
+  "new_users": "المستخدمون الجدد",
+  "chart": {
+    "firstDataName": "الهدف للأسبوع الحالي",
+    "secondDataName": "الهدف للأسبوع الماضي"
+  }
+},
     "dashboard": {
       "pageName": "لوحة التحكم",
       "client": "عدد العملاء",

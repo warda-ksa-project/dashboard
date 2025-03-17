@@ -75,6 +75,7 @@ import { PieceProductsDetailsComponent } from './pages/piece-products/piece-prod
 import { ArticleTableComponent } from './pages/article/article-table/article-table.component';
 import { ArticleDetailsComponent } from './pages/article/article-details/article-details.component';
 import { TargetComponent } from './pages/target/target.component';
+import { DashboardAdminComponent } from './pages/dashboard-admin/dashboard-admin.component';
 
 export const routes: Routes = [
   {
@@ -96,7 +97,8 @@ export const routes: Routes = [
     component: HomeLayoutComponent,
     canActivate: [authGuard], // Applying authGuard to the home layout
     children: [
-      { path: 'dashboard', component: DashboardComponent },
+      { path: 'dashboard-trader', component: DashboardComponent },
+      { path: 'dashboard-admin', component: DashboardAdminComponent },
       { path: 'working_hours', component: WorkingHoursTableComponent },
       { path: 'working_hours/add', component: WorkingHoursDetailsComponent },
       { path: 'working_hours/edit/:id', component: WorkingHoursDetailsComponent },

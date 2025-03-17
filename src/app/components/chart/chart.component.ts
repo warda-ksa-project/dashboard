@@ -38,30 +38,27 @@ export class ChartComponent {
             labels: this.labels,
             datasets: [
                 {
-                    type: 'bar',
+                    type: this.type, // ✅ Use the input type dynamically
                     label: this.firstDataNAme,
                     backgroundColor: '#B49ABF',
+                    borderColor: '#B49ABF', // Needed for line charts
+                    fill: this.type === 'line' ? false : true, // Ensure line charts are not filled
                     data: this.firstData,
-
                 },
                 {
-                    type: 'bar',
+                    type: this.type, // ✅ Use the input type dynamically
                     label: this.secondDataName,
                     backgroundColor: '#DBCDE0',
+                    borderColor: '#DBCDE0',
+                    fill: this.type === 'line' ? false : true,
                     data: this.secondData
-                },
-                // {
-                //     type: 'bar',
-                //     label: 'Dataset 3',
-                //     backgroundColor: documentStyle.getPropertyValue('--p-orange-500'),
-                //     data: [41, 52, 24, 74, 23, 21, 32]
-                // }
+                }
             ]
         };
 
         this.options = {
             maintainAspectRatio: false,
-            aspectRatio:this.aspectRatio,
+            aspectRatio: this.aspectRatio,
             plugins: {
                 tooltip: {
                     mode: 'index',
@@ -75,7 +72,7 @@ export class ChartComponent {
             },
             scales: {
                 x: {
-                    stacked: true,
+                    stacked: this.type === 'bar', // Only stack bars, not lines
                     ticks: {
                         color: textColorSecondary
                     },
@@ -85,7 +82,7 @@ export class ChartComponent {
                     }
                 },
                 y: {
-                    stacked: true,
+                    stacked: this.type === 'bar',
                     ticks: {
                         color: textColorSecondary
                     },
@@ -96,10 +93,8 @@ export class ChartComponent {
                 }
             }
         };
-        this.cd.markForCheck()
-    }
-    console.log('ggg',this.firstData)
-    console.log('ggg',this.secondData)
 
+        this.cd.markForCheck();
+    }
 }
 }

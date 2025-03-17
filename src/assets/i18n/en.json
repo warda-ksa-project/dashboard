@@ -354,6 +354,17 @@
       "service_type": "Services"
     }
   },
+  "dashboard_admin":{
+    "revenue":"Total Revenue By Cities",
+    "users":"Users",
+    "total_users":"Total Users",
+    "active_users":"Active Users",
+    "new_users":"New Users",
+    "chart":{
+      "firstDataName":"Target current Week",
+      "secondDataName":"Target past week"
+    }
+  },
   "dashboard": {
     "pageName": "Dashboard",
     "client": "clients Count",
