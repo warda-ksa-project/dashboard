@@ -1,30 +1,13 @@
-import { NgFor, NgIf, TitleCasePipe } from '@angular/common';
+import { NgFor, NgIf, CurrencyPipe } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { RouterModule } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { Knob } from 'primeng/knob';
 import { FormsModule } from '@angular/forms';
-import {
-  EAction,
-  EType,
-  IcolHeader,
-  ITableAction,
-  TableComponent,
-} from '../../components/table/table.component';
-import { DrawerComponent } from '../../components/drawer/drawer.component';
-import {
-  ETableShow,
-  IcolHeaderSmallTable,
-  TableSmallScreenComponent,
-} from '../../components/table-small-screen/table-small-screen.component';
-import { PaginationComponent } from '../../components/pagination/pagination.component';
 import { LanguageService } from '../../services/language.service';
 import { IBreadcrumb } from '../../components/breadcrump/cerqel-breadcrumb.interface';
-import { BreadcrumpComponent } from '../../components/breadcrump/breadcrump.component';
 import { Roles } from '../../conts';
 import { ChartComponent } from '../../components/chart/chart.component';
-import { SelectComponent } from '../../components/select/select.component';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { CalendarModule } from 'primeng/calendar';
 
@@ -39,20 +22,16 @@ const global_router_edit_url = '/product/edit';
   imports: [
     NgFor,
     RouterModule,
-    SelectComponent,
-    PaginationComponent,
     ChartComponent,
     NgIf,
-    TableSmallScreenComponent,
     TranslatePipe,
-    TableComponent,
-    DrawerComponent,
-    Knob,
     ProgressBarModule,
     FormsModule,
     ChartComponent,
-    CalendarModule
+    CalendarModule,
+    CurrencyPipe
   ],
+  providers:[CurrencyPipe],
   templateUrl: './dashboard-admin.component.html',
   styleUrl: './dashboard-admin.component.scss',
 })
@@ -60,25 +39,20 @@ export class DashboardAdminComponent {
   global_router_add_url_in_Table = global_router_add_url_in_Table;
   pageName = signal<string>(global_pageName);
   private ApiService = inject(ApiService);
-  firstDateName=''
-  secondDateName=''
+  private currencyPipe = inject(CurrencyPipe);
+  firstDateName = ''
+  secondDateName = ''
   staticDetails: any;
   totalCount: number = 0;
-  dateRange:any=[new Date(),new Date()]
-  filteredData: any;
-  dataList: any = [];
-  columns: IcolHeader[] = [];
-  showFilter: boolean = false;
-  searchValue: any = '';
+  dateRange: any = [new Date(), new Date()]
   apiService = inject(ApiService);
   role: any = '';
   RolesEnum = Roles;
   allMonthSales: any[] = [];
-  allWeekSales:any;
+  allWeekSales: any;
   allTargetMonth: number[] = [];
   allTargetWeek: number[] = [];
 
-  columnsSmallTable: IcolHeaderSmallTable[] = [];
   bredCrumb: IBreadcrumb = {
     crumbs: [],
   };
@@ -96,8 +70,8 @@ export class DashboardAdminComponent {
 
   dataCardItems: any;
   selectedPaginationValue = 10;
-cityData:any[]=[]
-usersList:any
+  cityData: any[] = []
+  usersList: any
   items: any = [
     {
       titleAr: 'عدد الطلبات المكتملة',
@@ -174,7 +148,6 @@ usersList:any
   ];
   ngOnInit(): void {
     this.pageName.set(global_pageName);
-    // this.API_getAll(10);
     this.getBreadCrumb();
     this.getRoles();
 
@@ -196,22 +169,12 @@ usersList:any
 
     this.languageService.translationService.onLangChange.subscribe(() => {
       this.selectedLang = this.languageService.translationService.currentLang;
-      // this.getRoles();
-
-      // this.displayTableCols(this.selectedLang);
-      // this.getBreadCrumb();
-      // this.getStaticData();
-      // this.getRoles();
-      // this.getAllSalesOrderDashboardStatistics()
-      // this.getAllSalesPerMonth()
     });
-    // this.getDashboardDetails();
   }
 
   getAllSalesPerMonth() {
     this.ApiService.get('DashboardAdmin/GetAllSalesPerMonth').subscribe(
       (res: any) => {
-        //  this.allMonthSales=Object.values(res).sort((a:any, b:any) => a - b);
         this.allMonthSales = Object.values(res).sort((a: any, b: any) => a - b);
         this.getAllTargetAPI();
       }
@@ -221,29 +184,26 @@ usersList:any
   getAllSalesPerWeek() {
     this.ApiService.get('DashboardAdmin/GetAllSalesOrderPerWeek').subscribe(
       (res: any) => {
-        this.allWeekSales=res
-        this.firstDateName = `${this.languageService.translationService.instant('dashboard_admin.chart.firstDataName')} ${this.allWeekSales.salesForThisisWeek}`;
-        this.secondDateName = `${this.languageService.translationService.instant('dashboard_admin.chart.secondDataName')} ${this.allWeekSales.salesFromAWeekAgo}`;
+        this.allWeekSales = res
+        this.firstDateName = `${this.languageService.translationService.instant('dashboard_admin.chart.firstDataName')}  ${this.currencyPipe.transform(this.allWeekSales.salesForThisisWeek, 'USD', '', '1.0-0')}`;
+        this.secondDateName = `${this.languageService.translationService.instant('dashboard_admin.chart.secondDataName')} ${this.currencyPipe.transform(this.allWeekSales.salesFromAWeekAgo, 'USD', '', '1.0-0')}`;
 
-        //  this.allMonthSales=Object.values(res).sort((a:any, b:any) => a - b);
-        // this.allWeekSales = Object.values(res).sort((a: any, b: any) => a - b);
-        // this.getAllTargetWeekAPI();
       }
     );
   }
 
 
-  getAllUsers(payload:any){
-    this.ApiService.post('DashboardAdmin/GetAllUserDashboardStatistics',payload).subscribe((res: any) => {
-       this.usersList=res
+  getAllUsers(payload: any) {
+    this.ApiService.post('DashboardAdmin/GetAllUserDashboardStatistics', payload).subscribe((res: any) => {
+      this.usersList = res
     })
   }
 
-getAllRevenueForEveryCity(){
-  this.ApiService.get('DashboardAdmin/GetAllRevenueForEveryCity').subscribe((res: any) => {
-    this.cityData=res
-  });
-}
+  getAllRevenueForEveryCity() {
+    this.ApiService.get('DashboardAdmin/GetAllRevenueForEveryCity').subscribe((res: any) => {
+      this.cityData = res
+    });
+  }
   getAllTargetAPI() {
     this.ApiService.get('target/GetAll').subscribe((res: any) => {
       console.log('DashboardComponent  this.ApiService.get  res:', res);
@@ -255,16 +215,6 @@ getAllRevenueForEveryCity(){
     });
   }
 
-  // getAllTargetWeekAPI() {
-  //   this.ApiService.get('target/GetAll').subscribe((res: any) => {
-  //     console.log('DashboardComponent  this.ApiService.get  res:', res);
-  //     this.allTargetMonth = this.getTarget(res.data);
-  //     console.log(
-  //       'DashboardComponent  this.ApiService.get      this.allTargetMonth:',
-  //       this.allTargetMonth
-  //     );
-  //   });
-  // }
   getTarget(data: any) {
     return data
       .sort((a: any, b: any) => a.month - b.month)
@@ -312,24 +262,24 @@ getAllRevenueForEveryCity(){
     });
   }
 
-  onDateRange(date:any){
+  onDateRange(date: any) {
     const formattedRange = {
       fromDate: this.formatDate(date[0]),
       toDate: this.formatDate(date[1])
-  };
-  console.log("DashboardAdminComponent  onDateRange  formattedRange:", formattedRange)
+    };
+    console.log("DashboardAdminComponent  onDateRange  formattedRange:", formattedRange)
 
-    if(date[1])
-    this.getAllUsers(formattedRange)
+    if (date[1])
+      this.getAllUsers(formattedRange)
 
   }
   formatDate = (dateString: string): string => {
     const date = new Date(dateString);
-    const day = String(date.getDate()).padStart(2, '0'); // Use getDate() instead of getUTCDate()
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Use getMonth()
-    const year = date.getFullYear(); // Use getFullYear()
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
     return `${year}-${month}-${day}`;
-};
+  };
   getRoles() {
     this.apiService.get('Auth/getRoles').subscribe((res: any) => {
       this.role = res.message;
@@ -340,7 +290,7 @@ getAllRevenueForEveryCity(){
       const formattedRange = {
         fromDate: this.formatDate(this.dateRange[0]),
         toDate: this.formatDate(this.dateRange[1])
-    };
+      };
       this.getAllUsers(formattedRange)
     });
   }
