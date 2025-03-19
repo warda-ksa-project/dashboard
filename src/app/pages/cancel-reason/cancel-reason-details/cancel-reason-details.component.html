@@ -22,7 +22,10 @@
                 [control]="form.get('arName')"></app-input-text>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
-              <app-select [placeholder]="form.get('userType')?.value" class="w-100" [list]="userTypeList" [label]="'cancel_reason.form.userType'"
+              <app-select  [readOnly]="tyepMode() == 'View'"
+              [disabled]="tyepMode() == 'View'"
+               [placeholder]="form.get('userType')?.value" class="w-100" 
+               [list]="userTypeList" [label]="'cancel_reason.form.userType'"
                  [control]="form.get('userType')">
                 </app-select>
            </div>

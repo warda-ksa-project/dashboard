@@ -13,39 +13,47 @@
       <div class="reactive-form">
          <form [formGroup]="form" class="w-70" (ngSubmit)="onSubmit()">
             <div class="row">
-               <div class="col-lg-6 col-md-6 col-sm-12 mt-2">
+               <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
                   <app-input-text [readOnly]="tyepMode()==='View'" [disabled]="tyepMode()==='View'"
                      [label]="'city.form.name_en'" [control]="form.get('enName')"></app-input-text>
                </div>
-               <div class="col-lg-6 col-md-6 col-sm-12 mt-2">
+               <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
                   <app-input-text [readOnly]="tyepMode()==='View'" [disabled]="tyepMode()==='View'"
                      [label]="'city.form.name_ar'" [control]="form.get('arName')"></app-input-text>
                </div>
-               <div class="col-lg-6 col-md-6 col-sm-12 mt-2">
+               <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
                   <!-- <app-select [placeholder]="form.get('countryId')?.value==''?'':getSelectValue('countryId','countryId',countries)" class="w-100" [list]="countries" [label]="'city.form.country'" -->
 
-                  <app-select [placeholder]="form.get('countryId')?.value" class="w-100" [list]="countries" [label]="'city.form.country'"
+                  <app-select [placeholder]="form.get('countryId')?.value"
+                   class="w-100" [list]="countries" 
+                   [label]="'city.form.country'"
+                   [readOnly]="tyepMode() == 'View'"
+                   [disabled]="tyepMode() == 'View'"
                      [control]="form.get('countryId')"></app-select>
                </div>
-               <div class="col-lg-6 col-md-6 col-sm-12 mt-2">
+               <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
                   <app-input-text [readOnly]="tyepMode()==='View'" [disabled]="tyepMode()==='View'"
                      [label]="'city.form.postalCode'" [control]="form.get('postalCode')"></app-input-text>
                </div>
-               <div class="col-lg-6 col-md-6 col-sm-12 mt-2">
+               <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
                   <app-input-text [readOnly]="tyepMode()==='View'" [disabled]="tyepMode()==='View'"
                      [label]="'city.form.shortName'" [control]="form.get('shortCut')"></app-input-text>
                </div>
-               <div class="col-lg-6 col-md-6 col-sm-12 mt-2">
+               <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
                   <app-input-text [readOnly]="tyepMode()==='View'" [disabled]="tyepMode()==='View'" [label]="'city.form.latitude'"
                      [control]="form.get('latitude')"></app-input-text>
                </div>
-               <div class="col-lg-6 col-md-6 col-sm-12 mt-2">
+               <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
                   <app-input-text [readOnly]="tyepMode()==='View'" [disabled]="tyepMode()==='View'"
                      [label]="'city.form.longitude'" [control]="form.get('longitude')"></app-input-text>
                </div>
            
-               <div class="col-lg-6 col-md-6 col-sm-12 mt-5">
-                  <app-check-box [isToggle]="true" [label]="'city.form.status'" [control]="form.get('status')"></app-check-box>
+               <div class="col-lg-6 col-md-6 col-sm-12 mt-4 pt-3">
+                  <app-check-box [isToggle]="true"
+                   [label]="'city.form.status'" 
+                   [readOnly]="tyepMode() == 'View'"
+                   [disabled]="tyepMode() == 'View'"
+                   [control]="form.get('status')"></app-check-box>
                </div>
                <div class="actions mt-5 text-center">
                   <button type="submit" class="submit-btn" [disabled]="!form.valid" *ngIf="tyepMode()!=='View'">

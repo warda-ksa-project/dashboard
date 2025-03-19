@@ -48,10 +48,11 @@ export class DashboardAdminComponent {
   apiService = inject(ApiService);
   role: any = '';
   RolesEnum = Roles;
-  allMonthSales: any[] = [];
-  allWeekSales: any;
-  allTargetMonth: number[] = [];
-  allTargetWeek: number[] = [];
+  // allMonthSales: any[] = [];
+  allWeeksSales: any[]=[];
+  allPastWeeks:any[]=[]
+  // allTargetMonth: number[] = [];
+  // allTargetWeek: number[] = [];
 
   bredCrumb: IBreadcrumb = {
     crumbs: [],
@@ -153,18 +154,18 @@ export class DashboardAdminComponent {
 
     this.selectedLang = this.languageService.translationService.currentLang;
     this.labels = [
-      this.selectedLang == 'en' ? 'January' : 'يناير',
-      this.selectedLang == 'en' ? 'February' : 'فبراير',
-      this.selectedLang == 'en' ? 'March' : 'مارس',
-      this.selectedLang == 'en' ? 'April' : 'ابريل',
-      this.selectedLang == 'en' ? 'May' : 'مايو',
-      this.selectedLang == 'en' ? 'June' : 'يونيو',
-      this.selectedLang == 'en' ? 'July' : 'يوليو',
-      this.selectedLang == 'en' ? 'August' : 'اغسطس',
-      this.selectedLang == 'en' ? 'September' : 'سبتمبر',
-      this.selectedLang == 'en' ? 'October' : 'اكتوبر',
-      this.selectedLang == 'en' ? 'November' : 'نوفمبر',
-      this.selectedLang == 'en' ? 'December' : 'ديسمبر',
+      this.selectedLang == 'en' ? 'Sat' : 'السبت',
+      this.selectedLang == 'en' ? 'Sun' : 'الاحد',
+      this.selectedLang == 'en' ? 'Mon' : 'الاثنين',
+      this.selectedLang == 'en' ? 'Tue' : 'الثلاثاء',
+      this.selectedLang == 'en' ? 'Wed' : 'الاربعاء',
+      this.selectedLang == 'en' ? 'Thu' : 'الخميس',
+      this.selectedLang == 'en' ? 'Fri' : 'الجمعة',
+      // this.selectedLang == 'en' ? 'August' : 'اغسطس',
+      // this.selectedLang == 'en' ? 'September' : 'سبتمبر',
+      // this.selectedLang == 'en' ? 'October' : 'اكتوبر',
+      // this.selectedLang == 'en' ? 'November' : 'نوفمبر',
+      // this.selectedLang == 'en' ? 'December' : 'ديسمبر',
     ];
 
     this.languageService.translationService.onLangChange.subscribe(() => {
@@ -172,22 +173,23 @@ export class DashboardAdminComponent {
     });
   }
 
-  getAllSalesPerMonth() {
-    this.ApiService.get('DashboardAdmin/GetAllSalesPerMonth').subscribe(
-      (res: any) => {
-        this.allMonthSales = Object.values(res).sort((a: any, b: any) => a - b);
-        this.getAllTargetAPI();
-      }
-    );
-  }
+  // getAllSalesPerMonth() {
+  //   this.ApiService.get('DashboardAdmin/GetAllSalesPerMonth').subscribe(
+  //     (res: any) => {
+  //       this.allMonthSales = Object.values(res).sort((a: any, b: any) => a - b);
+  //       this.getAllTargetAPI();
+  //     }
+  //   );
+  // }
 
   getAllSalesPerWeek() {
     this.ApiService.get('DashboardAdmin/GetAllSalesOrderPerWeek').subscribe(
       (res: any) => {
-        this.allWeekSales = res
-        this.firstDateName = `${this.languageService.translationService.instant('dashboard_admin.chart.firstDataName')}  ${this.currencyPipe.transform(this.allWeekSales.salesForThisisWeek, 'USD', '', '1.0-0')}`;
-        this.secondDateName = `${this.languageService.translationService.instant('dashboard_admin.chart.secondDataName')} ${this.currencyPipe.transform(this.allWeekSales.salesFromAWeekAgo, 'USD', '', '1.0-0')}`;
-
+        // this.allWeeksSales = res
+        this.firstDateName = `${this.languageService.translationService.instant('dashboard_admin.chart.firstDataName')}  ${this.currencyPipe.transform(res.salesForThisWeek, 'USD', '', '1.0-0')}`;
+        this.secondDateName = `${this.languageService.translationService.instant('dashboard_admin.chart.secondDataName')} ${this.currencyPipe.transform(res.salesFromAWeekAgo, 'USD', '', '1.0-0')}`;
+        this.allWeeksSales=[res.saturday,res.sunday,res.monday,res.tuesday,res.wednesday,res.thursday,res.friday],
+        this.allPastWeeks=[res.lastSaturday,res.lastSunday,res.lastMonday,res.lastTuesday,res.lastWednesday,res.lastThursday,res.lastFriday]
       }
     );
   }
@@ -204,16 +206,16 @@ export class DashboardAdminComponent {
       this.cityData = res
     });
   }
-  getAllTargetAPI() {
-    this.ApiService.get('target/GetAll').subscribe((res: any) => {
-      console.log('DashboardComponent  this.ApiService.get  res:', res);
-      this.allTargetMonth = this.getTarget(res.data);
-      console.log(
-        'DashboardComponent  this.ApiService.get      this.allTargetMonth:',
-        this.allTargetMonth
-      );
-    });
-  }
+  // getAllTargetAPI() {
+  //   this.ApiService.get('target/GetAll').subscribe((res: any) => {
+  //     console.log('DashboardComponent  this.ApiService.get  res:', res);
+  //     this.allTargetMonth = this.getTarget(res.data);
+  //     console.log(
+  //       'DashboardComponent  this.ApiService.get      this.allTargetMonth:',
+  //       this.allTargetMonth
+  //     );
+  //   });
+  // }
 
   getTarget(data: any) {
     return data
@@ -285,7 +287,7 @@ export class DashboardAdminComponent {
       this.role = res.message;
       this.getStaticData();
       this.getAllRevenueForEveryCity();
-      this.getAllSalesPerMonth();
+      // this.getAllSalesPerMonth();
       this.getAllSalesPerWeek();
       const formattedRange = {
         fromDate: this.formatDate(this.dateRange[0]),

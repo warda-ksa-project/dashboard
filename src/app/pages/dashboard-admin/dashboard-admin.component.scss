@@ -1,185 +1,143 @@
-.showSmallTable{
-    display: none;
+.fz-20 {
+  font-size: 20px;
+}
+.color-gray {
+  color: #b8b2b2;
+}
+.table-container {
+  h2 {
+    color: #7d7d7d;
+    margin-bottom: 20px;
   }
-  .fz-20 {
-    font-size: 20px;
+  .page-admin-container {
+    .header {
+      .card-container {
+        .card {
+          width: 17.1875rem;
+          border-radius: 15px;
+          min-height: 100px;
+          border: unset;
+          margin: 10px;
+          padding: 10px;
+          background-color: #fff;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+          box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+          .item-header {
+            display: flex;
+            justify-items: center;
+            margin-bottom: 10px;
+            .title {
+              margin: 0px 5px;
+            }
+            .icon {
+              background: #8174a0;
+              padding: 8px;
+              color: #fff;
+              border-radius: 50%;
+            }
+          }
+          .item-footer {
+            text-align: end;
+          }
+          &:hover {
+            transform: translateY(-10px);
+          }
+        }
+      }
+      .chart-container {
+        width: 50%;
+        min-width: 274px;
+        .card {
+          border: unset;
+          box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+        }
+        .chart {
+          padding: 10px;
+        }
+      }
+    }
+
+    // .pop-products {
+    //   background-color: #fff;
+    //   padding: 10px;
+    //   border-radius: 8px;
+    //   margin-top: 30px;
+    //   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
+    //   h2.prod{
+    //     span{
+    //       background: #8174a0;
+    //     padding: 10px;
+    //     color: #fff;
+    //     border-radius: 50%;
+    //     }
+    //   }
+
+    // }
   }
-  .color-gray {
-    color: #b8b2b2;
+  div {
+    .city-revenue {
+      width: 25%;
+      background-color: #fff;
+      border: unset;
+      margin: 10px;
+      padding: 10px;
+      border-radius: 15px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+      hr {
+        border: 3px solid #8174a0;
+      }
+    }
+    .chart-container {
+      width: 70%;
+      min-width: 274px;
+      height: 405px;
+      .card {
+        border: unset;
+        padding: 10px;
+        border-radius: 15px;
+        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+      }
+      .chart {
+        padding: 10px;
+      }
+    }
   }
-  
-div{
-// display: flex;
-// justify-content: space-between;
-// flex-wrap: wrap;
-  .city-revenue{
-    width: 25%;
+  .users {
     background-color: #fff;
     border: unset;
     margin: 10px;
-    padding: 10px;
+    padding: 20px;
     border-radius: 15px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-    hr{
-      border: 3px solid #8174A0;
+    .header-title {
+      width: 50%;
+      font-weight: bolder;
+      margin-top: 10px;
     }
-  }
-  .chart-container{
-    width: 70%;
-    min-width: 274px;
-    height: 405px;
-    .card{
-      border: unset;
-      padding: 10px;
-      border-radius: 15px;
-      box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-    }
-   .chart{
-    padding: 10px;
-
-   }
   }
 }
 
-.users{
-  background-color: #fff;
-  border: unset;
-  margin: 10px;
-  padding: 20px;
-  border-radius: 15px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  .header-title{
-    width: 50%;
-    font-weight: bolder;
+::ng-deep {
+  p-calendar {
+    .p-datepicker-dropdown {
+      border-radius: 50% !important;
+      margin: 0px 5px;
+    }
+  }
+}
+
+@media only screen and (max-width: 990px) {
+  .card-container {
+    width: auto !important;
+    .card {
+      width: 100% !important;
+    }
+  }
+  .chart-container {
+    width: 100% !important;
     margin-top: 10px;
   }
 }
-  .table-container {
-    h2 {
-      color: #7d7d7d;
-      margin-bottom: 20px;
-    }
-    .page-admin-container {
-      .header{
-        // display: flex;
-        // justify-content: space-between;
-        // flex-wrap: wrap;
-        .card-container {
-          //  width: 50%;
-          .card {
-            width: 17.1875rem;
-            border-radius: 15px;
-            min-height: 100px;
-            border: unset;
-            margin: 10px;
-            padding: 10px;
-            background-color: #fff;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-            .item-header {
-              display: flex;
-              justify-items: center;
-              margin-bottom: 10px;
-              .title {
-                margin: 0px 5px;
-              }
-              .icon {
-                background: #8174a0;
-                padding: 8px;
-                color: #fff;
-                border-radius: 50%;
-              }
-            }
-            .item-footer {
-              text-align: end;
-            }
-            &:hover {
-              transform: translateY(-10px);
-            }
-          }
-        
-        }
-        .chart-container{
-          width: 50%;
-          min-width: 274px;
-          .card{
-            border: unset;
-            box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-          }
-         .chart{
-          padding: 10px;
-  
-         }
-        }
-      }
-     
-      .pop-products {
-        background-color: #fff;
-        padding: 10px;
-        border-radius: 8px;
-        margin-top: 30px;
-        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  
-        h2.prod{
-          span{
-            background: #8174a0;
-          padding: 10px;
-          color: #fff;
-          border-radius: 50%;
-          }
-        }
-        .pi-filter{
-          // border-radius: 8px;
-          // background-color: red;
-        }
-      }
-    }
-   
-  }
-  
-
-
-   ::ng-deep {
-    p-calendar{
-.p-datepicker-dropdown{
-  border-radius: 50%!important;
-  margin: 0px 5px;
-}
-    }
-   }
-  
-  @media only screen and (max-width:990px) {
-    .card-container{
-      width: auto!important;
-      .card{
-        width: 100%!important;
-
-      }
-    }
-    .chart-container{
-      width: 100%!important;
-      margin-top: 10px;
-    }
-    .showSmallTable{
-      display: block!important;
-    }
-  }
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  

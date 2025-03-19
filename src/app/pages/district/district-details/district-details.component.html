@@ -24,7 +24,10 @@
                   [control]="form.get('arName')"></app-input-text>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12 mt-3">
-                <app-select [placeholder]="form.get('cityId')?.value" class="w-100" [list]="citiesList" [label]="'district.form.city'"
+                <app-select [placeholder]="form.get('cityId')?.value" class="w-100" 
+                [list]="citiesList" [label]="'district.form.city'"
+                [readOnly]="tyepMode() == 'View'"
+                [disabled]="tyepMode() == 'View'"
                 [control]="form.get('cityId')"></app-select>
             </div>
 

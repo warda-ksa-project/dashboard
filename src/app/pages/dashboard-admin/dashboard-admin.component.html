@@ -9,105 +9,108 @@
     </div>
   </div>
 
-  <ng-container *ngIf="role == RolesEnum.admin">
-    <div class="page-admin-container mt-4" *ngIf="dataCardItems">
-      <div class="header">
-        <div class="card-container d-flex justify-content-start flex-wrap">
-            <div class="card flex-grow-1"*ngFor="let item of items">
-              <div class="item-header">
-                <span class="icon" [class]="item?.icon"></span>
-                <span class="color-gray title">{{
-                  selectedLang == "en" ? item?.titleEn : item?.titleAr
-                }}</span>
-              </div>
-              <div class="item-content text-center">
-                <div class="price">
-                  <span class="bold fz-20">{{ item?.price }} </span
-                  ><span class="color-gray">
-                    {{ selectedLang == "en" ? item?.type : item?.typeAr }}</span
-                  >
+  <ng-container *ngIf="dataCardItems">
+    <ng-container *ngIf="role == RolesEnum.admin">
+      <div class="page-admin-container mt-4" *ngIf="dataCardItems">
+        <div class="header">
+          <div class="card-container d-flex justify-content-start flex-wrap">
+              <div class="card flex-grow-1"*ngFor="let item of items">
+                <div class="item-header">
+                  <span class="icon" [class]="item?.icon"></span>
+                  <span class="color-gray title">{{
+                    selectedLang == "en" ? item?.titleEn : item?.titleAr
+                  }}</span>
                 </div>
-              </div>
-              <div class="item-footer">
-                <img
-                  *ngIf="item.price < 20"
-                  src="assets/images/arrow-down-circle.svg"
-                />
-                <img
-                  *ngIf="item.price > 20"
-                  src="assets/images/arrow-up-circle.svg"
-                />
-                <span> {{ item?.status }}</span>
-              </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="mt-3 d-flex  d-flex justify-content-between flex-wrap">
-      <div class="city-revenue flex-grow-1">
-        <span class="bold">{{ "dashboard_admin.revenue" |translate}}</span>
-        <div class="mt-3" *ngFor="let item of cityData">
-          <div class="mt-2 d-flex justify-content-between">
-            <span>{{ item.cityName }}</span>
-            <span>{{ item.revenue |currency:'USD':'':'1.0-0' }}</span>
-          </div>
-          <hr />
-        </div>
-      </div>
-      <div class="chart-container mt-2 flex-grow-1">
-        <div class="card">
-          <div class="item-content" *ngIf="allTargetMonth.length > 0">
-            <div class="chart">
-              <app-chart
-              [type]="'line'"
-                [labels]="this.labels"
-                [firstData]="this.allMonthSales"
-                [secondData]="allTargetMonth"
-                [firstDataNAme]="firstDateName"
-                [secondDataName]="secondDateName"
-              ></app-chart>
+                <div class="item-content text-center">
+                  <div class="price">
+                    <span class="bold fz-20">{{ item?.price }} </span
+                    ><span class="color-gray">
+                      {{ selectedLang == "en" ? item?.type : item?.typeAr }}</span
+                    >
+                  </div>
+                </div>
+                <div class="item-footer">
+                  <img
+                    *ngIf="item.price < 20"
+                    src="assets/images/arrow-down-circle.svg"
+                  />
+                  <img
+                    *ngIf="item.price > 20"
+                    src="assets/images/arrow-up-circle.svg"
+                  />
+                  <span> {{ item?.status }}</span>
+                </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="mt-4 users card">
-      <div class="d-flex justify-content-between">
-        <div class="header-title" >
-          {{'dashboard_admin.users'|translate}}
+      <div class="mt-3 d-flex  d-flex justify-content-between flex-wrap">
+        <div class="city-revenue flex-grow-1">
+          <span class="bold">{{ "dashboard_admin.revenue" |translate}}</span>
+          <div class="mt-3" *ngFor="let item of cityData">
+            <div class="mt-2 d-flex justify-content-between">
+              <span>{{ item.cityName }}</span>
+              <span>{{ item.revenue |currency:'USD':'':'1.0-0' }}</span>
+            </div>
+            <hr />
+          </div>
         </div>
-        <div>
-          <p-calendar
-            (ngModelChange)="onDateRange($event)"
-            [(ngModel)]="dateRange"
-            selectionMode="range"
-            [showIcon]="true"
-          ></p-calendar>
+        <div class="chart-container mt-2 flex-grow-1">
+          <div class="card">
+            <div class="item-content" *ngIf="allWeeksSales.length > 0">
+              <div class="chart">
+                <app-chart
+                [type]="'line'"
+                  [labels]="this.labels"
+                  [firstData]="allWeeksSales"
+                  [secondData]="allPastWeeks"
+                  [firstDataNAme]="firstDateName"
+                  [secondDataName]="secondDateName"
+                ></app-chart>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div *ngIf="usersList">
-        <div class="mt-3">
-          <div class="d-flex justify-content-between">
-            <span class="block color-gray">{{'dashboard_admin.total_users'|translate}}</span>
-            <span>{{ usersList?.allUsers }}</span>
+      <div class="mt-4 users card">
+        <div class="d-flex justify-content-between">
+          <div class="header-title" >
+            {{'dashboard_admin.users'|translate}}
           </div>
-          <p-progressbar [showValue]="false" [value]="usersList?.allUsers" />
+          <div>
+            <p-calendar
+              (ngModelChange)="onDateRange($event)"
+              [(ngModel)]="dateRange"
+              selectionMode="range"
+              [showIcon]="true"
+            ></p-calendar>
+          </div>
         </div>
-        <div class="mt-3">
-          <div class="d-flex justify-content-between">
-            <span class="block color-gray">{{'dashboard_admin.active_users'|translate}}</span>
-            <span>{{ usersList?.activeUsers }}</span>
+        <div *ngIf="usersList">
+          <div class="mt-3">
+            <div class="d-flex justify-content-between">
+              <span class="block color-gray">{{'dashboard_admin.total_users'|translate}}</span>
+              <span>{{ usersList?.allUsers }}</span>
+            </div>
+            <p-progressbar [showValue]="false" [value]="usersList?.allUsers" />
           </div>
-          <p-progressbar [showValue]="false" [value]="usersList?.activeUsers" />
-        </div>
-        <div class="mt-3">
-          <div class="d-flex justify-content-between">
-            <span class="block color-gray">{{'dashboard_admin.new_users'|translate}}</span>
-            <span>{{ usersList?.newUsers }}</span>
+          <div class="mt-3">
+            <div class="d-flex justify-content-between">
+              <span class="block color-gray">{{'dashboard_admin.active_users'|translate}}</span>
+              <span>{{ usersList?.activeUsers }}</span>
+            </div>
+            <p-progressbar [showValue]="false" [value]="usersList?.activeUsers" />
           </div>
-          <p-progressbar [showValue]="false" [value]="usersList?.newUsers" />
+          <div class="mt-3">
+            <div class="d-flex justify-content-between">
+              <span class="block color-gray">{{'dashboard_admin.new_users'|translate}}</span>
+              <span>{{ usersList?.newUsers }}</span>
+            </div>
+            <p-progressbar [showValue]="false" [value]="usersList?.newUsers" />
+          </div>
         </div>
       </div>
-    </div>
+    </ng-container>
   </ng-container>
+ 
 </div>

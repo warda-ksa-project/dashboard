@@ -121,7 +121,7 @@ pageName =signal<string>(global_PageName);
     this.ApiService.get(`${global_API_details}${this.getID}`).subscribe((res: any) => {
       if (res){
         this.form.patchValue(res.data);
-        this.editImageProps.props.imgSrc = this.imageUrl + '/' + res.data.image;
+        this.editImageProps.props.imgSrc = this.imageUrl  + res.data.image;
         console.log(this.editImageProps);
         this.editMode = true;
       }

@@ -36,7 +36,11 @@
                   <div class="actions-content">
                     <div class="controller" *ngFor="let action of item.actions">
                         <p>{{action?.name}}</p>
-                        <app-check-box [initValue]="action?.checked" [isToggle]="true" [readOnly]="tyepMode()==='View'"   (toggleValue)="onToggle($event,item.controller,action.name,indexDOC)"></app-check-box>
+                        <app-check-box [initValue]="action?.checked" 
+                        [isToggle]="true" [readOnly]="tyepMode()==='View'" 
+                        [readOnly]="tyepMode() == 'View'"
+                        [disabled]="tyepMode() == 'View'"
+                          (toggleValue)="onToggle($event,item.controller,action.name,indexDOC)"></app-check-box>
                     </div>
                   </div>
                 </div>

@@ -213,7 +213,7 @@ export class OrdersTableComponent {
 
     this.columnsSmallTable = [
       { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: false },
-      { keyName: 'customerName', header: this.languageService.translate('order.form.client_name'), type: EType.text, showAs: ETableShow.content },
+      { keyName: 'customerName', header: this.languageService.translate('order.form.clientName'), type: EType.text, showAs: ETableShow.content },
       { keyName: 'totalPrice', header: this.languageService.translate('order.form.price'), type: EType.text, showAs: ETableShow.content }
     ];
   }

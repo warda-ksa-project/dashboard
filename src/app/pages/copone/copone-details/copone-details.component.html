@@ -22,7 +22,9 @@
                 [control]="form.get('numberOfUsing')"></app-input-text>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
-                  <app-select [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'" [label]="'copone.form.offerType'"
+                  <app-select 
+                  [readOnly]="tyepMode()=='View'"
+                   [disabled]="tyepMode()=='View'" [label]="'copone.form.offerType'"
                   [control]="form.get('offerType')"
                    class="w-100" [list]="offerTypeList">
                   </app-select>

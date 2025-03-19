@@ -49,7 +49,7 @@ export class MainCatogoryTableComponent {
   tableActions: ITableAction[] = [
     {
       name: EAction.delete,
-      apiName_or_route: 'category/Delete?userId',
+      apiName_or_route: 'MainCategory/Delete?id',
       autoCall: true
     },
     {

@@ -27,7 +27,10 @@
                             [label]="'slider.form.displayOrder'" [control]="form.get('displayOrder')"></app-input-text>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
-                        <app-select [readOnly]="tyepMode()=='View'" [placeholder]="form.get('viewType')?.value" class="w-100" [list]="viewTypeList"
+                        <app-select [readOnly]="tyepMode()=='View'"
+                        [readOnly]="tyepMode() == 'View'"
+                        [disabled]="tyepMode() == 'View'"
+                         [placeholder]="form.get('viewType')?.value" class="w-100" [list]="viewTypeList"
                             [label]="'slider.form.view_type'" [control]="form.get('viewType')"></app-select>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12 mt-4">

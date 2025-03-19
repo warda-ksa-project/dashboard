@@ -101,7 +101,9 @@
               <span class="pi pi-shopping-cart"></span>
               {{ "products.best.title" | translate }}
             </h2>
-            <app-select [list]="pageinationList" placeholder="{{'select'|translate}}" (onSelectedValue)="onPageSelected($event)" optionLabel="optionLabel" ></app-select>
+            <app-select [list]="pageinationList" placeholder="{{'select'|translate}}" 
+            
+            (onSelectedValue)="onPageSelected($event)" optionLabel="optionLabel" ></app-select>
             <!-- <span class="pi pi-filter pointer p-1" (click)="openFilter()">
             </span> -->
           </div>

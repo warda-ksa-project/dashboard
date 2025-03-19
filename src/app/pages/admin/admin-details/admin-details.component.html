@@ -40,7 +40,8 @@
             </div>
 
             <div class="col-lg-6 col-md-6 col-sm-12 mt-3">
-                <app-select [placeholder]="form.get('roleId')?.value" class="w-100" [list]="roleList" [label]="'admin.form.role'"
+                <app-select  [readOnly]="tyepMode() == 'View'"
+                [disabled]="tyepMode() == 'View'" [placeholder]="form.get('roleId')?.value" class="w-100" [list]="roleList" [label]="'admin.form.role'"
                 [control]="form.get('roleId')"></app-select>
             </div>
 
@@ -57,13 +58,19 @@
             </div>
 
             <div class="col-lg-6 col-md-6 col-sm-12 mt-3">
-                <app-select [placeholder]="form.get('genderId')?.value" class="w-100" [list]="genderList" [label]="'admin.form.gender'"
+                <app-select  [readOnly]="tyepMode() == 'View'"
+                [disabled]="tyepMode() == 'View'"
+                 [placeholder]="form.get('genderId')?.value" class="w-100" [list]="genderList" [label]="'admin.form.gender'"
                 [control]="form.get('genderId')"></app-select>
             </div>
 
           
             <div class="col-lg-6 col-md-6 col-sm-12 mt-5">
-                <app-check-box [isToggle]="true" [label]="'admin.form.status'" [control]="form.get('isActive')"></app-check-box>
+                <app-check-box [isToggle]="true"
+                 [label]="'admin.form.status'" 
+                 [readOnly]="tyepMode() == 'View'"
+                 [disabled]="tyepMode() == 'View'"
+                 [control]="form.get('isActive')"></app-check-box>
              </div>
 
             

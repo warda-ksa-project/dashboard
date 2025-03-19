@@ -43,11 +43,11 @@ export class ContactUsTableComponent {
       apiName_or_route:  global_router_view_url,
       autoCall: true
     },
-    {
-      name: EAction.edit,
-      apiName_or_route: global_router_edit_url,
-      autoCall: true
-    }
+    // {
+    //   name: EAction.edit,
+    //   apiName_or_route: global_router_edit_url,
+    //   autoCall: true
+    // }
   ]
   private ApiService = inject(ApiService)
 

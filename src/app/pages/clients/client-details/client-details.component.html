@@ -67,7 +67,10 @@
               [control]="form.get('confirmPassword')"></app-input-text>
           </div>
           <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
-            <app-select [placeholder]="form.get('gender')?.value" class="w-100" [list]="gender"
+            <app-select [placeholder]="form.get('gender')?.value" class="w-100"
+             [list]="gender"
+             [readOnly]="tyepMode() == 'View'"
+             [disabled]="tyepMode() == 'View'"
               [label]="'client.form.gender'" [control]="form.get('gender')">
             </app-select>
           </div>

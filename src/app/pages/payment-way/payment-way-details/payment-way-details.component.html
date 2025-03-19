@@ -25,6 +25,8 @@
                   <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
                     <app-check-box
                       [isToggle]="true"
+                      [readOnly]="tyepMode() == 'View'"
+                      [disabled]="tyepMode() == 'View'"
                       [label]="'payment.form.isEnabled'"
                       [initValue]="form.get('isEnabled')?.value || false"
                       [control]="form.get('isEnabled')"

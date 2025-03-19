@@ -36,6 +36,8 @@
             <app-select
               [placeholder]="form.get('parentCategoryId')?.value"
               class="w-100"
+              [readOnly]="tyepMode() == 'View'"
+              [disabled]="tyepMode() == 'View'"
               [list]="parentCategoryList"
               [label]="'sub_category.form.parentCategoryId'"
               [control]="form.get('parentCategoryId')"

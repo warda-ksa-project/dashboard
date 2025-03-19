@@ -16,7 +16,7 @@
     <div class="reactive-form">
       <form [formGroup]="form" class="w-70" (ngSubmit)="onSubmit()">
         <div class="row">
-          <div class="col-lg-6 col-md-6 col-sm-12 mt-2">
+          <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
             <app-input-text
               [readOnly]="tyepMode() === 'View'"
               [disabled]="tyepMode() === 'View'"
@@ -24,7 +24,7 @@
               [control]="form.get('enName')"
             ></app-input-text>
           </div>
-          <div class="col-lg-6 col-md-6 col-sm-12 mt-2">
+          <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
             <app-input-text
               [readOnly]="tyepMode() === 'View'"
               [disabled]="tyepMode() === 'View'"
@@ -32,7 +32,7 @@
               [control]="form.get('arName')"
             ></app-input-text>
           </div>
-          <div class="col-lg-6 col-md-6 col-sm-12 mt-2">
+          <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
             <app-input-text
               [readOnly]="tyepMode() === 'View'"
               [disabled]="tyepMode() === 'View'"
@@ -40,7 +40,7 @@
               [control]="form.get('currency')"
             ></app-input-text>
           </div>
-          <div class="col-lg-6 col-md-6 col-sm-12 mt-2">
+          <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
             <app-input-text
               [readOnly]="tyepMode() === 'View'"
               [disabled]="tyepMode() === 'View'"
@@ -48,7 +48,7 @@
               [control]="form.get('phoneLength')"
             ></app-input-text>
           </div>
-          <div class="col-lg-6 col-md-6 col-sm-12 mt-2">
+          <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
             <app-input-text
               [readOnly]="tyepMode() === 'View'"
               [disabled]="tyepMode() === 'View'"
@@ -56,26 +56,36 @@
               [control]="form.get('phoneCode')"
             ></app-input-text>
           </div>
-          <div class="col-lg-6 col-md-6 col-sm-12 mt-5">
+          <div class="col-lg-6 col-md-6 col-sm-12 mt-4 pt-3">
             <app-check-box
               [isToggle]="true"
               [label]="'country.form.status'"
               [initValue]="true"
+              [readOnly]="tyepMode() == 'View'"
+              [disabled]="tyepMode() == 'View'"
               [control]="form.get('status')"
             ></app-check-box>
           </div>
-          <div class="upload-image-section mt-4 mb-4" *ngIf="!editMode">
-            <app-upload-file formControlName="image"></app-upload-file>
-            <div *ngIf="isRequiredError" class="error-message mt-2">
-              Image upload is required.
+          <div>
+            <div class="upload-image-section mt-4 mb-4" *ngIf="!editMode">
+              <label class="mb-2">{{
+                "shared.upload_img" | translate
+              }}</label>
+              <app-upload-file formControlName="image"></app-upload-file>
+              <div *ngIf="isRequiredError" class="error-message mt-2">
+                {{'shared.img_required'|translate}}
+              </div>
+            </div>
+            <div class="edit-mode-section mt-2" *ngIf="editMode">
+              <label class="mb-2">{{
+                "shared.uploaded_img" | translate
+              }}</label>
+              <app-edit-mode-image [action]="tyepMode()"
+                [editImageProps]="editImageProps"
+              ></app-edit-mode-image>
             </div>
           </div>
-          <div class="edit-mode-section mt-2" *ngIf="editMode">
-            <label class="mb-2">Uploaded Image</label>
-            <app-edit-mode-image
-              [editImageProps]="editImageProps"
-            ></app-edit-mode-image>
-          </div>
+        
 
           <div class="actions mt-5 text-center">
             <button
