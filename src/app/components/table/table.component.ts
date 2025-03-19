@@ -100,7 +100,7 @@ export class TableComponent implements OnInit, OnChanges {
 
   eventEmitValue: any = { action: {}, record: {} }
   imageBaseUrl = environment.baseImageUrl;
-
+  defaultImg='assets/images/empty-state.png'
   ngOnInit() {
     this.filterdRecords = this.records;
     console.log("TableComponent  ngOnInit  this.filterdRecords:", this.filterdRecords)

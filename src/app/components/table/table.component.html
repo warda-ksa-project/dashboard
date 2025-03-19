@@ -40,7 +40,7 @@
 
 
             <div *ngIf="col.type=='editor'" [innerHTML]="rowData[col.keyName]? rowData[col.keyName]:'-' "> </div>
-            <img class="rounded" *ngIf="col.type=='image'" [src]="imageBaseUrl+rowData[col.keyName]" width="60px"
+            <img class="rounded" *ngIf="col.type=='image'" [src]="rowData[col.keyName]?imageBaseUrl+rowData[col.keyName]:defaultImg" width="60px"
               height="auto" alt="image">
             <span *ngIf="col.type =='date'">{{convertDate( rowData[col.keyName]? rowData[col.keyName]:'-' )}}</span>
             <span *ngIf="col.type =='time'">{{getCurrentTime( rowData[col.keyName]? rowData[col.keyName]:'-' )}}</span>
