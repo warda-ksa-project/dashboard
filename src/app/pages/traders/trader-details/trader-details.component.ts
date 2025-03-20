@@ -108,6 +108,7 @@ export class TraderDetailsComponent  {
       ]
     }),
 
+
     // street: new FormControl('', {
     //   validators: [
     //     Validators.required,
@@ -206,15 +207,15 @@ export class TraderDetailsComponent  {
     });
 
     this.form.valueChanges.subscribe(res => {
-      console.log('d---d',this.form.value)
+      // console.log('d---d',this.form.value)
       // console.log('d===d',(!this.form.valid || !this.isAddressVaild()))
     })
-    this.form.get('street')?.valueChanges.subscribe(res => {
-      this.adress[0].street = res;
-      this.form.patchValue({
-        addresses: this.adress
-      })
-    })
+    // this.form.get('street')?.valueChanges.subscribe(res => {
+    //   this.adress[0].street = res;
+    //   this.form.patchValue({
+    //     addresses: this.adress
+    //   })
+    // })
     // this.form.get('buildNo')?.valueChanges.subscribe(res => {
     //   this.adress[0].buildNo = +res
     //   this.form.patchValue({
@@ -432,6 +433,8 @@ export class TraderDetailsComponent  {
       cr: this.form.value.cr[0].image,
       license: this.form.value.license[0].image,
       iban: this.form.value.iban[0].image,
+      "enDescription": "string",
+      "arDescription": "string",
     }
 
     this.setPayload([

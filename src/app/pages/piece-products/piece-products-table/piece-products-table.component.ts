@@ -22,6 +22,7 @@ import { DrawerComponent } from '../../../components/drawer/drawer.component';
 import { PaginationComponent } from '../../../components/pagination/pagination.component';
 import { TitleCasePipe } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
+import { Roles } from '../../../conts';
 
 const global_pageName = 'piece_products.pageName';
 const global_router_add_url_in_Table = '/piece-product/add';
@@ -69,7 +70,7 @@ export class PieceProductsTableComponent {
     },
   ];
   private ApiService = inject(ApiService);
-
+  role=''
   bredCrumb: IBreadcrumb = {
     crumbs: [],
   };
@@ -99,12 +100,14 @@ export class PieceProductsTableComponent {
     this.pageName.set(global_pageName);
     this.API_getAll();
     this.getBreadCrumb();
+    this.getRoles()
     this.selectedLang = this.languageService.translationService.currentLang;
     this.displayTableCols(this.selectedLang);
     this.languageService.translationService.onLangChange.subscribe(() => {
       this.selectedLang = this.languageService.translationService.currentLang;
       this.displayTableCols(this.selectedLang);
       this.getBreadCrumb();
+      this.getRoles()
     });
   }
 
@@ -163,7 +166,7 @@ export class PieceProductsTableComponent {
       crumbs: [
         {
           label: this.languageService.translate('Home'),
-          routerLink: '/dashboard',
+          routerLink:  this.role==Roles.admin?'/dashboard-admin':'/dashboard-trader',
         },
         {
           label: this.languageService.translate(this.pageName()),
@@ -171,7 +174,11 @@ export class PieceProductsTableComponent {
       ],
     };
   }
-
+  getRoles(){
+    this.ApiService.get('Auth/getRoles').subscribe((res:any)=>{
+    this.role=res.message
+    })
+  }
   openFilter() {
     this.showFilter = true;
   }

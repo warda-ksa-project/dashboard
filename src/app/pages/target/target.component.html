@@ -17,7 +17,7 @@
       <form [formGroup]="form" class="w-70" (ngSubmit)="onSubmit()" *ngIf="months.length>0">
         <div class="row">
             <ng-container *ngFor="let item of months;let i=index">
-                <div class="col-lg-6 col-md-6 col-sm-12 mt-2">
+                <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
                     <app-input-text
                       [readOnly]="tyepMode() === 'View'"
                       [disabled]="tyepMode() === 'View'"
@@ -139,3 +139,7 @@
     </div>
   </div>
 </div>
+<app-dialog [visible]="showConfirmMessage">
+  <button class="dialog-close-btn btn btn-default" (click)="showConfirmMessage = false"> {{'actions.close'|translate}}</button>
+  <button class="dialog-close-btn btn btn-danger" (click)="onConfirmMessage()">  {{'actions.confirm'|translate}}</button>
+</app-dialog>

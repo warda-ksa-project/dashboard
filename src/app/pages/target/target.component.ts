@@ -12,16 +12,17 @@ import { LanguageService } from '../../services/language.service';
 import { Validations } from '../../validations';
 import { IBreadcrumb } from '../../components/breadcrump/cerqel-breadcrumb.interface';
 import { ConfirmMsgService } from '../../services/confirm-msg.service';
+import { DialogComponent } from '../../components/dialog/dialog.component';
 
 const global_PageName = 'target.pageName';
-const global_routeUrl = 'target'
+const global_routeUrl = '/dashboard-trader'
 const global_API_getAll = 'target' + '/GetAll';
 const global_API_update = 'target' + '/Update';
 
 @Component({
   selector: 'app-target',
   standalone: true,
-  imports: [BreadcrumpComponent,NgFor,TranslatePipe,TitleCasePipe, ReactiveFormsModule,ToastModule, ButtonModule ,NgIf,InputTextComponent],
+  imports: [BreadcrumpComponent,NgFor,DialogComponent,TranslatePipe,TitleCasePipe, ReactiveFormsModule,ToastModule, ButtonModule ,NgIf,InputTextComponent],
   templateUrl: './target.component.html',
   styleUrl: './target.component.scss'
 })
@@ -219,7 +220,7 @@ getBreadCrumb() {
     crumbs: [
       {
         label:  this.languageService.translate('Home'),
-        routerLink: '/dashboard',
+        routerLink: '/dashboard-trader',
       },
       {
         label: this.languageService.translate(this.pageName()+ '_'+this.tyepMode()+'_crumb'),
@@ -349,7 +350,8 @@ getBreadCrumb() {
 
   cancel(){
     const hasValue = this.confirm.formHasValue(this.form)
-    if (hasValue && this.tyepMode() == 'Edit')
+    console.log("TargetComponent  cancel  hasValue:", hasValue)
+    if (hasValue)
       this.showConfirmMessage = !this.showConfirmMessage
     else
       this.navigateToPageTable()

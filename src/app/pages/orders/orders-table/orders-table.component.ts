@@ -11,7 +11,7 @@ import { ETableShow, IcolHeaderSmallTable, TableSmallScreenComponent } from '../
 import { PaginationComponent } from '../../../components/pagination/pagination.component';
 import { TitleCasePipe, NgIf } from '@angular/common';
 import { DrawerComponent } from '../../../components/drawer/drawer.component';
-import { order_status } from '../../../conts';
+import { order_status, Roles } from '../../../conts';
 import { SelectComponent } from '../../../components/select/select.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DatePicker } from 'primeng/datepicker';
@@ -157,7 +157,7 @@ export class OrdersTableComponent {
   dataList: any = []
   columns: IcolHeader[] = [];
   maxDate = new Date();
-
+  role=''
 
   columnsSmallTable: IcolHeaderSmallTable[] = []
 
@@ -173,22 +173,28 @@ export class OrdersTableComponent {
     this.displayTableCols(this.selectedLang);
     this.getBreadCrumb();
     this.API_getStatus()
+    this.getRoles();
     this.languageService.translationService.onLangChange.subscribe(() => {
       this.selectedLang = this.languageService.translationService.currentLang;
       this.displayTableCols(this.selectedLang)
       this.API_getStatus()
+      this.getRoles();
       // this.getAllClients();
       // this.getAllPackages();
       this.getBreadCrumb();
     })
   }
-
+  getRoles(){
+    this.ApiService.get('Auth/getRoles').subscribe((res:any)=>{
+    this.role=res.message
+    })
+  }
   getBreadCrumb() {
     this.bredCrumb = {
       crumbs: [
         {
           label: this.languageService.translate('Home'),
-          routerLink: '/dashboard',
+          routerLink:  this.role==Roles.admin?'/dashboard-admin':'/dashboard-trader',
         },
         {
           label: this.languageService.translate(this.pageName()),

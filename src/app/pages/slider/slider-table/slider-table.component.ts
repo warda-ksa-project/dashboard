@@ -96,8 +96,8 @@ export class SliderTableComponent {
   displayTableCols(currentLang: string) {
     this.columns = [
       { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: true },
-      { keyName: 'imageEn', header: 'Image (en)', type: EType.image, show: true },
-      { keyName: 'imageAr', header: 'Image (ar)', type: EType.image, show: true },
+      { keyName: 'imageEn', header: this.languageService.translate('slider.form.img_en'), type: EType.image, show: true },
+      { keyName: 'imageAr', header: this.languageService.translate('slider.form.img_ar'), type: EType.image, show: true },
       { keyName: 'titleEn', header: this.languageService.translate('slider.form.title_en'), type: EType.text, show: true },
       { keyName: 'titleAr', header: this.languageService.translate('slider.form.title_ar'), type: EType.text, show: true },
       { keyName: 'displayOrder', header: this.languageService.translate('slider.form.displayOrder'), type: EType.text, show: true },

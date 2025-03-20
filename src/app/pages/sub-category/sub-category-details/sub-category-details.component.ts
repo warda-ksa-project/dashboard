@@ -19,6 +19,7 @@ import { EditModeImageComponent } from '../../../components/edit-mode-image/edit
 import { SelectComponent } from '../../../components/select/select.component';
 import { environment } from '../../../../environments/environment';
 import { GalleryComponent } from '../../../components/gallery/gallery.component';
+import { Roles } from '../../../conts';
 
 const global_PageName = 'sub_category.pageName';
 const global_routeUrl = 'sub-category'
@@ -42,7 +43,7 @@ export class SubCategoryDetailsComponent {
   showConfirmMessage: boolean = false
   private confirm = inject(ConfirmMsgService)
   private imageUrl = environment.baseImageUrl
-
+role=''
   parentCategoryList: any[] = []
   imageList: any = [{
     src: '',
@@ -97,11 +98,13 @@ export class SubCategoryDetailsComponent {
 
     this.pageName.set(global_PageName)
     this.getBreadCrumb();
-    this.getMainCategory()
+    this.getMainCategory();
+    this.getRoles()
     this.languageService.translationService.onLangChange.subscribe(() => {
       this.selectedLang = this.languageService.translationService.currentLang;
       this.getBreadCrumb();
       this.getMainCategory()
+      this.getRoles()
     });
     if (this.tyepMode() !== 'Add')
       this.API_getItemDetails()
@@ -115,13 +118,17 @@ export class SubCategoryDetailsComponent {
     else result = 'Add'
     return result
   }
-
+  getRoles(){
+    this.ApiService.get('Auth/getRoles').subscribe((res:any)=>{
+    this.role=res.message
+    })
+  }
   getBreadCrumb() {
     this.bredCrumb = {
       crumbs: [
         {
           label: this.languageService.translate('Home'),
-          routerLink: '/dashboard',
+          routerLink:  this.role==Roles.admin?'/dashboard-admin':'/dashboard-trader',
         },
         {
           label: this.languageService.translate(this.pageName() + '_' + this.tyepMode() + '_crumb'),

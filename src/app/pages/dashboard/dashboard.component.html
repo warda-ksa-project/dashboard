@@ -101,7 +101,7 @@
               <span class="pi pi-shopping-cart"></span>
               {{ "products.best.title" | translate }}
             </h2>
-            <app-select [list]="pageinationList" placeholder="{{'select'|translate}}" 
+            <app-select *ngIf="dataList.length>0" [list]="pageinationList" placeholder="{{'select'|translate}}" 
             
             (onSelectedValue)="onPageSelected($event)" optionLabel="optionLabel" ></app-select>
             <!-- <span class="pi pi-filter pointer p-1" (click)="openFilter()">
@@ -122,6 +122,9 @@
               [actions]="tableActions"
             >
             </app-table-small-screen>
+          </div>
+          <div class="mt-3 text-center" *ngIf="dataList.length==0">
+               <span>{{'shared.no_data_found'|translate }}</span>
           </div>
           <!-- <app-pagination
             (onPageChange)="onPageChange($event)"

@@ -11,6 +11,9 @@
   "Actions": "الإجراءات",
   "no_image":"لا يوجد صور",
   "select":"اختر",
+  "table_delete_msg": "هل أنت متأكد من حذف هذا العنصر؟",
+"table_delete_blk": "هل أنت متأكد من حظر هذا العنصر؟",
+"table_delete_active": "هل أنت متأكد من تفعيل هذا العنصر؟",
   "validation_message": {
     "minlength_validation": "يجب أن يكون الطول أكثر من",
     "maxlength_validation": "يجب أن يكون الطول أقل من",
@@ -40,7 +43,11 @@
     "next": "التالي",
     "back": "السابق",
      "approve":"قبول",
-    "reject":"رفض"
+    "reject":"رفض",
+    "delete":"مسح",
+    "active":"نشط",
+    "no":"لا",
+    "view":"تفاصيل"
   },
   "shared": {
     "log_out":"تسجيل خروج",
@@ -96,7 +103,7 @@
     "trader": "التجار",
     "article":"المقالات",
     "slider":"السلايدر",
-    "trader_request":"الطلبات ",
+    "trader_request":"طلبات التجار",
     "clients": "العملاء",
     "category": "الفئات الفرعية",
     "sub_category": "الفئات الفرعية",
@@ -121,6 +128,10 @@
     "setting": "الإعدادات",
     "faqs": "الأسئلة الشائعة",
     "target":"الهدف"
+  },
+  "target":{
+    "pageName": "الهدف",
+    "pageName_Edit_crumb": "تعديل الهدف"
   },
  "client": {
     "pageName": "العملاء",
@@ -592,6 +603,25 @@
     "imgs": "صورة"
   }
 },
+"slider": {
+    "pageName": "السلايدر",
+    "list": "قائمة السلايدر",
+    "pageName_filter": "تصفية السلايدر",
+    "pageName_Add_crumb": "إضافة سلايدر",
+    "pageName_Edit_crumb": "تعديل السلايدر",
+    "pageName_View_crumb": "عرض السلايدر",
+    "form": {
+      "img_ar": "الصورة (عربي)",
+      "img_en": "الصورة (إنجليزي)",
+      "upload_img_en": "رفع الصورة (إنجليزي)",
+      "upload_img_ar": "رفع الصورة (عربي)",
+      "title_ar": "العنوان (عربي)",
+      "title_en": "العنوان (إنجليزي)",
+      "displayOrder": "ترتيب العرض",
+      "view_type": "نوع العرض"
+    }
+  }
+,
   "profile": {
     "pageName": "الملف الشخصي",
     "pageName_Edit_crumb": "تعديل الملف الشخصي",

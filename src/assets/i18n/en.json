@@ -12,6 +12,9 @@
   "Actions": "Actions",
   "no_image":"No Image Found",
   "select":"Select",
+  "table_delete_msg":"Are you sure to delete this item ?",
+  "table_delete_blk":"Are you sure to block this item ?",
+  "table_delete_active":"Are you sure to active this item ?",
   "validation_message": {
     "minlength_validation": "length should be more than",
     "maxlength_validation": "length should be more less than",
@@ -41,7 +44,11 @@
     "next": "Next",
     "back": "Back",
     "approve":"Approve",
-    "reject":"Reject"
+    "reject":"Reject",
+    "delete":"Delete",
+    "active":"Active",
+    "no":"No",
+    "view":"View"
   },
   "shared": {
     "log_out":"Logout",
@@ -613,6 +620,24 @@
        "imgs":"image"
     }
   },
+  "slider": {
+    "pageName": "Slider",
+    "list": "Slider List",
+    "pageName_filter": "Filter Slider",
+    "pageName_Add_crumb": "Add Slider",
+    "pageName_Edit_crumb": "Edit Slider",
+    "pageName_View_crumb": "View Slider",
+    "form": {
+      "img_ar": " Image (ar)",
+      "img_en": " Image (en)",
+      "upload_img_en": "Upload Image (en)",
+      "upload_img_ar": "Upload Image (ar)",
+      "title_ar": " Title (ar)",
+      "title_en": " Title (en)",
+      "displayOrder": "Display Order",
+      "view_type": "View Type"
+    }
+  },
   "profile": {
     "pageName": "Profile",
     "pageName_Edit_crumb": "Edit Profile",
@@ -794,24 +819,7 @@
       "desc_ar": "Description (ar)"
     }
   },
-  "slider": {
-    "pageName": "Slider",
-    "list": "Slider List",
-    "pageName_filter": "Filter Slider",
-    "pageName_Add_crumb": "Add Slider",
-    "pageName_Edit_crumb": "Edit Slider",
-    "pageName_View_crumb": "View Slider",
-    "form": {
-      "img_ar": " Image (ar)",
-      "img_en": " Image (en)",
-      "upload_img_en": "Upload Image (en)",
-      "upload_img_ar": "Upload Image (ar)",
-      "title_ar": " Title (ar)",
-      "title_en": " Title (en)",
-      "displayOrder": "Display Order",
-      "view_type": "View Type"
-    }
-  },
+
   "social_media": {
     "title": "Social Media List",
     "facebook": "Facebook",

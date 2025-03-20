@@ -128,15 +128,14 @@ export class MainCatogoryTableComponent {
   displayTableCols(currentLang: string) {
     this.columns = [
       { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: true },
-      { keyName: 'enName', header: this.languageService.translate('client.form.name'), type: EType.text, show: true },
-      { keyName: 'enName', header: this.languageService.translate('client.form.userName'), type: EType.text, show: true },
-      { keyName: '', header: this.languageService.translate('client.form.action'), type: EType.actions, actions: this.tableActions, show: true },
+      { keyName: 'enName', header: this.languageService.translate('category.form.enName'), type: EType.text, show: true },
+      { keyName: 'arName', header: this.languageService.translate('category.form.arName'), type: EType.text, show: true },
+      { keyName: '', header: this.languageService.translate('Action'), type: EType.actions, actions: this.tableActions, show: true },
     ];
     this.columnsSmallTable = [
-      { keyName: 'id', header: this.languageService.translate('client.form.userName'), type: EType.id, show: false },
-      { keyName: 'enName', header: this.languageService.translate('client.form.name'), type: EType.text, showAs: ETableShow.header },
-      { keyName: 'enName', header: this.languageService.translate('client.form.mobile'), type: EType.text, showAs: ETableShow.header },
-      { keyName: currentLang === 'ar' ? 'arDescription' : 'enDescription', header: this.languageService.translate('client.form.fullName'), type: EType.editor, showAs: ETableShow.content }
+      { keyName: 'id', header: this.languageService.translate('category.form.userName'), type: EType.id, show: false },
+      { keyName: 'enName', header: this.languageService.translate('category.form.enName'), type: EType.text, showAs: ETableShow.header },
+      { keyName: 'arName', header: this.languageService.translate('category.form.arName'), type: EType.text, showAs: ETableShow.header },
     ];
   }
 

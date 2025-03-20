@@ -21,6 +21,7 @@ import { StepperModule } from 'primeng/stepper';
 import { GalleryComponent } from '../../../components/gallery/gallery.component';
 import { environment } from '../../../../environments/environment';
 import { Validations } from '../../../validations';
+import { Roles } from '../../../conts';
 const global_PageName = 'piece_products.pageName';
 const global_routeUrl = 'piece-product'
 const global_API_details = 'pieceproducts' + '/GetById';
@@ -40,7 +41,7 @@ export class PieceProductsDetailsComponent {
   private ApiService = inject(ApiService)
   private router = inject(Router)
   private imageUrl = environment.baseImageUrl
-
+  role=''
   private route = inject(ActivatedRoute)
   showConfirmMessage: boolean = false
   private confirm = inject(ConfirmMsgService)
@@ -163,9 +164,11 @@ export class PieceProductsDetailsComponent {
 
     this.pageName.set(global_PageName)
     this.getBreadCrumb();
+    this.getRoles()
     this.languageService.translationService.onLangChange.subscribe(() => {
       this.selectedLang = this.languageService.translationService.currentLang;
       this.getBreadCrumb();
+      this.getRoles()
     });
 
     this.form.get('startDate')?.valueChanges.subscribe((res:any) => {
@@ -217,7 +220,11 @@ export class PieceProductsDetailsComponent {
     if (this.tyepMode() !== 'Add')
       this.API_getItemDetails()
   }
-
+  getRoles(){
+    this.ApiService.get('Auth/getRoles').subscribe((res:any)=>{
+    this.role=res.message
+    })
+  }
   tyepMode() {
     const url = this.router.url;
     let result = 'Add'
@@ -232,7 +239,7 @@ export class PieceProductsDetailsComponent {
       crumbs: [
         {
           label: this.languageService.translate('Home'),
-          routerLink: '/dashboard',
+          routerLink:  this.role==Roles.admin?'/dashboard-admin':'/dashboard-trader',
         },
         {
           label: this.languageService.translate(this.pageName() + '_' + this.tyepMode() + '_crumb'),

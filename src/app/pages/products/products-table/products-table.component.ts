@@ -22,6 +22,7 @@ import { DrawerComponent } from '../../../components/drawer/drawer.component';
 import { PaginationComponent } from '../../../components/pagination/pagination.component';
 import { TitleCasePipe } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
+import { Roles } from '../../../conts';
 
 const global_pageName = 'products.pageName';
 const global_router_add_url_in_Table = '/product/add';
@@ -91,6 +92,7 @@ export class ProductsTableComponent {
   columns: IcolHeader[] = [];
 
   columnsSmallTable: IcolHeaderSmallTable[] = [];
+  role:any=''
 
   selectedLang: any;
   languageService = inject(LanguageService);
@@ -163,7 +165,7 @@ export class ProductsTableComponent {
       crumbs: [
         {
           label: this.languageService.translate('Home'),
-          routerLink: '/dashboard',
+          routerLink:  this.role==Roles.admin?'/dashboard-admin':'/dashboard-trader',
         },
         {
           label: this.languageService.translate(this.pageName()),
@@ -191,7 +193,11 @@ export class ProductsTableComponent {
       }
     );
   }
-
+  getRoles(){
+    this.ApiService.get('Auth/getRoles').subscribe((res:any)=>{
+    this.role=res.message
+    })
+  }
   onPageChange(event: any) {
     console.log(event);
     this.objectSearch.pageNumber = event;

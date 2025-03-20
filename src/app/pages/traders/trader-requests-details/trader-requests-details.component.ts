@@ -18,6 +18,7 @@ import { StepperModule } from 'primeng/stepper';
 import { Validations } from '../../../validations';
 import { environment } from '../../../../environments/environment';
 import { Dialog, DialogModule } from 'primeng/dialog';
+import { MapComponent } from '../../../components/map/map.component';
 
 const global_PageName = 'trader_request.pageName';
 const global_routeUrl = 'trader-request'
@@ -28,7 +29,7 @@ const global_API_update = 'Trader' + '/Update';
 @Component({
   selector: 'app-trader-requests-details',
   standalone: true,
-  imports: [ReactiveFormsModule, FormsModule,Dialog,DialogModule,ButtonModule, StepperModule, EditModeImageComponent, TitleCasePipe, TranslatePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
+  imports: [ReactiveFormsModule,MapComponent, FormsModule,Dialog,DialogModule,ButtonModule, StepperModule, EditModeImageComponent, TitleCasePipe, TranslatePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
   templateUrl: './trader-requests-details.component.html',
   styleUrl: './trader-requests-details.component.scss'
 })
@@ -42,13 +43,11 @@ header=''
   private route = inject(ActivatedRoute)
   showConfirmMessage: boolean = false
   private confirm = inject(ConfirmMsgService)
+  lat:any=0
+  lng:any=0
+  showMap=false
   adress: any[] = [{
     expalinedAddress: '',
-    street: '',
-    buildNo: '',
-    flatNo: '',
-    district: '',
-    floorNo: '',
     latitude: '',
     logitude: '',
     userId: Number(localStorage.getItem('userId')) || 0
@@ -107,37 +106,39 @@ header=''
       ]
     }),
 
-    street: new FormControl('', {
-      validators: [
+    // street: new FormControl('', {
+    //   validators: [
         
-      ]
-    }),
-    district: new FormControl('', {
-      validators: [
-      ]
-    }),
-    buildNo: new FormControl<any>('', {
-      validators: [
-      ]
-    }),
-    floorNo: new FormControl<any>('', {
-      validators: [
+    //   ]
+    // }),
+    // district: new FormControl('', {
+    //   validators: [
+    //   ]
+    // }),
+    // buildNo: new FormControl<any>('', {
+    //   validators: [
+    //   ]
+    // }),
+    // floorNo: new FormControl<any>('', {
+    //   validators: [
        
-      ]
-    }),
-    flatNo: new FormControl<any>('', {
-      validators: [
+    //   ]
+    // }),
+    // flatNo: new FormControl<any>('', {
+    //   validators: [
        
-      ]
-    }),
+    //   ]
+    // }),
     logitude: new FormControl('', {
       validators: [
-       
+        Validators.required,
+        Validations.decimalNumberValidators()
       ]
     }),
     latitude: new FormControl('', {
       validators: [
-       
+        Validators.required,
+        Validations.decimalNumberValidators()
       ]
     }),
     id: new FormControl(this.getID | 0),
@@ -198,49 +199,49 @@ header=''
       this.getBreadCrumb();
     });
 
-    this.form.valueChanges.subscribe(res => {
-      console.log('d---d',this.form.value)
-      console.log('d===d',(!this.form.valid || !this.isAddressVaild()))
-    })
-    this.form.get('street')?.valueChanges.subscribe(res => {
-      this.adress[0].street = res;
-      this.form.patchValue({
-        addresses: this.adress
-      })
-    })
-    this.form.get('buildNo')?.valueChanges.subscribe(res => {
-      this.adress[0].buildNo = +res
-      this.form.patchValue({
-        addresses: this.adress
-      })
+    // this.form.valueChanges.subscribe(res => {
+    //   console.log('d---d',this.form.value)
+    //   console.log('d===d',(!this.form.valid || !this.isAddressVaild()))
+    // })
+    // this.form.get('street')?.valueChanges.subscribe(res => {
+    //   this.adress[0].street = res;
+    //   this.form.patchValue({
+    //     addresses: this.adress
+    //   })
+    // })
+    // this.form.get('buildNo')?.valueChanges.subscribe(res => {
+    //   this.adress[0].buildNo = +res
+    //   this.form.patchValue({
+    //     addresses: this.adress
+    //   })
 
 
-    })
-    this.form.get('flatNo')?.valueChanges.subscribe(res => {
-      this.adress[0].flatNo = +res
-      this.form.patchValue({
-        addresses: this.adress
-      })
+    // })
+    // this.form.get('flatNo')?.valueChanges.subscribe(res => {
+    //   this.adress[0].flatNo = +res
+    //   this.form.patchValue({
+    //     addresses: this.adress
+    //   })
 
 
-    })
-    this.form.get('district')?.valueChanges.subscribe(res => {
-      this.adress[0].district = res
-      this.form.patchValue({
-        addresses: this.adress
-      })
+    // })
+    // this.form.get('district')?.valueChanges.subscribe(res => {
+    //   this.adress[0].district = res
+    //   this.form.patchValue({
+    //     addresses: this.adress
+    //   })
 
 
-    })
-    this.form.get('floorNo')?.valueChanges.subscribe(res => {
-      this.adress[0].floorNo = +res
-      this.form.patchValue({
-        addresses: this.adress
-      })
-      console.log('dd',this.form.value)
+    // })
+    // this.form.get('floorNo')?.valueChanges.subscribe(res => {
+    //   this.adress[0].floorNo = +res
+    //   this.form.patchValue({
+    //     addresses: this.adress
+    //   })
+    //   console.log('dd',this.form.value)
 
 
-    })
+    // })
     this.form.get('latitude')?.valueChanges.subscribe(res => {
       this.adress[0].latitude = res
       this.form.patchValue({
@@ -292,6 +293,12 @@ header=''
     else result = 'Add'
     return result
   }
+  onChangeLocation(event:any){
+    this.form.patchValue({
+      latitude:String(event.lat),
+      logitude:String(event.lng)
+    })
+  }
 
   getBreadCrumb() {
     this.bredCrumb = {
@@ -327,25 +334,28 @@ header=''
         this.form.patchValue({
           ...res.data,
           expalinedAddress:res.data.addresses[0].expalinedAddress,
-          street:res.data.addresses[0].street,
-          buildNo:res.data.addresses[0].buildNo,
-          flatNo:res.data.addresses[0].flatNo,
-          district:res.data.addresses[0].district,
-          floorNo:res.data.addresses[0].floorNo,
+          // street:res.data.addresses[0].street,
+          // buildNo:res.data.addresses[0].buildNo,
+          // flatNo:res.data.addresses[0].flatNo,
+          // district:res.data.addresses[0].district,
+          // floorNo:res.data.addresses[0].floorNo,
           latitude:res.data.addresses[0].latitude,
           logitude:res.data.addresses[0].logitude,
         })
+        this.lat=String(res.data.addresses[0].latitude);
+        this.lng=String(res.data.addresses[0].logitude);
+        this.showMap=true
         this.editImageIBanProps.props.imgSrc = environment.baseImageUrl + res.data.iban;
         this.editImageProps .props.imgSrc = environment.baseImageUrl + res.data.cr;
         this.editImageLicenseProps.props.imgSrc = environment.baseImageUrl + res.data.license;
         this.editMode = true;
         this.adress = [{
           expalinedAddress:res.data.addresses[0].expalinedAddress,
-          street:res.data.addresses[0].street,
-          buildNo:res.data.addresses[0].buildNo,
-          flatNo:res.data.addresses[0].flatNo,
-          district:res.data.addresses[0].district,
-          floorNo:res.data.addresses[0].floorNo,
+          // street:res.data.addresses[0].street,
+          // buildNo:res.data.addresses[0].buildNo,
+          // flatNo:res.data.addresses[0].flatNo,
+          // district:res.data.addresses[0].district,
+          // floorNo:res.data.addresses[0].floorNo,
           latitude:res.data.addresses[0].latitude,
           logitude:res.data.addresses[0].logitude,
           userId: Number(localStorage.getItem('userId')) || 0
@@ -419,11 +429,11 @@ header=''
 
     this.setPayload([
       'expalinedAddress',
-      'street',
-      'district',
-      'buildNo',
-      'floorNo',
-      'flatNo',
+      // 'street',
+      // 'district',
+      // 'buildNo',
+      // 'floorNo',
+      // 'flatNo',
       'logitude',
       'latitude'
     ], payload)

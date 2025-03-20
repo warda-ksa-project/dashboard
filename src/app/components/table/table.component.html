@@ -63,9 +63,9 @@
               <div class="d-flex" *ngIf="col.type=='actions'">
                 <div *ngFor="let action of col.actions">
                   <div class="actions-icon" (click)="onAction(action,rowData)">
-                    <img *ngIf="action.name==='delete'" src="assets/images/delete.svg"  pTooltip="delete" tooltipPosition="top" alt="edit">
-                    <img *ngIf="action.name==='edit'"  src="assets/images/edit.svg"  pTooltip="edit" tooltipPosition="top" alt="edit">
-                    <img *ngIf="action.name==='view'" src="assets/images/view.svg"  pTooltip="View" tooltipPosition="top" alt="edit">
+                    <img *ngIf="action.name==='delete'" src="assets/images/delete.svg"  pTooltip="{{'actions.delete'|translate}}" tooltipPosition="top" alt="edit">
+                    <img *ngIf="action.name==='edit'"  src="assets/images/edit.svg"  pTooltip="{{'actions.edit'|translate}}" tooltipPosition="top" alt="edit">
+                    <img *ngIf="action.name==='view'" src="assets/images/view.svg"  pTooltip="{{'actions.view'|translate}}" tooltipPosition="top" alt="edit">
                     <!-- <span *ngIf="action.name==='active'" class="pi pi-bullseye" pTooltip="Active"
                       tooltipPosition="top"></span>
                     <span *ngIf="action.name==='block'" class="pi pi-ban" pTooltip="Block" tooltipPosition="top"></span> -->
@@ -86,18 +86,18 @@
   </div>
 </ng-template>
 
-<app-dialog [message]="'Are you sure to delete this item ?'" [visible]="showConfirmMessage">
-  <button class="dialog-close-btn btn btn-danger" (click)="onConfirmMessage()"> Delete</button>
-  <button class="dialog-close-btn btn btn-default" (click)="showConfirmMessage = false"> No</button>
+<app-dialog [message]="'table_delete_msg'" [visible]="showConfirmMessage">
+  <button class="dialog-close-btn btn btn-danger" (click)="onConfirmMessage()"> {{'actions.delete'|translate}}</button>
+  <button class="dialog-close-btn btn btn-default" (click)="showConfirmMessage = false">  {{'actions.no'|translate}}</button>
 </app-dialog>
 
 
-<app-dialog [message]="'Are you sure to block this item ?'" [visible]="showBlockConfirmationMessage">
-  <button class="dialog-close-btn btn btn-danger" (click)="onConfirmMessage()"> Delete</button>
-  <button class="dialog-close-btn btn btn-default" (click)="showBlockConfirmationMessage = false"> No</button>
+<app-dialog [message]="'table_delete_blk'" [visible]="showBlockConfirmationMessage">
+  <button class="dialog-close-btn btn btn-danger" (click)="onConfirmMessage()">  {{'actions.delete'|translate}}</button>
+  <button class="dialog-close-btn btn btn-default" (click)="showBlockConfirmationMessage = false">  {{'actions.no'|translate}}</button>
 </app-dialog>
 
-<app-dialog [message]="'Are you sure to active this item ?'" [visible]="showActiveConfirmationMessage">
-  <button class="dialog-close-btn btn btn-success" (click)="onActiveConfirmMessage()"> Active</button>
-  <button class="dialog-close-btn btn btn-default" (click)="showActiveConfirmationMessage = false"> No</button>
+<app-dialog [message]="'table_delete_active'" [visible]="showActiveConfirmationMessage">
+  <button class="dialog-close-btn btn btn-success" (click)="onActiveConfirmMessage()">  {{'actions.active'|translate}}</button>
+  <button class="dialog-close-btn btn btn-default" (click)="showActiveConfirmationMessage = false">  {{'actions.no'|translate}}</button>
 </app-dialog>

@@ -20,9 +20,10 @@ import { ConfirmMsgService } from '../../../services/confirm-msg.service';
 import { InputTextComponent } from '../../../components/input-text/input-text.component';
 import { DialogComponent } from '../../../components/dialog/dialog.component';
 import { TableModule } from 'primeng/table';
+import { Roles } from '../../../conts';
 
 const global_PageName='order.pageName';
-const global_routeUrl ='order'
+const global_routeUrl ='orders'
 const global_API_details='order'+'/GetById?Id=';
 const global_API_create='order'+'/Create';
 const global_API_update='order'+'/Update';
@@ -70,7 +71,7 @@ pageName =signal<string>(global_PageName);
   // };
 
   // editMode: boolean = false;
-
+  role=''
   get getID() {
     return this.route.snapshot.params['id']
   }
@@ -82,9 +83,11 @@ pageName =signal<string>(global_PageName);
 
     this.pageName.set(global_PageName)
     this.getBreadCrumb();
+    this.getRoles();
     this.languageService.translationService.onLangChange.subscribe(() => {
       this.selectedLang = this.languageService.translationService.currentLang;
       this.getBreadCrumb();
+      this.getRoles();
     });
     if (this.tyepMode() !== 'Add')
       this.API_getItemDetails()
@@ -104,7 +107,7 @@ pageName =signal<string>(global_PageName);
       crumbs: [
         {
           label:  this.languageService.translate('Home'),
-          routerLink: '/dashboard',
+          routerLink:  this.role==Roles.admin?'/dashboard-admin':'/dashboard-trader',
         },
         {
           label: this.languageService.translate(this.pageName()+ '_'+this.tyepMode()+'_crumb'),
@@ -169,6 +172,11 @@ pageName =signal<string>(global_PageName);
     })
   }
 
+  getRoles(){
+    this.ApiService.get('Auth/getRoles').subscribe((res:any)=>{
+    this.role=res.message
+    })
+  }
   API_forEditItem(payload: any) {
     this.ApiService.put(global_API_update, payload, { showAlert: true, message: `update ${this.pageName()} Successfuly` }).subscribe(res => {
       if (res)
