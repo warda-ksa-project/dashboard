@@ -18,6 +18,7 @@ import { StepperModule } from 'primeng/stepper';
 import { Validations } from '../../../validations';
 import { environment } from '../../../../environments/environment';
 import { MapComponent } from '../../../components/map/map.component';
+import { SelectComponent } from '../../../components/select/select.component';
 
 const global_PageName = 'trader.pageName';
 const global_routeUrl = 'trader'
@@ -28,7 +29,7 @@ const global_API_update = 'Trader' + '/Update';
 @Component({
   selector: 'app-trader-details',
   standalone: true,
-  imports: [ReactiveFormsModule, StepperModule,MapComponent, EditModeImageComponent, TitleCasePipe, TranslatePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
+  imports: [ReactiveFormsModule,SelectComponent, StepperModule,MapComponent, EditModeImageComponent, TitleCasePipe, TranslatePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
   templateUrl: './trader-details.component.html',
   styleUrl: './trader-details.component.scss'
 })
@@ -43,10 +44,12 @@ export class TraderDetailsComponent  {
   private route = inject(ActivatedRoute)
   showConfirmMessage: boolean = false
   private confirm = inject(ConfirmMsgService)
+  cities:any[]=[]
   adress: any[] = [{
     expalinedAddress: '',
     latitude: '',
     logitude: '',
+    cityId:'',
     userId: Number(localStorage.getItem('userId')) || 0
   }]
   files:any[]=[
@@ -103,6 +106,11 @@ export class TraderDetailsComponent  {
     }),
     addresses: new FormControl<any>(''),
     expalinedAddress: new FormControl('', {
+      validators: [
+        Validators.required,
+      ]
+    }),
+    cityId: new FormControl('', {
       validators: [
         Validators.required,
       ]
@@ -201,9 +209,11 @@ export class TraderDetailsComponent  {
 
     this.pageName.set(global_PageName)
     this.getBreadCrumb();
+    this.getAllCity()
     this.languageService.translationService.onLangChange.subscribe(() => {
       this.selectedLang = this.languageService.translationService.currentLang;
       this.getBreadCrumb();
+      this.getAllCity()
     });
 
     this.form.valueChanges.subscribe(res => {
@@ -273,6 +283,14 @@ export class TraderDetailsComponent  {
 
 
     })
+    this.form.get('cityId')?.valueChanges.subscribe(res => {
+      this.adress[0].cityId = res
+      this.form.patchValue({
+        addresses: this.adress
+      })
+
+
+    })
     this.form.get('addresses')?.valueChanges.subscribe(res => {
       this.isAddressVaild()
     })
@@ -312,7 +330,7 @@ export class TraderDetailsComponent  {
       crumbs: [
         {
           label: this.languageService.translate('Home'),
-          routerLink: '/dashboard',
+          routerLink: '/dashboard-admin',
         },
         {
           label: this.languageService.translate(this.pageName() + '_' + this.tyepMode() + '_crumb'),
@@ -335,13 +353,26 @@ export class TraderDetailsComponent  {
 
   //   })
   // }
+  getAllCity(){
+    this.ApiService.get('city/GetAll').subscribe((res: any) => {
+      if (res.data) {
+        this.cities=[]
+       res.data.map((city:any)=>{
+           this.cities.push({
+            name:this.selectedLang=='en'?city.enName :city.arName,
+            code:city.id
+           })
+       })
+      }
+    })
+  }
   API_getItemDetails() {
     this.ApiService.get(`${global_API_details}`, { id: this.getID }).subscribe((res: any) => {
       if (res.data) {
         this.form.patchValue({
           ...res.data,
           expalinedAddress:res.data.addresses[0].expalinedAddress,
-          // street:res.data.addresses[0].street,
+          cityId:res.data.addresses[0].cityId,
           // buildNo:res.data.addresses[0].buildNo,
           // flatNo:res.data.addresses[0].flatNo,
           // district:res.data.addresses[0].district,
@@ -359,7 +390,7 @@ export class TraderDetailsComponent  {
         this.editMode = true;
         this.adress = [{
           expalinedAddress:res.data.addresses[0].expalinedAddress,
-          // street:res.data.addresses[0].street,
+          cityId:res.data.addresses[0].cityId,
           // buildNo:res.data.addresses[0].buildNo,
           // flatNo:res.data.addresses[0].flatNo,
           // district:res.data.addresses[0].district,
@@ -433,8 +464,8 @@ export class TraderDetailsComponent  {
       cr: this.form.value.cr[0].image,
       license: this.form.value.license[0].image,
       iban: this.form.value.iban[0].image,
-      "enDescription": "string",
-      "arDescription": "string",
+      "enDescription": null,
+      "arDescription": null,
     }
 
     this.setPayload([
@@ -443,7 +474,7 @@ export class TraderDetailsComponent  {
       // 'district',
       // 'buildNo',
       // 'floorNo',
-      // 'flatNo',
+      'cityId',
       'logitude',
       'latitude'
     ], payload)

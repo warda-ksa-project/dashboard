@@ -154,7 +154,7 @@ export class TableComponent implements OnInit, OnChanges {
         this.reloadGetAllApi.emit(true);
       }
     }, err => {
-      this.toaster.errorToaster(err.error.message)
+      // this.toaster.errorToaster(err.error.message)
     })
   }
 

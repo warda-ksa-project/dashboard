@@ -19,6 +19,7 @@ import { Validations } from '../../../validations';
 import { environment } from '../../../../environments/environment';
 import { Dialog, DialogModule } from 'primeng/dialog';
 import { MapComponent } from '../../../components/map/map.component';
+import { SelectComponent } from '../../../components/select/select.component';
 
 const global_PageName = 'trader_request.pageName';
 const global_routeUrl = 'trader-request'
@@ -29,7 +30,7 @@ const global_API_update = 'Trader' + '/Update';
 @Component({
   selector: 'app-trader-requests-details',
   standalone: true,
-  imports: [ReactiveFormsModule,MapComponent, FormsModule,Dialog,DialogModule,ButtonModule, StepperModule, EditModeImageComponent, TitleCasePipe, TranslatePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
+  imports: [ReactiveFormsModule,MapComponent,SelectComponent, FormsModule,Dialog,DialogModule,ButtonModule, StepperModule, EditModeImageComponent, TitleCasePipe, TranslatePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
   templateUrl: './trader-requests-details.component.html',
   styleUrl: './trader-requests-details.component.scss'
 })
@@ -46,10 +47,12 @@ header=''
   lat:any=0
   lng:any=0
   showMap=false
+  cities:any[]=[]
   adress: any[] = [{
     expalinedAddress: '',
     latitude: '',
     logitude: '',
+    cityId:'',
     userId: Number(localStorage.getItem('userId')) || 0
   }]
   files:any[]=[
@@ -102,7 +105,12 @@ header=''
     addresses: new FormControl<any>(''),
     expalinedAddress: new FormControl('', {
       validators: [
-       
+        Validators.required,
+      ]
+    }),
+    cityId: new FormControl('', {
+      validators: [
+        Validators.required,
       ]
     }),
 
@@ -194,9 +202,11 @@ header=''
 
     this.pageName.set(global_PageName)
     this.getBreadCrumb();
+    this.getAllCity()
     this.languageService.translationService.onLangChange.subscribe(() => {
       this.selectedLang = this.languageService.translationService.currentLang;
       this.getBreadCrumb();
+      this.getAllCity()
     });
 
     // this.form.valueChanges.subscribe(res => {
@@ -266,6 +276,14 @@ header=''
 
 
     })
+    this.form.get('cityId')?.valueChanges.subscribe(res => {
+      this.adress[0].cityId = res
+      this.form.patchValue({
+        addresses: this.adress
+      })
+
+
+    })
     this.form.get('addresses')?.valueChanges.subscribe(res => {
       this.isAddressVaild()
     })
@@ -299,7 +317,19 @@ header=''
       logitude:String(event.lng)
     })
   }
-
+  getAllCity(){
+    this.ApiService.get('city/GetAll').subscribe((res: any) => {
+      if (res.data) {
+        this.cities=[]
+       res.data.map((city:any)=>{
+           this.cities.push({
+            name:this.selectedLang=='en'?city.enName :city.arName,
+            code:city.id
+           })
+       })
+      }
+    })
+  }
   getBreadCrumb() {
     this.bredCrumb = {
       crumbs: [
@@ -334,7 +364,7 @@ header=''
         this.form.patchValue({
           ...res.data,
           expalinedAddress:res.data.addresses[0].expalinedAddress,
-          // street:res.data.addresses[0].street,
+          cityId:res.data.addresses[0].cityId,
           // buildNo:res.data.addresses[0].buildNo,
           // flatNo:res.data.addresses[0].flatNo,
           // district:res.data.addresses[0].district,
@@ -351,7 +381,7 @@ header=''
         this.editMode = true;
         this.adress = [{
           expalinedAddress:res.data.addresses[0].expalinedAddress,
-          // street:res.data.addresses[0].street,
+          cityId:res.data.addresses[0].cityId,
           // buildNo:res.data.addresses[0].buildNo,
           // flatNo:res.data.addresses[0].flatNo,
           // district:res.data.addresses[0].district,
@@ -433,7 +463,7 @@ header=''
       // 'district',
       // 'buildNo',
       // 'floorNo',
-      // 'flatNo',
+      'cityId',
       'logitude',
       'latitude'
     ], payload)

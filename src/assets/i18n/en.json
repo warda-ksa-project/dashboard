@@ -294,7 +294,8 @@
       "files": "Files",
       "iban": "IBan",
       "license": "License",
-      "cr": "CR"
+      "cr": "CR",
+      "city":"City"
     }
   },
   "trader_request": {

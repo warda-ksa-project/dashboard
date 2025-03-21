@@ -187,6 +187,14 @@
                       [control]="form.get('expalinedAddress')"
                     ></app-input-text>
                   </div>
+                  <div class="col-lg-6 col-md-6 col-sm-12 mt-4">  
+                    <app-select [placeholder]="form.get('cityId')?.value"
+                     class="w-100" [list]="cities" 
+                     [label]="'trader.form.city'"
+                     [readOnly]="tyepMode() == 'View'"
+                     [disabled]="tyepMode() == 'View'"
+                       [control]="form.get('cityId')"></app-select>
+                 </div>
                 </div>
                 <div class="d-flex justify-content-between mt-5">
                   <button
