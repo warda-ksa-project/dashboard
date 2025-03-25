@@ -23,13 +23,13 @@ import { PaginationComponent } from '../../../components/pagination/pagination.c
 import { TitleCasePipe } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 
-const global_pageName = 'article.pageName';
-const global_router_add_url_in_Table = '/article/add';
-const global_router_view_url = '/article/view';
-const global_router_edit_url = '/article/edit';
-const global_API_getAll = 'article' + '/GetAll';
+const global_pageName = 'users.pageName';
+const global_router_add_url_in_Table = '/user/add';
+const global_router_view_url = '/user/view';
+const global_router_edit_url = '/user/edit';
+const global_API_getAll = 'user' + '/GetAllWithPagination';
 @Component({
-  selector: 'app-article-table',
+  selector: 'app-users-table',
   standalone: true,
   imports: [
     TableComponent,
@@ -43,10 +43,10 @@ const global_API_getAll = 'article' + '/GetAll';
     InputTextModule,
     TableSmallScreenComponent,
   ],
-  templateUrl: './article-table.component.html',
-  styleUrl: './article-table.component.scss'
+  templateUrl: './users-table.component.html',
+  styleUrl: './users-table.component.scss'
 })
-export class ArticleTableComponent {
+export class UsersTableComponent {
 global_router_add_url_in_Table = global_router_add_url_in_Table;
   pageName = signal<string>(global_pageName);
 
@@ -54,7 +54,7 @@ global_router_add_url_in_Table = global_router_add_url_in_Table;
   tableActions: ITableAction[] = [
     {
       name: EAction.delete,
-      apiName_or_route: 'article/Delete?id',
+      apiName_or_route: 'user/DeleteUser?id',
       autoCall: true,
     },
     {
@@ -79,8 +79,6 @@ global_router_add_url_in_Table = global_router_add_url_in_Table;
     pageSize: 8,
     sortingExpression: '',
     sortingDirection: 0,
-    enTitle: '',
-    arTitle: '',
   };
 
   totalCount: number = 0;
@@ -117,20 +115,24 @@ global_router_add_url_in_Table = global_router_add_url_in_Table;
         show: true,
       },
       {
-        keyName: 'enTitle',
-        header: this.languageService.translate('article.form.enTitle'),
+        keyName: 'name',
+        header: this.languageService.translate('users.form.name'),
         type: EType.text,
         show: true,
       },
       {
-        keyName: 'arTitle',
-        header: this.languageService.translate('article.form.arTitle'),
+        keyName: 'email',
+        header: this.languageService.translate('users.form.email'),
         type: EType.text,
         show: true,
       },
-      // { keyName: 'enDescription', header: this.languageService.translate('article.form.desc_en'), type: EType.editor, show: true },
-      // { keyName: 'arDescription', header: this.languageService.translate('article.form.desc_ar'), type: EType.editor, show: true },
- 
+      {
+        keyName: 'phone',
+        header: this.languageService.translate('users.form.phone'),
+        type: EType.text,
+        show: true,
+      },
+     
       {
         keyName: '',
         header: this.languageService.translate('Action'),
@@ -148,20 +150,25 @@ global_router_add_url_in_Table = global_router_add_url_in_Table;
         show: false,
       },
       {
-        keyName: 'enTitle',
-        header: this.languageService.translate('article.form.enTitle'),
+        keyName: 'name',
+        header: this.languageService.translate('users.form.name'),
         type: EType.text,
         showAs: ETableShow.header,
       },
       {
-        keyName: 'arTitle',
-        header: this.languageService.translate('article.form.arTitle'),
+        keyName: 'email',
+        header: this.languageService.translate('users.form.email'),
         type: EType.text,
         showAs: ETableShow.header,
       },
-      // { keyName: 'enDescription', header: this.languageService.translate('article.form.desc_en'), type: EType.editor, showAs: ETableShow.content },
-      // { keyName: 'arDescription', header: this.languageService.translate('article.form.desc_ar'), type: EType.editor, showAs: ETableShow.content },
-  
+      {
+        keyName: 'phone',
+        header: this.languageService.translate('users.form.phone'),
+        type: EType.text,
+        showAs: ETableShow.header,
+      },
+      
+      
     ];
   }
 
@@ -170,7 +177,7 @@ global_router_add_url_in_Table = global_router_add_url_in_Table;
       crumbs: [
         {
           label: this.languageService.translate('Home'),
-          routerLink: '/dashboard',
+          routerLink: '/dashboard-admin',
         },
         {
           label: this.languageService.translate(this.pageName()),
@@ -188,24 +195,22 @@ global_router_add_url_in_Table = global_router_add_url_in_Table;
   }
 
   API_getAll() {
-    // this.ApiService.post(global_API_getAll, this.objectSearch).subscribe(
-    //   (res: any) => {
-    //     if (res) {
-    //       this.dataList = res.data.dataList;
-    //       this.totalCount = res.data.totalCount;
-    //       this.filteredData = [...this.dataList];
-    //     }
-    //   }
-    // );
-    this.ApiService.get(global_API_getAll).subscribe(
+    this.ApiService.post(global_API_getAll, this.objectSearch).subscribe(
       (res: any) => {
         if (res) {
-          this.dataList = res.data;
-          // this.totalCount = res.data.totalCount;
-          // this.filteredData = [...this.dataList];
+          this.dataList = res.data.dataList;
+          this.totalCount = res.data.totalCount;
+          this.filteredData = [...this.dataList];
         }
       }
     );
+    // this.ApiService.get(global_API_getAll).subscribe(
+    //   (res: any) => {
+    //     if (res) {
+    //       this.dataList = res.data;
+    //     }
+    //   }
+    // );
   }
 
   onPageChange(event: any) {
@@ -241,9 +246,7 @@ global_router_add_url_in_Table = global_router_add_url_in_Table;
       pageNumber: 0,
       pageSize: 8,
       sortingExpression: '',
-      sortingDirection: 0,
-      enTitle: '',
-      arTitle: '',
+      sortingDirection: 0
     };
     this.API_getAll();
     this.showFilter = false;

@@ -42,6 +42,7 @@ export const menuItems =
     { icon: 'pi pi-credit-card', label: 'side_bar.payment', route: '/paymentWay',type:[Roles.admin]  },
     { icon: 'pi pi-images', label: 'side_bar.slider', route: '/slider',type:[Roles.admin]  },
     { icon: 'pi pi-chart-bar', label: 'side_bar.target', route: '/target',type:[Roles.trader]  },
+    { icon: 'pi pi-users', label: 'side_bar.users', route: '/users',type:[Roles.admin]  },
 
     // { icon: 'pi pi-trophy', label: 'side_bar.technical_sp', route: '/technical-specialist' },
     // { icon: 'pi pi-phone', label: 'side_bar.contact', route: '/contact-us' },

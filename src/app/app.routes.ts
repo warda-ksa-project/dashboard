@@ -76,6 +76,8 @@ import { ArticleTableComponent } from './pages/article/article-table/article-tab
 import { ArticleDetailsComponent } from './pages/article/article-details/article-details.component';
 import { TargetComponent } from './pages/target/target.component';
 import { DashboardAdminComponent } from './pages/dashboard-admin/dashboard-admin.component';
+import { UsersTableComponent } from './pages/users/users-table/users-table.component';
+import { UsersDetailsComponent } from './pages/users/users-details/users-details.component';
 
 export const routes: Routes = [
   {
@@ -261,6 +263,12 @@ export const routes: Routes = [
       { path: 'order/add', component: OrdersDetailsComponent },
       { path: 'order/view/:id', component: OrdersDetailsComponent },
       { path: 'order/edit/:id', component: OrdersDetailsComponent },
+
+      { path: 'users', component: UsersTableComponent },
+      { path: 'user/add', component: UsersDetailsComponent },
+      { path: 'user/view/:id', component: UsersDetailsComponent },
+      { path: 'user/edit/:id', component: UsersDetailsComponent },
+
 
       { path: 'contact-us', component: ContactUsTableComponent },
       { path: 'contact-us/add', component: ContactUsDetailsComponent },

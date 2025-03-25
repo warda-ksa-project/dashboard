@@ -101,6 +101,7 @@
   },
   "side_bar": {
     "dashboard": "DASHBOARD",
+    "users":"Users",
     "trader": "TRADERS",
     "article":"Article",
     "slider":"Slider",
@@ -129,6 +130,21 @@
     "setting": "Settings",
     "faqs": "FAQs",
     "target":"Target"
+  },
+  "users":{
+    "pageName": "Users",
+    "pageTitle": "user",
+    "list": "user List",
+    "pageName_filter": "Filter user",
+    "pageName_Add_crumb": "Add user",
+    "pageName_Edit_crumb": "Edit user",
+    "pageName_View_crumb": "View user",
+    "form": {
+      "name":"Name",
+      "email": "Email",
+      "phone": "Phone Number",
+      "password": "Password"
+    }
   },
   "target":{
     "pageName": "Target",

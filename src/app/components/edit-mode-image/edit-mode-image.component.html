@@ -1,8 +1,8 @@
 <div class="edit-image-container" *ngIf="editImageProps.props.visible">
   <div class="content">
     <div class="image-section">
-      <a *ngIf="type=='pdf'"  [href]="editImageProps.props.imgSrc" target="_blank">
-        <img *ngIf="type=='pdf'"  src="assets/images/pdf.png" alt="" [width]="imgWidth" height="auto">
+      <a *ngIf="type=='pdf'" [class.no_action]="!isValidURL(editImageProps.props.imgSrc)" [href]="editImageProps.props.imgSrc" target="_blank">
+        <img *ngIf="type=='pdf'"  [src]="isValidURL(editImageProps.props.imgSrc)?'assets/images/pdf.png':'assets/images/empty-state.png'" alt="" [width]="imgWidth" height="auto">
       </a>
       <img *ngIf="type!='pdf'"  [src]="editImageProps.props.imgSrc" alt="" [width]="imgWidth" height="auto">
     </div>
