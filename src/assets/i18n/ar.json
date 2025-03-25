@@ -130,6 +130,23 @@
     "faqs": "الأسئلة الشائعة",
     "target":"الهدف"
   },
+  "users": {
+    "pageName": "المستخدمون",
+    "pageTitle": "مستخدم",
+    "list": "قائمة المستخدمين",
+    "pageName_filter": "تصفية المستخدم",
+    "pageName_Add_crumb": "إضافة مستخدم",
+    "pageName_Edit_crumb": "تعديل المستخدم",
+    "pageName_View_crumb": "عرض المستخدم",
+    "form": {
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "phone": "رقم الهاتف",
+      "password": "كلمة المرور",
+      "status": "نشط"
+    }
+  }
+,
   "target":{
     "pageName": "الهدف",
     "pageName_Edit_crumb": "تعديل الهدف"

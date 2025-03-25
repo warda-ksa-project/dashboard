@@ -4,6 +4,7 @@ import {
   EType,
   IcolHeader,
   ITableAction,
+  IToggleOptions,
   TableComponent,
 } from '../../../components/table/table.component';
 import { ApiService } from '../../../services/api.service';
@@ -28,6 +29,11 @@ const global_router_add_url_in_Table = '/user/add';
 const global_router_view_url = '/user/view';
 const global_router_edit_url = '/user/edit';
 const global_API_getAll = 'user' + '/GetAllWithPagination';
+const global_toggleOptions:IToggleOptions={
+  apiName:'user/UpdateUser',
+  autoCall:true,
+  }
+
 @Component({
   selector: 'app-users-table',
   standalone: true,
@@ -132,6 +138,8 @@ global_router_add_url_in_Table = global_router_add_url_in_Table;
         type: EType.text,
         show: true,
       },
+            { keyName: 'status', header: this.languageService.translate('users.form.status'), type: EType.toggle, toggleOptions: global_toggleOptions, show: true },
+      
      
       {
         keyName: '',
