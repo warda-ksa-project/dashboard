@@ -34,8 +34,6 @@ const global_routeUrl = '/slider'
 })
 export class SliderDetailsComponent {
 
-  private imageUrl = environment.baseImageUrl
-
   pageName = signal<string>(global_PageName);
   private ApiService = inject(ApiService)
   private router = inject(Router)
@@ -47,7 +45,7 @@ export class SliderDetailsComponent {
   offerTypeList: any[] = coponeOfferTypeList
   coponeTypeList: any[] = coponeTypeList
   minEndDate: Date = new Date()
-  viewTypeList = sliderViewType
+  // viewTypeList = sliderViewType
   editImageProps: IEditImage = {
     props: {
       visible: true,
@@ -97,7 +95,7 @@ export class SliderDetailsComponent {
         Validations.onlyNumberValidator()
       ]
     }),
-    viewType: new FormControl('', {
+    viewType: new FormControl(3, {
       validators: [
         Validators.required,
       ]
@@ -172,10 +170,10 @@ export class SliderDetailsComponent {
     this.ApiService.get(`${global_API_deialis}${this.getID}`).subscribe((res: any) => {
       if (res.data) {
         this.form.patchValue(res.data)
-        this.editImageProps.props.imgSrc = this.imageUrl +  res.data.imageEn;
+        this.editImageProps.props.imgSrc =  res.data.imageEn;
         this.editAttachmentMode = true;
 
-        this.editImageProps_ar.props.imgSrc = this.imageUrl +  res.data.imageAr;
+        this.editImageProps_ar.props.imgSrc =  res.data.imageAr;
         this.editAttachmentMode_ar = true;
       }
     })

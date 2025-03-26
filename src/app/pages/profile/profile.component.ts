@@ -196,7 +196,7 @@ userDataInfo:any[]=[]
     this.ApiService.get(`${global_API_deialis}/${this.userId}`).subscribe((res: any) => {
       if (res){
         this.form.patchValue(res.data)
-        this.imgUrl=res.data.imgSrc?environment.baseImageUrl+res.data.imgSrc:this.defaultImage
+        this.imgUrl=res.data.imgSrc?res.data.imgSrc:this.defaultImage
         this.userDataInfo=[{
           icon:'pi pi-address-book',
           title:'profile.name',

@@ -36,7 +36,6 @@ export class SpecialOrderDetailsComponent {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private tosater = inject(ToasterService);
-  private imageUrl = environment.baseImageUrl
   selectedLang: any;
   languageService = inject(LanguageService);
 
@@ -184,7 +183,7 @@ export class SpecialOrderDetailsComponent {
   addUrltoMedia(list: any) {
     console.log(this.imageList);
     list.forEach((data: any) => {
-      data.src = this.imageUrl + data.src;
+      data.src = data.src;
     });
   }
 

@@ -217,7 +217,7 @@ export class ClientDetailsComponent {
         }
         this.form.patchValue(clientData);
         this.editMode = true;
-        this.editImageProps.props.imgSrc = environment.baseImageUrl + res.data.imgSrc;
+        this.editImageProps.props.imgSrc =  res.data.imgSrc;
         console.log("ClientDetailsComponent  this.ApiService.get  this.editImageProps.props.imgSrc :", this.editImageProps.props.imgSrc)
         this.removeValidators()
       }

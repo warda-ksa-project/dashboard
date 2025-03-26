@@ -108,7 +108,7 @@ export class ComplaintTableComponent {
       { keyName: 'complaintId', header: this.languageService.translate('Id'), type: EType.id, show: false },
       { keyName: 'name', header: this.languageService.translate('complaint.form.name'), type: EType.text, showAs: ETableShow.header },
       { keyName: 'phoneNumber', header: this.languageService.translate('complaint.form.phone'), type: EType.text, showAs: ETableShow.header },
-      { keyName: 'message', header: this.languageService.translate('complaint.form.message'), type: EType.editor, showAs: ETableShow.content }
+      { keyName: 'message', header: this.languageService.translate('complaint.form.message'), type: EType.editor, showAs: ETableShow.content ,show: false }
     ];
   }
 

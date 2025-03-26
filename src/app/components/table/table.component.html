@@ -20,7 +20,7 @@
             <span *ngIf="col.type=='text'"> {{ rowData[col.keyName]? rowData[col.keyName]:'-' }}</span>
             <span *ngIf="col.type=='boolean'"> {{ rowData[col.keyName]? true: false }}</span>
             <span *ngIf="col.type=='image_text'"> 
-              <img class="rounded"  [src]="imageBaseUrl+rowData[col.nested.img]" width="60px"
+              <img class="rounded"  [src]="rowData[col.nested.img]" width="60px"
               height="auto" alt="image">
               {{ rowData[col.keyName]? rowData[col.keyName]:'-' }}
             </span>
@@ -39,8 +39,8 @@
             <span *ngIf="col.type=='changeOrderStatus' && !rowData?.showOrderStatusButton"> {{selectedLang == 'ar' ? rowData.orderStatusAr : rowData.orderStatusAr}}</span>
 
 
-            <div *ngIf="col.type=='editor'" [innerHTML]="rowData[col.keyName]? rowData[col.keyName]:'-' "> </div>
-            <img class="rounded" *ngIf="col.type=='image'" [src]="rowData[col.keyName]?imageBaseUrl+rowData[col.keyName]:defaultImg" width="60px"
+            <!-- <div *ngIf="col.type=='editor'" [innerHTML]="rowData[col.keyName]? rowData[col.keyName]:'-' "> </div> -->
+            <img class="rounded" *ngIf="col.type=='image'" [src]="rowData[col.keyName]?rowData[col.keyName]:defaultImg" width="60px"
               height="auto" alt="image">
             <span *ngIf="col.type =='date'">{{convertDate( rowData[col.keyName]? rowData[col.keyName]:'-' )}}</span>
             <span *ngIf="col.type =='time'">{{getCurrentTime( rowData[col.keyName]? rowData[col.keyName]:'-' )}}</span>

@@ -9,6 +9,10 @@
       <div class="pages-routing-section section-color">
         <!-- [pTooltip]="route.label | translate"
             [tooltipPosition]="selectedLang == 'ar' ? 'left' : 'right'" -->
+<div class="mb-4">
+  <app-input-text [label]="'search'" (onValueChange)="onFilterMenu($event)"></app-input-text>
+
+</div>
         <ng-container *ngFor="let route of routingList">
           <div *ngIf="route.type.includes(role)" [routerLink]="route.route" class="routing-action" routerLinkActive="active"
             [routerLinkActiveOptions]="{ exact: true }" >
@@ -18,13 +22,13 @@
         </ng-container>
 
       </div>
-      <div class="setting-section section-color">
+      <!-- <div class="setting-section section-color">
       
           <div class="log-out user-image-section mt-5" width="30px" (click)="logOut()" routerLink="/auth/login" [pTooltip]="'Profile' | translate" [tooltipPosition]="selectedLang == 'ar' ? 'left' : 'right'">
             <img src="assets/images/side-dashbord-icons/s-logout.svg" alt="log-out">
             <span class="text-danger">{{'shared.log_out'|translate}}</span>
           </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>

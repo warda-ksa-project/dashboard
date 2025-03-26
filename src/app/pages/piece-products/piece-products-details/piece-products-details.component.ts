@@ -40,7 +40,6 @@ export class PieceProductsDetailsComponent {
   pageName = signal<string>(global_PageName);
   private ApiService = inject(ApiService)
   private router = inject(Router)
-  private imageUrl = environment.baseImageUrl
   role=''
   private route = inject(ActivatedRoute)
   showConfirmMessage: boolean = false
@@ -268,7 +267,7 @@ export class PieceProductsDetailsComponent {
     console.log(this.imageList);
     list.forEach((data: any) => {
       console.log("ProductsDetailsComponent  list.forEach  data:", data)
-      data.src = this.imageUrl + data.image;
+      data.src = data.image;
     });
   }
   // onSelect(event: any): void {

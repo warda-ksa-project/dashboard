@@ -95,7 +95,6 @@ export class ContactUsTableComponent {
       { keyName: 'name', header: this.languageService.translate('contact_us.form.name'), type: EType.text, show: true },
       { keyName: 'email', header: this.languageService.translate('contact_us.form.email'), type: EType.text, show: true },
       { keyName: 'mobile', header: this.languageService.translate('contact_us.form.mobile'), type: EType.text, show: true },
-      { keyName: 'message', header: this.languageService.translate('contact_us.form.message'), type: EType.editor, show: true },
       { keyName: '', header: this.languageService.translate('Actions'), type: EType.actions, actions: this.tableActions, show: true },
     ];
 
@@ -104,7 +103,7 @@ export class ContactUsTableComponent {
       { keyName: 'name', header: this.languageService.translate('contact_us.form.name'), type: EType.text, showAs: ETableShow.header },
       { keyName: 'email', header: this.languageService.translate('contact_us.form.email'), type: EType.text, showAs: ETableShow.content },
       { keyName: 'mobile', header: this.languageService.translate('contact_us.form.mobile'), type: EType.text, showAs: ETableShow.content },
-      { keyName: 'message', header: this.languageService.translate('contact_us.form.message'), type: EType.editor, showAs: ETableShow.content },
+      { keyName: 'message', header: this.languageService.translate('contact_us.form.message'), type: EType.editor, showAs: ETableShow.content,show: false  },
     ];
   }
 

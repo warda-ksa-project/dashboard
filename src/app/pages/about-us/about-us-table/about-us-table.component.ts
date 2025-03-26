@@ -97,8 +97,6 @@ export class AboutUsTableComponent {
       { keyName: 'image', header: this.languageService.translate('about_us.form.image'), type: EType.image, show: false },
       { keyName: 'enName', header: this.languageService.translate('about_us.form.name_en'), type: EType.text, show: true },
       { keyName: 'arName', header: this.languageService.translate('about_us.form.name_ar'), type: EType.text, show: true },
-      { keyName: 'enDescription', header: this.languageService.translate('about_us.form.desc_en'), type: EType.editor, show: true },
-      { keyName: 'arDescription', header: this.languageService.translate('about_us.form.desc_ar'), type: EType.editor, show: true },
       { keyName: '', header: this.languageService.translate('Actions'), type: EType.actions, actions: this.tableActions, show: true },
     ];
 
@@ -107,8 +105,8 @@ export class AboutUsTableComponent {
       { keyName: 'image', header: this.languageService.translate('about_us.form.image'), type: EType.image, show: false, showAs: ETableShow.header },
       { keyName: 'enName', header: this.languageService.translate('about_us.form.name_en'), type: EType.text, showAs: ETableShow.content },
       { keyName: 'arName', header: this.languageService.translate('about_us.form.name_ar'), type: EType.text, showAs: ETableShow.content },
-      { keyName: 'enDescription', header: this.languageService.translate('about_us.form.desc_en'), type: EType.editor, showAs: ETableShow.content },
-      { keyName: 'arDescription', header: this.languageService.translate('about_us.form.desc_ar'), type: EType.editor, showAs: ETableShow.content },
+      { keyName: 'enDescription', header: this.languageService.translate('about_us.form.desc_en'), type: EType.editor, showAs: ETableShow.content,show: false  },
+      { keyName: 'arDescription', header: this.languageService.translate('about_us.form.desc_ar'), type: EType.editor, showAs: ETableShow.content ,show: false },
     ];
   }
 

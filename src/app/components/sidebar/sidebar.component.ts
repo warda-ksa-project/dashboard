@@ -7,16 +7,16 @@ import { RouterLinkActive, RouterModule } from '@angular/router';
 import { menuItems } from '../../conts';
 import { environment } from '../../../environments/environment';
 import { ApiService } from '../../services/api.service';
+import { InputTextComponent } from '../input-text/input-text.component';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [NgFor , Tooltip ,UpperCasePipe, TranslateModule, NgIf, RouterModule , RouterLinkActive],
+  imports: [NgFor , Tooltip ,UpperCasePipe, TranslateModule, NgIf, RouterModule,InputTextComponent , RouterLinkActive],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss'
 })
 export class SidebarComponent {
-  baseImageUrl=environment.baseImageUrl
   selectedLang: any;
 languageService = inject(LanguageService);
      apiService=inject(ApiService)
@@ -38,6 +38,11 @@ languageService = inject(LanguageService);
     this.role=res.message
     })
   }
+  onFilterMenu(text:string){
+    this.routingList= this.routingList.filter(item => item.id.toLowerCase().includes(text.toLowerCase()));
+          if(text=='')
+            this.routingList=   menuItems
+    }
 
   logOut(){
     localStorage.clear()

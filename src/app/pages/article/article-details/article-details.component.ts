@@ -35,7 +35,6 @@ const global_routeUrl = global_API_Name
 })
 export class ArticleDetailsComponent {
 pageName = signal<string>(global_PageName);
-  private imageUrl = environment.baseImageUrl
 
   private ApiService = inject(ApiService)
   private router = inject(Router)
@@ -139,7 +138,7 @@ pageName = signal<string>(global_PageName);
       if (res){
         this.form.patchValue(res.data)
        this.editMode=true
-       this.editImageProps.props.imgSrc = environment.baseImageUrl+res.data.image;
+       this.editImageProps.props.imgSrc = res.data.image;
       }
     })
   }

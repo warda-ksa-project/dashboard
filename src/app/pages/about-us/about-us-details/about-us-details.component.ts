@@ -152,7 +152,7 @@ export class AboutUsDetailsComponent {
     this.ApiService.get(`${global_API_deialis}/${this.getID}`).subscribe((res: any) => {
       if (res){
         this.form.patchValue(res.data)
-        this.editImageProps.props.imgSrc = environment.baseImageUrl+res.data.image;
+        this.editImageProps.props.imgSrc = res.data.image;
         console.log("AboutUsDetailsComponent  this.ApiService.get    this.editImageProps.props.imgSrc:",   this.editImageProps.props.imgSrc)
         this.editMode = true;
       }

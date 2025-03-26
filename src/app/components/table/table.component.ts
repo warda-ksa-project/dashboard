@@ -99,7 +99,6 @@ export class TableComponent implements OnInit, OnChanges {
   private languageService = inject(LanguageService);
 
   eventEmitValue: any = { action: {}, record: {} }
-  imageBaseUrl = environment.baseImageUrl;
   defaultImg='assets/images/empty-state.png'
   ngOnInit() {
     this.filterdRecords = this.records;

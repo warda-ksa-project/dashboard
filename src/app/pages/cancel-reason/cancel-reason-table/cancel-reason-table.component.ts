@@ -96,15 +96,13 @@ export class CancelReasonTableComponent {
       { keyName: 'reasonId', header: this.languageService.translate('Id'), type: EType.id, show: true },
       { keyName: 'enName', header: this.languageService.translate('cancel_reason.form.reason_en'), type: EType.text, show: true },
       { keyName: 'arName', header: this.languageService.translate('cancel_reason.form.reason_ar'), type: EType.text, show: true },
-      { keyName: 'enDescription', header: this.languageService.translate('cancel_reason.form.desc_en'), type: EType.editor, show: true },
-      { keyName: 'arDescription', header: this.languageService.translate('cancel_reason.form.desc_ar'), type: EType.editor, show: true },
       { keyName: '', header: this.languageService.translate('Action'), type: EType.actions, actions: this.tableActions, show: true }
     ];
 
     this.columnsSmallTable = [
       { keyName: currentLang === 'ar' ? 'arName' : 'enName', header: this.languageService.translate('cancel_reason.form.reason_ar'), type: EType.text, showAs: ETableShow.header },
       { keyName: 'reasonId', header: this.languageService.translate('Id'), type: EType.id, show: false },
-      { keyName: currentLang === 'ar' ? 'arDescription' : 'enDescription', header: this.languageService.translate('cancel_reason.form.desc_ar'), type: EType.editor, showAs: ETableShow.content }
+      { keyName: currentLang === 'ar' ? 'arDescription' : 'enDescription', header: this.languageService.translate('cancel_reason.form.desc_ar'), type: EType.editor, showAs: ETableShow.content ,show: false }
     ];
   }
 

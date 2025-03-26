@@ -42,7 +42,6 @@ export class SubCategoryDetailsComponent {
   private route = inject(ActivatedRoute)
   showConfirmMessage: boolean = false
   private confirm = inject(ConfirmMsgService)
-  private imageUrl = environment.baseImageUrl
 role=''
   parentCategoryList: any[] = []
   imageList: any = [{
@@ -164,7 +163,7 @@ role=''
   }
   addUrltoMedia(list: any) {
     list.forEach((data: any) => {
-      data.src = this.imageUrl + data.src;
+      data.src = data.src;
     });
   }
   onSubmit() {

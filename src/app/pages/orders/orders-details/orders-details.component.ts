@@ -36,7 +36,6 @@ const global_API_update='order'+'/Update';
   styleUrl: './orders-details.component.scss'
 })
 export class OrdersDetailsComponent {
-    private imageUrl = environment.baseImageUrl
 
 pageName =signal<string>(global_PageName);
   private ApiService = inject(ApiService)
@@ -194,7 +193,6 @@ pageName =signal<string>(global_PageName);
 //   private router = inject(Router);
 //   private route = inject(ActivatedRoute);
 //   private tosater = inject(ToasterService);
-//   private imageUrl = environment.baseImageUrl
 //   translateService = inject(TranslateService)
 
 

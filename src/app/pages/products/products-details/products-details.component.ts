@@ -43,7 +43,6 @@ export class ProductsDetailsComponent {
   pageName = signal<string>(global_PageName);
   private ApiService = inject(ApiService)
   private router = inject(Router)
-  private imageUrl = environment.baseImageUrl
   minEndDate=new Date()
   private route = inject(ActivatedRoute)
   showConfirmMessage: boolean = false
@@ -313,7 +312,7 @@ getRoles(){
   }
   addUrltoMedia(list: any) {
     list.forEach((data: any) => {
-      data.src = this.imageUrl + data.image;
+      data.src =  data.image;
     });
   }
   // onSelect(event: any): void {

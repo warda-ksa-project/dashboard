@@ -48,6 +48,7 @@ header=''
   lng:any=0
   showMap=false
   cities:any[]=[]
+  editTraderImageMode:boolean=false
   adress: any[] = [{
     expalinedAddress: '',
     latitude: '',
@@ -94,6 +95,9 @@ header=''
      
     }),
     iban: new FormControl<any>('', {
+     
+    }),
+    image: new FormControl<any>('', {
      
     }),
 
@@ -152,10 +156,19 @@ header=''
     id: new FormControl(this.getID | 0),
   })
 
-  bredCrumb: IBreadcrumb = {
-    crumbs: []
-  }
 
+
+  
+  editTraderImageProps: IEditImage = {
+    props: {
+      visible: true,
+      imgSrc: ''
+    },
+    onEditBtn: (e?: Event) => {
+      this.editTraderImageProps.props.visible = false;
+      this.editTraderImageMode = false;
+    }
+  };
   editImageProps: IEditImage = {
     props: {
       visible: true,
@@ -201,11 +214,9 @@ header=''
   ngOnInit() {
 
     this.pageName.set(global_PageName)
-    this.getBreadCrumb();
     this.getAllCity()
     this.languageService.translationService.onLangChange.subscribe(() => {
       this.selectedLang = this.languageService.translationService.currentLang;
-      this.getBreadCrumb();
       this.getAllCity()
     });
 
@@ -330,19 +341,6 @@ header=''
       }
     })
   }
-  getBreadCrumb() {
-    this.bredCrumb = {
-      crumbs: [
-        {
-          label: this.languageService.translate('Home'),
-          routerLink: '/dashboard',
-        },
-        {
-          label: this.languageService.translate(this.pageName() + '_' + this.tyepMode() + '_crumb'),
-        },
-      ]
-    }
-  }
 
   // getMainCategory(){
   //   this.ApiService.get('MainCategory/GetAll').subscribe((res: any) => {
@@ -375,9 +373,10 @@ header=''
         this.lat=String(res.data.addresses[0].latitude);
         this.lng=String(res.data.addresses[0].logitude);
         this.showMap=true
-        this.editImageIBanProps.props.imgSrc = environment.baseImageUrl + res.data.iban;
-        this.editImageProps .props.imgSrc = environment.baseImageUrl + res.data.cr;
-        this.editImageLicenseProps.props.imgSrc = environment.baseImageUrl + res.data.license;
+        this.editTraderImageProps.props.imgSrc = res.data.image;
+        this.editImageIBanProps.props.imgSrc =  res.data.iban;
+        this.editImageProps .props.imgSrc =  res.data.cr;
+        this.editImageLicenseProps.props.imgSrc =  res.data.license;
         this.editMode = true;
         this.adress = [{
           expalinedAddress:res.data.addresses[0].expalinedAddress,
@@ -531,7 +530,7 @@ header=''
     let payload={
        id: +this.getID,
     }
-   this.ApiService.post('trader/ApproveTrader',payload).subscribe(res=>{
+   this.ApiService.post('trader/ApproveTrader',payload,{ showAlert: true, message: `` }).subscribe(res=>{
          if(res)
           this.navigateToPageTable()
    })
@@ -542,7 +541,7 @@ header=''
        "userId": +this.getID,
        "rejectionReason": this.reasonForRejectionValue
     }
-    this.ApiService.post('trader/RejectTrader',payload).subscribe(res=>{
+    this.ApiService.post('trader/RejectTrader',payload,{ showAlert: true, message: `` }).subscribe(res=>{
       if(res)
         this.navigateToPageTable()
     })

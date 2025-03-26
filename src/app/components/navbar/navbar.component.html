@@ -1,10 +1,10 @@
 <div class="navbar-container">
   <div class="content">
     <div class="welcome">
-        <h4>الرئيسية</h4>
+        <h4>{{'home'|translate}}</h4>
         <div>
-          <span>مرحبا بك</span> ,
-          <span> احمد محمد</span>
+          <span>{{'welcome'|translate}}</span> ,
+          <span> {{userName|titlecase}}</span>
         </div>
     </div>
       <!-- <div class="search-section  pr-pl-30-small-screen flex-fill">
@@ -19,10 +19,10 @@
       </div>
   
       <div class="profile d-flex justify-content-between">
-        <img width="40" height="40" src="assets/images/arabian-man.png" alt="">
+        <img width="40" height="40" [src]="userImage?userImage:'assets/images/arabian-man.png'" alt="">
         <div class="info">
-            <span class="name block bold">Ahmed Aladdin</span>
-            <span class="mail">{{'ahmedaladdin6@gmail.com'}}</span>
+            <span class="name block bold">{{userName|titlecase}}</span>
+            <span class="mail">{{email}}</span>
         </div>
      </div>
      <button class="lang-btn" (click)="toggleLanguage()">
@@ -46,9 +46,9 @@
         </p-select>
       </div> -->
 
-      <!-- <div class="logout-section" (click)="logout()" routerLink='/auth/login'>
+      <div class="logout-section" (click)="logout()" routerLink='/auth/login'>
         <span class="pi pi-sign-out"></span>
-      </div> -->
+      </div>
     </div>
   </div>
 </div>

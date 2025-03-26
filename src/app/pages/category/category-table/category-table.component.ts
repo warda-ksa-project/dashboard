@@ -153,7 +153,7 @@ export class CategoryTableComponent {
       { keyName: 'userId', header: this.languageService.translate('client.form.userName'), type: EType.id, show: false },
       { keyName: 'fullName', header: this.languageService.translate('client.form.name'), type: EType.text, showAs: ETableShow.header },
       { keyName: 'mobileNumber', header: this.languageService.translate('client.form.mobile'), type: EType.text, showAs: ETableShow.header },
-      { keyName: currentLang === 'ar' ? 'arDescription' : 'enDescription', header: this.languageService.translate('client.form.fullName'), type: EType.editor, showAs: ETableShow.content }
+      { keyName: currentLang === 'ar' ? 'arDescription' : 'enDescription', header: this.languageService.translate('client.form.fullName'), type: EType.editor, showAs: ETableShow.content,show: false  }
     ];
   }
 

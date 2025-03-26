@@ -6,7 +6,7 @@ import { AutoComplete } from 'primeng/autocomplete';
 import { Select } from 'primeng/select';
 import { LanguageService } from '../../services/language.service';
 import { ToasterService } from '../../services/toaster.service';
-import { DOCUMENT, NgFor } from '@angular/common';
+import { DOCUMENT, NgFor, TitleCasePipe } from '@angular/common';
 import { PrimeNG } from 'primeng/config';
 import { InputGroup, InputGroupModule } from 'primeng/inputgroup';
 import { InputTextModule } from 'primeng/inputtext';
@@ -22,7 +22,7 @@ interface AutoCompleteCompleteEvent {
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [TranslateModule,TranslatePipe, RouterModule,InputGroupModule,InputGroup, AutoComplete, FormsModule, Select, NotificationsComponent , InputGroup, InputTextModule, NgFor, NotificationsComponent],
+  imports: [TranslateModule,TranslatePipe, RouterModule,InputGroupModule,InputGroup,TitleCasePipe, AutoComplete, FormsModule, Select, NotificationsComponent , InputGroup, InputTextModule, NgFor, NotificationsComponent],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'
 })
@@ -36,7 +36,9 @@ export class NavbarComponent {
   selectedLang: string = localStorage.getItem('lang') || 'en';
   languageService = inject(LanguageService);
   toaster = inject(ToasterService);
-
+  userImage=localStorage.getItem('image')
+  userName=localStorage.getItem('name')
+  email=localStorage.getItem('email')
   constructor(@Inject(DOCUMENT) private document: Document,private primeng: PrimeNG) {}
 
   search(event: AutoCompleteCompleteEvent) {
@@ -85,7 +87,8 @@ export class NavbarComponent {
   
 
   logout() {
-    localStorage.removeItem('token');
+    localStorage.clear()
+    
 
   }
 }

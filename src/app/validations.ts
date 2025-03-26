@@ -9,7 +9,7 @@ const arabicEditorRegex=  /^[\u0600-\u06FF0-9\s<>&*#@!.,:;'"_-]*$/;;
  export const onlyEnglishChar = /^[A-Za-z]*$/;
  const urlRegex = /^((?:https?|ftp):\/\/[^\s/$.?#].[^\s]*)$/;
  const onlyNumbersRegex = /^[0-9]*$/
- const decimalNumber = /^[0-9]*\.?[0-9]*$/;
+ const decimalNumber = /^-?[0-9]*\.?[0-9]*$/;
  const emailRegex =/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 const mobileNumberStartWith_5_Regex=/^5\d*$/
 

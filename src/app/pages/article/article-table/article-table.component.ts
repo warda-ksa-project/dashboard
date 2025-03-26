@@ -128,9 +128,6 @@ global_router_add_url_in_Table = global_router_add_url_in_Table;
         type: EType.text,
         show: true,
       },
-      // { keyName: 'enDescription', header: this.languageService.translate('article.form.desc_en'), type: EType.editor, show: true },
-      // { keyName: 'arDescription', header: this.languageService.translate('article.form.desc_ar'), type: EType.editor, show: true },
- 
       {
         keyName: '',
         header: this.languageService.translate('Action'),
@@ -159,8 +156,8 @@ global_router_add_url_in_Table = global_router_add_url_in_Table;
         type: EType.text,
         showAs: ETableShow.header,
       },
-      // { keyName: 'enDescription', header: this.languageService.translate('article.form.desc_en'), type: EType.editor, showAs: ETableShow.content },
-      // { keyName: 'arDescription', header: this.languageService.translate('article.form.desc_ar'), type: EType.editor, showAs: ETableShow.content },
+      { keyName: 'enDescription', header: this.languageService.translate('article.form.desc_en'), type: EType.editor, showAs: ETableShow.content,show: false  },
+      { keyName: 'arDescription', header: this.languageService.translate('article.form.desc_ar'), type: EType.editor, showAs: ETableShow.content,show: false  },
   
     ];
   }

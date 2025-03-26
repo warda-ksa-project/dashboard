@@ -39,73 +39,73 @@ export class TargetComponent {
   languageService = inject(LanguageService);
   months:any[] =[]
   form = new FormGroup({
-    jan: new FormControl('',{
+    jan: new FormControl(0,{
       validators: [
         Validators.required,
         Validations.onlyNumberValidator()
       ],
     }),
-    feb: new FormControl('',{
+    feb: new FormControl(0,{
       validators: [
         Validators.required,
         Validations.onlyNumberValidator()
       ],
     }),
-    mar: new FormControl('',{
+    mar: new FormControl(0,{
       validators: [
         Validators.required,
         Validations.onlyNumberValidator()
       ],
     }),
-    abr: new FormControl('',{
+    abr: new FormControl(0,{
       validators: [
         Validators.required,
         Validations.onlyNumberValidator()
       ],
     }),
-    may: new FormControl('',{
+    may: new FormControl(0,{
       validators: [
         Validators.required,
         Validations.onlyNumberValidator()
       ],
     }),
-    jun: new FormControl('',{
+    jun: new FormControl(0,{
       validators: [
         Validators.required,
         Validations.onlyNumberValidator()
       ],
     }),
-    jul: new FormControl('',{
+    jul: new FormControl(0,{
       validators: [
         Validators.required,
         Validations.onlyNumberValidator()
       ],
     }),
-    aug: new FormControl('',{
+    aug: new FormControl(0,{
       validators: [
         Validators.required,
         Validations.onlyNumberValidator()
       ],
     }),
-    sep: new FormControl('',{
+    sep: new FormControl(0,{
       validators: [
         Validators.required,
         Validations.onlyNumberValidator()
       ],
     }),
-    oct: new FormControl('',{
+    oct: new FormControl(0,{
       validators: [
         Validators.required,
         Validations.onlyNumberValidator()
       ],
     }),
-    nov: new FormControl('',{
+    nov: new FormControl(0,{
       validators: [
         Validators.required,
         Validations.onlyNumberValidator()
       ],
     }),
-    dec: new FormControl('',{
+    dec: new FormControl(0,{
       validators: [
         Validators.required,
         Validations.onlyNumberValidator()

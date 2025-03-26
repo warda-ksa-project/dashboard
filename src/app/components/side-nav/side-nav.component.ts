@@ -6,10 +6,11 @@ import { TranslateModule } from '@ngx-translate/core';
 import { RouterLinkActive, RouterModule } from '@angular/router';
 import { menuItems } from '../../conts';
 import { ApiService } from '../../services/api.service';
+import { InputTextComponent } from "../input-text/input-text.component";
 @Component({
   selector: 'app-side-nav',
   standalone: true,
-  imports: [NgFor , Tooltip , TranslateModule , RouterModule , RouterLinkActive,NgIf],
+  imports: [NgFor, Tooltip, TranslateModule, RouterModule, RouterLinkActive, NgIf, InputTextComponent],
   templateUrl: './side-nav.component.html',
   styleUrl: './side-nav.component.scss'
 })
@@ -86,7 +87,6 @@ export class SideNavComponent {
   role:any=''
 
   ngOnInit(): void {
-    console.log('ffffffffffffffuuu--------------')
     this.getRoles()
     this.selectedLang = this.languageService.translationService.currentLang;
     this.languageService.translationService.onLangChange.subscribe(() => {
@@ -103,6 +103,12 @@ export class SideNavComponent {
     console.log("SidebarComponent  this.apiService.get  this.role:", this.role)
     })
   }
+
+  onFilterMenu(text:string){
+    this.routingList= this.routingList.filter(item => item.id.toLowerCase().includes(text.toLowerCase()));
+          if(text=='')
+            this.routingList=   menuItems
+    }
 
 logOut(){
   localStorage.clear()

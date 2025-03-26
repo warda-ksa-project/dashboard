@@ -116,7 +116,7 @@ export class CountriesTableComponent {
     this.columnsSmallTable = [
       { keyName: currentLang === 'ar' ? 'arName' : 'enName', header: this.languageService.translate('country.form.name_en'), type: EType.text, showAs: ETableShow.header },
       { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: false },
-      { keyName: currentLang === 'ar' ? 'arDescription' : 'enDescription', header: this.languageService.translate('country.form.content'), type: EType.editor, showAs: ETableShow.content },
+      { keyName: currentLang === 'ar' ? 'arDescription' : 'enDescription', header: this.languageService.translate('country.form.content'), type: EType.editor, showAs: ETableShow.content ,show: false },
       { keyName: 'status', header: this.languageService.translate('form.status'), type: EType.status, toggleOptions: global_toggleOptions, show: true },
     ];
   }

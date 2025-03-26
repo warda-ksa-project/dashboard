@@ -7,9 +7,9 @@
             {{ "trader_request.pageTitle" | translate | titlecase }}
           </h2>
         </div>
-        <div class="breadcrumb">
+        <!-- <div class="breadcrumb">
           <app-breadcrump [breadcrumbProps]="bredCrumb"></app-breadcrump>
-        </div>
+        </div> -->
       </div>
     </div>
     <div class="form-container">
@@ -291,6 +291,22 @@
                         }}</label>
                         <app-edit-mode-image [type]="'pdf'" [hideEditBtn]="true"
                           [editImageProps]="editImageIBanProps"
+                        ></app-edit-mode-image>
+                      </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                      <div class="upload-image-section mt-4 mb-4" *ngIf="!editTraderImageMode">
+                        <label class="mb-2">{{
+                          "shared.upload_img" | translate
+                        }}</label>
+                        <app-upload-file formControlName="image"></app-upload-file>
+                      </div>
+                      <div class="edit-mode-section mt-2" *ngIf="editTraderImageMode">
+                        <label class="mb-2">{{
+                          "shared.uploaded_img" | translate
+                        }}</label>
+                        <app-edit-mode-image [action]="tyepMode()"
+                          [editImageProps]="editTraderImageProps"
                         ></app-edit-mode-image>
                       </div>
                     </div>

@@ -58,11 +58,11 @@ global_router_add_url_in_Table = global_router_add_url_in_Table;
 
   showFilter: boolean = false;
   tableActions: ITableAction[] = [
-    {
-      name: EAction.delete,
-      apiName_or_route: 'user/DeleteUser?id',
-      autoCall: true,
-    },
+    // {
+    //   name: EAction.delete,
+    //   apiName_or_route: 'user/DeactiveUser?id',
+    //   autoCall: true,
+    // },
     {
       name: EAction.view,
       apiName_or_route: global_router_view_url,
@@ -127,6 +127,12 @@ global_router_add_url_in_Table = global_router_add_url_in_Table;
         show: true,
       },
       {
+        keyName: 'role',
+        header: this.languageService.translate('users.form.role'),
+        type: EType.text,
+        show: true,
+      },
+      {
         keyName: 'email',
         header: this.languageService.translate('users.form.email'),
         type: EType.text,
@@ -138,7 +144,7 @@ global_router_add_url_in_Table = global_router_add_url_in_Table;
         type: EType.text,
         show: true,
       },
-            { keyName: 'status', header: this.languageService.translate('users.form.status'), type: EType.toggle, toggleOptions: global_toggleOptions, show: true },
+            { keyName: 'isActive', header: this.languageService.translate('users.form.status'), type: EType.toggle, toggleOptions: global_toggleOptions, show: true },
       
      
       {
@@ -160,6 +166,12 @@ global_router_add_url_in_Table = global_router_add_url_in_Table;
       {
         keyName: 'name',
         header: this.languageService.translate('users.form.name'),
+        type: EType.text,
+        showAs: ETableShow.header,
+      },
+      {
+        keyName: 'role',
+        header: this.languageService.translate('users.form.role'),
         type: EType.text,
         showAs: ETableShow.header,
       },

@@ -40,8 +40,8 @@ export class LoginComponent {
     this.loginForm = this.fb.group({
       mobile: ['565664343', [Validators.required]],
       password: ['Admin@VL', [Validators.required]],
-      // mobile: ['0548397', [Validators.required]],
-      // password: ['Pa$$w0rd', [Validators.required]]
+      // mobile: ['508991360', [Validators.required]],
+      // password: ['omar1234', [Validators.required]]
     });
 
     this.translate.setDefaultLang('en');
@@ -90,6 +90,9 @@ export class LoginComponent {
         // localStorage.setItem('userData', JSON.stringify(dataUser))
         localStorage.setItem('token', res.data.token);
         localStorage.setItem('userId',res.data.id)
+        localStorage.setItem('img',res.data.image)
+        localStorage.setItem('name',res.data.name)
+        localStorage.setItem('email',res.data.email)
         // localStorage.setItem('role',res.data.role)
         if(res.data.role==Roles.admin)
         this.router.navigate(['/dashboard-admin']);

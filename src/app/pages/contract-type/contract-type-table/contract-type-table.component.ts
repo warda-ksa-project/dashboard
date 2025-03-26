@@ -106,8 +106,8 @@ export class ContractTypeTableComponent {
       { keyName: 'contractTypeId', header: this.languageService.translate('Id'), type: EType.id, show: false },
       { keyName: 'enName', header: this.languageService.translate('contract.form.name_en'), type: EType.text, showAs: ETableShow.header },
       { keyName: 'arName', header: this.languageService.translate('contract.form.name_ar'), type: EType.text, showAs: ETableShow.header },
-      { keyName: 'noOfVisit', header: this.languageService.translate('contract.form.noOfVisit'), type: EType.editor, showAs: ETableShow.content },
-      { keyName: 'isActive', header: this.languageService.translate('contract.form.status'), type: EType.editor, showAs: ETableShow.content }
+      { keyName: 'noOfVisit', header: this.languageService.translate('contract.form.noOfVisit'), type: EType.editor, showAs: ETableShow.content ,show: false },
+      { keyName: 'isActive', header: this.languageService.translate('contract.form.status'), type: EType.editor, showAs: ETableShow.content ,show: false }
     ];
   }
 

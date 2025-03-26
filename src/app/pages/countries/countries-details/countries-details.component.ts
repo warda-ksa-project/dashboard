@@ -146,7 +146,7 @@ export class CountriesDetailsComponent implements OnInit {
     this.ApiService.get(`Country/GetById`, { id: this.countryID }).subscribe((res: any) => {
       if (res.data) {
         this.form.patchValue(res.data)
-        this.editImageProps.props.imgSrc = 'https://wardaweb-001-site1.qtempurl.com' + res.data.image;
+        this.editImageProps.props.imgSrc =res.data.image;
         this.editMode = true;
       }
     })
