@@ -29,7 +29,7 @@ const global_routeUrl ="/users"
 @Component({
   selector: 'app-users-details',
   standalone: true,
-  imports: [ReactiveFormsModule,NgIf,TranslatePipe,TitleCasePipe,DialogComponent, ButtonModule, InputTextComponent, EditorComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
+  imports: [ReactiveFormsModule,NgIf,TranslatePipe,CheckBoxComponent,TitleCasePipe,DialogComponent, ButtonModule, InputTextComponent, EditorComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
   templateUrl: './users-details.component.html',
   styleUrl: './users-details.component.scss'
 })
@@ -61,6 +61,8 @@ pageName = signal<string>(global_PageName);
     }),
     password: new FormControl('', {
 
+    }),
+    isActive: new FormControl('', {
     }),
     id: new FormControl(this.getID|0, {
     }),

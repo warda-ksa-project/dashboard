@@ -29,6 +29,16 @@
                     <app-input-text [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'" [label]="'users.form.password'"
                       [control]="form.get('password')"></app-input-text>
                   </div>
+                  <div class="col-lg-6 col-md-6 col-sm-12 mt-4 pt-3">
+                    <app-check-box
+                      [isToggle]="true"
+                      [label]="'users.form.status'"
+                      [initValue]="false"
+                      [readOnly]="tyepMode() == 'View'"
+                      [disabled]="tyepMode() == 'View'"
+                      [control]="form.get('isActive')"
+                    ></app-check-box>
+                  </div>
                 <!-- <div
                 class="col-lg-6 col-md-6 col-sm-12 mt-3"
                 *ngIf="tyepMode() != 'Add'"
