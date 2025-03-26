@@ -1,0 +1,14 @@
+.card{
+    margin: 5px;
+    width: 250px;
+    .header{
+        padding:10px;
+        .rate-icon{
+            color: gold;
+        }
+    }
+    .content{
+        padding: 20px 10px;
+        height: 100px;
+    }
+}

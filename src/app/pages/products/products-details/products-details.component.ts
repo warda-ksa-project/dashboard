@@ -3,7 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ButtonModule } from 'primeng/button';
 import { ApiService } from '../../../services/api.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { DatePipe, NgIf, TitleCasePipe } from '@angular/common';
+import { DatePipe, NgFor, NgIf, TitleCasePipe } from '@angular/common';
 import { InputTextComponent } from '../../../components/input-text/input-text.component';
 import { BreadcrumpComponent } from "../../../components/breadcrump/breadcrump.component";
 import { IBreadcrumb } from '../../../components/breadcrump/cerqel-breadcrumb.interface';
@@ -32,7 +32,7 @@ const global_API_update = 'product' + '/Update';
 @Component({
   selector: 'app-products-details',
   standalone: true,
-  imports: [ReactiveFormsModule, CheckBoxComponent, GalleryComponent, StepperModule, SelectComponent, EditorComponent, EditModeImageComponent, TitleCasePipe, TranslatePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
+  imports: [ReactiveFormsModule,NgFor, CheckBoxComponent, GalleryComponent, StepperModule, SelectComponent, EditorComponent, EditModeImageComponent, TitleCasePipe, TranslatePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
   providers:[DatePipe],
   templateUrl: './products-details.component.html',
   styleUrl: './products-details.component.scss'
@@ -43,11 +43,13 @@ export class ProductsDetailsComponent {
   pageName = signal<string>(global_PageName);
   private ApiService = inject(ApiService)
   private router = inject(Router)
+  arrayFrom = Array.from;
   minEndDate=new Date()
   private route = inject(ActivatedRoute)
   showConfirmMessage: boolean = false
   private confirm = inject(ConfirmMsgService)
   categoryList: any[] = []
+  reviews:any[]=[]
   discountType: any[] = [
     {
       name: 'Amount',
@@ -298,6 +300,7 @@ getRoles(){
   API_getItemDetails() {
     this.ApiService.get(`${global_API_details}`, { id: this.getID }).subscribe((res: any) => {
       if (res.data) {
+        this.reviews=res.data.productReviews
         this.form.patchValue({
           ...res.data,
           startDate:new Date(res.data.startDate),
@@ -337,7 +340,10 @@ getRoles(){
       amount: this.form.value.amount
     })
   }
+  goToActivePage_3(){
+    console.log('fff',this.form.value)
 
+  }
 
   goToActivePage_1() {
     // if (this.tyepMode() == 'Add') {

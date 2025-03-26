@@ -15,6 +15,7 @@
   "home":"Home",
   "select":"Select",
   "search":"Search",
+  "rate":"Rate",
   "table_delete_msg":"Are you sure to delete this item ?",
   "table_delete_blk":"Are you sure to block this item ?",
   "table_delete_active":"Are you sure to active this item ?",
@@ -245,7 +246,8 @@
       "price":"Price",
       "priceAfterDiscount":"Price After Discount",
       "start":"Start Date",
-      "end":"End Date"
+      "end":"End Date",
+      "reviews":"Reviews"
     },
     "best":{
       "title":"Best Selling Products",

@@ -3,7 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ButtonModule } from 'primeng/button';
 import { ApiService } from '../../../services/api.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { NgIf, TitleCasePipe } from '@angular/common';
+import { NgFor, NgIf, TitleCasePipe } from '@angular/common';
 import { InputTextComponent } from '../../../components/input-text/input-text.component';
 import { BreadcrumpComponent } from "../../../components/breadcrump/breadcrump.component";
 import { IBreadcrumb } from '../../../components/breadcrump/cerqel-breadcrumb.interface';
@@ -31,7 +31,7 @@ const global_API_update = 'pieceproducts' + '/Update';
 @Component({
   selector: 'app-piece-products-details',
   standalone: true,
-  imports: [ReactiveFormsModule, CheckBoxComponent, GalleryComponent, StepperModule, SelectComponent, EditorComponent, EditModeImageComponent, TitleCasePipe, TranslatePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
+  imports: [ReactiveFormsModule,NgFor, CheckBoxComponent, GalleryComponent, StepperModule, SelectComponent, EditorComponent, EditModeImageComponent, TitleCasePipe, TranslatePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
   templateUrl: './piece-products-details.component.html',
   styleUrl: './piece-products-details.component.scss'
 })
@@ -41,8 +41,11 @@ export class PieceProductsDetailsComponent {
   private ApiService = inject(ApiService)
   private router = inject(Router)
   role=''
+  arrayFrom = Array.from;
   private route = inject(ActivatedRoute)
   showConfirmMessage: boolean = false
+  reviews:any[]=[]
+
   private confirm = inject(ConfirmMsgService)
   discountType: any[] = [
     {
@@ -290,6 +293,10 @@ export class PieceProductsDetailsComponent {
   //       console.error('Error processing files:', error);
   //     });
   // }
+  goToActivePage_3(){
+    console.log('fff',this.form.value)
+
+  }
   goToActivePage_2() {
     console.log(this.form.value)
     this.form.patchValue({
