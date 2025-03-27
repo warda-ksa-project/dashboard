@@ -20,7 +20,7 @@ export class ToasterService {
     this.messageService.add({
       severity: 'success',
       summary: 'Success',
-      detail: message,
+      detail: this.languageService.translationService.instant(message),
       life: 4000,
     });
    }, 300);
@@ -32,7 +32,7 @@ export class ToasterService {
       this.messageService.add({
         severity: 'error',
         summary: 'Error',
-        detail: message,
+        detail:this.languageService.translationService.instant(message),
         life: 4000,
       });
       console.log('MessageService.add invoked');

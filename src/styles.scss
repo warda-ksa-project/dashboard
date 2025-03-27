@@ -594,7 +594,8 @@ p-dialog.order-status{
     color: white;
     border-radius: 17px;
     padding: 8px 18px;
-
+    margin: 0px 10px;
+    text-decoration: none;
     &:hover {
       background: #ad98de;
     }
@@ -610,7 +611,8 @@ p-dialog.order-status{
 
   .pi-filter {
     background-color: #8174A0;
-
+    padding:11px 10px;
+    border-radius: 8px;
     &::before {
       color: white !important;
     }

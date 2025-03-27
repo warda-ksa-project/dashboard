@@ -7,17 +7,18 @@
          </div>
         <h2>{{ "trader.list" | translate | titlecase }}</h2>
       </div>
-      <!-- <div class="breadcrumb">
-        <app-breadcrump [breadcrumbProps]="bredCrumb"></app-breadcrump>
-      </div> -->
-    </div>
-    <div class="details-container">
       <div class="action-filter">
         <a [routerLink]="global_router_add_url_in_Table">
           + {{ "shared.add_new" | translate }}</a
         >
         <span class="pi pi-filter pointer" (click)="openFilter()"> </span>
       </div>
+      <!-- <div class="breadcrumb">
+        <app-breadcrump [breadcrumbProps]="bredCrumb"></app-breadcrump>
+      </div> -->
+    </div>
+    <div class="details-container">
+     
 
       <div class="table-view">
         <app-table

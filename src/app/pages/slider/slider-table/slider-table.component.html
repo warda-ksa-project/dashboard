@@ -1,18 +1,23 @@
 <div class="table-container">
     <div class="content">
       <div class="title-bredcrumb-section">
-        <div class="title">
-          <h2>{{'slider.list'|translate|titlecase}}</h2>
+        <div class="page-title">
+          <div class="images">
+            <span class="pi pi-images"></span>
+           </div>
+           <h2>{{'slider.list'|translate|titlecase}}</h2>
+          </div>
+       
+        <div class="action-filter">
+          <a class="text-white pointer" (click)="addPage()">  + {{'shared.add_new'|translate}}</a>
+          <span class="pi pi-filter pointer" (click)="openFilter()"> </span>
         </div>
         <!-- <div class="breadcrumb">
           <app-breadcrump [breadcrumbProps]="bredCrumb"></app-breadcrump>
         </div> -->
       </div>
       <div class="details-container">
-        <div class="action-filter">
-          <a class="text-white pointer" (click)="addPage()">  + {{'shared.add_new'|translate}}</a>
-          <span class="pi pi-filter pointer" (click)="openFilter()"> </span>
-        </div>
+       
       
        <div class="table-view">
         <app-table [colsHeader]="columns" [records]="dataList" [showrecordIndex]="true" [actions]="tableActions"></app-table>

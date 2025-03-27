@@ -7,17 +7,18 @@
          </div>
         <h2>{{ "faqs.list" | translate | titlecase }}</h2>
       </div>
-      <!-- <div class="breadcrumb">
-        <app-breadcrump [breadcrumbProps]="bredCrumb"></app-breadcrump>
-      </div> -->
-    </div>
-    <div class="details-container">
       <div class="action-filter">
         <a routerLink="/settings/faqs/add">
           + {{ "shared.add_new" | translate }}</a
         >
         <span class="pi pi-filter pointer" (click)="openFilter()"> </span>
       </div>
+      <!-- <div class="breadcrumb">
+        <app-breadcrump [breadcrumbProps]="bredCrumb"></app-breadcrump>
+      </div> -->
+    </div>
+    <div class="details-container">
+     
 
       <div class="table-view">
         <app-table
