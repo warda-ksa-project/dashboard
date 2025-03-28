@@ -1,5 +1,5 @@
 import { NgFor, NgIf, UpperCasePipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, Input} from '@angular/core';
 import { Tooltip } from 'primeng/tooltip';
 import { LanguageService } from '../../services/language.service';
 import { TranslateModule } from '@ngx-translate/core';
@@ -16,7 +16,8 @@ import { InputTextComponent } from '../input-text/input-text.component';
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss'
 })
-export class SidebarComponent {
+export class SidebarComponent  {
+  @Input()activeRoute=''
   selectedLang: any;
 languageService = inject(LanguageService);
      apiService=inject(ApiService)
@@ -25,6 +26,7 @@ languageService = inject(LanguageService);
   defaultImage=this.userDate?.gender==1?'assets/images/arabian-man.png':'assets/images/arabian-woman.png'
   routingList = menuItems
   role:any=''
+
   ngOnInit(): void {
     this.getRoles()
     this.selectedLang = this.languageService.translationService.currentLang;

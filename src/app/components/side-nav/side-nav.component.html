@@ -1,6 +1,4 @@
-
-
-    <!-- <div class="content">
+<!-- <div class="content">
             <div class="logo text-center">
                 <img src="assets/images/smallLogo.svg">
             </div>
@@ -35,33 +33,41 @@
         
     
     </div> -->
-    <div class="sidebar-container">
-        <div class="content" >
-          <div class="logo-section" routerLink="/dashboard">
-            <img  src="assets/images/logo.svg" alt="matlop-logo">
+<div class="sidebar-container">
+  <div class="content">
+    <div class="logo-section" routerLink="/dashboard">
+      <img src="assets/images/logo.svg" alt="matlop-logo" />
+    </div>
+    <div class="routing-section mt-5">
+      <div class="pages-routing-section section-color">
+        <div class="mb-4">
+          <app-input-text
+            [label]="'search'"
+            (onValueChange)="onFilterMenu($event)"
+          ></app-input-text>
+        </div>
+        <ng-container *ngFor="let route of routingList">
+          <div
+          [class.active_routing]="activeRoute.includes(route.route)"
+            *ngIf="route.type.includes(role)"
+            [routerLink]="route.route"
+            class="routing-action"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            <span [class]="route.icon"></span>
+            <p>{{ route.label | translate }}</p>
           </div>
-          <div class="routing-section mt-5">
-            <div class="pages-routing-section section-color">
-              <div class="mb-4">
-                <app-input-text [label]="'search'" (onValueChange)="onFilterMenu($event)"></app-input-text>
-              
-              </div>              <ng-container *ngFor="let route of routingList">
-                <div *ngIf="route.type.includes(role)" [routerLink]="route.route" class="routing-action" routerLinkActive="active"
-                  [routerLinkActiveOptions]="{ exact: true }" >
-                  <span [class]="route.icon"></span>
-                  <p  >{{route.label | translate}}</p>
-                </div>
-              </ng-container>
-      
-            </div>
-            <!-- <div class="setting-section section-color">
+        </ng-container>
+      </div>
+      <!-- <div class="setting-section section-color">
       
               <div class="log-out user-image-section mt-5" width="30px" (click)="logOut()" routerLink="/auth/login" [pTooltip]="'Profile' | translate" [tooltipPosition]="selectedLang == 'ar' ? 'left' : 'right'">
                 <img src="assets/images/side-dashbord-icons/s-logout.svg" alt="log-out">
                 <span class="text-danger">{{'shared.log_out'|translate}}</span>
               </div>
           </div> -->
-            <!-- <div class="setting-section section-color w-100">
+      <!-- <div class="setting-section section-color w-100">
               <div routerLink="/settings" class="routing-action" routerLinkActive="active"
                   [routerLinkActiveOptions]="{ exact: true }" [pTooltip]="'SETTINGS' | translate"
                   [tooltipPosition]="selectedLang == 'ar' ? 'left' : 'right'">
@@ -71,7 +77,6 @@
                   <img src="https://www.primefaces.org/cdn/primevue/images/landing/apps/main-avatar.png" alt="user-image">
                 </div>
             </div> -->
-          </div>
-        </div>
-      </div>
-      
+    </div>
+  </div>
+</div>

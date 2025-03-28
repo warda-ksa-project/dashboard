@@ -1,5 +1,5 @@
 import { NgFor, NgIf, TitleCasePipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { Tooltip } from 'primeng/tooltip';
 import { LanguageService } from '../../services/language.service';
 import { TranslateModule } from '@ngx-translate/core';
@@ -85,6 +85,7 @@ export class SideNavComponent {
    apiService=inject(ApiService)
   routingList = menuItems
   role:any=''
+  @Input()activeRoute=''
 
   ngOnInit(): void {
     this.getRoles()

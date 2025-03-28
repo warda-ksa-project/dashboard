@@ -20,7 +20,7 @@ export class HomeLayoutComponent {
   selectedLang: any;
   languageService = inject(LanguageService);
   toaster = inject(ToasterService);
-  private router=inject( Router);
+  public router=inject( Router);
   isDashboardStyle=false
   ngOnInit(): void {
     this.checkRoute(this.router.url);
@@ -46,5 +46,6 @@ export class HomeLayoutComponent {
    if(event)
      this.showMenuIcon=false
   }
+
 
 }

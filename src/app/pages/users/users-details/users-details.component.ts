@@ -62,8 +62,12 @@ pageName = signal<string>(global_PageName);
     password: new FormControl('', {
 
     }),
+    role: new FormControl('', {
+
+    }),
     isActive: new FormControl('', {
     }),
+    image:new FormControl(''),
     id: new FormControl(this.getID|0, {
     }),
   })
