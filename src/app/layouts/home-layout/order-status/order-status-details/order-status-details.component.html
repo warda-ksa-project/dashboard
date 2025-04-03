@@ -20,44 +20,19 @@
               <app-input-text
                 [readOnly]="tyepMode() == 'View'"
                 [disabled]="tyepMode() == 'View'"
-                [label]="'faqs.form.title_en'"
-                [control]="form.get('enTitle')"
+                [label]="'orderStatus.form.name_en'"
+                [control]="form.get('enName')"
               ></app-input-text>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
               <app-input-text
                 [readOnly]="tyepMode() == 'View'"
                 [disabled]="tyepMode() == 'View'"
-                [label]="'faqs.form.title_ar'"
-                [control]="form.get('arTitle')"
+                [label]="'orderStatus.form.name_ar'"
+                [control]="form.get('arName')"
               ></app-input-text>
             </div>
-            <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
-              <app-select
-                [placeholder]="form.get('userType')?.value"
-                [readOnly]="tyepMode() == 'View'"
-                [disabled]="tyepMode() == 'View'"
-                class="w-100"
-                [list]="userTypeList"
-                [label]="'faqs.form.userType'"
-                [control]="form.get('userType')"
-              >
-              </app-select>
-            </div>
-            <div class="row">
-              <div class="mt-2 col-lg-6 col-md-6 col-sm-12 mt-4">
-                <app-editor
-                  [label]="'faqs.form.desc_en'"
-                  [control]="form.get('enDescription')"
-                ></app-editor>
-              </div>
-              <div class="mt-2 col-lg-6 col-md-6 col-sm-12 mt-4">
-                <app-editor
-                  [label]="'faqs.form.desc_ar'"
-                  [control]="form.get('arDescription')"
-                ></app-editor>
-              </div>
-            </div>
+           
             <div class="actions mt-5 text-center">
               <button
                 type="submit"

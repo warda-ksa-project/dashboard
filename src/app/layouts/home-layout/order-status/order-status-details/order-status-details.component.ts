@@ -36,21 +36,19 @@ export class OrderStatusDetailsComponent {
   languageService = inject(LanguageService);
   private confirm = inject(ConfirmMsgService)
   form = new FormGroup({
-    enTitle: new FormControl('', {
+    enName: new FormControl('', {
       validators: [
         Validators.required,
       ],
     }),
-    arTitle: new FormControl('', {
+    arName: new FormControl('', {
       validators: [
         Validators.required,
       ]
     }),
   })
 
-  bredCrumb: IBreadcrumb = {
-    crumbs: []
-  }
+ 
 
   get faqsID() {
     return this.route.snapshot.params['id']

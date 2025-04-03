@@ -13,7 +13,7 @@ import { PaginationComponent } from '../../../../components/pagination/paginatio
 import { TranslatePipe } from '@ngx-translate/core';
 import { TitleCasePipe } from '@angular/common';
 
-const global_pageName = 'faqs.pageName';
+const global_pageName = 'orderStatus.pageName';
 
 @Component({
   selector: 'app-order-status-table',
