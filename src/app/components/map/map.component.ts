@@ -15,7 +15,8 @@ export class MapComponent implements AfterViewInit {
   @Input()lng: any = 0;
 
   ngOnInit(){
- 
+ console.log('tt',this.lat)
+ console.log('tt',this.lng)
 
   }
   ngAfterViewInit(): void {

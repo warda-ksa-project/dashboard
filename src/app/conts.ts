@@ -20,8 +20,8 @@ export const menuItems =
     // { icon: 'pi pi-shopping-bag', id:'',label: 'side_bar.contract', route: '/contract-type' },
     { icon: 'pi pi-globe', id:'countries',label: 'side_bar.country', route: '/country',type:[Roles.admin] },
     { icon: 'pi pi-building', id:'cities',label: 'side_bar.city', route: '/city',type:[Roles.admin]  },
-    { icon: 'pi pi-bullseye', id:'traders',label: 'side_bar.trader', route: '/trader',type:[Roles.admin]  },
-    { icon: 'pi pi-users', id:'requests',label: 'side_bar.trader_request', route: '/trader-request',type:[Roles.admin]  },
+    { icon: 'pi pi-bullseye', id:'traders',label: 'side_bar.trader', route: '/traders',type:[Roles.admin]  },
+    { icon: 'pi pi-users', id:'requests',label: 'side_bar.trader_request', route: '/traderRequest',type:[Roles.admin]  },
     { icon: 'pi pi-phone', id:'contact us',label: 'side_bar.contact', route: '/contact-us',type:[Roles.admin]  },
     { icon: 'pi pi-folder', id:'faqs',label: 'side_bar.faqs', route: '/faqs',type:[Roles.admin]  },
 

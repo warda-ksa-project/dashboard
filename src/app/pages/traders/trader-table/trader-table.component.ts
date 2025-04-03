@@ -24,9 +24,9 @@ import { TitleCasePipe } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 
 const global_pageName = 'trader.pageName';
-const global_router_add_url_in_Table = '/trader/add';
-const global_router_view_url = '/trader/view';
-const global_router_edit_url = '/trader/edit';
+const global_router_add_url_in_Table = '/traders/add';
+const global_router_view_url = '/traders/view';
+const global_router_edit_url = '/traders/edit';
 const global_API_getAll = 'Trader' + '/GetAllTradersWithPagination';
 @Component({
   selector: 'app-trader-table',

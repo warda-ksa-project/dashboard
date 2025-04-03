@@ -478,6 +478,20 @@ header=''
     }
   }
 
+  onValueStepperChange(value:any){
+    this.gotTo(value)
+  console.log("TraderDetailsComponent  onValueStepperChange  value:", value)
+
+  }
+  gotTo(pageNumber:number){
+    if(pageNumber==3)
+  {
+    this.lat=this.form.value.addresses[0].latitude??0
+    this.lng=this.form.value.addresses[0].logitude??0
+    
+  }
+
+  }
   navigateToPageTable() {
     this.router.navigateByUrl(global_routeUrl)
   }

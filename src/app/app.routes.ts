@@ -163,10 +163,10 @@ export const routes: Routes = [
       { path: 'country/edit/:id', component: CountriesDetailsComponent },
 
       
-      { path: 'trader', component: TraderTableComponent },
-      { path: 'trader/add', component: TraderDetailsComponent },
-      { path: 'trader/view/:id', component: TraderDetailsComponent },
-      { path: 'trader/edit/:id', component: TraderDetailsComponent },
+      { path: 'traders', component: TraderTableComponent },
+      { path: 'traders/add', component: TraderDetailsComponent },
+      { path: 'traders/view/:id', component: TraderDetailsComponent },
+      { path: 'traders/edit/:id', component: TraderDetailsComponent },
 
        
       { path: 'orderStatus', component: OrderStatusTableComponent },
@@ -174,10 +174,10 @@ export const routes: Routes = [
       { path: 'orderStatus/view/:id', component: OrderStatusDetailsComponent },
       { path: 'orderStatus/edit/:id', component: OrderStatusDetailsComponent },
 
-      { path: 'trader-request', component: TraderRequestsTableComponent },
-      { path: 'trader-request/add', component: TraderRequestsDetailsComponent },
-      { path: 'trader-request/view/:id', component: TraderRequestsDetailsComponent },
-      { path: 'trader-request/edit/:id', component: TraderRequestsDetailsComponent },
+      { path: 'traderRequest', component: TraderRequestsTableComponent },
+      { path: 'traderRequest/add', component: TraderRequestsDetailsComponent },
+      { path: 'traderRequest/view/:id', component: TraderRequestsDetailsComponent },
+      { path: 'traderRequest/edit/:id', component: TraderRequestsDetailsComponent },
 
       { path: 'category', component: CategoryTableComponent },
       { path: 'category/add', component: CategoryDetailsComponent },

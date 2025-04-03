@@ -15,7 +15,7 @@
   <div class="form-container">
     <div class="reactive-form">
       <form [formGroup]="form" class="w-70">
-        <p-stepper [value]="1">
+        <p-stepper [value]="1" (valueChange)="onValueStepperChange($event)">
           <div class="w-100">
             <p-step-list class="w-100">
               <p-step [value]="1">{{
@@ -108,7 +108,7 @@
                   </button>
                   <button
                     class="btn btn-primary-bk"
-                    (click)="activateCallback(3)"
+                    (click)="activateCallback(3);gotTo(3)"
                   >
                     {{ "actions.next" | translate }}
                   </button>
@@ -315,7 +315,7 @@
                   <div class="mt-5">
                     <button
                       class="btn btn-primary-bk"
-                      (click)="activateCallback(3)"
+                      (click)="activateCallback(3);gotTo(3)"
                     >
                       {{ "actions.back" | translate }}
                     </button>
