@@ -15,7 +15,7 @@ import { LanguageService } from '../../../services/language.service';
 import { IEditImage } from '../../../components/edit-mode-image/editImage.interface';
 import { EditModeImageComponent } from '../../../components/edit-mode-image/edit-mode-image.component';
 import { StepperModule } from 'primeng/stepper';
-import { Validations } from '../../../validations';
+import { Validations, removePtags } from '../../../validations';
 import { environment } from '../../../../environments/environment';
 import { MapComponent } from '../../../components/map/map.component';
 import { SelectComponent } from '../../../components/select/select.component';
@@ -89,7 +89,7 @@ export class TraderDetailsComponent  {
       ]
     }),
     cr: new FormControl<any>('', {
-     
+        
     }),
     license: new FormControl<any>('', {
      
@@ -228,10 +228,6 @@ export class TraderDetailsComponent  {
       this.getAllCity()
     });
 
-    this.form.valueChanges.subscribe(res => {
-      // console.log('d---d',this.form.value)
-      // console.log('d===d',(!this.form.valid || !this.isAddressVaild()))
-    })
     // this.form.get('street')?.valueChanges.subscribe(res => {
     //   this.adress[0].street = res;
     //   this.form.patchValue({
@@ -311,6 +307,7 @@ export class TraderDetailsComponent  {
       this.isFilesValid()
     })
     this.form.get('cr')?.valueChanges.subscribe(res => {
+      console.log("TraderDetailsComponent  this.form.get  res:", res)
       this.files[0].cr=res
       this.isFilesValid()
     })
@@ -405,7 +402,6 @@ export class TraderDetailsComponent  {
           logitude:String(res.data.addresses[0].logitude),
           userId: Number(localStorage.getItem('userId')) || 0
         }]
-        console.log("TraderDetailsComponent  this.ApiService.get    this.adress:",   this.form.value)
 
         // this.imageList = res.data.image;
         // if (this.imageList.length != 0) {
@@ -452,6 +448,21 @@ export class TraderDetailsComponent  {
     console.log("TraderDetailsComponent  setPayload   this.form.value:", this.form.value)
 
   }
+
+  onFileEdit(control:string){
+    this.form.get(control)?.setValue(null)
+
+  }
+
+  onFileRemoved(control:string){
+   this.onFileEdit(control)
+
+    // this.form.get(control)?.setValue(null)
+    // this.form.get(control)?.updateValueAndValidity()
+
+
+  
+  }
   onSubmit() {
     // if(this.form.value.image){
     //   let x =   this.form.value.image.map((re:any)=>({
@@ -463,13 +474,15 @@ export class TraderDetailsComponent  {
     //        image:x
     //      })
     //    }
+    console.log("TraderDetailsComponent  onSubmit  this.form.value:", this.form.value)
+    console.log("TraderDetailsComponent  onSubmit  this.form.value.cr.length>=0:", this.form.value.cr[0]?.image)
 
     const payload = {
       ...this.form.value,
       numberOfBranches: +this.form.value.numberOfBranches,
-      cr: this.form.value.cr[0].image,
-      license: this.form.value.license[0].image,
-      iban: this.form.value.iban[0].image,
+      cr: this.form.value.cr[0]?.image?this.form.value.cr[0]?.image:this.form.value.cr,
+      license: this.form.value.license[0]?.image?this.form.value.license[0]?.image:this.form.value.license,
+      iban: this.form.value.iban[0]?.image? this.form.value.iban[0]?.image:this.form.value.iban,
       "enDescription": null,
       "arDescription": null,
     }
@@ -484,6 +497,7 @@ export class TraderDetailsComponent  {
       'logitude',
       'latitude'
     ], payload)
+
     console.log('ggg', payload)
 
     if (this.tyepMode() == 'Add') {
@@ -501,7 +515,6 @@ export class TraderDetailsComponent  {
   }
   onValueStepperChange(value:any){
     this.gotTo(value)
-  console.log("TraderDetailsComponent  onValueStepperChange  value:", value)
 
   }
   gotTo(pageNumber:number){
@@ -517,16 +530,14 @@ export class TraderDetailsComponent  {
     const isAddressValid = this.adress.every((obj: any) =>
       Object.values(obj).every(value => value !== null && value !== undefined && value !== '')
     );
-    console.log("isAddressVaild  isAddressValid:", isAddressValid)
 
     return isAddressValid
   }
 
   isFilesValid(){
     const isFileValid = this.files.every((obj: any) =>
-      Object.values(obj).every(value => value !== null && value !== undefined && value !== '')
+      Object.values(obj).every((value:any) => value !== null && value !== undefined && value !== ''&& value.length !==0)
     );
-    console.log("isAddressVaild  isAddressValid:", isFileValid)
 
     return isFileValid
   }

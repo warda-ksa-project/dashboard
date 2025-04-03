@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IEditImage } from './editImage.interface';
 import { NgIf } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -16,10 +16,10 @@ export class EditModeImageComponent implements OnInit{
   @Input() imgWidth="50"
   @Input()type='image'
   @Input()hideEditBtn=false
+  @Output() onFileEdit =new EventEmitter()
 @Input()action='Add'
   ngOnInit(): void {
    
-    console.log("EditModeImageComponent  ngOnInit  this.editImageProps.props.imgSrc:",this.isValidURL(this.editImageProps.props.imgSrc))
   }
   isValidURL(url: string): boolean {
     try {
@@ -35,5 +35,9 @@ export class EditModeImageComponent implements OnInit{
     } catch (_) {
       return false;
     }
+  }
+  onEdit(){
+    this.onFileEdit.emit(null)
+
   }
 }

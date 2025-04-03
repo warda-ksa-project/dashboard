@@ -1,5 +1,5 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component, forwardRef, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, forwardRef, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { FileUpload, UploadEvent } from 'primeng/fileupload';
@@ -24,6 +24,7 @@ export class UploadFileComponent implements OnChanges{
   @Input() isMulti: boolean = false;
   @Input()accept="image/*,video/*"
   @Input()defaultImages:any
+  @Output() onFileRemoved =new EventEmitter()
   onChange: (value: any | null) => void = () => { };
   onTouched: () => void = () => { };
   isDisabled = false;
@@ -81,7 +82,15 @@ export class UploadFileComponent implements OnChanges{
         });
     }
   }
+  onClear(event:any){
+  console.log("UploadFileComponent  onClear  event:", event)
+  this.onFileRemoved.emit(null)
+
+  }
   onRemove(event:any){
+     console.log("UploadFileComponent  onRemove  event:", event)
+     this.onFileRemoved.emit(null)
+
      if(this.isMulti){
       this.convertFileToBase64(event.file).then((base64String: string) => {
         this.uploadedFiles=  this.uploadedFiles.filter(res=>res.image !==base64String)     

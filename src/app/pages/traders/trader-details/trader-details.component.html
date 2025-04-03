@@ -227,6 +227,7 @@
                         [isMulti]="true"
                         formControlName="cr"
                         [accept]="'application/pdf'"
+                        (onFileRemoved)="onFileRemoved('cr')"
                       ></app-upload-file>
                       <!-- <div *ngIf="isRequiredError" class="error-message mt-2">
                               {{'shared.img_required'|translate}}
@@ -236,7 +237,7 @@
                       <label class="mb-2">{{
                         "trader.form.cr" | translate
                       }}</label>
-                      <app-edit-mode-image [type]="'pdf'"
+                      <app-edit-mode-image [type]="'pdf'" (onFileEdit)="onFileEdit('cr')"
                         [editImageProps]="editImageProps"
                       ></app-edit-mode-image>
                     </div>
@@ -262,7 +263,7 @@
                       <label class="mb-2">{{
                         "trader.form.license" | translate
                       }}</label>
-                      <app-edit-mode-image [type]="'pdf'"
+                      <app-edit-mode-image [type]="'pdf'" (onFileEdit)="onFileEdit('license')"
                         [editImageProps]="editImageLicenseProps"
                       ></app-edit-mode-image>
                     </div>
@@ -288,7 +289,7 @@
                       <label class="mb-2">{{
                         "trader.form.iban" | translate
                       }}</label>
-                      <app-edit-mode-image [type]="'pdf'"
+                      <app-edit-mode-image [type]="'pdf'" (onFileEdit)="onFileEdit('iban')"
                         [editImageProps]="editImageIBanProps"
                       ></app-edit-mode-image>
                     </div>
@@ -298,13 +299,13 @@
                         <label class="mb-2">{{
                           "shared.upload_img" | translate
                         }}</label>
-                        <app-upload-file formControlName="image"></app-upload-file>
+                        <app-upload-file formControlName="image" (onFileRemoved)="onFileRemoved('image')"></app-upload-file>
                       </div>
                       <div class="edit-mode-section mt-2" *ngIf="editTraderImageMode">
                         <label class="mb-2">{{
                           "shared.uploaded_img" | translate
                         }}</label>
-                        <app-edit-mode-image [action]="tyepMode()"
+                        <app-edit-mode-image [action]="tyepMode()"   (onFileEdit)="onFileEdit('image')"
                           [editImageProps]="editTraderImageProps"
                         ></app-edit-mode-image>
                       </div>

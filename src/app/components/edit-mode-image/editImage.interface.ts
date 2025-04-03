@@ -1,7 +1,7 @@
 export interface IEditImage {
   props: {
       visible: boolean;
-      imgSrc: string;
+      imgSrc: any;
   };
   onEditBtn: (e?: Event) => void;
 }
