@@ -1,0 +1,96 @@
+<div class="faqs-form-container container-fluid">
+    <div class="row">
+      <div class="page-details mb-3">
+        <div class="title">
+          <h2>
+            {{ tyepMode() | translate | titlecase }}
+            {{ pageName() | translate | titlecase }}
+          </h2>
+        </div>
+        <!-- <div class="breadcrumb">
+          <app-breadcrump [breadcrumbProps]="bredCrumb"></app-breadcrump>
+        </div> -->
+      </div>
+    </div>
+    <div class="form-container">
+      <div class="reactive-form">
+        <form [formGroup]="form" class="w-70" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
+              <app-input-text
+                [readOnly]="tyepMode() == 'View'"
+                [disabled]="tyepMode() == 'View'"
+                [label]="'faqs.form.title_en'"
+                [control]="form.get('enTitle')"
+              ></app-input-text>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
+              <app-input-text
+                [readOnly]="tyepMode() == 'View'"
+                [disabled]="tyepMode() == 'View'"
+                [label]="'faqs.form.title_ar'"
+                [control]="form.get('arTitle')"
+              ></app-input-text>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
+              <app-select
+                [placeholder]="form.get('userType')?.value"
+                [readOnly]="tyepMode() == 'View'"
+                [disabled]="tyepMode() == 'View'"
+                class="w-100"
+                [list]="userTypeList"
+                [label]="'faqs.form.userType'"
+                [control]="form.get('userType')"
+              >
+              </app-select>
+            </div>
+            <div class="row">
+              <div class="mt-2 col-lg-6 col-md-6 col-sm-12 mt-4">
+                <app-editor
+                  [label]="'faqs.form.desc_en'"
+                  [control]="form.get('enDescription')"
+                ></app-editor>
+              </div>
+              <div class="mt-2 col-lg-6 col-md-6 col-sm-12 mt-4">
+                <app-editor
+                  [label]="'faqs.form.desc_ar'"
+                  [control]="form.get('arDescription')"
+                ></app-editor>
+              </div>
+            </div>
+            <div class="actions mt-5 text-center">
+              <button
+                type="submit"
+                class="submit-btn"
+                [disabled]="!form.valid"
+                *ngIf="tyepMode() != 'View'"
+              >
+                <span *ngIf="tyepMode() == 'Add'">{{
+                  "actions.add" | translate
+                }}</span>
+                <span *ngIf="tyepMode() == 'Edit'">{{
+                  "actions.edit" | translate
+                }}</span>
+              </button>
+              <button type="button" class="cancel-btn" (click)="cancel()">
+                {{ "actions.cancel" | translate }}
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <app-dialog [visible]="showConfirmMessage">
+    <button
+      class="dialog-close-btn btn btn-default"
+      (click)="showConfirmMessage = false"
+    >
+      {{ "actions.close" | translate }}
+    </button>
+    <button class="dialog-close-btn btn btn-danger" (click)="onConfirmMessage()">
+      {{ "actions.confirm" | translate }}
+    </button>
+  </app-dialog>
+  
