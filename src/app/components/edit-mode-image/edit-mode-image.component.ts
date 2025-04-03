@@ -16,7 +16,7 @@ export class EditModeImageComponent implements OnInit{
   @Input() imgWidth="50"
   @Input()type='image'
   @Input()hideEditBtn=false
-  @Output() onFileEdit =new EventEmitter()
+  @Output() onFileRemoved =new EventEmitter()
 @Input()action='Add'
   ngOnInit(): void {
    
@@ -37,7 +37,7 @@ export class EditModeImageComponent implements OnInit{
     }
   }
   onEdit(){
-    this.onFileEdit.emit(null)
+    this.onFileRemoved.emit(null)
 
   }
 }

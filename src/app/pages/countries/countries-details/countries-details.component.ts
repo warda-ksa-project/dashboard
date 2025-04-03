@@ -164,7 +164,10 @@ export class CountriesDetailsComponent implements OnInit {
       this.editCountry(payload)
 
   }
+  onFileEdit(control:string){
+    this.form.get(control)?.setValue(null)
 
+  }
   addCountry(payload: any) {
     this.ApiService.post('Country/Create', payload, { showAlert: true, message: 'Add country Successfuly' }).subscribe(res => {
       if (res)

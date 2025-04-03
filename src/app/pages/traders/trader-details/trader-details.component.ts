@@ -454,15 +454,7 @@ export class TraderDetailsComponent  {
 
   }
 
-  onFileRemoved(control:string){
-   this.onFileEdit(control)
 
-    // this.form.get(control)?.setValue(null)
-    // this.form.get(control)?.updateValueAndValidity()
-
-
-  
-  }
   onSubmit() {
     // if(this.form.value.image){
     //   let x =   this.form.value.image.map((re:any)=>({

@@ -71,7 +71,7 @@
               <label class="mb-2">{{
                 "shared.upload_img" | translate
               }}</label>
-              <app-upload-file formControlName="image"></app-upload-file>
+              <app-upload-file formControlName="image" (onFileRemoved)="onFileEdit('image')"></app-upload-file>
               <div *ngIf="isRequiredError" class="error-message mt-2">
                 {{'shared.img_required'|translate}}
               </div>
@@ -80,7 +80,7 @@
               <label class="mb-2">{{
                 "shared.uploaded_img" | translate
               }}</label>
-              <app-edit-mode-image [action]="tyepMode()"
+              <app-edit-mode-image [action]="tyepMode()" (onFileRemoved)="onFileEdit('image')"
                 [editImageProps]="editImageProps"
               ></app-edit-mode-image>
             </div>
