@@ -22,7 +22,7 @@ import { MapComponent } from '../../../components/map/map.component';
 import { SelectComponent } from '../../../components/select/select.component';
 
 const global_PageName = 'trader_request.pageName';
-const global_routeUrl = 'trader-request'
+const global_routeUrl = 'traderRequest'
 const global_API_details = 'Trader' + '/GetTraderRequestById';
 const global_API_create = 'Trader' + '/Create';
 const global_API_update = 'Trader' + '/Update';

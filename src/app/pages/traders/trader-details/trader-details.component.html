@@ -218,7 +218,7 @@
                   <div class="col-lg-6 col-md-6 col-sm-6">
                     <div
                       class="upload-image-section mt-4 mb-4"
-                      *ngIf="!editMode"
+                      *ngIf="!editCRMode"
                     >
                       <label class="mb-2">{{
                         "trader.form.cr" | translate
@@ -232,7 +232,7 @@
                               {{'shared.img_required'|translate}}
                             </div> -->
                     </div>
-                    <div class="edit-mode-section mt-2" *ngIf="editMode">
+                    <div class="edit-mode-section mt-2" *ngIf="editCRMode">
                       <label class="mb-2">{{
                         "trader.form.cr" | translate
                       }}</label>
@@ -244,7 +244,7 @@
                   <div class="col-lg-6 col-md-6 col-sm-6">
                     <div
                       class="upload-image-section mt-4 mb-4"
-                      *ngIf="!editMode"
+                      *ngIf="!editLicenseMode"
                     >
                       <label class="mb-2">{{
                         "trader.form.license" | translate
@@ -258,7 +258,7 @@
                               {{'shared.img_required'|translate}}
                             </div> -->
                     </div>
-                    <div class="edit-mode-section mt-2" *ngIf="editMode">
+                    <div class="edit-mode-section mt-2" *ngIf="editLicenseMode">
                       <label class="mb-2">{{
                         "trader.form.license" | translate
                       }}</label>
@@ -270,7 +270,7 @@
                   <div class="col-lg-6 col-md-6 col-sm-6">
                     <div
                       class="upload-image-section mt-4 mb-4"
-                      *ngIf="!editMode"
+                      *ngIf="!editIBanMode"
                     >
                       <label class="mb-2">{{
                         "trader.form.iban" | translate
@@ -284,7 +284,7 @@
                               {{'shared.img_required'|translate}}
                             </div> -->
                     </div>
-                    <div class="edit-mode-section mt-2" *ngIf="editMode">
+                    <div class="edit-mode-section mt-2" *ngIf="editIBanMode">
                       <label class="mb-2">{{
                         "trader.form.iban" | translate
                       }}</label>

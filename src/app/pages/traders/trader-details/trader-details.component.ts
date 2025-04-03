@@ -21,7 +21,7 @@ import { MapComponent } from '../../../components/map/map.component';
 import { SelectComponent } from '../../../components/select/select.component';
 
 const global_PageName = 'trader.pageName';
-const global_routeUrl = 'trader'
+const global_routeUrl = 'traders'
 const global_API_details = 'Trader' + '/GetTraderById';
 const global_API_create = 'Trader' + '/Create';
 const global_API_update = 'Trader' + '/Update';
@@ -163,6 +163,9 @@ export class TraderDetailsComponent  {
   })
 
   editTraderImageMode:boolean=false
+  editCRMode:boolean=false
+  editLicenseMode:boolean=false
+  editIBanMode:boolean=false
 
 
   editImageProps: IEditImage = {
@@ -172,7 +175,7 @@ export class TraderDetailsComponent  {
     },
     onEditBtn: (e?: Event) => {
       this.editImageProps.props.visible = false;
-      this.editMode = false;
+      this.editCRMode = false;
     }
   };
 
@@ -183,7 +186,7 @@ export class TraderDetailsComponent  {
     },
     onEditBtn: (e?: Event) => {
       this.editImageProps.props.visible = false;
-      this.editMode = false;
+      this.editLicenseMode = false;
     }
   };
 
@@ -194,7 +197,7 @@ export class TraderDetailsComponent  {
     },
     onEditBtn: (e?: Event) => {
       this.editImageProps.props.visible = false;
-      this.editMode = false;
+      this.editIBanMode = false;
     }
   };
 
@@ -209,7 +212,6 @@ export class TraderDetailsComponent  {
     }
   };
 
-  editMode: boolean = false;
   get getID() {
     return this.route.snapshot.params['id']
   }
@@ -386,7 +388,12 @@ export class TraderDetailsComponent  {
         this.editImageIBanProps.props.imgSrc = res.data.iban;
         this.editImageProps .props.imgSrc = res.data.cr;
         this.editImageLicenseProps.props.imgSrc = res.data.license;
-        this.editMode = true;
+        this.editCRMode = true;
+        this.editIBanMode = true;
+        this.editLicenseMode = true;
+        this.editTraderImageMode = true;
+
+
         this.adress = [{
           expalinedAddress:res.data.addresses[0].expalinedAddress,
           cityId:res.data.addresses[0].cityId,

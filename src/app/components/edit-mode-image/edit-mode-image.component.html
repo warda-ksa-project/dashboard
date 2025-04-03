@@ -4,7 +4,7 @@
       <a *ngIf="type=='pdf'" [class.no_action]="!isValidURL(editImageProps.props.imgSrc)" [href]="editImageProps.props.imgSrc" target="_blank">
         <img *ngIf="type=='pdf'"  [src]="isValidURL(editImageProps.props.imgSrc)?'assets/images/pdf.png':'assets/images/empty-state.png'" alt="" [width]="imgWidth" height="auto">
       </a>
-      <img *ngIf="type!='pdf'"  [src]="editImageProps.props.imgSrc" alt="" [width]="imgWidth" height="auto">
+      <img *ngIf="type!='pdf'"  [src]="isValidURL(editImageProps.props.imgSrc)?editImageProps.props.imgSrc:'assets/images/empty-state.png'" alt="" [width]="imgWidth" height="auto">
     </div>
     <div class="action">
       <div class="mt-3 w-100" *ngIf="hideEditBtn">{{'shared.download'|translate}}</div>
