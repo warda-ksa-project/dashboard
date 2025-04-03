@@ -106,6 +106,7 @@
   "side_bar": {
     "dashboard": "Dashboard",
     "users":"Users",
+    "orderStatus":"Order Status",
     "trader": "Traders",
     "article":"Articles",
     "slider":"Slider",
@@ -357,6 +358,18 @@
       "desc_ar": "Description (ar)",
       "desc_en": "Description (en)",
       "userType": "User Type"
+    }
+  },
+  "orderStatus": {
+    "pageName": "Order Status",
+    "list": "Order Status",
+    "pageName_View_crumb": "View Order Status",
+    "pageName_filter": "Filter Order Status",
+    "pageName_Add_crumb": "Add Order Status",
+    "pageName_Edit_crumb": "Edit Order Status",
+    "form": {
+      "name_en": "Name (en)",
+      "name_ar": "Name (ar)"
     }
   },
   "pkg": {

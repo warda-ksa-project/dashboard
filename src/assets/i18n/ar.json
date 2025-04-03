@@ -105,6 +105,7 @@
   "side_bar": {
     "dashboard": "لوحة التحكم",
     "users":"المستخدمون",
+    "orderStatus":" حالة الطلب",
     "trader": "التجار",
     "article":"المقالات",
     "slider":"السلايدر",
@@ -358,6 +359,19 @@
         "userType": "نوع المستخدم"
       }
     },
+    "orderStatus": {
+    "pageName": "حالة الطلب",
+    "list": "حالة الطلب",
+    "pageName_View_crumb": "عرض حالة الطلب",
+    "pageName_filter": "تصفية حالة الطلب",
+    "pageName_Add_crumb": "إضافة حالة الطلب",
+    "pageName_Edit_crumb": "تعديل حالة الطلب",
+    "form": {
+      "name_en": "الاسم (بالإنجليزية)",
+      "name_ar": "الاسم (بالعربية)"
+    }
+  }
+,
     "pkg": {
       "pageName": "الباقات",
       "pageName_View_crumb": "عرض الباقة",

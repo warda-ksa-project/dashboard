@@ -78,6 +78,8 @@ import { TargetComponent } from './pages/target/target.component';
 import { DashboardAdminComponent } from './pages/dashboard-admin/dashboard-admin.component';
 import { UsersTableComponent } from './pages/users/users-table/users-table.component';
 import { UsersDetailsComponent } from './pages/users/users-details/users-details.component';
+import { OrderStatusTableComponent } from './layouts/home-layout/order-status/order-status-table/order-status-table.component';
+import { OrderStatusDetailsComponent } from './layouts/home-layout/order-status/order-status-details/order-status-details.component';
 
 export const routes: Routes = [
   {
@@ -165,6 +167,12 @@ export const routes: Routes = [
       { path: 'trader/add', component: TraderDetailsComponent },
       { path: 'trader/view/:id', component: TraderDetailsComponent },
       { path: 'trader/edit/:id', component: TraderDetailsComponent },
+
+       
+      { path: 'orderStatus', component: OrderStatusTableComponent },
+      { path: 'orderStatus/add', component: OrderStatusDetailsComponent },
+      { path: 'orderStatus/view/:id', component: OrderStatusDetailsComponent },
+      { path: 'orderStatus/edit/:id', component: OrderStatusDetailsComponent },
 
       { path: 'trader-request', component: TraderRequestsTableComponent },
       { path: 'trader-request/add', component: TraderRequestsDetailsComponent },

@@ -29,6 +29,8 @@ export const menuItems =
     // { icon: 'pi pi-users', id:'',label: 'side_bar.clients', route: '/clients' },
     // { icon: 'pi pi-users', id:'',label: 'side_bar.technicals', route: '/technicals' },
     { icon: 'pi pi-truck', id:'orders',label: 'side_bar.orders', route: '/orders' ,type:[Roles.admin,Roles.trader] },
+    { icon: 'pi pi-asterisk', id:'order status',label: 'side_bar.orderStatus', route: '/orderStatus' ,type:[Roles.admin] },
+
     // { icon: 'pi pi-car', id:'',label: 'side_bar.special_orders', route: '/special-order' },
     // { icon: 'pi pi-server', id:'',label: 'side_bar.services', route: '/services' },
     // { icon: 'pi pi-folder', id:'',label: 'side_bar.contract', route: '/contract-type' },
