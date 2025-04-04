@@ -45,7 +45,7 @@ export class PieceProductsDetailsComponent {
   private route = inject(ActivatedRoute)
   showConfirmMessage: boolean = false
   reviews:any[]=[]
-
+  payloadFinal:any={}
   private confirm = inject(ConfirmMsgService)
   discountType: any[] = [
     {
@@ -165,11 +165,9 @@ export class PieceProductsDetailsComponent {
   ngOnInit() {
 
     this.pageName.set(global_PageName)
-    this.getBreadCrumb();
     this.getRoles()
     this.languageService.translationService.onLangChange.subscribe(() => {
       this.selectedLang = this.languageService.translationService.currentLang;
-      this.getBreadCrumb();
       this.getRoles()
     });
 
@@ -236,20 +234,31 @@ export class PieceProductsDetailsComponent {
     return result
   }
 
-  getBreadCrumb() {
-    this.bredCrumb = {
-      crumbs: [
-        {
-          label: this.languageService.translate('Home'),
-          routerLink:  this.role==Roles.admin?'/dashboard-admin':'/dashboard-trader',
-        },
-        {
-          label: this.languageService.translate(this.pageName() + '_' + this.tyepMode() + '_crumb'),
-        },
-      ]
-    }
-  }
+  onValueStepperChange(value:any){
+    this.goTo(value)
 
+  }
+  goTo(value:number){
+    setTimeout(()=>{
+      if(value==2){
+        this.form.patchValue({
+          amount:+this.payloadFinal.amount,
+          startDate:this.payloadFinal.startDate,
+          endDate:this.payloadFinal.endDate,
+          discountType:this.payloadFinal.discountType
+        })
+       
+      }
+      else if (value ==1){
+         this.payloadFinal =JSON.parse(JSON.stringify(this.form.value))
+         this.payloadFinal.startDate=new Date(this.payloadFinal.startDate)
+         this.payloadFinal.endDate=new Date(this.payloadFinal.endDate)
+        
+      }
+      console.log("ProductsDetailsComponent  setTimeout   payloadFinal:",  this.payloadFinal)
+      console.log("ProductsDetailsComponent  goTo  value:", this.form.value)
+    })
+  }
 
   API_getItemDetails() {
     this.ApiService.get(`${global_API_details}`, { id: this.getID }).subscribe((res: any) => {
@@ -263,6 +272,10 @@ export class PieceProductsDetailsComponent {
         if (this.imageList.length != 0) {
           this.addUrltoMedia(this.imageList);
         }
+        this.payloadFinal =JSON.parse(JSON.stringify(this.form.value))
+        this.payloadFinal.startDate=new Date(this.payloadFinal.startDate)
+        this.payloadFinal.endDate=new Date(this.payloadFinal.endDate)
+
       }
     })
   }
@@ -293,28 +306,28 @@ export class PieceProductsDetailsComponent {
   //       console.error('Error processing files:', error);
   //     });
   // }
-  goToActivePage_3(){
-    console.log('fff',this.form.value)
+  // goToActivePage_3(){
+  //   console.log('fff',this.form.value)
 
-  }
-  goToActivePage_2() {
-    console.log(this.form.value)
-    this.form.patchValue({
-      amount: this.form.value.amount
-    })
-  }
-  goToActivePage_1() {
-    if (this.tyepMode() == 'Add') {
-      // this.imageList=this.form.value.image;
-      // this.addUrltoMedia(this.imageList);
+  // }
+  // goToActivePage_2() {
+  //   console.log(this.form.value)
+  //   this.form.patchValue({
+  //     amount: this.form.value.amount
+  //   })
+  // }
+  // goToActivePage_1() {
+  //   if (this.tyepMode() == 'Add') {
+  //     // this.imageList=this.form.value.image;
+  //     // this.addUrltoMedia(this.imageList);
 
-      // console.log("ProductsDetailsComponent  goToActivePage_1  this.form.value:", this.form.value)
-      // console.log("ProductsDetailsComponent  goToActivePage_1   this.imageList:",  this.imageList)
-    }
+  //     // console.log("ProductsDetailsComponent  goToActivePage_1  this.form.value:", this.form.value)
+  //     // console.log("ProductsDetailsComponent  goToActivePage_1   this.imageList:",  this.imageList)
+  //   }
 
 
 
-  }
+  // }
   onSubmit() {
     if (this.form.value.image) {
       let x = this.form.value.image.map((re: any) => ({

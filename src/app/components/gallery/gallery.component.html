@@ -1,6 +1,7 @@
 <div class="gallery-container container">
   <div class="row g-3">
     <div class="col-lg-4 col-md-6 col-sm-12" *ngFor="let media of mediaList">
+     <ng-container *ngIf="media.src">
       <ng-container *ngIf="media.mediaTypeEnum === 1">
         <div class="cont" (click)="openImage(media.src)">
           <img [src]="media.src" alt="Image">
@@ -11,6 +12,7 @@
           <video [src]="media.src" controls></video>
         </div>
       </ng-container>
+     </ng-container>
     </div>
   </div>
 </div>

@@ -252,7 +252,7 @@ export class OrdersTableComponent {
   // }
 
   API_getStatus(){
-    this.ApiService.get('order/getStatus').subscribe((res:any)=>{
+    this.ApiService.get('orderStatus/getAllStatus').subscribe((res:any)=>{
       if(res.data){
         this.orderStatusList=[]
         res.data.map((item:any)=>{

@@ -46,7 +46,7 @@ export class OrderStatusDetailsComponent {
         Validators.required,
       ]
     }),
-    color: new FormControl('string'),
+    color: new FormControl(''),
     displayOrder: new FormControl(0),
    
   })

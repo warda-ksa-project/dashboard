@@ -50,6 +50,8 @@ export class ProductsDetailsComponent {
   private confirm = inject(ConfirmMsgService)
   categoryList: any[] = []
   reviews:any[]=[]
+  payloadFinal:any={}
+
   discountType: any[] = [
     {
       name: 'Amount',
@@ -169,19 +171,13 @@ export class ProductsDetailsComponent {
   ngOnInit() {
 
     this.pageName.set(global_PageName)
-    this.getBreadCrumb();
     this.getRoles();
     this.languageService.translationService.onLangChange.subscribe(() => {
       this.selectedLang = this.languageService.translationService.currentLang;
-      this.getBreadCrumb();
       this.getRoles();
     });
 
-    this.form.valueChanges.subscribe(res=>{
-      console.log("Pr-------------es:", res)
-      
-      
-    })
+
    this.form.get('startDate')?.valueChanges.subscribe((res:any) => {
     if(this.isFirstDateAfter(res,this.form.get('endDate')?.value))
     this.form.get('endDate')?.setValue('')
@@ -223,6 +219,7 @@ export class ProductsDetailsComponent {
       this.form.get('amount')?.updateValueAndValidity();
       this.form.get('startDate')?.updateValueAndValidity();
       this.form.get('endDate')?.updateValueAndValidity();
+      console.log('ggg2222222@@',this.form.value)
     });
 
     if (this.tyepMode() !== 'Add')
@@ -248,19 +245,7 @@ getRoles(){
     return result
   }
 
-  getBreadCrumb() {
-    this.bredCrumb = {
-      crumbs: [
-        {
-          label: this.languageService.translate('Home'),
-          routerLink:  this.role==Roles.admin?'/dashboard-admin':'/dashboard-trader',
-        },
-        {
-          label: this.languageService.translate(this.pageName() + '_' + this.tyepMode() + '_crumb'),
-        },
-      ]
-    }
-  }
+
 
   getAllCategory(){
     if(this.role==Roles.trader)
@@ -282,7 +267,29 @@ getRoles(){
 
     })
   }
+  onValueStepperChange(value:any){
+    this.goTo(value)
 
+  }
+  goTo(value:number){
+    setTimeout(()=>{
+      if(value==2){
+        this.form.patchValue({
+          amount:+this.payloadFinal.amount,
+          startDate:this.payloadFinal.startDate,
+          endDate:this.payloadFinal.endDate,
+          discountType:this.payloadFinal.discountType
+        })
+      }
+      else if (value ==1){
+         this.payloadFinal =JSON.parse(JSON.stringify(this.form.value))
+         this.payloadFinal.startDate=new Date(this.payloadFinal.startDate)
+         this.payloadFinal.endDate=new Date(this.payloadFinal.endDate)
+      }
+      console.log("ProductsDetailsComponent  setTimeout   payloadFinal:",  this.payloadFinal)
+      console.log("ProductsDetailsComponent  goTo  value:", this.form.value)
+    })
+  }
   getSubCategory() {
     this.ApiService.get('SubCategory/GetSubCategoryByTraderId').subscribe((res: any) => {
       if (res.data) {
@@ -310,6 +317,10 @@ getRoles(){
         if (this.imageList.length != 0) {
           this.addUrltoMedia(this.imageList);
         }
+        this.payloadFinal =JSON.parse(JSON.stringify(this.form.value))
+        this.payloadFinal.startDate=new Date(this.payloadFinal.startDate)
+        this.payloadFinal.endDate=new Date(this.payloadFinal.endDate)
+
       }
     })
   }
@@ -335,27 +346,27 @@ getRoles(){
   //     .catch((error) => {
   //     });
   // }
-  goToActivePage_2() {
-    this.form.patchValue({
-      amount: this.form.value.amount
-    })
-  }
-  goToActivePage_3(){
-    console.log('fff',this.form.value)
+  // goToActivePage_2() {
+  //   this.form.patchValue({
+  //     amount: this.form.value.amount
+  //   })
+  // }
+  // goToActivePage_3(){
+  //   console.log('fff',this.form.value)
 
-  }
+  // }
 
-  goToActivePage_1() {
-    // if (this.tyepMode() == 'Add') {
-    //   // this.imageList=this.form.value.image;
-    //   // this.addUrltoMedia(this.imageList);
+  // goToActivePage_1() {
+  //   // if (this.tyepMode() == 'Add') {
+  //   //   // this.imageList=this.form.value.image;
+  //   //   // this.addUrltoMedia(this.imageList);
 
-    // }
+  //   // }
    
-    // this.imageList=this.form.value.image;
-    console.log('fff',this.form.value)
+  //   // this.imageList=this.form.value.image;
+  //   console.log('fff',this.form.value)
 
-  }
+  // }
   onSubmit() {
     if (this.form.value.image) {
       let x = this.form.value.image.map((re: any) => ({
