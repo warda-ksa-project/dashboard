@@ -29,17 +29,17 @@ pageName = signal<string>(global_pageName);
   tableActions: ITableAction[] = [
     {
       name: EAction.delete,
-      apiName_or_route: 'FAQ/Delete?id',
+      apiName_or_route: 'orderStatus/Delete?id',
       autoCall: true
     },
     {
       name: EAction.view,
-      apiName_or_route: '/settings/faqs/view',
+      apiName_or_route: '/orderStatus/view',
       autoCall: true
     },
     {
       name: EAction.edit,
-      apiName_or_route: '/settings/faqs/edit',
+      apiName_or_route: '/orderStatus/edit',
       autoCall: true
     }
   ]
@@ -56,8 +56,8 @@ pageName = signal<string>(global_pageName);
     pageSize: 8,
     sortingExpression: "",
     sortingDirection: 0,
-    enName: "",
-    arName: ""
+    titleEn: "",
+    titleAr: ""
   }
 
   totalCount: number = 0;
@@ -86,15 +86,15 @@ pageName = signal<string>(global_pageName);
   displayTableCols(currentLang: string) {
     this.columns = [
       { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: true },
-      { keyName: 'enTitle', header: this.languageService.translate('faqs.form.question_en'), type: EType.text, show: true },
-      { keyName: 'arTitle', header: this.languageService.translate('faqs.form.question_ar'), type: EType.text, show: true },
+      { keyName: 'titleEn', header: this.languageService.translate('orderStatus.form.name_en'), type: EType.text, show: true },
+      { keyName: 'titleAr', header: this.languageService.translate('orderStatus.form.name_ar'), type: EType.text, show: true },
       { keyName: '', header: this.languageService.translate('Actions'), type: EType.actions, actions: this.tableActions, show: true },
 
     ]
     this.columnsSmallTable = [
-      { keyName: 'enTitle', header: this.languageService.translate('faqs.form.question_en'), type: EType.text, showAs: ETableShow.header },
+      { keyName: 'titleEn', header: this.languageService.translate('orderStatus.form.name_en'), type: EType.text, showAs: ETableShow.header },
       { keyName: 'id', header: 'Id', type: EType.id, show: false },
-      { keyName: 'arTitle', header: this.languageService.translate('faqs.form.question_ar'), type: EType.editor, showAs: ETableShow.content },
+      { keyName: 'titleAr', header: this.languageService.translate('orderStatus.form.name_ar'), type: EType.editor, showAs: ETableShow.content },
     ];
   }
 
@@ -107,7 +107,7 @@ pageName = signal<string>(global_pageName);
   }
 
   getAllFAQS() {
-    this.ApiService.post('FAQ/GetAllWithPagination', this.faqSearchCreteria).subscribe((res: any) => {
+    this.ApiService.post('orderStatus/GetAllStatusWithPagination', this.faqSearchCreteria).subscribe((res: any) => {
       if (res) {
         this.faqsList = res.data.dataList;
         this.totalCount = res.data.totalCount;
@@ -140,8 +140,8 @@ pageName = signal<string>(global_pageName);
       pageSize: 8,
       sortingExpression: "",
       sortingDirection: 0,
-      enName: "",
-      arName: ""
+      titleEn: "",
+      titleAr: ""
     }
     this.getAllFAQS();
     this.showFilter = false

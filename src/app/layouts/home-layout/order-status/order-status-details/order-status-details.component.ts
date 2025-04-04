@@ -36,16 +36,19 @@ export class OrderStatusDetailsComponent {
   languageService = inject(LanguageService);
   private confirm = inject(ConfirmMsgService)
   form = new FormGroup({
-    enName: new FormControl('', {
+    titleEn: new FormControl('', {
       validators: [
         Validators.required,
       ],
     }),
-    arName: new FormControl('', {
+    titleAr: new FormControl('', {
       validators: [
         Validators.required,
       ]
     }),
+    color: new FormControl('string'),
+    displayOrder: new FormControl(0),
+   
   })
 
  
@@ -74,7 +77,7 @@ export class OrderStatusDetailsComponent {
  
 
   getFaqsDetails() {
-    this.ApiService.get(`FAQ/GetById/`, { id: this.faqsID }).subscribe((res: any) => {
+    this.ApiService.get(`orderStatus/GetStatusById/`, { id: this.faqsID }).subscribe((res: any) => {
       if (res.data)
         this.form.patchValue(res.data)
     })
@@ -102,21 +105,21 @@ export class OrderStatusDetailsComponent {
   }
 
   onConfirmMessage() {
-    this.router.navigateByUrl('/settings/faqs')
+    this.router.navigateByUrl('/orderStatus')
 
   }
 
   addFQS(payload: any) {
-    this.ApiService.post('FAQ/Create', payload, { showAlert: true, message: 'Add FAQS Successfuly' }).subscribe(res => {
+    this.ApiService.post('orderStatus/Create', payload, { showAlert: true, message: '' }).subscribe(res => {
       if (res)
-        this.router.navigateByUrl('settings/faqs')
+        this.router.navigateByUrl('/orderStatus')
     })
   }
 
   editFQS(payload: any) {
-    this.ApiService.put('FAQ/Update', payload, { showAlert: true, message: 'update FAQS Successfuly' }).subscribe(res => {
+    this.ApiService.put('orderStatus/Update', payload, { showAlert: true, message: '' }).subscribe(res => {
       if (res)
-        this.router.navigateByUrl('settings/faqs')
+        this.router.navigateByUrl('/orderStatus')
     })
   }
 
