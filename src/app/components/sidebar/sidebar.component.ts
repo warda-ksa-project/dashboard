@@ -21,7 +21,7 @@ export class SidebarComponent  {
   selectedLang: any;
 languageService = inject(LanguageService);
      apiService=inject(ApiService)
-  
+
   userDate=JSON.parse(localStorage.getItem('userData')as any);
   defaultImage=this.userDate?.gender==1?'assets/images/arabian-man.png':'assets/images/arabian-woman.png'
   routingList = menuItems
@@ -37,7 +37,7 @@ languageService = inject(LanguageService);
   }
   getRoles(){
     this.apiService.get('Auth/getRoles').subscribe((res:any)=>{
-    this.role=res.message
+    this.role=res.data
     })
   }
   onFilterMenu(text:string){
@@ -48,6 +48,6 @@ languageService = inject(LanguageService);
 
   logOut(){
     localStorage.clear()
-    
+
   }
 }

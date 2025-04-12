@@ -70,13 +70,13 @@ export class SideNavComponent {
   // closeMenu:boolean=false
   // openMenu:boolean=true
 
- 
+
   // navigateToPath(path:any){
   // console.log("SideNavComponent  navigateToPath  path:", path)
 
   // }
 
-  
+
   //   /* NodeService */
 
 
@@ -100,7 +100,7 @@ export class SideNavComponent {
     this.apiService.get('Auth/getRoles').subscribe((res:any)=>{
       console.log("SidebarComponent  this.apiService.get  res:", res)
 
-    this.role=res.message
+    this.role=res.data
     console.log("SidebarComponent  this.apiService.get  this.role:", this.role)
     })
   }
@@ -113,6 +113,6 @@ export class SideNavComponent {
 
 logOut(){
   localStorage.clear()
-  
+
 }
 }
