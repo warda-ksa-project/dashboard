@@ -430,8 +430,8 @@ onPageSelected(number:any){
   
     getRoles(){
       this.apiService.get('Auth/getRoles').subscribe((res:any)=>{
-      this.role=res.message
-      if(this.role==Roles.trader){
+        this.role=res.data
+        if(this.role==Roles.trader){
         this.getAllSalesOrderDashboardStatistics();
         this.getAllSalesPerMonth()
         this.getStaticData();

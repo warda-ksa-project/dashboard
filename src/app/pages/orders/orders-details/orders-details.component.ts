@@ -173,7 +173,7 @@ pageName =signal<string>(global_PageName);
 
   getRoles(){
     this.ApiService.get('Auth/getRoles').subscribe((res:any)=>{
-    this.role=res.message
+      this.role=res.data
     })
   }
   API_forEditItem(payload: any) {

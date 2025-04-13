@@ -231,7 +231,7 @@ export class ProductsDetailsComponent {
 
 getRoles(){
   this.apiService.get('Auth/getRoles').subscribe((res:any)=>{
-  this.role=res.message
+    this.role=res.data
   if(this.role)
   this.getAllCategory()
   })

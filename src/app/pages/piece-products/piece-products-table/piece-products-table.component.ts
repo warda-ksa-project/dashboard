@@ -176,7 +176,7 @@ export class PieceProductsTableComponent {
   }
   getRoles(){
     this.ApiService.get('Auth/getRoles').subscribe((res:any)=>{
-    this.role=res.message
+      this.role=res.data
     })
   }
   openFilter() {

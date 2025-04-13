@@ -284,7 +284,7 @@ export class DashboardAdminComponent {
   };
   getRoles() {
     this.apiService.get('Auth/getRoles').subscribe((res: any) => {
-      this.role = res.message;
+      this.role=res.data
       this.getStaticData();
       this.getAllRevenueForEveryCity();
       // this.getAllSalesPerMonth();
