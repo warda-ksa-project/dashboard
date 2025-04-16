@@ -10,18 +10,20 @@ export class NgxToasterService {
   constructor(private ngxToaster :ToastrService,private translate:TranslateService) { }
 
   success(message:string){
-    const title ='Success'
+    const title =this.translate.instant('success')
     const messageBody = `<div>${this.translate.instant(message)}</div>`;
 
     this.ngxToaster.success(messageBody,title,{
       enableHtml: true, 
       closeButton: true, 
+      timeOut: 999999999,
+      extendedTimeOut: 999999999,
     })
 
 
   }
   error(message:string){
-    const title ='Error'
+    const title =this.translate.instant('error')
     const messageBody = `<div>${this.translate.instant(message)}</div>`;
 
     this.ngxToaster.error(messageBody,title,{
