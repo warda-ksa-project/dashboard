@@ -89,8 +89,8 @@
   "login": {
     "welcome": "مرحبًا بعودتك!",
     "sign_to_dashboard": "سجل الدخول للوصول إلى لوحة التحكم",
-    "userName": "اسم المستخدم",
-    "userName_required": "اسم المستخدم مطلوب",
+    "userName": "رقم الجوال",
+    "userName_required": " رقم الجوال مطلوب",
     "password": "كلمة المرور",
     "password_required": "كلمة المرور مطلوبة",
     "btn_login": "تسجيل الدخول",
