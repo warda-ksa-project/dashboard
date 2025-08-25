@@ -179,6 +179,17 @@ export class TraderDetailsComponent  {
     }
   };
 
+  editImageCRProps: IEditImage = {
+    props: {
+      visible: true,
+      imgSrc: ''
+    },
+    onEditBtn: (e?: Event) => {
+      this.editImageCRProps.props.visible = false;
+      this.editCRMode = false;
+    }
+  };
+
   editImageLicenseProps: IEditImage = {
     props: {
       visible: true,
@@ -227,6 +238,14 @@ export class TraderDetailsComponent  {
       this.selectedLang = this.languageService.translationService.currentLang;
       this.getAllCity()
     });
+
+    // Set password validation based on mode
+    if (this.tyepMode() === 'Add') {
+      this.form.get('password')?.setValidators([Validators.required]);
+    } else {
+      this.form.get('password')?.clearValidators();
+    }
+    this.form.get('password')?.updateValueAndValidity();
 
     // this.form.get('street')?.valueChanges.subscribe(res => {
     //   this.adress[0].street = res;
@@ -368,6 +387,7 @@ export class TraderDetailsComponent  {
       if (res.data) {
         this.form.patchValue({
           ...res.data,
+          phone: res.data.phone?.toString().trim(), // Ensure phone is string and trimmed
           expalinedAddress:res.data.addresses[0].expalinedAddress,
           cityId:res.data.addresses[0].cityId,
           // buildNo:res.data.addresses[0].buildNo,
@@ -383,12 +403,27 @@ export class TraderDetailsComponent  {
         this.showMap=true
         this.editTraderImageProps.props.imgSrc = res.data.image;
         this.editImageIBanProps.props.imgSrc = res.data.iban;
-        this.editImageProps .props.imgSrc = res.data.cr;
+        this.editImageCRProps.props.imgSrc = res.data.cr;
         this.editImageLicenseProps.props.imgSrc = res.data.license;
         this.editCRMode = true;
         this.editIBanMode = true;
         this.editLicenseMode = true;
         this.editTraderImageMode = true;
+
+        // Update files array with the URLs from API for validation
+        this.files[0] = {
+          iban: res.data.iban,
+          license: res.data.license,
+          cr: res.data.cr
+        };
+
+        // Update form controls with file URLs
+        this.form.patchValue({
+          cr: res.data.cr,
+          license: res.data.license,
+          iban: res.data.iban,
+          image: res.data.image
+        });
 
 
         this.adress = [{
@@ -407,6 +442,11 @@ export class TraderDetailsComponent  {
         // if (this.imageList.length != 0) {
         //   this.addUrltoMedia(this.imageList);
         // }
+        
+        // Debug: Check form validation after loading data
+        setTimeout(() => {
+          this.checkFormValidation();
+        }, 100);
       }
     })
   }
@@ -451,7 +491,22 @@ export class TraderDetailsComponent  {
 
   onFileEdit(control:string){
     this.form.get(control)?.setValue(null)
-
+    
+    // Switch to upload mode when editing files
+    switch(control) {
+      case 'cr':
+        this.editCRMode = false;
+        break;
+      case 'license':
+        this.editLicenseMode = false;
+        break;
+      case 'iban':
+        this.editIBanMode = false;
+        break;
+      case 'image':
+        this.editTraderImageMode = false;
+        break;
+    }
   }
 
 
@@ -527,11 +582,13 @@ export class TraderDetailsComponent  {
   }
 
   isFilesValid(){
-    const isFileValid = this.files.every((obj: any) =>
-      Object.values(obj).every((value:any) => value !== null && value !== undefined && value !== ''&& value.length !==0)
-    );
-
-    return isFileValid
+    // Check each file individually - either it's in edit mode (has URL) or has uploaded file
+    const crValid = this.editCRMode || (this.form.get('cr')?.value && this.form.get('cr')?.value.length > 0);
+    const licenseValid = this.editLicenseMode || (this.form.get('license')?.value && this.form.get('license')?.value.length > 0);
+    const ibanValid = this.editIBanMode || (this.form.get('iban')?.value && this.form.get('iban')?.value.length > 0);
+    const imageValid = this.editTraderImageMode || (this.form.get('image')?.value && this.form.get('image')?.value !== '');
+    
+    return crValid && licenseValid && ibanValid && imageValid;
   }
   cancel() {
     const hasValue = this.confirm.formHasValue(this.form)
@@ -560,6 +617,25 @@ export class TraderDetailsComponent  {
       if (res)
         this.navigateToPageTable()
     })
+  }
+
+  // Debug method to check form validation status
+  checkFormValidation() {
+    console.log('Form valid:', this.form.valid);
+    console.log('Form errors:', this.getFormValidationErrors());
+    console.log('Files valid:', this.isFilesValid());
+    console.log('Form values:', this.form.value);
+  }
+
+  getFormValidationErrors() {
+    let formErrors: any = {};
+    Object.keys(this.form.controls).forEach(key => {
+      const controlErrors = this.form.get(key)?.errors;
+      if (controlErrors) {
+        formErrors[key] = controlErrors;
+      }
+    });
+    return formErrors;
   }
 
  

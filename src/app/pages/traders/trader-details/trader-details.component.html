@@ -238,7 +238,7 @@
                         "trader.form.cr" | translate
                       }}</label>
                       <app-edit-mode-image [type]="'pdf'" (onFileRemoved)="onFileEdit('cr')"
-                        [editImageProps]="editImageProps"
+                        [editImageProps]="editImageCRProps"
                       ></app-edit-mode-image>
                     </div>
                   </div>
@@ -254,6 +254,7 @@
                         [isMulti]="true"
                         [accept]="'application/pdf'"
                         formControlName="license"
+                        (onFileRemoved)="onFileEdit('license')"
                       ></app-upload-file>
                       <!-- <div *ngIf="isRequiredError" class="error-message mt-2">
                               {{'shared.img_required'|translate}}
@@ -280,6 +281,7 @@
                         [isMulti]="true"
                         [accept]="'application/pdf'"
                         formControlName="iban"
+                        (onFileRemoved)="onFileEdit('iban')"
                       ></app-upload-file>
                       <!-- <div *ngIf="isRequiredError" class="error-message mt-2">
                               {{'shared.img_required'|translate}}
