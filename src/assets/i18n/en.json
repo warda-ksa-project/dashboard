@@ -610,6 +610,7 @@
       "customerInfo":"Customer Information",
       "clientName": "Client Name",
       "traderName": "Trader Name",
+      "discountType":"Discount Type",
       "phoneNumber": "phoneNumber",
       "address":"Address",
       "status": "Order Status",

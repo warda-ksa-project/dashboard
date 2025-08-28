@@ -597,6 +597,7 @@
     "clientName": "اسم العميل",
     "traderName": "اسم التاجر",
     "phoneNumber": "رقم الهاتف",
+    "discountType":"نوع الخصم",
     "address": "العنوان",
     "status": "حالة الطلب",
     "price": "السعر",
