@@ -638,5 +638,32 @@ export class TraderDetailsComponent  {
     return formErrors;
   }
 
+  // Step validation methods
+  isStep1Valid(): boolean {
+    const nameValid = this.form.get('name')?.valid ?? false;
+    const emailValid = this.form.get('email')?.valid ?? false;
+    const phoneValid = this.form.get('phone')?.valid ?? false;
+    const passwordValid = this.form.get('password')?.valid ?? false;
+    
+
+    return nameValid && emailValid && phoneValid && passwordValid;
+  }
+
+  isStep2Valid(): boolean {
+    const storeNameValid = this.form.get('storeName')?.valid ?? false;
+    const numberOfBranchesValid = this.form.get('numberOfBranches')?.valid ?? false;
+    
+    return storeNameValid && numberOfBranchesValid;
+  }
+
+  isStep3Valid(): boolean {
+    const longitudeValid = this.form.get('logitude')?.valid ?? false;
+    const latitudeValid = this.form.get('latitude')?.valid ?? false;
+    const explainedAddressValid = this.form.get('expalinedAddress')?.valid ?? false;
+    const cityIdValid = this.form.get('cityId')?.valid ?? false;
+    
+    return longitudeValid && latitudeValid && explainedAddressValid && cityIdValid;
+  }
+
  
 }

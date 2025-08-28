@@ -12,11 +12,12 @@ import { OtpModalComponent } from '../../components/otp-modal/otp-modal.componen
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../services/language.service';
 import { Roles } from '../../conts';
+import { ValidationHandlerPipePipe } from '../../pipes/validation-handler-pipe.pipe';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [OtpModalComponent, TranslatePipe, NgIf, ReactiveFormsModule, InputTextModule, PasswordModule, ButtonModule, RouterModule],
+  imports: [OtpModalComponent, TranslatePipe, NgIf, ReactiveFormsModule, InputTextModule, PasswordModule, ButtonModule, RouterModule, ValidationHandlerPipePipe],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
   providers: [ApiService]
@@ -38,8 +39,8 @@ export class LoginComponent {
 
   constructor(private fb: FormBuilder,@Inject(DOCUMENT) private document: Document, private api: ApiService, private translate: TranslateService, private router: Router) {
     this.loginForm = this.fb.group({
-      mobile: ['565664343', [Validators.required]],
-      password: ['Admin@VL', [Validators.required]],
+      mobile: ['', [Validators.required, Validators.maxLength(9)]],
+      password: ['', [Validators.required]],
       // mobile: ['508991360', [Validators.required]],
       // password: ['omar1234', [Validators.required]]
     });

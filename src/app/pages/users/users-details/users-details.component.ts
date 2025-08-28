@@ -60,7 +60,9 @@ pageName = signal<string>(global_PageName);
       ]
     }),
     password: new FormControl('', {
-
+ validators: [
+        Validators.required,
+      ]
     }),
     role: new FormControl('', {
 

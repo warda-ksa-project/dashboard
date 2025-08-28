@@ -8,11 +8,12 @@ import { ToasterService } from '../../services/toaster.service'; // Import here
 import { ApiService } from '../../services/api.service';
 import { Router, RouterModule } from '@angular/router';
 import { OtpModalComponent } from '../../components/otp-modal/otp-modal.component';
+import { ValidationHandlerPipePipe } from '../../pipes/validation-handler-pipe.pipe';
 
 @Component({
   selector: 'app-forget-password',
   standalone: true,
-  imports: [NgIf,OtpModalComponent, ReactiveFormsModule, InputTextModule, PasswordModule, ButtonModule  , RouterModule],
+  imports: [NgIf,OtpModalComponent, ReactiveFormsModule, InputTextModule, PasswordModule, ButtonModule  , RouterModule, ValidationHandlerPipePipe],
   templateUrl: './forget-password.component.html',
   styleUrl: './forget-password.component.scss'
 })
@@ -28,7 +29,7 @@ export class ForgetPasswordComponent {
 
   constructor(private fb: FormBuilder, private api: ApiService, private router: Router) {
     this.checkMobile = this.fb.group({
-      mobileNumber: ['', [Validators.required]]
+      mobileNumber: ['', [Validators.required, Validators.maxLength(9)]]
     });
 
     this.changePassword = this.fb.group({
@@ -49,7 +50,7 @@ export class ForgetPasswordComponent {
       let mobileNumberObject ={
         "mobileNumber": this.checkMobile.value.mobileNumber
       }
-      this.api.post('Authentication/ForgetPassword' , mobileNumberObject).subscribe((res: any) => {
+      this.api.post('Auth/ForgetPassword' , mobileNumberObject).subscribe((res: any) => {
         console.log(res);
         if(res.status) {
           this.openOtpModal = true;

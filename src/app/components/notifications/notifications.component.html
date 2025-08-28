@@ -1,7 +1,7 @@
 <ng-container>
   <div class="count-noti">
-    <div class="count-number">{{totalUnSeen}}</div>
-    <img src="assets/images/Bell_Ring.svg" width="27" (click)="op.toggle($event)" alt="bell">
+    <div class="count-number" (click)="op.toggle($event)">{{totalUnSeen>99?99:totalUnSeen}}</div>
+     <img src="assets/images/Bell_Ring.svg" width="27" (click)="op.toggle($event)" alt="bell">
   </div>
   <p-popover #op>
     <div class="notification-container">
@@ -27,8 +27,8 @@
               {{ getModuleIcon(notification.module) }}
             </div>
             <div class="notification-content">
-              <div class="notification-title">{{ notification.title }}</div>
-              <div class="notification-body">{{ notification.body }}</div>
+              <div class="notification-title">{{selectedLang=='en'?notification.titleEn:notification.titleAr }}</div>
+              <div class="notification-body">{{ selectedLang=='en'?notification.bodyEn:notification.bodyAr }}</div>
               <div class="notification-time">
                 {{ notification.creationTime | date:'medium' }}
               </div>

@@ -6,6 +6,8 @@ import { Router, RouterModule } from '@angular/router';
 import { DialogModule } from 'primeng/dialog';
 import { ModuleTypeEnum } from './type-module.enum';
 import { TranslatePipe } from '@ngx-translate/core';
+import { BehaviorSubject } from 'rxjs';
+import { LanguageService } from '../../services/language.service';
 
 @Component({
   selector: 'app-notifications',
@@ -20,26 +22,57 @@ export class NotificationsComponent {
 
   notificationsList: any;
   showDialog = false;
+  private totalUnSeenCount$ = new BehaviorSubject<number | null>(null);
+  private audio = new Audio('assets/sounds/notifications.mp3');
+  private isUserInteracted = false;
+  selectedLang: any;
+  languageService = inject(LanguageService);
   selectedNotification: any | null = null;
   totlaCount = 0;
   totalUnSeen = 0;
   @ViewChild('op') popover: Popover | undefined; // Reference to the popover
 
 
-  ngOnInit(): void {
-    this.getNotifications();
 
-    setInterval(() => {
+  ngOnInit(): void {
+    window.addEventListener('click', () => this.isUserInteracted = true, { once: true });
+    this.getNotifications();
+    this.languageService.translationService.onLangChange.subscribe(() => {
+      this.selectedLang = this.languageService.translationService.currentLang;
+      this.getNotifications();
+    })
+      setInterval(() => {
       this.getNotifications();
     }, 180000);
   }
+  // ngOnInit(): void {
+  //   this.getNotifications();
+
+  //   setInterval(() => {
+  //     this.getNotifications();
+  //   }, 180000);
+  // }
 
   getNotifications() {
-    // this.ApiService.get('Notification/GetNotifications').subscribe((noti: any) => {
-    //   this.notificationsList = noti.data.data;
-    //   this.totlaCount = noti.data.totalCount;
-    //   this.totalUnSeen = noti.data.totalUnSeenCount;
-    // });
+      this.ApiService.get('Notification/GetNotifications').subscribe((noti: any) => {
+      this.notificationsList = noti.data.data;
+      this.totlaCount = noti.data.totalCount;
+      this.totalUnSeen = noti.data.totalUnSeenCount;
+
+      const newCount = noti.data.totalUnSeenCount;
+      const oldCount = this.totalUnSeenCount$.value;
+
+      if (oldCount !== null && newCount > oldCount && this.isUserInteracted) {
+        this.playSound();
+      }
+
+      this.totalUnSeenCount$.next(newCount);
+    });
+  }
+
+    playSound() {
+    this.audio.currentTime = 0;
+    this.audio.play().catch(error => console.log('Audio play blocked:', error));
   }
 
   constructor(private router: Router) { }

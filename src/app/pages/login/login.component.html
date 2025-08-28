@@ -21,15 +21,15 @@
         <div class="d-flex flex-col gap-2">
           <label  for="email">{{'login.userName'|translate}}</label>
           <input pInputText id="mobile" formControlName="mobile" />
-          <small *ngIf="loginForm.get('mobile')?.hasError('required') && loginForm.get('userName')?.touched">
-            {{'login.mobile'|translate}}
+          <small *ngIf="loginForm.get('mobile')?.errors && loginForm.get('mobile')?.touched">
+            {{ loginForm.get('mobile')?.errors | validationHandlerPipe }}
           </small>
         </div>
         <div class="d-flex flex-col gap-2 ">
           <label for="password"> {{'login.password'|translate}}  </label>
           <p-password formControlName="password" [toggleMask]="true" [feedback]="false"></p-password>
-          <small *ngIf="loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched">
-            {{'login.password_required'|translate}}
+          <small *ngIf="loginForm.get('password')?.errors && loginForm.get('password')?.touched">
+            {{ loginForm.get('password')?.errors | validationHandlerPipe }}
           </small>
         </div>
         <div class="actions">
