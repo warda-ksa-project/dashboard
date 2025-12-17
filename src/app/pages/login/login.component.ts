@@ -39,10 +39,8 @@ export class LoginComponent {
 
   constructor(private fb: FormBuilder,@Inject(DOCUMENT) private document: Document, private api: ApiService, private translate: TranslateService, private router: Router) {
     this.loginForm = this.fb.group({
-      mobile: ['', [Validators.required, Validators.maxLength(9)]],
-      password: ['', [Validators.required]],
-      // mobile: ['508991360', [Validators.required]],
-      // password: ['omar1234', [Validators.required]]
+      userName: ['', [Validators.required]],
+      roleId : [1, []],
     });
 
     this.translate.setDefaultLang('en');
@@ -60,6 +58,36 @@ export class LoginComponent {
       this.toaster.errorToaster('Please Complete All Feilds');
     }
   }
+  getOtpValue(e: any) {
+    let otpObject = {
+      "mobile": this.mobileNumber,
+      "otpCode": e.otpValue
+    }
+    this.api.post('Auth/VerfiyOtp', otpObject).subscribe((data: any) => {
+      console.log(data.data);
+      if (data.message == 'Otp Is Not Valid') {
+        this.toaster.errorToaster(data.message)
+      } else {
+        let dataUser: any = {
+          img: data.data.imgSrc,
+          id: data.data.userId,
+          gender: data.data.gender
+        }
+        localStorage.setItem('token', data.data.token);
+        localStorage.setItem('userId', data.data.userId);
+        localStorage.setItem('img', data.data.imgSrc);
+        localStorage.setItem('name', data.data.name);
+        localStorage.setItem('email', data.data.email);
+        localStorage.setItem('roleId', data.data.roleId);
+
+        if(data.data.roleId == Roles.admin)
+        this.router.navigate(['/dashboard-admin']);
+        else
+        this.router.navigate(['/dashboard-trader']);
+      }
+    })
+  }
+  
 
   toggleLanguage() {
     this.selectedLang = this.selectedLang === 'en' ? 'ar' : 'en';
@@ -78,31 +106,18 @@ export class LoginComponent {
     this.languageService.changeHtmlLang(this.selectedLang);
     this.languageService.use(this.selectedLang);
   }
-
   onLogin(loginfrom: any) {
+    this.openOtpModal = false;
     this.api.login(loginfrom).subscribe((res: any) => {
-      this.mobileNumber = res.data.phone;
-      // this.openOtpModal = res.data.status;
-      if (!res.data.token) {
+      this.mobileNumber = res.mobilePhone;
+      this.openOtpModal = res.status;
+      if (!res.status) {
         localStorage.removeItem('token');
-        // localStorage.removeItem('role');
         this.toaster.errorToaster(res.message)
-      } else {
-        // localStorage.setItem('userData', JSON.stringify(dataUser))
-        localStorage.setItem('token', res.data.token);
-        localStorage.setItem('userId',res.data.id)
-        localStorage.setItem('img',res.data.image)
-        localStorage.setItem('name',res.data.name)
-        localStorage.setItem('email',res.data.email)
-        // localStorage.setItem('role',res.data.role)
-        if(res.data.role==Roles.admin)
-        this.router.navigate(['/dashboard-admin']);
-      else
-      this.router.navigate(['/dashboard-trader']);
-
       }
     })
   }
+
 
   // getOtpValue(e: any) {
   //   let otpObject = {
