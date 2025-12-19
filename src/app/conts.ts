@@ -9,8 +9,8 @@ export const menuItems =
     { icon: 'pi pi-truck', id:'main category',label: 'side_bar.main_category', route: '/main_category',type:[Roles.admin] },
     // { icon: 'pi pi-users', id:'',label: 'side_bar.category', route: '/category' },
     { icon: 'pi pi-hashtag', id:'sub categories',label: 'side_bar.sub_category', route: '/sub-category',type:[Roles.trader]  },
-    { icon: 'pi pi-gauge', id:'piece products',label: 'side_bar.products', route: '/product',type:[Roles.trader]  },
-    { icon: 'pi pi-crown', id:'products',label: 'side_bar.piece_products', route: '/piece-product',type:[Roles.trader]  },
+    { icon: 'pi pi-gauge', id:'piece products',label: 'side_bar.products', route: '/product',type:[Roles.admin,Roles.trader]  },
+    { icon: 'pi pi-crown', id:'products',label: 'side_bar.piece_products', route: '/piece-product',type:[Roles.admin,Roles.trader]  },
     { icon: 'pi pi-list', id:'article',label: 'side_bar.article', route: '/article',type:[Roles.admin] },
 
     // { icon: 'pi pi-truck', id:'',label: 'side_bar.technicals', route: '/technicals' },
