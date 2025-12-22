@@ -137,7 +137,7 @@ export class OrdersTableComponent {
     "pageNumber": 0,
     "pageSize": 8,
     "sortingExpression": "",
-    "sortingDirection": 0,
+    "sortingDirection": 1,
     // "technicalId": null,
     // "clientId": null,
     // // "paymentWayId": null,

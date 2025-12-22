@@ -57,11 +57,9 @@ pageName = signal<string>(global_PageName);
     phone: new FormControl('', {
       validators: [
         Validators.required,
-      ]
-    }),
-    password: new FormControl('', {
- validators: [
-        Validators.required,
+        Validations.mobileStartWithNumber_5_Validator(),
+        Validators.maxLength(9),
+        Validators.minLength(9),
       ]
     }),
     role: new FormControl('', {

@@ -143,7 +143,7 @@ export class DashboardAdminComponent {
       icon: 'pi pi-database',
       price: '0',
       status: '60%',
-      type: 'SRA',
+      type: 'SAR',
       typeAr: 'ريال سعودي',
     },
   ];

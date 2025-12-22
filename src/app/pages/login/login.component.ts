@@ -13,6 +13,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../services/language.service';
 import { Roles } from '../../conts';
 import { ValidationHandlerPipePipe } from '../../pipes/validation-handler-pipe.pipe';
+import { Validations } from '../../validations';
 
 @Component({
   selector: 'app-login',
@@ -39,7 +40,11 @@ export class LoginComponent {
 
   constructor(private fb: FormBuilder,@Inject(DOCUMENT) private document: Document, private api: ApiService, private translate: TranslateService, private router: Router) {
     this.loginForm = this.fb.group({
-      userName: ['', [Validators.required]],
+      userName: ['', [Validators.required,
+        Validations.mobileStartWithNumber_5_Validator(),
+        Validators.maxLength(9),
+        Validators.minLength(9),
+      ]],
       roleId : [1, []],
     });
 
