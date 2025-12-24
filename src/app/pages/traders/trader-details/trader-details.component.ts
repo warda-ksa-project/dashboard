@@ -79,9 +79,6 @@ export class TraderDetailsComponent  {
         Validators.maxLength(9),
         Validators.minLength(9),],
     }),
-    password: new FormControl('', {
-    
-    }),
 
     storeName: new FormControl('', {
       validators: [

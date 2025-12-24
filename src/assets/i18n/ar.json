@@ -300,6 +300,7 @@
     "form": {
       "storeName": "اسم المتجر",
       "store": "المتجر",
+      "traderName": "اسم التاجر",
       "address": "العنوان",
       "personal": "شخصي",
       "name": "الاسم",

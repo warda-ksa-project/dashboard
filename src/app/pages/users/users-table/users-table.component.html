@@ -43,7 +43,7 @@
       </div>
     </div>
   </div>
- <!-- <app-drawer
+  <app-drawer
     [visible]="showFilter"
     header="{{ pageName() }}_{{ 'filter' }}"
     (onClose)="onCloseFilter($event)"
@@ -57,32 +57,32 @@
       <div class="form-content">
         <div class="form-group mb-3">
           <label class="mb-1" for="enTitle">{{
-            "article.form.enTitle" | translate
+            "users.form.phone" | translate
           }}</label>
           <input
             type="text"
-            id="enTitle"
-            name="enTitle"
+            id="phone"
+            name="phone"
             class="form-control"
-            [(ngModel)]="objectSearch.enTitle"
+            [(ngModel)]="objectSearch.phone"
             placeholder="{{ 'shared.enter' | translate }} {{
-              'article.form.enTitle' | translate
+              'users.form.phone' | translate
             }}"
           />
         </div>
   
         <div class="form-group mb-3">
           <label class="mb-1" for="arTitle">{{
-            "article.form.arTitle" | translate
+            "users.form.name" | translate
           }}</label>
           <input
             type="text"
-            id="arTitle"
-            name="arTitle"
+            id="nameAr"
+            name="nameAr"
             class="form-control"
-            [(ngModel)]="objectSearch.arTitle"
+            [(ngModel)]="objectSearch.nameAr"
             placeholder="{{ 'shared.enter' | translate }} {{
-              'article.form.arTitle' | translate
+              'users.form.name' | translate
             }}"
           />
         </div>
@@ -101,5 +101,5 @@
         </button>
       </div>
     </form>
-  </app-drawer>  -->
+  </app-drawer>
   

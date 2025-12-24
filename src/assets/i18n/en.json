@@ -301,6 +301,7 @@
     "form": {
       "storeName": "Store Name",
       "store": "Store",
+      "traderName": "Trader Name",
       "address": "Address",
       "personal": "personal",
       "name": "Name",

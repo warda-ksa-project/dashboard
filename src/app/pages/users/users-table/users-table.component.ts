@@ -84,7 +84,9 @@ global_router_add_url_in_Table = global_router_add_url_in_Table;
     pageNumber: 0,
     pageSize: 8,
     sortingExpression: '',
-    sortingDirection: 0,
+    sortingDirection: 1,
+    nameAr: '',
+    phone: '',
   };
 
   totalCount: number = 0;
@@ -266,7 +268,9 @@ global_router_add_url_in_Table = global_router_add_url_in_Table;
       pageNumber: 0,
       pageSize: 8,
       sortingExpression: '',
-      sortingDirection: 0
+      sortingDirection: 1,
+      nameAr: '',
+      phone: '',
     };
     this.API_getAll();
     this.showFilter = false;

@@ -131,6 +131,18 @@ export class ProductsTableComponent {
         show: true,
       },
       {
+        keyName: 'traderName',
+        header: this.languageService.translate('trader.form.traderName'),
+        type: EType.text,
+        show: true,
+      },
+      {
+        keyName: 'storeName',
+        header: this.languageService.translate('trader.form.storeName'),
+        type: EType.text,
+        show: true,
+      },
+      {
         keyName: '',
         header: this.languageService.translate('Action'),
         type: EType.actions,
@@ -150,6 +162,18 @@ export class ProductsTableComponent {
         header: this.languageService.translate('sub_category.form.enName'),
         type: EType.text,
         showAs: ETableShow.header,
+      },
+      {
+        keyName: 'traderName',
+        header: this.languageService.translate('trader.form.traderName'),
+        type: EType.text,
+        show: true,
+      },
+      {
+        keyName: 'storeName',
+        header: this.languageService.translate('trader.form.storeName'),
+        type: EType.text,
+        show: true,
       },
       {
         keyName: 'arName',
