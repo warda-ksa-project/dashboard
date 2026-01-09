@@ -151,14 +151,14 @@ export class CancelReasonDetailsComponent {
   }
 
   addCancelReason(payload: any) {
-    this.ApiService.post('CancelReason/CreateCancelReason', payload, { showAlert: true, message: `Add ${this.pageName()} Successfuly` }).subscribe(res => {
+    this.ApiService.post('CancelReason/CreateCancelReason', payload).subscribe(res => {
       if (res)
         this.navigateToPageTable()
     })
   }
 
   editCancelReason(payload: any) {
-    this.ApiService.put('CancelReason/UpdateCancelReason', payload, { showAlert: true, message: `update ${this.pageName()} Successfuly` }).subscribe(res => {
+    this.ApiService.put('CancelReason/UpdateCancelReason', payload).subscribe(res => {
       if (res)
         this.navigateToPageTable()
     })

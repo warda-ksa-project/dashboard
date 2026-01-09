@@ -71,11 +71,6 @@ export class CityDetailsComponent {
         Validations.decimalNumberValidators()
       ]
     }),
-    countryId: new FormControl('', {
-      validators:[
-        Validators.required,
-      ]
-    }),
     status: new FormControl <boolean>(false)
   })
 
@@ -166,13 +161,13 @@ getBreadCrumb() {
   }
 
   addCity(payload: any) {
-    this.ApiService.post('City/Create', payload, { showAlert: true, message: 'Add City Successfuly' }).subscribe(res => {
+    this.ApiService.post('City/Create', payload).subscribe(res => {
       if (res)
         this.router.navigateByUrl('/city')
     })
   }
   editCity(payload: any) {
-    this.ApiService.put('City/Update', payload, { showAlert: true, message: 'Update City Successfuly' }).subscribe(res => {
+    this.ApiService.put('City/Update', payload).subscribe(res => {
       if (res)
         this.router.navigateByUrl('/city')
     })

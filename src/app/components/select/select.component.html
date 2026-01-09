@@ -10,6 +10,9 @@
             [readonly]="readOnly"
              (onChange)="onChange($event)" 
             [placeholder]="placeholder"
+            appendTo="body"
+            [scrollHeight]="'200px'"
+            [panelStyleClass]="panelStyleClass"
            [filter]="false"  />
         </div>
      </ng-container>
@@ -26,6 +29,9 @@
     [readonly]="readOnly"
     display="chip"
     (onChange)="onChange($event)" 
+    appendTo="body"
+    [scrollHeight]="'200px'"
+    [panelStyleClass]="panelStyleClass"
     class="w-100" />
     </div>
    </ng-container>

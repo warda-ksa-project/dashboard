@@ -125,7 +125,7 @@ export class WorkingHoursDetailsComponent {
 
 
   addWorkingHour(payload: any) {
-    this.ApiService.post('WorkingTime/CreateWorkingTime', payload, { showAlert: true, message: 'Working Hours Added Successfuly' }).subscribe(res => {
+    this.ApiService.post('WorkingTime/CreateWorkingTime', payload).subscribe(res => {
       if (res){
         this.toaster.successToaster('Added Successfully');
         this.router.navigateByUrl('working_hours')
@@ -134,7 +134,7 @@ export class WorkingHoursDetailsComponent {
   }
 
   editWorkingHours(payload: any) {
-    this.ApiService.put('WorkingTime/UpdateWorkingTime', payload, { showAlert: true, message: 'Working Hours Updated Successfuly' }).subscribe(res => {
+    this.ApiService.put('WorkingTime/UpdateWorkingTime', payload).subscribe(res => {
       if (res){
         this.toaster.successToaster('Edited Successfully');
         this.router.navigateByUrl('working_hours')

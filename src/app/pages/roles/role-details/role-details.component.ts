@@ -256,7 +256,7 @@ filterCheckedActions(array:any) {
 
   API_forAddItem(payload: any) {
 
-    this.ApiService.post(global_API_create, payload, { showAlert: true, message: `Add ${this.pageName()} Successfuly` }).subscribe(res => {
+    this.ApiService.post(global_API_create, payload).subscribe(res => {
       if (res)
         this.navigateToPageTable()
     })
@@ -264,7 +264,7 @@ filterCheckedActions(array:any) {
 
   API_forEditItem(payload: any) {
 
-    this.ApiService.put(global_API_update, payload, { showAlert: true, message: `update ${this.pageName()} Successfuly` }).subscribe(res => {
+    this.ApiService.put(global_API_update, payload).subscribe(res => {
       if (res)
         this.navigateToPageTable()
     })

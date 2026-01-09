@@ -75,9 +75,7 @@ export class TraderDetailsComponent  {
     phone: new FormControl('', {
       validators: [
         Validators.required,
-        Validations.mobileStartWithNumber_5_Validator(),
-        Validators.maxLength(9),
-        Validators.minLength(9),],
+      ]
     }),
 
     storeName: new FormControl('', {
@@ -235,14 +233,6 @@ export class TraderDetailsComponent  {
       this.selectedLang = this.languageService.translationService.currentLang;
       this.getAllCity()
     });
-
-    // Set password validation based on mode
-    if (this.tyepMode() === 'Add') {
-      this.form.get('password')?.setValidators([Validators.required]);
-    } else {
-      this.form.get('password')?.clearValidators();
-    }
-    this.form.get('password')?.updateValueAndValidity();
 
     // this.form.get('street')?.valueChanges.subscribe(res => {
     //   this.adress[0].street = res;
@@ -603,14 +593,14 @@ export class TraderDetailsComponent  {
 
 
   API_forAddItem(payload: any) {
-    this.ApiService.post(global_API_create, payload, { showAlert: true, message: `Add ${this.pageName()} Successfuly` }).subscribe(res => {
+    this.ApiService.post(global_API_create, payload).subscribe(res => {
       if (res)
         this.navigateToPageTable()
     })
   }
 
   API_forEditItem(payload: any) {
-    this.ApiService.put(global_API_update, payload, { showAlert: true, message: `update ${this.pageName()} Successfuly` }).subscribe(res => {
+    this.ApiService.put(global_API_update, payload).subscribe(res => {
       if (res)
         this.navigateToPageTable()
     })
@@ -640,10 +630,8 @@ export class TraderDetailsComponent  {
     const nameValid = this.form.get('name')?.valid ?? false;
     const emailValid = this.form.get('email')?.valid ?? false;
     const phoneValid = this.form.get('phone')?.valid ?? false;
-    const passwordValid = this.form.get('password')?.valid ?? false;
     
-
-    return nameValid && emailValid && phoneValid && passwordValid;
+    return nameValid && emailValid && phoneValid;
   }
 
   isStep2Valid(): boolean {

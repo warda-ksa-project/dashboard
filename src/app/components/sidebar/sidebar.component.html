@@ -28,13 +28,26 @@
           </div>
         </ng-container>
       </div>
-      <!-- <div class="setting-section section-color">
       
-          <div class="log-out user-image-section mt-5" width="30px" (click)="logOut()" routerLink="/auth/login" [pTooltip]="'Profile' | translate" [tooltipPosition]="selectedLang == 'ar' ? 'left' : 'right'">
-            <img src="assets/images/side-dashbord-icons/s-logout.svg" alt="log-out">
-            <span class="text-danger">{{'shared.log_out'|translate}}</span>
-          </div>
-      </div> -->
+      <!-- Country Selector for Traders -->
+      <div class="country-selector-section" *ngIf="!isAdmin">
+        <div class="country-dropdown">
+          <label class="country-label">
+            <span class="pi pi-globe"></span>
+            {{ 'country.pageName' | translate }}
+          </label>
+          <app-select
+            label=""
+            [control]="countryControl"
+            [list]="countries"
+            optionLabel="name"
+            optionValue="code"
+            (onSelectedValue)="onCountryChange($event)"
+            type="single"
+            panelStyleClass="dropdown-open-up"
+          ></app-select>
+        </div>
+      </div>
     </div>
   </div>
 </div>

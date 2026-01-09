@@ -351,14 +351,14 @@ export class SpecialOrderDetailsComponent {
   }
 
   deleteOrder() {
-    this.ApiService.deleteWithoutParam('SpecialOrder/Deleteorder', this.specialOrderId.toString()).subscribe((res: any) => {
+    this.ApiService.delete('SpecialOrder/Deleteorder', this.specialOrderId).subscribe(() => {
       this.tosater.successToaster('Order Item Deleted Successfully');
       this.router.navigate(['/special-order']);
     })
   }
 
   deleteProvider() {
-    this.ApiService.deleteWithoutParam('SpecialOrder/DeleteAssignTechnical', this.deletedProviderId.toString()).subscribe((res: any) => {
+    this.ApiService.delete('SpecialOrder/DeleteAssignTechnical', this.deletedProviderId).subscribe(() => {
       this.tosater.successToaster('Provider Deleted Successfully');
     })
   }

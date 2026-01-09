@@ -22,6 +22,7 @@ export class SelectComponent implements OnInit {
 @Input()list:any=[]
 @Input()type:string='single'
 @Input()control:any =new FormControl()
+@Input()panelStyleClass:string=''
 @Output() onSelectedValue = new EventEmitter()
 ngOnInit() {
   

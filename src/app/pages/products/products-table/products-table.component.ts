@@ -92,12 +92,15 @@ export class ProductsTableComponent {
   columns: IcolHeader[] = [];
 
   columnsSmallTable: IcolHeaderSmallTable[] = [];
-  role:any=''
+  role: any = '';
+  isAdmin: boolean = false;
 
   selectedLang: any;
   languageService = inject(LanguageService);
 
   ngOnInit() {
+    this.role = localStorage.getItem('roleId') || '';
+    this.isAdmin = this.role === Roles.admin;
     this.pageName.set(global_pageName);
     this.API_getAll();
     this.getBreadCrumb();

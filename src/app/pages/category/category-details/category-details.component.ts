@@ -146,14 +146,14 @@ pageName = signal<string>(global_PageName);
   }
 
   addFQS(payload: any) {
-    this.ApiService.post('category/Create', payload, { showAlert: true, message: 'Add Client Successfuly' }).subscribe(res => {
+    this.ApiService.post('category/Create', payload).subscribe(res => {
       if (res)
         this.router.navigateByUrl('category')
     })
   }
 
   editFQS(payload: any) {
-    this.ApiService.put('Client/Update', payload, { showAlert: true, message: 'update Client Successfuly' }).subscribe(res => {
+    this.ApiService.put('category/Update', payload).subscribe(res => {
       if (res)
         this.router.navigateByUrl('clients')
     })

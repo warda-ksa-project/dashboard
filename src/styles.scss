@@ -1,8 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
-@import 'bootstrap/dist/css/bootstrap.min.css';
-@import "primeicons/primeicons.css";
-@import "./assets/scss/fonts";
-@import 'ngx-toastr/toastr';
+@use 'bootstrap/dist/css/bootstrap.min.css';
+@use "primeicons/primeicons.css";
+@use "./assets/scss/fonts";
 
 :root {
   --main-text-color: redF2F3E;
@@ -700,3 +699,9 @@ border-color: #6d54a9!important;
   background-color: #8174A0 !important; /* Change color when progress is 50% */
 }
 
+// Dropdown that opens upward (for sidebar country selector)
+.dropdown-open-up {
+  transform: translateY(-30%) translateY(-10px) !important;
+  top: auto !important;
+  bottom: 100% !important;
+}

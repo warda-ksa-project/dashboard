@@ -109,6 +109,29 @@
         .section-color {
           color: #64748b;
         }
+        
+        .country-selector-section {
+          padding: 15px 10px;
+          border-top: 1px solid #e2e8f0;
+          margin-top: auto;
+          
+          .country-dropdown {
+            .country-label {
+              display: flex;
+              align-items: center;
+              gap: 8px;
+              margin-bottom: 8px;
+              font-size: 14px;
+              color: #64748b;
+              font-weight: 500;
+              
+              .pi {
+                font-size: 16px;
+                color: #8174A0;
+              }
+            }
+          }
+        }
       }
       div.log-out{
         display: flex;

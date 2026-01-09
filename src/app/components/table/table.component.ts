@@ -147,6 +147,7 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   callDeleteAction(action: ITableAction, id: any) {
+    debugger;
     this.ApiService.delete(action.apiName_or_route, id).subscribe(res => {
       if (res) {
         this.filterdRecords = this.filterdRecords.filter((item: any) => item[this.getNameOfIDHeader()] != id)
@@ -165,7 +166,7 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   callActiveApi(action: ITableAction, id: any) {
-    this.ApiService.putWithId(action.apiName_or_route, id).subscribe(res => {
+    this.ApiService.put(action.apiName_or_route, { id: id }).subscribe(res => {
       if (res) {
         this.reloadGetAllApi.emit(true);
       }

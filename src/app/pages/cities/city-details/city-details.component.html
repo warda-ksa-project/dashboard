@@ -22,16 +22,6 @@
                      [label]="'city.form.name_ar'" [control]="form.get('arName')"></app-input-text>
                </div>
                <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
-                  <!-- <app-select [placeholder]="form.get('countryId')?.value==''?'':getSelectValue('countryId','countryId',countries)" class="w-100" [list]="countries" [label]="'city.form.country'" -->
-
-                  <app-select [placeholder]="form.get('countryId')?.value"
-                   class="w-100" [list]="countries" 
-                   [label]="'city.form.country'"
-                   [readOnly]="tyepMode() == 'View'"
-                   [disabled]="tyepMode() == 'View'"
-                     [control]="form.get('countryId')"></app-select>
-               </div>
-               <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
                   <app-input-text [readOnly]="tyepMode()==='View'" [disabled]="tyepMode()==='View'"
                      [label]="'city.form.postalCode'" [control]="form.get('postalCode')"></app-input-text>
                </div>

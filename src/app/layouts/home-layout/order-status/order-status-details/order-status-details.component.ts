@@ -110,14 +110,14 @@ export class OrderStatusDetailsComponent {
   }
 
   addFQS(payload: any) {
-    this.ApiService.post('orderStatus/Create', payload, { showAlert: true, message: '' }).subscribe(res => {
+    this.ApiService.post('orderStatus/Create', payload).subscribe(res => {
       if (res)
         this.router.navigateByUrl('/orderStatus')
     })
   }
 
   editFQS(payload: any) {
-    this.ApiService.put('orderStatus/Update', payload, { showAlert: true, message: '' }).subscribe(res => {
+    this.ApiService.put('orderStatus/Update', payload).subscribe(res => {
       if (res)
         this.router.navigateByUrl('/orderStatus')
     })

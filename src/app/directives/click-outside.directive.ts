@@ -12,7 +12,7 @@ export class ClickOutsideDirective {
   constructor(private elementRef: ElementRef, private renderer: Renderer2) {}
 
   @HostListener('document:click', ['$event.target'])
-  onClick(targetElement: HTMLElement) {
+  onClick(targetElement: EventTarget | null) {
     const clickedInside = this.elementRef.nativeElement.contains(targetElement);
     if (!clickedInside) {
       this.hideElement();      

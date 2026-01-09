@@ -1,14 +1,7 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { HttpClient } from '@angular/common/http';
-import { map, Observable, take, catchError, throwError } from 'rxjs';
-import { ToasterService } from './toaster.service';
-import { NgxToasterService } from './ngx-toaster.service';
-
-export interface IOptions {
-  showAlert: boolean;
-  message: string;
-}
 
 const baseUrl = environment.baseUrl;
 
@@ -16,122 +9,36 @@ const baseUrl = environment.baseUrl;
   providedIn: 'root',
 })
 export class ApiService {
-  private toaster = inject(ToasterService);
-  private ngxToaster = inject(NgxToasterService);
 
   constructor(private http: HttpClient) {}
 
-  login(object: any): Observable<any> {
-    return this.http.post(baseUrl + `Auth/Login`, object).pipe(
-      take(1),
-      catchError((error) => {
-        this.toaster.errorToaster(error?.error?.message || 'shared.errors.login');
-        return throwError(() => error);
-      })
-    );
+  login<T>(body: any): Observable<T> {
+    return this.http.post<T>(`${baseUrl}Auth/Login`, body);
   }
 
-  post<T>(APIName: string, body: any, options: IOptions = { showAlert: false, message: '' }): Observable<T> {
-    return this.http.post(`${baseUrl}${APIName}`, body).pipe(
-      take(1),
-      map((res: any) => {
-        if(res.message && options.showAlert)
-          this.ngxToaster.success(res.message)
-        return res;
-      }),
-      catchError((error) => {
-        this.ngxToaster.error(error?.error?.message || 'shared.errors.post_request')
-        return throwError(() => error);
-      })
-    );
+  post<T>(apiName: string, body: any): Observable<T> {
+    return this.http.post<T>(`${baseUrl}${apiName}`, body);
   }
 
-  get<T>(APIName: string, params?: any, options: IOptions = { showAlert: false, message: '' }): Observable<T> {
-    let queryParams: string[] = [];
+  get<T>(apiName: string, params?: Record<string, any>): Observable<T> {
+    let httpParams = new HttpParams();
 
     if (params) {
-      for (const key in params) {
-        if (params.hasOwnProperty(key)) {
-          queryParams.push(`${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`);
+      Object.keys(params).forEach(key => {
+        if (params[key] !== null && params[key] !== undefined) {
+          httpParams = httpParams.set(key, params[key]);
         }
-      }
+      });
     }
 
-    const queryString = queryParams.length ? `?${queryParams.join('&')}` : '';
-
-    return this.http.get(`${baseUrl}${APIName}${queryString}`).pipe(
-      take(1),
-      map((res: any) => {
-        if (res.message && options.showAlert) {
-          this.ngxToaster.success(res.message);
-        }
-        return res;
-      }),
-      catchError((error) => {
-        this.ngxToaster.error(error?.error?.message || 'shared.errors.get_request');
-        return throwError(() => error);
-      })
-    );
-}
-
-
-  put<T>(APIName: string, body: any, options: IOptions = { showAlert: false, message: '' }): Observable<T> {
-    return this.http.put(`${baseUrl}${APIName}`, body).pipe(
-      take(1),
-      map((res: any) => {
-        if(res.message)
-          this.ngxToaster.success(res.message)
-        return res;
-      }),
-      catchError((error) => {
-        this.ngxToaster.error(error?.error?.message || 'shared.errors.put_request')
-        return throwError(() => error);
-      })
-    );
+    return this.http.get<T>(`${baseUrl}${apiName}`, { params: httpParams });
   }
 
-  putWithId<T>(APIName: string, id: any, options: IOptions = { showAlert: false, message: '' }): Observable<T> {
-    return this.http.put(`${baseUrl}${APIName}=${id}`, {}).pipe(
-      take(1),
-      map((res: any) => {
-        if(res.message)
-          this.ngxToaster.success(res.message)
-        return res;
-      }),
-      catchError((error) => {
-        this.ngxToaster.error(error?.error?.message || 'shared.errors.put_request')
-        return throwError(() => error);
-      })
-    );
+  put<T>(apiName: string, body: any): Observable<T> {
+    return this.http.put<T>(`${baseUrl}${apiName}`, body);
   }
 
-  delete<T>(APIName: string, id: string, options: IOptions = { showAlert: false, message: '' }): Observable<T> {
-    return this.http.delete(`${baseUrl}${APIName}=${id}`).pipe(
-      take(1),
-      map((res: any) => {
-        if(res.message)
-          this.ngxToaster.success(res.message)
-        return res;
-      }),
-      catchError((error) => {
-        this.ngxToaster.error(error?.error?.message || 'shared.errors.delete_request')
-        return throwError(() => error);
-      })
-    );
-  }
-
-  deleteWithoutParam<T>(APIName: string, id: string, options: IOptions = { showAlert: false, message: '' }): Observable<T> {
-    return this.http.delete(`${baseUrl}${APIName}/${id}`).pipe(
-      take(1),
-      map((res: any) => {
-        if(res.message)
-          this.ngxToaster.success(res.message)
-        return res;
-      }),
-      catchError((error) => {
-        this.ngxToaster.error(error?.error?.message || 'shared.errors.delete_request')
-        return throwError(() => error);
-      })
-    );
+  delete<T>(apiName: string, id: string): Observable<T> {
+    return this.http.delete<T>(`${baseUrl}${apiName}=${id}`);
   }
 }

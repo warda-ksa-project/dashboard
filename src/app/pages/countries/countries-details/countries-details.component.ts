@@ -169,13 +169,13 @@ export class CountriesDetailsComponent implements OnInit {
 
   }
   addCountry(payload: any) {
-    this.ApiService.post('Country/Create', payload, { showAlert: true, message: 'Add country Successfuly' }).subscribe(res => {
+    this.ApiService.post('Country/Create', payload).subscribe(res => {
       if (res)
         this.router.navigateByUrl('country')
     })
   }
   editCountry(payload: any) {
-    this.ApiService.put('Country/Update', payload, { showAlert: true, message: 'update country Successfuly' }).subscribe(res => {
+    this.ApiService.put('Country/Update', payload).subscribe(res => {
       if (res)
         this.router.navigateByUrl('country')
     })

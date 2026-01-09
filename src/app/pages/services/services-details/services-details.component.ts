@@ -184,14 +184,14 @@ export class ServicesDetailsComponent {
   }
 
   addService(payload: any) {
-    this.ApiService.post('Service/CreateService', payload, { showAlert: true, message: 'Add Service Successfuly' }).subscribe(res => {
+    this.ApiService.post('Service/CreateService', payload).subscribe(res => {
       if (res)
         this.router.navigateByUrl('services')
     })
   }
 
   editService(payload: any) {
-    this.ApiService.put('Service/UpdateService', payload, { showAlert: true, message: 'update Service Successfuly' }).subscribe(res => {
+    this.ApiService.put('Service/UpdateService', payload).subscribe(res => {
       if (res)
         this.router.navigateByUrl('services')
     })

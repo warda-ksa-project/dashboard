@@ -143,14 +143,14 @@ export class FagsDetailsComponent implements OnInit {
   }
 
   addFQS(payload: any) {
-    this.ApiService.post('FAQ/Create', payload, { showAlert: true, message: 'Add FAQS Successfuly' }).subscribe(res => {
+    this.ApiService.post('FAQ/Create', payload).subscribe(res => {
       if (res)
         this.router.navigateByUrl('settings/faqs')
     })
   }
 
   editFQS(payload: any) {
-    this.ApiService.put('FAQ/Update', payload, { showAlert: true, message: 'update FAQS Successfuly' }).subscribe(res => {
+    this.ApiService.put('FAQ/Update', payload).subscribe(res => {
       if (res)
         this.router.navigateByUrl('settings/faqs')
     })

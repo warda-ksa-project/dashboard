@@ -1,41 +1,47 @@
 import { inject, Injectable } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import { LanguageService } from './language.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ToasterService {
 
+  private messageService = inject(MessageService);
+  private translate = inject(TranslateService);
 
-  messageService = inject(MessageService);
-  languageService = inject(LanguageService);
-
-  constructor() { }
-
-  successToaster(message: string) {
-    console.log(message);
-
-   setTimeout(() => {
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Success',
-      detail: this.languageService.translationService.instant(message),
-      life: 4000,
-    });
-   }, 300);
+  successToaster(message: string): void {
+    this.show('success', this.getTranslation('success'), message);
   }
 
-  errorToaster(message: string) {
-    console.log('Toaster called with message:', message);
-    setTimeout(() => {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail:this.languageService.translationService.instant(message),
-        life: 4000,
-      });
-      console.log('MessageService.add invoked');
-    }, 300);
+  errorToaster(message: string): void {
+    this.show('error', this.getTranslation('error'), message);
+  }
+
+  warningToaster(message: string): void {
+    this.show('warn', this.getTranslation('warning'), message);
+  }
+
+  infoToaster(message: string): void {
+    this.show('info', this.getTranslation('info'), message);
+  }
+
+  private getTranslation(key: string): string {
+    const translation = this.translate.instant(key);
+    return translation !== key ? translation : key;
+  }
+
+  private show(
+    severity: 'success' | 'error' | 'warn' | 'info',
+    summary: string,
+    message: string
+  ): void {
+    const translatedMessage = message ? this.getTranslation(message) : '';
+    this.messageService.add({
+      severity,
+      summary,
+      detail: translatedMessage,
+      life: 4000
+    });
   }
 }

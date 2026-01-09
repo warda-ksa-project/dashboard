@@ -268,14 +268,14 @@ export class ClientDetailsComponent {
   }
 
   addFQS(payload: any) {
-    this.ApiService.post('Client/Create', payload, { showAlert: true, message: 'Add Client Successfuly' }).subscribe(res => {
+    this.ApiService.post('Client/Create', payload).subscribe(res => {
       if (res)
         this.router.navigateByUrl('clients')
     })
   }
 
   editFQS(payload: any) {
-    this.ApiService.put('Client/Update', payload, { showAlert: true, message: 'update Client Successfuly' }).subscribe(res => {
+    this.ApiService.put('Client/Update', payload).subscribe(res => {
       if (res)
         this.router.navigateByUrl('clients')
     })

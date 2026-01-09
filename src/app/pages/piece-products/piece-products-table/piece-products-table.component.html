@@ -8,7 +8,7 @@
         <h2>{{ "piece_products.list" | translate | titlecase }}</h2>
       </div>
       <div class="action-filter">
-        <a [routerLink]="global_router_add_url_in_Table">
+        <a *ngIf="!isAdmin" [routerLink]="global_router_add_url_in_Table">
           + {{ "shared.add_new" | translate }}</a
         >
         <span class="pi pi-filter pointer" (click)="openFilter()"> </span>
