@@ -20,6 +20,8 @@ import { FormControl } from '@angular/forms';
 })
 export class SidebarComponent  {
   @Input()activeRoute=''
+  isTrader: boolean = false;
+  isAdmin: boolean = false;
   selectedLang: any;
   languageService = inject(LanguageService);
   apiService=inject(ApiService)
@@ -32,7 +34,6 @@ export class SidebarComponent  {
   // Country dropdown
   countries: any[] = [];
   countryControl = new FormControl();
-  isAdmin: boolean = false;
 
   ngOnInit(): void {
     this.getRoles()
@@ -58,8 +59,9 @@ export class SidebarComponent  {
   }
   
   initCountrySelection() {
-    const roleId = localStorage.getItem('roleId');
-    this.isAdmin = roleId === Roles.admin;
+    this.role = localStorage.getItem('role') || '';
+    this.isAdmin = this.role === Roles.admin;
+    this.isTrader = this.role === Roles.trader;
     
     const savedCountryId = localStorage.getItem('countryId');
     if (savedCountryId) {

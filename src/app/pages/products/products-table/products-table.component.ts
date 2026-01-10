@@ -20,9 +20,9 @@ import {
 } from '../../../components/table-small-screen/table-small-screen.component';
 import { DrawerComponent } from '../../../components/drawer/drawer.component';
 import { PaginationComponent } from '../../../components/pagination/pagination.component';
-import { TitleCasePipe } from '@angular/common';
+import { NgIf, TitleCasePipe } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
-import { Roles } from '../../../conts';
+import { RoleId, Roles } from '../../../conts';
 
 const global_pageName = 'products.pageName';
 const global_router_add_url_in_Table = '/product/add';
@@ -33,6 +33,7 @@ const global_API_getAll = 'product' + '/GetAllWithPagination';
   selector: 'app-products-table',
   standalone: true,
   imports: [
+    NgIf,
     TableComponent,
     TitleCasePipe,
     PaginationComponent,
@@ -50,6 +51,9 @@ const global_API_getAll = 'product' + '/GetAllWithPagination';
 export class ProductsTableComponent {
   global_router_add_url_in_Table = global_router_add_url_in_Table;
   pageName = signal<string>(global_pageName);
+  isTrader: boolean = false;
+  isAdmin: boolean = false;
+
 
   showFilter: boolean = false;
   tableActions: ITableAction[] = [
@@ -93,14 +97,16 @@ export class ProductsTableComponent {
 
   columnsSmallTable: IcolHeaderSmallTable[] = [];
   role: any = '';
-  isAdmin: boolean = false;
 
   selectedLang: any;
   languageService = inject(LanguageService);
 
   ngOnInit() {
-    this.role = localStorage.getItem('roleId') || '';
+    debugger;
+    this.role = localStorage.getItem('role') || '';
     this.isAdmin = this.role === Roles.admin;
+    this.isTrader = this.role === Roles.trader;
+
     this.pageName.set(global_pageName);
     this.API_getAll();
     this.getBreadCrumb();

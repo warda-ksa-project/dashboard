@@ -15,7 +15,7 @@ import { Router, RouterModule } from '@angular/router';
 import { OtpModalComponent } from '../../components/otp-modal/otp-modal.component';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../services/language.service';
-import { Roles } from '../../conts';
+import { RoleId, Roles } from '../../conts';
 import { ValidationHandlerPipePipe } from '../../pipes/validation-handler-pipe.pipe';
 import { Validations } from '../../validations';
 import { SelectComponent } from '../../components/select/select.component';
@@ -177,6 +177,11 @@ export class LoginComponent {
         localStorage.setItem('name', data.data.name);
         localStorage.setItem('email', data.data.email);
         localStorage.setItem('roleId', data.data.roleId);
+        if(data.data.role == Roles.admin){
+          localStorage.setItem('role', Roles.admin.toString());
+        }else{
+          localStorage.setItem('role', Roles.trader.toString());
+        }
         if (this.selectedCountryId) {
           localStorage.setItem('countryId', this.selectedCountryId.toString());
         } else {

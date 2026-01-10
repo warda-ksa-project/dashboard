@@ -2,6 +2,11 @@ export enum Roles {
   admin="Admin",
   trader="Trader"
 }
+
+export enum RoleId { 
+  admin=1,
+  trader=2
+}
 export const menuItems =
   [
     { icon: 'pi pi-home',id:'dashboard', label: 'side_bar.dashboard', route: '/dashboard-admin',type:[Roles.admin] },

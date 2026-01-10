@@ -31,7 +31,7 @@ const global_API_update = 'pieceproducts' + '/Update';
 @Component({
   selector: 'app-piece-products-details',
   standalone: true,
-  imports: [ReactiveFormsModule,NgFor, CheckBoxComponent, GalleryComponent, StepperModule, SelectComponent, EditorComponent, EditModeImageComponent, TitleCasePipe, TranslatePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
+  imports: [ReactiveFormsModule,NgFor, CheckBoxComponent, GalleryComponent, StepperModule, SelectComponent, EditorComponent, EditModeImageComponent, TitleCasePipe,TranslatePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
   templateUrl: './piece-products-details.component.html',
   styleUrl: './piece-products-details.component.scss'
 })
