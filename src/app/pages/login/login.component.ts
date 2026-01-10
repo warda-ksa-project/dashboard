@@ -48,6 +48,7 @@ export class LoginComponent {
   mobileNumber: string = '';
   openOtpModal: boolean = false;
   countries: any = [];
+  countriesData: any[] = []; // Store full country data with phoneLength
   languageService = inject(LanguageService);
   currentLang = 'en';
   selectedLang: string = localStorage.getItem('lang') || 'en';
@@ -55,6 +56,9 @@ export class LoginComponent {
   isAdmin: boolean | null = null;
   isCheckingAdmin: boolean = false;
   private destroy$ = new Subject<void>();
+  
+  // Minimum phone length required before checking admin (most countries have 9+ digits)
+  private readonly MIN_PHONE_LENGTH = 9;
   onCountryChange(countryId: number) {
     this.selectedCountryId = countryId;
   }
@@ -102,7 +106,15 @@ export class LoginComponent {
         debounceTime(500),
         map((v) => (v ?? '').toString().trim()),
         distinctUntilChanged(),
-        filter((phone) => phone.length > 0),
+        tap((phone) => {
+          // Reset admin state if phone length is less than minimum
+          if (phone.length < this.MIN_PHONE_LENGTH) {
+            this.isAdmin = null;
+            this.isCheckingAdmin = false;
+          }
+        }),
+        // Only check when phone length reaches minimum threshold
+        filter((phone) => phone.length >= this.MIN_PHONE_LENGTH),
         tap(() => {
           this.isCheckingAdmin = true;
         }),
@@ -118,7 +130,6 @@ export class LoginComponent {
         takeUntil(this.destroy$)
       )
       .subscribe((isAdmin) => {
-        debugger;
         this.isCheckingAdmin = false;
         this.isAdmin = isAdmin;
 
@@ -147,10 +158,12 @@ export class LoginComponent {
     this.api.get('Country/GetAll').subscribe((res: any) => {
       if (res.data) {
         this.countries = [];
+        this.countriesData = res.data; // Store full country data
         res.data.map((country: any) => {
           this.countries.push({
             name: this.selectedLang == 'en' ? country.enName : country.arName,
             code: country.id,
+            phoneLength: country.phoneLength, // Include phoneLength for reference
           });
         });
       }
