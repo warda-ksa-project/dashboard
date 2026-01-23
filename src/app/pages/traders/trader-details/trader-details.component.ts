@@ -237,9 +237,20 @@ export class TraderDetailsComponent  {
       this.getAllCity()
     });
 
-    // Subscribe to countries changes to update phone validator
+    // Subscribe to selected country changes to update phone validator
+    this.countryService.selectedCountry$.subscribe(selectedCountry => {
+      if (selectedCountry) {
+        this.form.get('phone')?.setValidators([
+          Validators.required,
+          Validations.phoneValidatorForSelectedCountry(selectedCountry)
+        ]);
+        this.form.get('phone')?.updateValueAndValidity();
+      }
+    });
+
+    // Also subscribe to all countries as fallback
     this.countryService.countries$.subscribe(countries => {
-      if (countries.length > 0) {
+      if (countries.length > 0 && !this.countryService.getSelectedCountry()) {
         this.form.get('phone')?.setValidators([
           Validators.required,
           Validations.phoneValidator(countries)

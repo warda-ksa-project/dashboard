@@ -10,6 +10,7 @@ import { ApiService } from '../../services/api.service';
 import { InputTextComponent } from '../input-text/input-text.component';
 import { SelectComponent } from '../select/select.component';
 import { FormControl } from '@angular/forms';
+import { CountryService } from '../../services/country.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -24,7 +25,8 @@ export class SidebarComponent  {
   isAdmin: boolean = false;
   selectedLang: any;
   languageService = inject(LanguageService);
-  apiService=inject(ApiService)
+  apiService=inject(ApiService);
+  countryService = inject(CountryService);
 
   userDate=JSON.parse(localStorage.getItem('userData')as any);
   defaultImage=this.userDate?.gender==1?'assets/images/arabian-man.png':'assets/images/arabian-woman.png'
@@ -71,7 +73,8 @@ export class SidebarComponent  {
   
   onCountryChange(countryId: number) {
     if (countryId) {
-      localStorage.setItem('countryId', countryId.toString());
+      // Update selected country in service
+      this.countryService.setSelectedCountry(countryId);
       // Reload to apply new country header
       window.location.reload();
     }

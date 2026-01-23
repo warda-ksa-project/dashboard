@@ -157,6 +157,61 @@ static editorArabicCharsValidator(errorMessage?: string): ValidatorFn {
           return null;
         };
       }
+
+      static phoneValidatorForSelectedCountry(country: any | null, errorMessage?: string): ValidatorFn {
+        return (control: AbstractControl<string>) => {
+          const phoneValue = control.value?.toString().trim();
+          
+          if (!phoneValue) {
+            return null; // Let required validator handle empty values
+          }
+
+          if (!country) {
+            return { 
+              phoneInvalid: errorMessage || 'Country not selected' 
+            };
+          }
+
+          // Check if phone starts with country code
+          if (!phoneValue.startsWith(country.phoneCode)) {
+            return { 
+              phoneInvalid: errorMessage || `Phone number must start with country code ${country.phoneCode}` 
+            };
+          }
+
+          // Extract the number after phoneCode
+          const phoneWithoutCode = phoneValue.substring(country.phoneCode.length);
+          const expectedLength = parseInt(country.phoneLength);
+
+          if (phoneWithoutCode.length !== expectedLength) {
+            return { 
+              phoneInvalid: errorMessage || `Phone number must be ${expectedLength} digits after country code ${country.phoneCode}` 
+            };
+          }
+
+          // Validate that the remaining part contains only numbers
+          if (!onlyNumbersRegex.test(phoneWithoutCode)) {
+            return { 
+              phoneInvalid: errorMessage || 'Phone number must contain only digits' 
+            };
+          }
+
+          // Special validation for Oman (phoneCode: "968")
+          // Oman phone numbers can start with 07, 09, or 02
+          if (country.phoneCode === '968') {
+            const firstTwoDigits = phoneWithoutCode.substring(0, 2);
+            const validPrefixes = ['07', '09', '02'];
+            
+            if (!validPrefixes.includes(firstTwoDigits)) {
+              return { 
+                phoneInvalid: errorMessage || 'Phone number for Oman must start with 07, 09, or 02' 
+              };
+            }
+          }
+
+          return null;
+        };
+      }
   }
 
 
