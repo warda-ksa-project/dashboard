@@ -34,7 +34,8 @@
     "email_validation": "يقبل البريد الإلكتروني فقط مثال: aaa@aaa.com",
     "mobileNumber_5_validation": "يجب أن يكون رقم الهاتف 9 أرقام ويبدأ بـ 5",
     "confirm_password_validation": "كلمة المرور غير متطابقة",
-    "min_validation": "يجب أن تكون القيمة على الأقل 1"
+    "min_validation": "يجب أن تكون القيمة على الأقل 1",
+    "phoneInvalid_validation": "رقم الهاتف غير صحيح"
   },
   "actions": {
     "submit": "إرسال",

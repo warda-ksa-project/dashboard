@@ -19,6 +19,7 @@ import { EditModeImageComponent } from '../../../components/edit-mode-image/edit
 import { environment } from '../../../../environments/environment';
 import { IEditImage } from '../../../components/edit-mode-image/editImage.interface';
 import { GalleryComponent } from '../../../components/gallery/gallery.component';
+import { CountryService } from '../../../services/country.service';
 
 const global_PageName ='users.pageName';
 const global_API_Name ='user';
@@ -41,6 +42,7 @@ pageName = signal<string>(global_PageName);
   private route = inject(ActivatedRoute)
   showConfirmMessage: boolean = false
   private confirm = inject(ConfirmMsgService)
+  private countryService = inject(CountryService)
   imageList: any;
 
   form = new FormGroup({
@@ -57,6 +59,7 @@ pageName = signal<string>(global_PageName);
     phone: new FormControl('', {
       validators: [
         Validators.required,
+        Validations.phoneValidator(this.countryService.getCountries())
       ]
     }),
     role: new FormControl('', {
@@ -95,7 +98,19 @@ pageName = signal<string>(global_PageName);
     this.languageService.translationService.onLangChange.subscribe(() => {
       this.selectedLang = this.languageService.translationService.currentLang;
       this.getBreadCrumb();
-    }); 
+    });
+    
+    // Subscribe to countries changes to update phone validator
+    this.countryService.countries$.subscribe(countries => {
+      if (countries.length > 0) {
+        this.form.get('phone')?.setValidators([
+          Validators.required,
+          Validations.phoneValidator(countries)
+        ]);
+        this.form.get('phone')?.updateValueAndValidity();
+      }
+    });
+    
     if (this.tyepMode() !== 'Add')
       this.API_getItemDetails()
   }

@@ -35,7 +35,8 @@
     "email_validation": "accept email only ex: aaa@aaa.com",
     "mobileNumber_5_validation": "Mobile number should be 9 numbers start with 5 ",
     "confirm_password_validation": "Password doesn't match",
-    "min_validation": "The value must be at least 1"
+    "min_validation": "The value must be at least 1",
+    "phoneInvalid_validation": "Invalid phone number"
   },
   "actions": {
     "submit": "Submit",

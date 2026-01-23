@@ -19,6 +19,7 @@ import { Validations, removePtags } from '../../../validations';
 import { environment } from '../../../../environments/environment';
 import { MapComponent } from '../../../components/map/map.component';
 import { SelectComponent } from '../../../components/select/select.component';
+import { CountryService } from '../../../services/country.service';
 
 const global_PageName = 'trader.pageName';
 const global_routeUrl = 'traders'
@@ -44,6 +45,7 @@ export class TraderDetailsComponent  {
   private route = inject(ActivatedRoute)
   showConfirmMessage: boolean = false
   private confirm = inject(ConfirmMsgService)
+  private countryService = inject(CountryService)
   cities:any[]=[]
   adress: any[] = [{
     expalinedAddress: '',
@@ -75,6 +77,7 @@ export class TraderDetailsComponent  {
     phone: new FormControl('', {
       validators: [
         Validators.required,
+        Validations.phoneValidator(this.countryService.getCountries())
       ]
     }),
 
@@ -232,6 +235,17 @@ export class TraderDetailsComponent  {
     this.languageService.translationService.onLangChange.subscribe(() => {
       this.selectedLang = this.languageService.translationService.currentLang;
       this.getAllCity()
+    });
+
+    // Subscribe to countries changes to update phone validator
+    this.countryService.countries$.subscribe(countries => {
+      if (countries.length > 0) {
+        this.form.get('phone')?.setValidators([
+          Validators.required,
+          Validations.phoneValidator(countries)
+        ]);
+        this.form.get('phone')?.updateValueAndValidity();
+      }
     });
 
     // this.form.get('street')?.valueChanges.subscribe(res => {
