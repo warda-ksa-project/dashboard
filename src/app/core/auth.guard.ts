@@ -1,18 +1,12 @@
-import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { ToasterService } from '../services/toaster.service';
+import { inject } from '@angular/core';
 
-export const authGuard: CanActivateFn = (route, state) => {
-
+export const authGuard: CanActivateFn = () => {
   const router = inject(Router);
-  const toaster = inject(ToasterService);
-// console.log(localStorage.getItem('token'));
+  const token = localStorage.getItem('token');
 
-  if (localStorage.getItem('token')) {
-    return true;
-  } else {
-    router.navigate(['/auth/login']);
-    toaster.errorToaster('Session expired please login again');
-    return false;
-  }
+  if (token) return true;
+
+  router.navigate(['/auth/login']);
+  return false;
 };

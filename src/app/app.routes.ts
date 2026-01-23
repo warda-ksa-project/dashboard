@@ -1,85 +1,7 @@
 import { Routes } from '@angular/router';
-import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
-import { HomeLayoutComponent } from './layouts/home-layout/home-layout.component';
-import { LoginComponent } from './pages/login/login.component';
-import { ForgetPasswordComponent } from './pages/forget-password/forget-password.component';
-import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
-import { NotFoundComponent } from './pages/not-found/not-found.component';
-import { DashboardComponent } from './pages/dashboard/dashboard.component';
-import { SettingsComponent } from './pages/settings/settings.component';
-import { ProfileComponent } from './pages/profile/profile.component';
 import { authGuard } from './core/auth.guard';
-import { FaqsTableComponent } from './pages/fAQs/faqs-table/faqs-table.component';
-import { FagsDetailsComponent } from './pages/fAQs/fags-details/fags-details.component';
-import { CountriesDetailsComponent } from './pages/countries/countries-details/countries-details.component';
-import { WorkingHoursTableComponent } from './pages/working-hours/working-hours-table/working-hours-table.component';
-import { WorkingHoursDetailsComponent } from './pages/working-hours/working-hours-details/working-hours-details.component';
-import { CountriesTableComponent } from './pages/countries/countries-table/countries-table.component';
-import { CityDetailsComponent } from './pages/cities/city-details/city-details.component';
-import { CitiesTableComponent } from './pages/cities/cities-table/cities-table.component';
-import { CancelReasonTableComponent } from './pages/cancel-reason/cancel-reason-table/cancel-reason-table.component';
-import { CancelReasonDetailsComponent } from './pages/cancel-reason/cancel-reason-details/cancel-reason-details.component';
-import { ComplaintTableComponent } from './pages/complaint/complaint-table/complaint-table.component';
-import { ComplaintDetailsComponent } from './pages/complaint/complaint-details/complaint-details.component';
-import { ContractTypeTableComponent } from './pages/contract-type/contract-type-table/contract-type-table.component';
-import { ContractTypeDetailsComponent } from './pages/contract-type/contract-type-details/contract-type-details.component';
-import { CoponeTableComponent } from './pages/copone/copone-table/copone-table.component';
-import { CoponeDetailsComponent } from './pages/copone/copone-details/copone-details.component';
-import { TermsConditionsTableComponent } from './pages/terms-conditions/terms-conditions-table/terms-conditions-table.component';
-import { TermsConditionsDetailsComponent } from './pages/terms-conditions/terms-conditions-details/terms-conditions-details.component';
-import { PrivacyPolicyTableComponent } from './pages/privacy-policy/privacy-policy-table/privacy-policy-table.component';
-import { PrivacyPolicyDetailsComponent } from './pages/privacy-policy/privacy-policy-details/privacy-policy-details.component';
-import { PaymentWayTableComponent } from './pages/payment-way/payment-way-table/payment-way-table.component';
-import { PaymentWayDetailsComponent } from './pages/payment-way/payment-way-details/payment-way-details.component';
-import { ServicesTableComponent } from './pages/services/services-table/services-table.component';
-import { ServicesDetailsComponent } from './pages/services/services-details/services-details.component';
-import { ClientTableComponent } from './pages/clients/client-table/client-table.component';
-import { ClientDetailsComponent } from './pages/clients/client-details/client-details.component';
-import { PackageTableComponent } from './pages/package/package-table/package-table.component';
-import { PackageDetailsComponent } from './pages/package/package-details/package-details.component';
-import { TechnicalSpecialistTableComponent } from './pages/technical-specialist/technical-specialist-table/technical-specialist-table.component';
-import { TechnicalSpecialistDetailsComponent } from './pages/technical-specialist/technical-specialist-details/technical-specialist-details.component';
-import { SocialMediaUpdateComponent } from './pages/social-media/social-media-update/social-media-update.component';
-import { OrdersTableComponent } from './pages/orders/orders-table/orders-table.component';
-import { OrdersDetailsComponent } from './pages/orders/orders-details/orders-details.component';
-import { SliderTableComponent } from './pages/slider/slider-table/slider-table.component';
-import { SliderDetailsComponent } from './pages/slider/slider-details/slider-details.component';
-import { ContactUsTableComponent } from './pages/contact-us/contact-us-table/contact-us-table.component';
-import { ContactUsDetailsComponent } from './pages/contact-us/contact-us-details/contact-us-details.component';
-import { AboutUsTableComponent } from './pages/about-us/about-us-table/about-us-table.component';
-import { AboutUsDetailsComponent } from './pages/about-us/about-us-details/about-us-details.component';
-import { SpecialOrderTableComponent } from './pages/special-order/special-order-table/special-order-table.component';
-import { SpecialOrderDetailsComponent } from './pages/special-order/special-order-details/special-order-details.component';
-import { RoleTableComponent } from './pages/roles/role-table/role-table.component';
-import { RoleDetailsComponent } from './pages/roles/role-details/role-details.component';
-import { DistrictTableComponent } from './pages/district/district-table/district-table.component';
-import { DistrictDetailsComponent } from './pages/district/district-details/district-details.component';
-import { AdminTableComponent } from './pages/admin/admin-table/admin-table.component';
-import { AdminDetailsComponent } from './pages/admin/admin-details/admin-details.component';
-import { EditProfileComponent } from './pages/profile/edit-profile/edit-profile.component';
-import { AddNotificationsComponent } from './pages/add-notifications/add-notifications.component';
-import { CategoryTableComponent } from './pages/category/category-table/category-table.component';
-import { CategoryDetailsComponent } from './pages/category/category-details/category-details.component';
-import { MainCatogoryTableComponent } from './pages/main-category/main-catogory-table/main-catogory-table.component';
-import { MainCatogoryDetailsComponent } from './pages/main-category/main-catogory-details/main-catogory-details.component';
-import { SubCategoryTableComponent } from './pages/sub-category/sub-category-table/sub-category-table.component';
-import { SubCategoryDetailsComponent } from './pages/sub-category/sub-category-details/sub-category-details.component';
-import { ProductsTableComponent } from './pages/products/products-table/products-table.component';
-import { ProductsDetailsComponent } from './pages/products/products-details/products-details.component';
-import { TraderTableComponent } from './pages/traders/trader-table/trader-table.component';
-import { TraderDetailsComponent } from './pages/traders/trader-details/trader-details.component';
-import { TraderRequestsTableComponent } from './pages/traders/trader-requests-table/trader-requests-table.component';
-import { TraderRequestsDetailsComponent } from './pages/traders/trader-requests-details/trader-requests-details.component';
-import { PieceProductsTableComponent } from './pages/piece-products/piece-products-table/piece-products-table.component';
-import { PieceProductsDetailsComponent } from './pages/piece-products/piece-products-details/piece-products-details.component';
-import { ArticleTableComponent } from './pages/article/article-table/article-table.component';
-import { ArticleDetailsComponent } from './pages/article/article-details/article-details.component';
-import { TargetComponent } from './pages/target/target.component';
-import { DashboardAdminComponent } from './pages/dashboard-admin/dashboard-admin.component';
-import { UsersTableComponent } from './pages/users/users-table/users-table.component';
-import { UsersDetailsComponent } from './pages/users/users-details/users-details.component';
-import { OrderStatusTableComponent } from './layouts/home-layout/order-status/order-status-table/order-status-table.component';
-import { OrderStatusDetailsComponent } from './layouts/home-layout/order-status/order-status-details/order-status-details.component';
+import { roleGuard } from './core/role.guard';
+import { Roles } from './conts';
 
 export const routes: Routes = [
   {
@@ -87,211 +9,853 @@ export const routes: Routes = [
     redirectTo: 'auth/login',
     pathMatch: 'full'
   },
+  
+  // ==================== Auth Routes ====================
   {
     path: 'auth',
-    component: AuthLayoutComponent,
+    loadComponent: () => import('./layouts/auth-layout/auth-layout.component').then(m => m.AuthLayoutComponent),
     children: [
-      { path: 'login', component: LoginComponent },
-      { path: 'forget_password', component: ForgetPasswordComponent },
-      { path: 'reset_password', component: ResetPasswordComponent },
+      { 
+        path: 'login', 
+        loadComponent: () => import('./pages/login/login.component').then(m => m.LoginComponent) 
+      },
+      { 
+        path: 'forget_password', 
+        loadComponent: () => import('./pages/forget-password/forget-password.component').then(m => m.ForgetPasswordComponent) 
+      },
+      { 
+        path: 'reset_password', 
+        loadComponent: () => import('./pages/reset-password/reset-password.component').then(m => m.ResetPasswordComponent) 
+      },
     ]
   },
+
+  // ==================== Protected Routes ====================
   {
     path: '',
-    component: HomeLayoutComponent,
-    canActivate: [authGuard], // Applying authGuard to the home layout
+    loadComponent: () => import('./layouts/home-layout/home-layout.component').then(m => m.HomeLayoutComponent),
+    canActivate: [authGuard],
     children: [
-      { path: 'dashboard-trader', component: DashboardComponent },
-      { path: 'dashboard-admin', component: DashboardAdminComponent },
-      { path: 'working_hours', component: WorkingHoursTableComponent },
-      { path: 'working_hours/add', component: WorkingHoursDetailsComponent },
-      { path: 'working_hours/edit/:id', component: WorkingHoursDetailsComponent },
-      { path: 'working_hours/view/:id', component: WorkingHoursDetailsComponent },
-      { path: 'settings', component: SettingsComponent, canActivate: [authGuard],  // Apply authGuard to settings
+      // ==================== Dashboards ====================
+      { 
+        path: 'dashboard-admin', 
+        loadComponent: () => import('./pages/dashboard-admin/dashboard-admin.component').then(m => m.DashboardAdminComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'dashboard-trader', 
+        loadComponent: () => import('./pages/dashboard/dashboard.component').then(m => m.DashboardComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.trader] }
+      },
+
+      // ==================== Profile (Both) ====================
+      { 
+        path: 'profile', 
+        loadComponent: () => import('./pages/profile/profile.component').then(m => m.ProfileComponent)
+      },
+      { 
+        path: 'profile/edit/:id', 
+        loadComponent: () => import('./pages/profile/edit-profile/edit-profile.component').then(m => m.EditProfileComponent)
+      },
+
+      // ==================== Settings (Admin Only) ====================
+      { 
+        path: 'settings', 
+        loadComponent: () => import('./pages/settings/settings.component').then(m => m.SettingsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] },
         children: [
-          { path: 'faqs', component: FaqsTableComponent },
-          { path: 'faqs/add', component: FagsDetailsComponent },
-          { path: 'faqs/edit/:id', component: FagsDetailsComponent },
-          { path: 'faqs/view/:id', component: FagsDetailsComponent },
+          // FAQs
+          { 
+            path: 'faqs', 
+            loadComponent: () => import('./pages/fAQs/faqs-table/faqs-table.component').then(m => m.FaqsTableComponent) 
+          },
+          { 
+            path: 'faqs/add', 
+            loadComponent: () => import('./pages/fAQs/fags-details/fags-details.component').then(m => m.FagsDetailsComponent) 
+          },
+          { 
+            path: 'faqs/edit/:id', 
+            loadComponent: () => import('./pages/fAQs/fags-details/fags-details.component').then(m => m.FagsDetailsComponent) 
+          },
+          { 
+            path: 'faqs/view/:id', 
+            loadComponent: () => import('./pages/fAQs/fags-details/fags-details.component').then(m => m.FagsDetailsComponent) 
+          },
 
-          { path: 'terms_conditions', component: TermsConditionsTableComponent },
-          { path: 'terms_conditions/add', component: TermsConditionsDetailsComponent },
-          { path: 'terms_conditions/edit/:id', component: TermsConditionsDetailsComponent },
-          { path: 'terms_conditions/view/:id', component: TermsConditionsDetailsComponent },
+          // Terms & Conditions
+          { 
+            path: 'terms_conditions', 
+            loadComponent: () => import('./pages/terms-conditions/terms-conditions-table/terms-conditions-table.component').then(m => m.TermsConditionsTableComponent) 
+          },
+          { 
+            path: 'terms_conditions/add', 
+            loadComponent: () => import('./pages/terms-conditions/terms-conditions-details/terms-conditions-details.component').then(m => m.TermsConditionsDetailsComponent) 
+          },
+          { 
+            path: 'terms_conditions/edit/:id', 
+            loadComponent: () => import('./pages/terms-conditions/terms-conditions-details/terms-conditions-details.component').then(m => m.TermsConditionsDetailsComponent) 
+          },
+          { 
+            path: 'terms_conditions/view/:id', 
+            loadComponent: () => import('./pages/terms-conditions/terms-conditions-details/terms-conditions-details.component').then(m => m.TermsConditionsDetailsComponent) 
+          },
 
-          { path: 'privacy_policy', component: PrivacyPolicyTableComponent },
-          { path: 'privacy_policy/add', component: PrivacyPolicyDetailsComponent },
-          { path: 'privacy_policy/edit/:id', component: PrivacyPolicyDetailsComponent },
-          { path: 'privacy_policy/view/:id', component: PrivacyPolicyDetailsComponent },
+          // Privacy Policy
+          { 
+            path: 'privacy_policy', 
+            loadComponent: () => import('./pages/privacy-policy/privacy-policy-table/privacy-policy-table.component').then(m => m.PrivacyPolicyTableComponent) 
+          },
+          { 
+            path: 'privacy_policy/add', 
+            loadComponent: () => import('./pages/privacy-policy/privacy-policy-details/privacy-policy-details.component').then(m => m.PrivacyPolicyDetailsComponent) 
+          },
+          { 
+            path: 'privacy_policy/edit/:id', 
+            loadComponent: () => import('./pages/privacy-policy/privacy-policy-details/privacy-policy-details.component').then(m => m.PrivacyPolicyDetailsComponent) 
+          },
+          { 
+            path: 'privacy_policy/view/:id', 
+            loadComponent: () => import('./pages/privacy-policy/privacy-policy-details/privacy-policy-details.component').then(m => m.PrivacyPolicyDetailsComponent) 
+          },
 
-          {path:'social_media',component:SocialMediaUpdateComponent},
+          // Social Media
+          { 
+            path: 'social_media', 
+            loadComponent: () => import('./pages/social-media/social-media-update/social-media-update.component').then(m => m.SocialMediaUpdateComponent) 
+          },
 
-          { path: 'slider', component: SliderTableComponent },
-          { path: 'slider/add', component: SliderDetailsComponent },
-          { path: 'slider/edit/:id', component: SliderDetailsComponent },
-          { path: 'slider/view/:id', component: SliderDetailsComponent },
+          // Slider
+          { 
+            path: 'slider', 
+            loadComponent: () => import('./pages/slider/slider-table/slider-table.component').then(m => m.SliderTableComponent) 
+          },
+          { 
+            path: 'slider/add', 
+            loadComponent: () => import('./pages/slider/slider-details/slider-details.component').then(m => m.SliderDetailsComponent) 
+          },
+          { 
+            path: 'slider/edit/:id', 
+            loadComponent: () => import('./pages/slider/slider-details/slider-details.component').then(m => m.SliderDetailsComponent) 
+          },
+          { 
+            path: 'slider/view/:id', 
+            loadComponent: () => import('./pages/slider/slider-details/slider-details.component').then(m => m.SliderDetailsComponent) 
+          },
 
-          { path: 'roles', component: RoleTableComponent },
-          { path: 'role/add', component: RoleDetailsComponent },
-          { path: 'role/edit/:id', component: RoleDetailsComponent },
-          { path: 'role/view/:id', component: RoleDetailsComponent },
+          // Roles
+          { 
+            path: 'roles', 
+            loadComponent: () => import('./pages/roles/role-table/role-table.component').then(m => m.RoleTableComponent) 
+          },
+          { 
+            path: 'role/add', 
+            loadComponent: () => import('./pages/roles/role-details/role-details.component').then(m => m.RoleDetailsComponent) 
+          },
+          { 
+            path: 'role/edit/:id', 
+            loadComponent: () => import('./pages/roles/role-details/role-details.component').then(m => m.RoleDetailsComponent) 
+          },
+          { 
+            path: 'role/view/:id', 
+            loadComponent: () => import('./pages/roles/role-details/role-details.component').then(m => m.RoleDetailsComponent) 
+          },
 
-          { path: 'district', component: DistrictTableComponent },
-          { path: 'district/add', component: DistrictDetailsComponent },
-          { path: 'district/edit/:id', component: DistrictDetailsComponent },
-          { path: 'district/view/:id', component: DistrictDetailsComponent },
+          // Districts
+          { 
+            path: 'district', 
+            loadComponent: () => import('./pages/district/district-table/district-table.component').then(m => m.DistrictTableComponent) 
+          },
+          { 
+            path: 'district/add', 
+            loadComponent: () => import('./pages/district/district-details/district-details.component').then(m => m.DistrictDetailsComponent) 
+          },
+          { 
+            path: 'district/edit/:id', 
+            loadComponent: () => import('./pages/district/district-details/district-details.component').then(m => m.DistrictDetailsComponent) 
+          },
+          { 
+            path: 'district/view/:id', 
+            loadComponent: () => import('./pages/district/district-details/district-details.component').then(m => m.DistrictDetailsComponent) 
+          },
 
-          { path: 'admin', component: AdminTableComponent },
-          { path: 'admin/add', component: AdminDetailsComponent },
-          { path: 'admin/edit/:id', component: AdminDetailsComponent },
-          { path: 'admin/view/:id', component: AdminDetailsComponent },
+          // Admins
+          { 
+            path: 'admin', 
+            loadComponent: () => import('./pages/admin/admin-table/admin-table.component').then(m => m.AdminTableComponent) 
+          },
+          { 
+            path: 'admin/add', 
+            loadComponent: () => import('./pages/admin/admin-details/admin-details.component').then(m => m.AdminDetailsComponent) 
+          },
+          { 
+            path: 'admin/edit/:id', 
+            loadComponent: () => import('./pages/admin/admin-details/admin-details.component').then(m => m.AdminDetailsComponent) 
+          },
+          { 
+            path: 'admin/view/:id', 
+            loadComponent: () => import('./pages/admin/admin-details/admin-details.component').then(m => m.AdminDetailsComponent) 
+          },
 
-          { path: 'add_notification', component: AddNotificationsComponent },
+          // Notifications
+          { 
+            path: 'add_notification', 
+            loadComponent: () => import('./pages/add-notifications/add-notifications.component').then(m => m.AddNotificationsComponent) 
+          },
         ]
       },
-      { path: 'profile', component: ProfileComponent },
-      { path: 'profile/edit/:id', component: EditProfileComponent },
 
-      { path: 'services', component: ServicesTableComponent },
-      { path: 'service/add', component: ServicesDetailsComponent },
-      { path: 'service/view/:id', component: ServicesDetailsComponent },
-      { path: 'service/edit/:id', component: ServicesDetailsComponent },
-
-      { path: 'country', component: CountriesTableComponent },
-      { path: 'country/add', component: CountriesDetailsComponent },
-      { path: 'country/view/:id', component: CountriesDetailsComponent },
-      { path: 'country/edit/:id', component: CountriesDetailsComponent },
-
+      // ==================== Admin Only Routes ====================
       
-      { path: 'traders', component: TraderTableComponent },
-      { path: 'traders/add', component: TraderDetailsComponent },
-      { path: 'traders/view/:id', component: TraderDetailsComponent },
-      { path: 'traders/edit/:id', component: TraderDetailsComponent },
+      // Main Category
+      { 
+        path: 'main_category', 
+        loadComponent: () => import('./pages/main-category/main-catogory-table/main-catogory-table.component').then(m => m.MainCatogoryTableComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'main_category/add', 
+        loadComponent: () => import('./pages/main-category/main-catogory-details/main-catogory-details.component').then(m => m.MainCatogoryDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'main_category/view/:id', 
+        loadComponent: () => import('./pages/main-category/main-catogory-details/main-catogory-details.component').then(m => m.MainCatogoryDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'main_category/edit/:id', 
+        loadComponent: () => import('./pages/main-category/main-catogory-details/main-catogory-details.component').then(m => m.MainCatogoryDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
 
-       
-      { path: 'orderStatus', component: OrderStatusTableComponent },
-      { path: 'orderStatus/add', component: OrderStatusDetailsComponent },
-      { path: 'orderStatus/view/:id', component: OrderStatusDetailsComponent },
-      { path: 'orderStatus/edit/:id', component: OrderStatusDetailsComponent },
+      // Countries
+      { 
+        path: 'country', 
+        loadComponent: () => import('./pages/countries/countries-table/countries-table.component').then(m => m.CountriesTableComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'country/add', 
+        loadComponent: () => import('./pages/countries/countries-details/countries-details.component').then(m => m.CountriesDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'country/view/:id', 
+        loadComponent: () => import('./pages/countries/countries-details/countries-details.component').then(m => m.CountriesDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'country/edit/:id', 
+        loadComponent: () => import('./pages/countries/countries-details/countries-details.component').then(m => m.CountriesDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
 
-      { path: 'traderRequest', component: TraderRequestsTableComponent },
-      { path: 'traderRequest/add', component: TraderRequestsDetailsComponent },
-      { path: 'traderRequest/view/:id', component: TraderRequestsDetailsComponent },
-      { path: 'traderRequest/edit/:id', component: TraderRequestsDetailsComponent },
+      // Cities
+      { 
+        path: 'city', 
+        loadComponent: () => import('./pages/cities/cities-table/cities-table.component').then(m => m.CitiesTableComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'city/add', 
+        loadComponent: () => import('./pages/cities/city-details/city-details.component').then(m => m.CityDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'city/view/:id', 
+        loadComponent: () => import('./pages/cities/city-details/city-details.component').then(m => m.CityDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'city/edit/:id', 
+        loadComponent: () => import('./pages/cities/city-details/city-details.component').then(m => m.CityDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
 
-      { path: 'category', component: CategoryTableComponent },
-      { path: 'category/add', component: CategoryDetailsComponent },
-      { path: 'category/view/:id', component: CategoryDetailsComponent },
-      { path: 'category/edit/:id', component: CategoryDetailsComponent },
+      // Traders
+      { 
+        path: 'traders', 
+        loadComponent: () => import('./pages/traders/trader-table/trader-table.component').then(m => m.TraderTableComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'traders/add', 
+        loadComponent: () => import('./pages/traders/trader-details/trader-details.component').then(m => m.TraderDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'traders/view/:id', 
+        loadComponent: () => import('./pages/traders/trader-details/trader-details.component').then(m => m.TraderDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'traders/edit/:id', 
+        loadComponent: () => import('./pages/traders/trader-details/trader-details.component').then(m => m.TraderDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
 
-      { path: 'sub-category', component: SubCategoryTableComponent },
-      { path: 'sub-category/add', component: SubCategoryDetailsComponent },
-      { path: 'sub-category/view/:id', component: SubCategoryDetailsComponent },
-      { path: 'sub-category/edit/:id', component: SubCategoryDetailsComponent },
+      // Trader Requests
+      { 
+        path: 'traderRequest', 
+        loadComponent: () => import('./pages/traders/trader-requests-table/trader-requests-table.component').then(m => m.TraderRequestsTableComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'traderRequest/add', 
+        loadComponent: () => import('./pages/traders/trader-requests-details/trader-requests-details.component').then(m => m.TraderRequestsDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'traderRequest/view/:id', 
+        loadComponent: () => import('./pages/traders/trader-requests-details/trader-requests-details.component').then(m => m.TraderRequestsDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'traderRequest/edit/:id', 
+        loadComponent: () => import('./pages/traders/trader-requests-details/trader-requests-details.component').then(m => m.TraderRequestsDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
 
-      { path: 'product', component: ProductsTableComponent },
-      { path: 'product/add', component: ProductsDetailsComponent },
-      { path: 'product/view/:id', component: ProductsDetailsComponent },
-      { path: 'product/edit/:id', component: ProductsDetailsComponent },
+      // Order Status
+      { 
+        path: 'orderStatus', 
+        loadComponent: () => import('./layouts/home-layout/order-status/order-status-table/order-status-table.component').then(m => m.OrderStatusTableComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'orderStatus/add', 
+        loadComponent: () => import('./layouts/home-layout/order-status/order-status-details/order-status-details.component').then(m => m.OrderStatusDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'orderStatus/view/:id', 
+        loadComponent: () => import('./layouts/home-layout/order-status/order-status-details/order-status-details.component').then(m => m.OrderStatusDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'orderStatus/edit/:id', 
+        loadComponent: () => import('./layouts/home-layout/order-status/order-status-details/order-status-details.component').then(m => m.OrderStatusDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
 
-      { path: 'piece-product', component: PieceProductsTableComponent },
-      { path: 'piece-product/add', component: PieceProductsDetailsComponent },
-      { path: 'piece-product/view/:id', component: PieceProductsDetailsComponent },
-      { path: 'piece-product/edit/:id', component: PieceProductsDetailsComponent },
+      // Articles
+      { 
+        path: 'article', 
+        loadComponent: () => import('./pages/article/article-table/article-table.component').then(m => m.ArticleTableComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'article/add', 
+        loadComponent: () => import('./pages/article/article-details/article-details.component').then(m => m.ArticleDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'article/view/:id', 
+        loadComponent: () => import('./pages/article/article-details/article-details.component').then(m => m.ArticleDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'article/edit/:id', 
+        loadComponent: () => import('./pages/article/article-details/article-details.component').then(m => m.ArticleDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
 
-      { path: 'clients', component: ClientTableComponent },
-      { path: 'client/add', component: ClientDetailsComponent },
-      { path: 'client/view/:id', component: ClientDetailsComponent },
-      { path: 'client/edit/:id', component: ClientDetailsComponent },
+      // Contact Us
+      { 
+        path: 'contact-us', 
+        loadComponent: () => import('./pages/contact-us/contact-us-table/contact-us-table.component').then(m => m.ContactUsTableComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'contact-us/add', 
+        loadComponent: () => import('./pages/contact-us/contact-us-details/contact-us-details.component').then(m => m.ContactUsDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'contact-us/view/:id', 
+        loadComponent: () => import('./pages/contact-us/contact-us-details/contact-us-details.component').then(m => m.ContactUsDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'contact-us/edit/:id', 
+        loadComponent: () => import('./pages/contact-us/contact-us-details/contact-us-details.component').then(m => m.ContactUsDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
 
-      { path: 'article', component: ArticleTableComponent },
-      { path: 'article/add', component: ArticleDetailsComponent },
-      { path: 'article/view/:id', component: ArticleDetailsComponent },
-      { path: 'article/edit/:id', component: ArticleDetailsComponent },
+      // FAQs (Outside Settings)
+      { 
+        path: 'faqs', 
+        loadComponent: () => import('./pages/fAQs/faqs-table/faqs-table.component').then(m => m.FaqsTableComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'faqs/add', 
+        loadComponent: () => import('./pages/fAQs/fags-details/fags-details.component').then(m => m.FagsDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'faqs/edit/:id', 
+        loadComponent: () => import('./pages/fAQs/fags-details/fags-details.component').then(m => m.FagsDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'faqs/view/:id', 
+        loadComponent: () => import('./pages/fAQs/fags-details/fags-details.component').then(m => m.FagsDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
 
-      { path: 'slider', component: SliderTableComponent },
-      { path: 'slider/add', component: SliderDetailsComponent },
-      { path: 'slider/edit/:id', component: SliderDetailsComponent },
-      { path: 'slider/view/:id', component: SliderDetailsComponent },
+      // Payment Ways
+      { 
+        path: 'paymentWay', 
+        loadComponent: () => import('./pages/payment-way/payment-way-table/payment-way-table.component').then(m => m.PaymentWayTableComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'paymentWay/add', 
+        loadComponent: () => import('./pages/payment-way/payment-way-details/payment-way-details.component').then(m => m.PaymentWayDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'paymentWay/view/:id', 
+        loadComponent: () => import('./pages/payment-way/payment-way-details/payment-way-details.component').then(m => m.PaymentWayDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'paymentWay/edit/:id', 
+        loadComponent: () => import('./pages/payment-way/payment-way-details/payment-way-details.component').then(m => m.PaymentWayDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
 
-      { path: 'main_category', component: MainCatogoryTableComponent },
-      { path: 'main_category/add', component: MainCatogoryDetailsComponent },
-      { path: 'main_category/view/:id', component: MainCatogoryDetailsComponent },
-      { path: 'main_category/edit/:id', component: MainCatogoryDetailsComponent },
+      // Slider (Outside Settings)
+      { 
+        path: 'slider', 
+        loadComponent: () => import('./pages/slider/slider-table/slider-table.component').then(m => m.SliderTableComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'slider/add', 
+        loadComponent: () => import('./pages/slider/slider-details/slider-details.component').then(m => m.SliderDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'slider/edit/:id', 
+        loadComponent: () => import('./pages/slider/slider-details/slider-details.component').then(m => m.SliderDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'slider/view/:id', 
+        loadComponent: () => import('./pages/slider/slider-details/slider-details.component').then(m => m.SliderDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
 
-      { path: 'city', component: CitiesTableComponent },
-      { path: 'city/add', component: CityDetailsComponent },
-      { path: 'city/view/:id', component: CityDetailsComponent },
-      { path: 'city/edit/:id', component: CityDetailsComponent },
+      // Users
+      { 
+        path: 'users', 
+        loadComponent: () => import('./pages/users/users-table/users-table.component').then(m => m.UsersTableComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'user/add', 
+        loadComponent: () => import('./pages/users/users-details/users-details.component').then(m => m.UsersDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'user/view/:id', 
+        loadComponent: () => import('./pages/users/users-details/users-details.component').then(m => m.UsersDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'user/edit/:id', 
+        loadComponent: () => import('./pages/users/users-details/users-details.component').then(m => m.UsersDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
 
-      { path: 'faqs', component: FaqsTableComponent },
-      { path: 'faqs/add', component: FagsDetailsComponent },
-      { path: 'faqs/edit/:id', component: FagsDetailsComponent },
-      { path: 'faqs/view/:id', component: FagsDetailsComponent },
+      // ==================== Trader Only Routes ====================
+      
+      // Sub Categories
+      { 
+        path: 'sub-category', 
+        loadComponent: () => import('./pages/sub-category/sub-category-table/sub-category-table.component').then(m => m.SubCategoryTableComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.trader] }
+      },
+      { 
+        path: 'sub-category/add', 
+        loadComponent: () => import('./pages/sub-category/sub-category-details/sub-category-details.component').then(m => m.SubCategoryDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.trader] }
+      },
+      { 
+        path: 'sub-category/view/:id', 
+        loadComponent: () => import('./pages/sub-category/sub-category-details/sub-category-details.component').then(m => m.SubCategoryDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.trader] }
+      },
+      { 
+        path: 'sub-category/edit/:id', 
+        loadComponent: () => import('./pages/sub-category/sub-category-details/sub-category-details.component').then(m => m.SubCategoryDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.trader] }
+      },
 
-      { path: 'cancel-reason', component: CancelReasonTableComponent },
-      { path: 'cancel-reason/add', component: CancelReasonDetailsComponent },
-      { path: 'cancel-reason/view/:id', component: CancelReasonDetailsComponent },
-      { path: 'cancel-reason/edit/:id', component: CancelReasonDetailsComponent },
+      // Target
+      { 
+        path: 'target', 
+        loadComponent: () => import('./pages/target/target.component').then(m => m.TargetComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.trader] }
+      },
 
-      { path: 'target', component: TargetComponent },
+      // ==================== Shared Routes (Admin & Trader) ====================
+      
+      // Products
+      { 
+        path: 'product', 
+        loadComponent: () => import('./pages/products/products-table/products-table.component').then(m => m.ProductsTableComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin, Roles.trader] }
+      },
+      { 
+        path: 'product/add', 
+        loadComponent: () => import('./pages/products/products-details/products-details.component').then(m => m.ProductsDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin, Roles.trader] }
+      },
+      { 
+        path: 'product/view/:id', 
+        loadComponent: () => import('./pages/products/products-details/products-details.component').then(m => m.ProductsDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin, Roles.trader] }
+      },
+      { 
+        path: 'product/edit/:id', 
+        loadComponent: () => import('./pages/products/products-details/products-details.component').then(m => m.ProductsDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin, Roles.trader] }
+      },
 
+      // Piece Products
+      { 
+        path: 'piece-product', 
+        loadComponent: () => import('./pages/piece-products/piece-products-table/piece-products-table.component').then(m => m.PieceProductsTableComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin, Roles.trader] }
+      },
+      { 
+        path: 'piece-product/add', 
+        loadComponent: () => import('./pages/piece-products/piece-products-details/piece-products-details.component').then(m => m.PieceProductsDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin, Roles.trader] }
+      },
+      { 
+        path: 'piece-product/view/:id', 
+        loadComponent: () => import('./pages/piece-products/piece-products-details/piece-products-details.component').then(m => m.PieceProductsDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin, Roles.trader] }
+      },
+      { 
+        path: 'piece-product/edit/:id', 
+        loadComponent: () => import('./pages/piece-products/piece-products-details/piece-products-details.component').then(m => m.PieceProductsDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin, Roles.trader] }
+      },
 
-      { path: 'complaint', component: ComplaintTableComponent },
-      { path: 'complaint/add', component: ComplaintDetailsComponent },
-      { path: 'complaint/view/:id', component: ComplaintDetailsComponent },
-      { path: 'complaint/edit/:id', component: ComplaintDetailsComponent },
+      // Orders
+      { 
+        path: 'orders', 
+        loadComponent: () => import('./pages/orders/orders-table/orders-table.component').then(m => m.OrdersTableComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin, Roles.trader] }
+      },
+      { 
+        path: 'order/add', 
+        loadComponent: () => import('./pages/orders/orders-details/orders-details.component').then(m => m.OrdersDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin, Roles.trader] }
+      },
+      { 
+        path: 'order/view/:id', 
+        loadComponent: () => import('./pages/orders/orders-details/orders-details.component').then(m => m.OrdersDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin, Roles.trader] }
+      },
+      { 
+        path: 'order/edit/:id', 
+        loadComponent: () => import('./pages/orders/orders-details/orders-details.component').then(m => m.OrdersDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin, Roles.trader] }
+      },
 
-      { path: 'contract-type', component: ContractTypeTableComponent },
-      { path: 'contract-type/add', component: ContractTypeDetailsComponent },
-      { path: 'contract-type/view/:id', component: ContractTypeDetailsComponent },
-      { path: 'contract-type/edit/:id', component: ContractTypeDetailsComponent },
+      // ==================== Other Routes (No specific role restrictions) ====================
+      
+      // Working Hours
+      { 
+        path: 'working_hours', 
+        loadComponent: () => import('./pages/working-hours/working-hours-table/working-hours-table.component').then(m => m.WorkingHoursTableComponent) 
+      },
+      { 
+        path: 'working_hours/add', 
+        loadComponent: () => import('./pages/working-hours/working-hours-details/working-hours-details.component').then(m => m.WorkingHoursDetailsComponent) 
+      },
+      { 
+        path: 'working_hours/edit/:id', 
+        loadComponent: () => import('./pages/working-hours/working-hours-details/working-hours-details.component').then(m => m.WorkingHoursDetailsComponent) 
+      },
+      { 
+        path: 'working_hours/view/:id', 
+        loadComponent: () => import('./pages/working-hours/working-hours-details/working-hours-details.component').then(m => m.WorkingHoursDetailsComponent) 
+      },
 
-      { path: 'copone', component: CoponeTableComponent },
-      { path: 'copone/add', component: CoponeDetailsComponent },
-      { path: 'copone/view/:id', component: CoponeDetailsComponent },
-      { path: 'copone/edit/:id', component: CoponeDetailsComponent },
+      // Services
+      { 
+        path: 'services', 
+        loadComponent: () => import('./pages/services/services-table/services-table.component').then(m => m.ServicesTableComponent) 
+      },
+      { 
+        path: 'service/add', 
+        loadComponent: () => import('./pages/services/services-details/services-details.component').then(m => m.ServicesDetailsComponent) 
+      },
+      { 
+        path: 'service/view/:id', 
+        loadComponent: () => import('./pages/services/services-details/services-details.component').then(m => m.ServicesDetailsComponent) 
+      },
+      { 
+        path: 'service/edit/:id', 
+        loadComponent: () => import('./pages/services/services-details/services-details.component').then(m => m.ServicesDetailsComponent) 
+      },
 
-      { path: 'paymentWay', component: PaymentWayTableComponent },
-      { path: 'paymentWay/add', component: PaymentWayDetailsComponent },
-      { path: 'paymentWay/view/:id', component: PaymentWayDetailsComponent },
-      { path: 'paymentWay/edit/:id', component: PaymentWayDetailsComponent },
+      // Categories
+      { 
+        path: 'category', 
+        loadComponent: () => import('./pages/category/category-table/category-table.component').then(m => m.CategoryTableComponent) 
+      },
+      { 
+        path: 'category/add', 
+        loadComponent: () => import('./pages/category/category-details/category-details.component').then(m => m.CategoryDetailsComponent) 
+      },
+      { 
+        path: 'category/view/:id', 
+        loadComponent: () => import('./pages/category/category-details/category-details.component').then(m => m.CategoryDetailsComponent) 
+      },
+      { 
+        path: 'category/edit/:id', 
+        loadComponent: () => import('./pages/category/category-details/category-details.component').then(m => m.CategoryDetailsComponent) 
+      },
 
-      { path: 'package', component: PackageTableComponent },
-      { path: 'package/add', component: PackageDetailsComponent },
-      { path: 'package/view/:id', component: PackageDetailsComponent },
-      { path: 'package/edit/:id', component: PackageDetailsComponent },
+      // Clients
+      { 
+        path: 'clients', 
+        loadComponent: () => import('./pages/clients/client-table/client-table.component').then(m => m.ClientTableComponent) 
+      },
+      { 
+        path: 'client/add', 
+        loadComponent: () => import('./pages/clients/client-details/client-details.component').then(m => m.ClientDetailsComponent) 
+      },
+      { 
+        path: 'client/view/:id', 
+        loadComponent: () => import('./pages/clients/client-details/client-details.component').then(m => m.ClientDetailsComponent) 
+      },
+      { 
+        path: 'client/edit/:id', 
+        loadComponent: () => import('./pages/clients/client-details/client-details.component').then(m => m.ClientDetailsComponent) 
+      },
 
-      { path: 'technical-specialist', component: TechnicalSpecialistTableComponent },
-      { path: 'technical-specialist/add', component: TechnicalSpecialistDetailsComponent },
-      { path: 'technical-specialist/view/:id', component: TechnicalSpecialistDetailsComponent },
-      { path: 'technical-specialist/edit/:id', component: TechnicalSpecialistDetailsComponent },
+      // Cancel Reasons
+      { 
+        path: 'cancel-reason', 
+        loadComponent: () => import('./pages/cancel-reason/cancel-reason-table/cancel-reason-table.component').then(m => m.CancelReasonTableComponent) 
+      },
+      { 
+        path: 'cancel-reason/add', 
+        loadComponent: () => import('./pages/cancel-reason/cancel-reason-details/cancel-reason-details.component').then(m => m.CancelReasonDetailsComponent) 
+      },
+      { 
+        path: 'cancel-reason/view/:id', 
+        loadComponent: () => import('./pages/cancel-reason/cancel-reason-details/cancel-reason-details.component').then(m => m.CancelReasonDetailsComponent) 
+      },
+      { 
+        path: 'cancel-reason/edit/:id', 
+        loadComponent: () => import('./pages/cancel-reason/cancel-reason-details/cancel-reason-details.component').then(m => m.CancelReasonDetailsComponent) 
+      },
 
-      { path: 'orders', component: OrdersTableComponent },
-      { path: 'order/add', component: OrdersDetailsComponent },
-      { path: 'order/view/:id', component: OrdersDetailsComponent },
-      { path: 'order/edit/:id', component: OrdersDetailsComponent },
+      // Complaints
+      { 
+        path: 'complaint', 
+        loadComponent: () => import('./pages/complaint/complaint-table/complaint-table.component').then(m => m.ComplaintTableComponent) 
+      },
+      { 
+        path: 'complaint/add', 
+        loadComponent: () => import('./pages/complaint/complaint-details/complaint-details.component').then(m => m.ComplaintDetailsComponent) 
+      },
+      { 
+        path: 'complaint/view/:id', 
+        loadComponent: () => import('./pages/complaint/complaint-details/complaint-details.component').then(m => m.ComplaintDetailsComponent) 
+      },
+      { 
+        path: 'complaint/edit/:id', 
+        loadComponent: () => import('./pages/complaint/complaint-details/complaint-details.component').then(m => m.ComplaintDetailsComponent) 
+      },
 
-      { path: 'users', component: UsersTableComponent },
-      { path: 'user/add', component: UsersDetailsComponent },
-      { path: 'user/view/:id', component: UsersDetailsComponent },
-      { path: 'user/edit/:id', component: UsersDetailsComponent },
+      // Contract Types
+      { 
+        path: 'contract-type', 
+        loadComponent: () => import('./pages/contract-type/contract-type-table/contract-type-table.component').then(m => m.ContractTypeTableComponent) 
+      },
+      { 
+        path: 'contract-type/add', 
+        loadComponent: () => import('./pages/contract-type/contract-type-details/contract-type-details.component').then(m => m.ContractTypeDetailsComponent) 
+      },
+      { 
+        path: 'contract-type/view/:id', 
+        loadComponent: () => import('./pages/contract-type/contract-type-details/contract-type-details.component').then(m => m.ContractTypeDetailsComponent) 
+      },
+      { 
+        path: 'contract-type/edit/:id', 
+        loadComponent: () => import('./pages/contract-type/contract-type-details/contract-type-details.component').then(m => m.ContractTypeDetailsComponent) 
+      },
 
+      // Coupons
+      { 
+        path: 'copone', 
+        loadComponent: () => import('./pages/copone/copone-table/copone-table.component').then(m => m.CoponeTableComponent) 
+      },
+      { 
+        path: 'copone/add', 
+        loadComponent: () => import('./pages/copone/copone-details/copone-details.component').then(m => m.CoponeDetailsComponent) 
+      },
+      { 
+        path: 'copone/view/:id', 
+        loadComponent: () => import('./pages/copone/copone-details/copone-details.component').then(m => m.CoponeDetailsComponent) 
+      },
+      { 
+        path: 'copone/edit/:id', 
+        loadComponent: () => import('./pages/copone/copone-details/copone-details.component').then(m => m.CoponeDetailsComponent) 
+      },
 
-      { path: 'contact-us', component: ContactUsTableComponent },
-      { path: 'contact-us/add', component: ContactUsDetailsComponent },
-      { path: 'contact-us/view/:id', component: ContactUsDetailsComponent },
-      { path: 'contact-us/edit/:id', component: ContactUsDetailsComponent },
+      // Packages
+      { 
+        path: 'package', 
+        loadComponent: () => import('./pages/package/package-table/package-table.component').then(m => m.PackageTableComponent) 
+      },
+      { 
+        path: 'package/add', 
+        loadComponent: () => import('./pages/package/package-details/package-details.component').then(m => m.PackageDetailsComponent) 
+      },
+      { 
+        path: 'package/view/:id', 
+        loadComponent: () => import('./pages/package/package-details/package-details.component').then(m => m.PackageDetailsComponent) 
+      },
+      { 
+        path: 'package/edit/:id', 
+        loadComponent: () => import('./pages/package/package-details/package-details.component').then(m => m.PackageDetailsComponent) 
+      },
 
-      { path: 'about-us', component: AboutUsTableComponent },
-      { path: 'about-us/add', component: AboutUsDetailsComponent },
-      { path: 'about-us/view/:id', component: AboutUsDetailsComponent },
-      { path: 'about-us/edit/:id', component: AboutUsDetailsComponent },
+      // Technical Specialists
+      { 
+        path: 'technical-specialist', 
+        loadComponent: () => import('./pages/technical-specialist/technical-specialist-table/technical-specialist-table.component').then(m => m.TechnicalSpecialistTableComponent) 
+      },
+      { 
+        path: 'technical-specialist/add', 
+        loadComponent: () => import('./pages/technical-specialist/technical-specialist-details/technical-specialist-details.component').then(m => m.TechnicalSpecialistDetailsComponent) 
+      },
+      { 
+        path: 'technical-specialist/view/:id', 
+        loadComponent: () => import('./pages/technical-specialist/technical-specialist-details/technical-specialist-details.component').then(m => m.TechnicalSpecialistDetailsComponent) 
+      },
+      { 
+        path: 'technical-specialist/edit/:id', 
+        loadComponent: () => import('./pages/technical-specialist/technical-specialist-details/technical-specialist-details.component').then(m => m.TechnicalSpecialistDetailsComponent) 
+      },
 
-      { path: 'special-order', component: SpecialOrderTableComponent },
-      { path: 'special-order/view/:id', component: SpecialOrderDetailsComponent },
-      { path: 'special-order/edit/:id', component: SpecialOrderDetailsComponent },
+      // About Us
+      { 
+        path: 'about-us', 
+        loadComponent: () => import('./pages/about-us/about-us-table/about-us-table.component').then(m => m.AboutUsTableComponent) 
+      },
+      { 
+        path: 'about-us/add', 
+        loadComponent: () => import('./pages/about-us/about-us-details/about-us-details.component').then(m => m.AboutUsDetailsComponent) 
+      },
+      { 
+        path: 'about-us/view/:id', 
+        loadComponent: () => import('./pages/about-us/about-us-details/about-us-details.component').then(m => m.AboutUsDetailsComponent) 
+      },
+      { 
+        path: 'about-us/edit/:id', 
+        loadComponent: () => import('./pages/about-us/about-us-details/about-us-details.component').then(m => m.AboutUsDetailsComponent) 
+      },
+
+      // Special Orders
+      { 
+        path: 'special-order', 
+        loadComponent: () => import('./pages/special-order/special-order-table/special-order-table.component').then(m => m.SpecialOrderTableComponent) 
+      },
+      { 
+        path: 'special-order/view/:id', 
+        loadComponent: () => import('./pages/special-order/special-order-details/special-order-details.component').then(m => m.SpecialOrderDetailsComponent) 
+      },
+      { 
+        path: 'special-order/edit/:id', 
+        loadComponent: () => import('./pages/special-order/special-order-details/special-order-details.component').then(m => m.SpecialOrderDetailsComponent) 
+      },
     ]
   },
-  { path: '**', component: NotFoundComponent }
+  
+  // ==================== Not Found ====================
+  { 
+    path: '**', 
+    loadComponent: () => import('./pages/not-found/not-found.component').then(m => m.NotFoundComponent) 
+  }
 ];
