@@ -113,45 +113,35 @@ static editorArabicCharsValidator(errorMessage?: string): ValidatorFn {
             return null; // Let required validator handle empty values
           }
 
-          // Find matching country by phoneCode
-          const matchingCountry = countries.find(country => 
-            phoneValue.startsWith(country.phoneCode)
-          );
-
-          if (!matchingCountry) {
+          if (!countries || countries.length === 0) {
             return { 
-              phoneInvalid: errorMessage || 'Phone number must start with a valid country code' 
+              phoneInvalid: errorMessage || 'No countries available' 
             };
           }
 
-          // Extract the number after phoneCode
-          const phoneWithoutCode = phoneValue.substring(matchingCountry.phoneCode.length);
-          const expectedLength = parseInt(matchingCountry.phoneLength);
-
-          if (phoneWithoutCode.length !== expectedLength) {
-            return { 
-              phoneInvalid: errorMessage || `Phone number must be ${expectedLength} digits after country code ${matchingCountry.phoneCode}` 
-            };
-          }
-
-          // Validate that the remaining part contains only numbers
-          if (!onlyNumbersRegex.test(phoneWithoutCode)) {
+          // Validate that the phone contains only numbers
+          if (!onlyNumbersRegex.test(phoneValue)) {
             return { 
               phoneInvalid: errorMessage || 'Phone number must contain only digits' 
             };
           }
 
-          // Special validation for Oman (phoneCode: "968")
-          // Oman phone numbers can start with 07, 09, or 02
-          if (matchingCountry.phoneCode === '968') {
-            const firstTwoDigits = phoneWithoutCode.substring(0, 2);
-            const validPrefixes = ['07', '09', '02'];
-            
-            if (!validPrefixes.includes(firstTwoDigits)) {
-              return { 
-                phoneInvalid: errorMessage || 'Phone number for Oman must start with 07, 09, or 02' 
-              };
-            }
+          // Try to find matching country by checking prefixes and length
+          let matchingCountry = null;
+
+          // Check for Saudi Arabia (starts with 05, length 10)
+          if (phoneValue.startsWith('05') && phoneValue.length === 10) {
+            matchingCountry = countries.find(c => c.phoneCode === '966');
+          }
+          // Check for Oman (starts with 09/07/02, length 9)
+          else if ((phoneValue.startsWith('09') || phoneValue.startsWith('07') || phoneValue.startsWith('02')) && phoneValue.length === 9) {
+            matchingCountry = countries.find(c => c.phoneCode === '968');
+          }
+
+          if (!matchingCountry) {
+            return { 
+              phoneInvalid: errorMessage || 'Invalid phone number format' 
+            };
           }
 
           return null;
@@ -172,39 +162,39 @@ static editorArabicCharsValidator(errorMessage?: string): ValidatorFn {
             };
           }
 
-          // Check if phone starts with country code
-          if (!phoneValue.startsWith(country.phoneCode)) {
-            return { 
-              phoneInvalid: errorMessage || `Phone number must start with country code ${country.phoneCode}` 
-            };
-          }
-
-          // Extract the number after phoneCode
-          const phoneWithoutCode = phoneValue.substring(country.phoneCode.length);
-          const expectedLength = parseInt(country.phoneLength);
-
-          if (phoneWithoutCode.length !== expectedLength) {
-            return { 
-              phoneInvalid: errorMessage || `Phone number must be ${expectedLength} digits after country code ${country.phoneCode}` 
-            };
-          }
-
-          // Validate that the remaining part contains only numbers
-          if (!onlyNumbersRegex.test(phoneWithoutCode)) {
+          // Validate that the phone contains only numbers
+          if (!onlyNumbersRegex.test(phoneValue)) {
             return { 
               phoneInvalid: errorMessage || 'Phone number must contain only digits' 
             };
           }
 
-          // Special validation for Oman (phoneCode: "968")
-          // Oman phone numbers can start with 07, 09, or 02
+          const expectedLength = parseInt(country.phoneLength);
+
+          // Check length
+          if (phoneValue.length !== expectedLength) {
+            return { 
+              phoneInvalid: errorMessage || `Phone number must be ${expectedLength} digits` 
+            };
+          }
+
+          // Saudi Arabia (phoneCode: "966") - must start with 05
+          if (country.phoneCode === '966') {
+            if (!phoneValue.startsWith('05')) {
+              return { 
+                phoneInvalid: errorMessage || 'Saudi phone number must start with 05' 
+              };
+            }
+          }
+
+          // Oman (phoneCode: "968") - must start with 09, 07, or 02
           if (country.phoneCode === '968') {
-            const firstTwoDigits = phoneWithoutCode.substring(0, 2);
-            const validPrefixes = ['07', '09', '02'];
+            const firstTwoDigits = phoneValue.substring(0, 2);
+            const validPrefixes = ['09', '07', '02'];
             
             if (!validPrefixes.includes(firstTwoDigits)) {
               return { 
-                phoneInvalid: errorMessage || 'Phone number for Oman must start with 07, 09, or 02' 
+                phoneInvalid: errorMessage || 'Oman phone number must start with 09, 07, or 02' 
               };
             }
           }
