@@ -49,7 +49,7 @@
         <ng-container *ngFor="let route of routingList">
           <div
           [class.active_routing]="activeRoute.includes(route.route)"
-            *ngIf="route.type.includes(role)"
+            *ngIf="role && route.type.includes(role)"
             [routerLink]="route.route"
             class="routing-action"
             routerLinkActive="active"

@@ -4,7 +4,7 @@ import { Tooltip } from 'primeng/tooltip';
 import { LanguageService } from '../../services/language.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterLinkActive, RouterModule } from '@angular/router';
-import { menuItems, Roles } from '../../conts';
+import { MenuItem, menuItems, Roles } from '../../conts';
 import { environment } from '../../../environments/environment';
 import { ApiService } from '../../services/api.service';
 import { InputTextComponent } from '../input-text/input-text.component';
@@ -30,8 +30,8 @@ export class SidebarComponent  {
 
   userDate=JSON.parse(localStorage.getItem('userData')as any);
   defaultImage=this.userDate?.gender==1?'assets/images/arabian-man.png':'assets/images/arabian-woman.png'
-  routingList = menuItems
-  role:any=''
+  routingList : MenuItem[] = menuItems
+  role!:Roles;
   
   // Country dropdown
   countries: any[] = [];
@@ -61,7 +61,7 @@ export class SidebarComponent  {
   }
   
   initCountrySelection() {
-    this.role = localStorage.getItem('role') || '';
+    this.role = (localStorage.getItem('role') || '') as Roles;
     this.isAdmin = this.role === Roles.admin;
     this.isTrader = this.role === Roles.trader;
     

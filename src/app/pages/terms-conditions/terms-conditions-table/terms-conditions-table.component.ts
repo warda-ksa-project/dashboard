@@ -10,19 +10,20 @@ import { LanguageService } from '../../../services/language.service';
 import { ETableShow, IcolHeaderSmallTable, TableSmallScreenComponent } from '../../../components/table-small-screen/table-small-screen.component';
 import { DrawerComponent } from '../../../components/drawer/drawer.component';
 import { PaginationComponent } from '../../../components/pagination/pagination.component';
-import { TitleCasePipe } from '@angular/common';
+import { TitleCasePipe, CommonModule } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
+import { Roles } from '../../../conts';
 
 const global_pageName='termsAndConditions.pageName';
 const global_router_add_url_in_Table ='/settings/terms_conditions/add';
 const global_router_view_url ='/settings/terms_conditions/view';
 const global_router_edit_url ='/settings/terms_conditions/edit';
-const global_API_getAll ="TermsAndConditions"+'/GetAllWithPagination';
-const global_API_delete="TermsAndConditions"+'/DeleteTermsAndConditions?requestId';
+const global_API_getAll ="TermAndCondition"+'/GetAllWithPagination';
+const global_API_delete="TermAndCondition"+'/Delete?Id';
 @Component({
   selector: 'app-terms-conditions-table',
   standalone: true,
-  imports: [TableComponent,TitleCasePipe,TranslatePipe, PaginationComponent, FormsModule, DrawerComponent, BreadcrumpComponent, RouterModule, InputTextModule, TableSmallScreenComponent],
+  imports: [TableComponent,TitleCasePipe,TranslatePipe, PaginationComponent, FormsModule, DrawerComponent, BreadcrumpComponent, RouterModule, InputTextModule, TableSmallScreenComponent, CommonModule],
   templateUrl: './terms-conditions-table.component.html',
   styleUrl: './terms-conditions-table.component.scss'
 })
@@ -30,25 +31,11 @@ export class TermsConditionsTableComponent {
 
   global_router_add_url_in_Table = global_router_add_url_in_Table;
   pageName =signal<string>(global_pageName);
+  userRole: string = '';
+  isTrader: boolean = false;
 
   showFilter: boolean = false
-  tableActions: ITableAction[] = [
-    {
-      name: EAction.delete,
-      apiName_or_route: global_API_delete,
-      autoCall: true
-    },
-    {
-      name: EAction.view,
-      apiName_or_route:  global_router_view_url,
-      autoCall: true
-    },
-    {
-      name: EAction.edit,
-      apiName_or_route: global_router_edit_url,
-      autoCall: true
-    }
-  ]
+  tableActions: ITableAction[] = []
   private ApiService = inject(ApiService)
 
 
@@ -88,6 +75,40 @@ export class TermsConditionsTableComponent {
   languageService = inject(LanguageService);
 
   ngOnInit() {
+    this.userRole = localStorage.getItem('role') || '';
+    this.isTrader = this.userRole === Roles.trader;
+    
+    // Set table actions based on user role
+    if (this.isTrader) {
+      // Trader: view only
+      this.tableActions = [
+        {
+          name: EAction.view,
+          apiName_or_route: '/terms_conditions/view',
+          autoCall: true
+        }
+      ];
+    } else {
+      // Admin: full access
+      this.tableActions = [
+        {
+          name: EAction.delete,
+          apiName_or_route: global_API_delete,
+          autoCall: true
+        },
+        {
+          name: EAction.view,
+          apiName_or_route: global_router_view_url,
+          autoCall: true
+        },
+        {
+          name: EAction.edit,
+          apiName_or_route: global_router_edit_url,
+          autoCall: true
+        }
+      ];
+    }
+    
     this.pageName.set(global_pageName)
     this.API_getAll();
     this.selectedLang = this.languageService.translationService.currentLang;
@@ -103,16 +124,20 @@ export class TermsConditionsTableComponent {
 
   displayTableCols(currentLang: string) {
     this.columns = [
-      { keyName: 'termId', header:  this.languageService.translate('Id'), type: EType.id, show: true },
+      { keyName: 'id', header:  this.languageService.translate('Id'), type: EType.id, show: true },
       { keyName: 'enName', header:  this.languageService.translate('termsAndConditions.form.title_en'), type: EType.text, show: true },
       { keyName: 'arName', header:  this.languageService.translate('termsAndConditions.form.title_ar'), type: EType.text, show: true },
       { keyName: 'enDescription', header:  this.languageService.translate('termsAndConditions.form.desc_en'), type: EType.editor, show: true },
       { keyName: 'arDescription', header:  this.languageService.translate('termsAndConditions.form.desc_ar'), type: EType.editor, show: true },
-      { keyName: '', header: 'Actions', type: EType.actions, actions: this.tableActions, show: true },
+    ];
+    
+    // Only show actions column for non-trader users
+    if (!this.isTrader) {
+      this.columns.push({ keyName: '', header: 'Actions', type: EType.actions, actions: this.tableActions, show: true });
+    }
 
-    ]
     this.columnsSmallTable = [
-      { keyName: 'termId', header:  this.languageService.translate('Id'), type: EType.id, show: false },
+      { keyName: 'id', header:  this.languageService.translate('Id'), type: EType.id, show: false },
       { keyName: 'enName', header:  this.languageService.translate('termsAndConditions.form.termsAndConditions.form.title_en'), type: EType.text, showAs: ETableShow.header },
       { keyName: 'arName', header:  this.languageService.translate('termsAndConditions.form.title_ar'), type: EType.text, showAs: ETableShow.header },
       { keyName: 'enDescription', header:  this.languageService.translate('termsAndConditions.form.desc_en'), type: EType.editor, showAs: ETableShow.content },

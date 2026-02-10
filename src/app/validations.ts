@@ -153,7 +153,7 @@ static editorArabicCharsValidator(errorMessage?: string): ValidatorFn {
           const phoneValue = control.value?.toString().trim();
           
           if (!phoneValue) {
-            return null; // Let required validator handle empty values
+            return null;
           }
 
           if (!country) {
@@ -162,7 +162,6 @@ static editorArabicCharsValidator(errorMessage?: string): ValidatorFn {
             };
           }
 
-          // Validate that the phone contains only numbers
           if (!onlyNumbersRegex.test(phoneValue)) {
             return { 
               phoneInvalid: errorMessage || 'Phone number must contain only digits' 
@@ -171,14 +170,12 @@ static editorArabicCharsValidator(errorMessage?: string): ValidatorFn {
 
           const expectedLength = parseInt(country.phoneLength);
 
-          // Check length
           if (phoneValue.length !== expectedLength) {
             return { 
               phoneInvalid: errorMessage || `Phone number must be ${expectedLength} digits` 
             };
           }
 
-          // Saudi Arabia (phoneCode: "966") - must start with 05
           if (country.phoneCode === '966') {
             if (!phoneValue.startsWith('05')) {
               return { 
@@ -187,7 +184,6 @@ static editorArabicCharsValidator(errorMessage?: string): ValidatorFn {
             }
           }
 
-          // Oman (phoneCode: "968") - must start with 09, 07, or 02
           if (country.phoneCode === '968') {
             const firstTwoDigits = phoneValue.substring(0, 2);
             const validPrefixes = ['09', '07', '02'];

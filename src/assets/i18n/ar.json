@@ -136,7 +136,11 @@
     "about": "معلومات عنا",
     "setting": "الإعدادات",
     "faqs": "الأسئلة الشائعة",
-    "target":"الهدف"
+    "target":"الهدف",
+    "notifications": "الإشعارات",
+    "termsAndConditions": "الشروط والأحكام",
+    "privacyPolicy": "سياسة الخصوصية",
+    "socialMedia": "وسائل التواصل الاجتماعي"
   },
   "users": {
     "pageName": "المستخدمون",
@@ -701,8 +705,44 @@
     "created": "تاريخ الإنشاء",
     "form": {
       "title": "العنوان",
+      "title_ar": "العنوان (عربي)",
+      "title_en": "العنوان (إنجليزي)",
       "userType": "نوع المستخدم",
-      "note": "ملاحظة"
+      "users": "المستخدمون",
+      "note": "ملاحظة",
+      "body_ar": "المحتوى (عربي)",
+      "body_en": "المحتوى (إنجليزي)"
+    }
+  },
+  "privacy": {
+    "pageName": "سياسة الخصوصية",
+    "list": "قائمة سياسة الخصوصية",
+    "pageName_filter": "تصفية سياسة الخصوصية",
+    "pageName_Add_crumb": "إضافة سياسة خصوصية",
+    "pageName_Edit_crumb": "تعديل سياسة الخصوصية",
+    "pageName_View_crumb": "عرض سياسة الخصوصية",
+    "form": {
+      "title_ar": "العنوان (عربي)",
+      "title_en": "العنوان (إنجليزي)",
+      "desc_en": "الوصف (إنجليزي)",
+      "desc_ar": "الوصف (عربي)",
+      "userType": "نوع المستخدم",
+      "termId": "الشروط والأحكام"
+    }
+  },
+  "termsAndConditions": {
+    "pageName": "الشروط والأحكام",
+    "list": "قائمة الشروط والأحكام",
+    "pageName_filter": "تصفية الشروط والأحكام",
+    "pageName_Add_crumb": "إضافة شرط وحكم",
+    "pageName_Edit_crumb": "تعديل الشرط والحكم",
+    "pageName_View_crumb": "عرض الشرط والحكم",
+    "form": {
+      "title_ar": "العنوان (عربي)",
+      "title_en": "العنوان (إنجليزي)",
+      "desc_en": "الوصف (إنجليزي)",
+      "desc_ar": "الوصف (عربي)",
+      "userType": "نوع المستخدم"
     }
   },
   "settings": {
@@ -716,6 +756,16 @@
     "district": "الحي",
     "admin": "المسؤول",
     "addNotification": "إضافة إشعار"
+  },
+  "social_media": {
+    "title": "قائمة وسائل التواصل الاجتماعي",
+    "facebook": "فيسبوك",
+    "instgram": "انستغرام",
+    "tikTok": "تيك توك",
+    "youTube": "يوتيوب",
+    "x": "إكس",
+    "snapChat": "سناب شات",
+    "whats": "رقم واتساب"
   },
   "CLIENT_ORDERS": "طلبات العملاء",
   "ORDER_ID": "رقم الطلب",

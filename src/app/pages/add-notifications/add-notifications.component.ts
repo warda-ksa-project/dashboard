@@ -3,10 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ButtonModule } from 'primeng/button';
 import { ApiService } from '../../services/api.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { NgIf } from '@angular/common';
 import { InputTextComponent } from '../../components/input-text/input-text.component';
-import { EditorComponent } from '../../components/editor/editor.component';
-import { BreadcrumpComponent } from "../../components/breadcrump/breadcrump.component";
 import { IBreadcrumb } from '../../components/breadcrump/cerqel-breadcrumb.interface';
 import { TranslatePipe } from '@ngx-translate/core';
 import { userType } from '../../conts';
@@ -17,11 +14,12 @@ import { LanguageService } from '../../services/language.service';
 
 const global_PageName = 'notifications.pageName';
 const global_API_create =  'Notification/send';
+const global_API_getUsersByUserTypeId = 'User/GetByUserType';
 
 @Component({
   selector: 'app-add-notifications',
   standalone: true,
- imports: [ReactiveFormsModule,TextareaModule ,TranslatePipe,SelectComponent, ButtonModule, NgIf, InputTextComponent, EditorComponent, RouterModule, BreadcrumpComponent],
+ imports: [ReactiveFormsModule, TextareaModule, TranslatePipe, SelectComponent, ButtonModule, InputTextComponent, RouterModule],
   templateUrl: './add-notifications.component.html',
   styleUrl: './add-notifications.component.scss'
 })
@@ -33,6 +31,7 @@ export class AddNotificationsComponent {
   private route = inject(ActivatedRoute)
   showConfirmMessage: boolean = false
   userTypeList = userType
+  usersList: Array<{ name: string; code: number }> = [];
   editImageProps: IEditImage = {
     props: {
       visible: true,
@@ -47,19 +46,33 @@ export class AddNotificationsComponent {
 
   minEndDate:Date =new Date()
   form = new FormGroup({
-    notificationId: new FormControl<any>(0),
-    userId: new FormControl<any>(0),
-    title: new FormControl('', {
+    id: new FormControl<number>(0),
+    titleAr: new FormControl('', {
       validators: [
         Validators.required
       ],
     }),
-    userType: new FormControl<any>('', {
+    titleEn: new FormControl('', {
+      validators: [
+        Validators.required
+      ],
+    }),
+    userType: new FormControl<number | null>(null, {
       validators: [
         Validators.required,
       ]
     }),
-    body: new FormControl<any>('', {
+    userId: new FormControl<number[]>([], {
+      validators: [
+        Validators.required,
+      ]
+    }),
+    bodyAr: new FormControl('', {
+      validators: [
+        Validators.required,
+      ]
+    }),
+    bodyEn: new FormControl('', {
       validators: [
         Validators.required,
       ]
@@ -84,6 +97,7 @@ export class AddNotificationsComponent {
   ngOnInit() {
     this.pageName.set(global_PageName)
     this.getBreadCrumb();
+    this.selectedLang = this.languageService.translationService.currentLang;
     this.languageService.translationService.onLangChange.subscribe(() => {
       this.selectedLang = this.languageService.translationService.currentLang;
       this.getBreadCrumb();
@@ -114,15 +128,61 @@ export class AddNotificationsComponent {
   }
 
   onSubmit() {
+    const raw = this.form.getRawValue();
     const payload = {
-      ...this.form.value
-    }
-      this.API_forAddItem(payload);
+      Id: Number(raw.id ?? 0),
+      TitleAr: String(raw.titleAr ?? ''),
+      TitleEn: String(raw.titleEn ?? ''),
+      BodyAr: String(raw.bodyAr ?? ''),
+      BodyEn: String(raw.bodyEn ?? ''),
+      UserId: Array.isArray(raw.userId) ? raw.userId.map(Number) : [],
+      UserType: raw.userType,
+    };
+
+    this.API_forAddItem(payload);
   }
 
   API_forAddItem(payload: any) {
     this.ApiService.post(global_API_create, payload).subscribe(res => {
     })
+  }
+
+  onUserTypeSelected(userTypeId: number) {
+    this.form.patchValue({ userType: userTypeId, userId: [] });
+    this.loadUsersByUserTypeId(userTypeId);
+  }
+
+  loadUsersByUserTypeId(userTypeId: number) {
+    if (!userTypeId) {
+      this.usersList = [];
+      return;
+    }
+
+    this.ApiService.get(global_API_getUsersByUserTypeId, { UserTypeId: userTypeId }).subscribe((res: any) => {
+      const raw = res?.data;
+      const data: any[] = Array.isArray(raw) ? raw : (raw ? [raw] : []);
+
+      this.usersList = data
+        .map((u: any) => ({
+          name: this.getUserDisplayName(u),
+          code: Number(u?.id ?? u?.userId ?? u?.code ?? 0),
+        }))
+        .filter((x: any) => x.code);
+    });
+  }
+
+  private getUserDisplayName(u: any): string {
+    const isAr = this.selectedLang === 'ar';
+    const name =
+      (isAr ? (u?.arName ?? u?.nameAr ?? u?.fullNameAr ?? u?.fullName) : (u?.enName ?? u?.nameEn ?? u?.fullNameEn ?? u?.fullName)) ??
+      u?.name ??
+      u?.userName ??
+      u?.mobileNumber ??
+      u?.phoneNumber ??
+      u?.email ??
+      u?.id;
+
+    return String(name ?? '');
   }
 
 }

@@ -60,6 +60,44 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/profile/edit-profile/edit-profile.component').then(m => m.EditProfileComponent)
       },
 
+      // ==================== Social Media (Admin & Trader) ====================
+      {
+        path: 'social_media',
+        loadComponent: () => import('./pages/social-media/social-media-update/social-media-update.component').then(m => m.SocialMediaUpdateComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin, Roles.trader] }
+      },
+
+      // ==================== Trader-Specific Settings Routes ====================
+      // Privacy Policy for Trader
+      { 
+        path: 'privacy_policy', 
+        loadComponent: () => import('./pages/privacy-policy/privacy-policy-table/privacy-policy-table.component').then(m => m.PrivacyPolicyTableComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.trader] }
+      },
+    
+      { 
+        path: 'privacy_policy/view/:id', 
+        loadComponent: () => import('./pages/privacy-policy/privacy-policy-details/privacy-policy-details.component').then(m => m.PrivacyPolicyDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.trader] }
+      },
+
+      // Terms & Conditions for Trader
+      { 
+        path: 'terms_conditions', 
+        loadComponent: () => import('./pages/terms-conditions/terms-conditions-table/terms-conditions-table.component').then(m => m.TermsConditionsTableComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.trader] }
+      },
+      { 
+        path: 'terms_conditions/view/:id', 
+        loadComponent: () => import('./pages/terms-conditions/terms-conditions-details/terms-conditions-details.component').then(m => m.TermsConditionsDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.trader] }
+      },
+
       // ==================== Settings (Admin Only) ====================
       { 
         path: 'settings', 
@@ -417,12 +455,12 @@ export const routes: Routes = [
         data: { roles: [Roles.admin] }
       },
 
-      // FAQs (Outside Settings)
+      // FAQs (Shared: Admin & Trader)
       { 
         path: 'faqs', 
         loadComponent: () => import('./pages/fAQs/faqs-table/faqs-table.component').then(m => m.FaqsTableComponent),
         canActivate: [roleGuard],
-        data: { roles: [Roles.admin] }
+        data: { roles: [Roles.admin, Roles.trader] }
       },
       { 
         path: 'faqs/add', 
@@ -440,7 +478,7 @@ export const routes: Routes = [
         path: 'faqs/view/:id', 
         loadComponent: () => import('./pages/fAQs/fags-details/fags-details.component').then(m => m.FagsDetailsComponent),
         canActivate: [roleGuard],
-        data: { roles: [Roles.admin] }
+        data: { roles: [Roles.admin, Roles.trader] }
       },
 
       // Payment Ways
@@ -819,22 +857,30 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/technical-specialist/technical-specialist-details/technical-specialist-details.component').then(m => m.TechnicalSpecialistDetailsComponent) 
       },
 
-      // About Us
+      // About Us (Shared: Admin & Trader - Trader view only)
       { 
         path: 'about-us', 
-        loadComponent: () => import('./pages/about-us/about-us-table/about-us-table.component').then(m => m.AboutUsTableComponent) 
+        loadComponent: () => import('./pages/about-us/about-us-table/about-us-table.component').then(m => m.AboutUsTableComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin, Roles.trader] }
       },
       { 
         path: 'about-us/add', 
-        loadComponent: () => import('./pages/about-us/about-us-details/about-us-details.component').then(m => m.AboutUsDetailsComponent) 
+        loadComponent: () => import('./pages/about-us/about-us-details/about-us-details.component').then(m => m.AboutUsDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
       },
       { 
         path: 'about-us/view/:id', 
-        loadComponent: () => import('./pages/about-us/about-us-details/about-us-details.component').then(m => m.AboutUsDetailsComponent) 
+        loadComponent: () => import('./pages/about-us/about-us-details/about-us-details.component').then(m => m.AboutUsDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin, Roles.trader] }
       },
       { 
         path: 'about-us/edit/:id', 
-        loadComponent: () => import('./pages/about-us/about-us-details/about-us-details.component').then(m => m.AboutUsDetailsComponent) 
+        loadComponent: () => import('./pages/about-us/about-us-details/about-us-details.component').then(m => m.AboutUsDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
       },
 
       // Special Orders

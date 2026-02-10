@@ -10,21 +10,22 @@ import { LanguageService } from '../../../services/language.service';
 import { ETableShow, IcolHeaderSmallTable, TableSmallScreenComponent } from '../../../components/table-small-screen/table-small-screen.component';
 import { DrawerComponent } from '../../../components/drawer/drawer.component';
 import { PaginationComponent } from '../../../components/pagination/pagination.component';
-import { TitleCasePipe } from '@angular/common';
+import { TitleCasePipe, CommonModule } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
+import { Roles } from '../../../conts';
 
 const global_pageName='privacy.pageName';
 const global_router_add_url_in_Table ='/settings/privacy_policy/add';
 const global_router_view_url ='/settings/privacy_policy/view';
 const global_router_edit_url ='/settings/privacy_policy/edit';
-const global_API_getAll ="PrivacyPolicy"+'/GetAllWitPagination';
-const global_API_delete="PrivacyPolicy"+'/Delete?requestId';
+const global_API_getAll ="PrivacyPolicy"+'/GetAllWithPagination';
+const global_API_delete="PrivacyPolicy"+'/Delete?Id';
 
 
 @Component({
   selector: 'app-privacy-policy-table',
   standalone: true,
-  imports: [TableComponent,TitleCasePipe, PaginationComponent, FormsModule, TranslatePipe, BreadcrumpComponent, RouterModule, InputTextModule, TableSmallScreenComponent],
+  imports: [TableComponent,TitleCasePipe, PaginationComponent, FormsModule, TranslatePipe, BreadcrumpComponent, RouterModule, InputTextModule, TableSmallScreenComponent, CommonModule],
   templateUrl: './privacy-policy-table.component.html',
   styleUrl: './privacy-policy-table.component.scss'
 })
@@ -32,25 +33,11 @@ export class PrivacyPolicyTableComponent {
 
   global_router_add_url_in_Table = global_router_add_url_in_Table;
   pageName =signal<string>(global_pageName);
+  userRole: string = '';
+  isTrader: boolean = false;
 
   showFilter: boolean = false
-  tableActions: ITableAction[] = [
-    {
-      name: EAction.delete,
-      apiName_or_route: global_API_delete,
-      autoCall: true
-    },
-    {
-      name: EAction.view,
-      apiName_or_route:  global_router_view_url,
-      autoCall: true
-    },
-    {
-      name: EAction.edit,
-      apiName_or_route: global_router_edit_url,
-      autoCall: true
-    }
-  ]
+  tableActions: ITableAction[] = []
   private ApiService = inject(ApiService)
 
 
@@ -82,6 +69,40 @@ export class PrivacyPolicyTableComponent {
   languageService = inject(LanguageService);
 
   ngOnInit() {
+    this.userRole = localStorage.getItem('role') || '';
+    this.isTrader = this.userRole === Roles.trader;
+    
+    // Set table actions based on user role
+    if (this.isTrader) {
+      // Trader: view only
+      this.tableActions = [
+        {
+          name: EAction.view,
+          apiName_or_route: '/privacy_policy/view',
+          autoCall: true
+        }
+      ];
+    } else {
+      // Admin: full access
+      this.tableActions = [
+        {
+          name: EAction.delete,
+          apiName_or_route: global_API_delete,
+          autoCall: true
+        },
+        {
+          name: EAction.view,
+          apiName_or_route: global_router_view_url,
+          autoCall: true
+        },
+        {
+          name: EAction.edit,
+          apiName_or_route: global_router_edit_url,
+          autoCall: true
+        }
+      ];
+    }
+    
     this.pageName.set(global_pageName)
     this.API_getAll();
     this.getBreadCrumb();
@@ -97,16 +118,20 @@ export class PrivacyPolicyTableComponent {
 
   displayTableCols(currentLang: string) {
     this.columns = [
-      { keyName: 'policyId', header: this.languageService.translate('Id'), type: EType.id, show: true },
+      { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: true },
       { keyName: 'enTitle', header: this.languageService.translate('privacy.form.title_en'), type: EType.text, show: true },
       { keyName: 'arTitle', header: this.languageService.translate('privacy.form.title_ar'), type: EType.text, show: true },
       { keyName: 'enDescription', header: this.languageService.translate('privacy.form.desc_en'), type: EType.editor, show: true },
       { keyName: 'arDescription', header: this.languageService.translate('privacy.form.desc_ar'), type: EType.editor, show: true },
-      { keyName: '', header: 'Actions', type: EType.actions, actions: this.tableActions, show: true },
+    ];
+    
+    // Only show actions column for non-trader users
+    if (!this.isTrader) {
+      this.columns.push({ keyName: '', header: 'Actions', type: EType.actions, actions: this.tableActions, show: true });
+    }
 
-    ]
     this.columnsSmallTable = [
-      { keyName: 'policyId', header: this.languageService.translate('Id'), type: EType.id, show: false },
+      { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: false },
       { keyName: 'enTitle', header: this.languageService.translate('privacy.form.title_en'), type: EType.text, showAs: ETableShow.header },
       { keyName: 'arTitle', header: this.languageService.translate('privacy.form.title_ar'), type: EType.text, showAs: ETableShow.header },
       { keyName: 'enDescription', header: this.languageService.translate('privacy.form.desc_en'), type: EType.editor, showAs: ETableShow.content },

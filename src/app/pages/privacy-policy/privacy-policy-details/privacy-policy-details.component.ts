@@ -14,6 +14,8 @@ import { DialogComponent } from '../../../components/dialog/dialog.component';
 import { UploadFileComponent } from "../../../components/upload-file/upload-file.component";
 import { LanguageService } from '../../../services/language.service';
 import { TranslatePipe } from '@ngx-translate/core';
+import { userType } from '../../../conts';
+import { SelectComponent } from '../../../components/select/select.component';
 
 const global_PageName='privacy.pageName';
 const global_API_deialis='PrivacyPolicy'+'/GetById';
@@ -24,7 +26,7 @@ const global_routeUrl ='/settings/privacy_policy'
 @Component({
   selector: 'app-privacy-policy-details',
   standalone: true,
-  imports: [ReactiveFormsModule,TitleCasePipe,TranslatePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, EditorComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
+  imports: [ReactiveFormsModule,TitleCasePipe,TranslatePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, EditorComponent, RouterModule, BreadcrumpComponent, UploadFileComponent, SelectComponent],
   templateUrl: './privacy-policy-details.component.html',
   styleUrl: './privacy-policy-details.component.scss'
 })
@@ -36,6 +38,9 @@ export class PrivacyPolicyDetailsComponent {
   private route = inject(ActivatedRoute)
   showConfirmMessage: boolean = false
   private confirm = inject(ConfirmMsgService)
+  userTypeList = userType
+  selectedLang: any;
+  languageService = inject(LanguageService);
   form = new FormGroup({
     enTitle: new FormControl('', {
       validators: [
@@ -61,8 +66,12 @@ export class PrivacyPolicyDetailsComponent {
         // Validations.arabicCharsValidator()
       ]
     }),
-    termId:new FormControl(this.getID|0,Validators.required),
-    userType: new FormControl(1),
+    Id: new FormControl(this.getID|0, {
+      validators: [Validators.required]
+    }),
+    userType: new FormControl('', {
+      validators: [Validators.required]
+    }),
   })
 
   bredCrumb: IBreadcrumb = {
@@ -72,15 +81,16 @@ export class PrivacyPolicyDetailsComponent {
   get getID() {
     return this.route.snapshot.params['id']
   }
-  selectedLang: any;
-    languageService = inject(LanguageService);
 
   ngOnInit() {
     this.pageName.set(global_PageName)
     this.getBreadCrumb();
+    this.selectedLang = this.languageService.translationService.currentLang;
+    this.updateUserTypeList();
     this.languageService.translationService.onLangChange.subscribe(() => {
       this.selectedLang = this.languageService.translationService.currentLang;
       this.getBreadCrumb();
+      this.updateUserTypeList();
     });
     if (this.tyepMode() !== 'Add')
       this.API_getItemDetails()
@@ -109,7 +119,7 @@ export class PrivacyPolicyDetailsComponent {
   }
 
   API_getItemDetails() {
-    this.ApiService.get(`${global_API_deialis}/${this.getID}`).subscribe((res: any) => {
+    this.ApiService.get(`${global_API_deialis}?Id=${this.getID}`).subscribe((res: any) => {
       if (res)
         this.form.patchValue(res.data)
     })
@@ -156,6 +166,13 @@ export class PrivacyPolicyDetailsComponent {
       if (res)
         this.navigateToPageTable()
     })
+  }
+
+  updateUserTypeList() {
+    this.userTypeList = userType.map(item => ({
+      ...item,
+      name: this.selectedLang === 'ar' ? item.nameAr : item.name
+    }));
   }
 
 

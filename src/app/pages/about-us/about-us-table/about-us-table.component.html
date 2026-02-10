@@ -9,7 +9,7 @@
         </div> -->
       </div>
       <div class="details-container">
-        <div class="action-filter">
+        <div class="action-filter" *ngIf="!isTrader">
             <a [routerLink]="global_router_add_url_in_Table"> + {{'shared.add_new'|translate}}</a>
           <span class="pi pi-filter pointer" (click)="openFilter()"> </span>
         </div>

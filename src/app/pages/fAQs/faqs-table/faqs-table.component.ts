@@ -11,38 +11,25 @@ import { ETableShow, IcolHeaderSmallTable, TableSmallScreenComponent } from '../
 import { DrawerComponent } from '../../../components/drawer/drawer.component';
 import { PaginationComponent } from '../../../components/pagination/pagination.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { TitleCasePipe } from '@angular/common';
+import { TitleCasePipe, CommonModule } from '@angular/common';
+import { Roles } from '../../../conts';
 
 const global_pageName = 'faqs.pageName';
 
 @Component({
   selector: 'app-faqs',
   standalone: true,
-  imports: [TableComponent, TranslatePipe, TitleCasePipe, PaginationComponent, FormsModule, DrawerComponent, BreadcrumpComponent, RouterModule, InputTextModule, TableSmallScreenComponent],
+  imports: [TableComponent, TranslatePipe, TitleCasePipe, PaginationComponent, FormsModule, DrawerComponent, BreadcrumpComponent, RouterModule, InputTextModule, TableSmallScreenComponent, CommonModule],
   templateUrl: './faqs-table.component.html',
   styleUrl: './faqs-table.component.scss'
 })
 export class FaqsTableComponent {
   pageName = signal<string>(global_pageName);
+  userRole: string = '';
+  isTrader: boolean = false;
 
   showFilter: boolean = false
-  tableActions: ITableAction[] = [
-    {
-      name: EAction.delete,
-      apiName_or_route: 'FAQ/Delete?id',
-      autoCall: true
-    },
-    {
-      name: EAction.view,
-      apiName_or_route: '/settings/faqs/view',
-      autoCall: true
-    },
-    {
-      name: EAction.edit,
-      apiName_or_route: '/settings/faqs/edit',
-      autoCall: true
-    }
-  ]
+  tableActions: ITableAction[] = []
   private ApiService = inject(ApiService)
   private router = inject(Router)
 
@@ -73,6 +60,40 @@ export class FaqsTableComponent {
   languageService = inject(LanguageService);
 
   ngOnInit() {
+    this.userRole = localStorage.getItem('role') || '';
+    this.isTrader = this.userRole === Roles.trader;
+    
+    // Set table actions based on user role
+    if (this.isTrader) {
+      // Trader: view only
+      this.tableActions = [
+        {
+          name: EAction.view,
+          apiName_or_route: '/faqs/view',
+          autoCall: true
+        }
+      ];
+    } else {
+      // Admin: full access
+      this.tableActions = [
+        {
+          name: EAction.delete,
+          apiName_or_route: 'FAQ/Delete?id',
+          autoCall: true
+        },
+        {
+          name: EAction.view,
+          apiName_or_route: '/faqs/view',
+          autoCall: true
+        },
+        {
+          name: EAction.edit,
+          apiName_or_route: '/faqs/edit',
+          autoCall: true
+        }
+      ];
+    }
+    
     this.getAllFAQS();
     this.selectedLang = this.languageService.translationService.currentLang;
     this.displayTableCols(this.selectedLang)
@@ -92,9 +113,13 @@ export class FaqsTableComponent {
       { keyName: 'arTitle', header: this.languageService.translate('faqs.form.question_ar'), type: EType.text, show: true },
       { keyName: 'enDescription', header: this.languageService.translate('faqs.form.desc_en'), type: EType.editor, show: true },
       { keyName: 'arDescription', header: this.languageService.translate('faqs.form.desc_ar'), type: EType.editor, show: true },
-      { keyName: '', header: this.languageService.translate('Actions'), type: EType.actions, actions: this.tableActions, show: true },
+    ];
+    
+    // Only show actions column for non-trader users
+    if (!this.isTrader) {
+      this.columns.push({ keyName: '', header: this.languageService.translate('Actions'), type: EType.actions, actions: this.tableActions, show: true });
+    }
 
-    ]
     this.columnsSmallTable = [
       { keyName: 'enTitle', header: this.languageService.translate('faqs.form.question_en'), type: EType.text, showAs: ETableShow.header },
       { keyName: 'id', header: 'Id', type: EType.id, show: false },

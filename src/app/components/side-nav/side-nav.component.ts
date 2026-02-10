@@ -84,7 +84,7 @@ export class SideNavComponent {
   languageService = inject(LanguageService);
    apiService=inject(ApiService)
   routingList = menuItems
-  role:any=''
+  role:any
   @Input()activeRoute=''
 
   ngOnInit(): void {

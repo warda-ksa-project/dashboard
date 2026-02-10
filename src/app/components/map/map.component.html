@@ -1,1 +1,7 @@
-<div id="map" style="height: 400px; width: 100%;"></div>
+<div class="map-wrapper">
+  <div [id]="mapId" class="map-container"></div>
+  <button *ngIf="!readonly" type="button" class="my-location-btn" (click)="goToMyLocation()" [disabled]="locating">
+    <i class="pi" [ngClass]="locating ? 'pi-spin pi-spinner' : 'pi-map-marker'"></i>
+    <span>{{ locating ? 'جاري التحديد...' : 'موقعي الحالي' }}</span>
+  </button>
+</div>

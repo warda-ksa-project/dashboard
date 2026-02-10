@@ -28,7 +28,7 @@ export class CancelReasonTableComponent {
   tableActions: ITableAction[] = [
     {
       name: EAction.delete,
-      apiName_or_route: 'Cancelreason/DeleteCancelReason?id',
+      apiName_or_route: 'Canclereason/Delete?id',
       autoCall: true
     },
     {
@@ -93,7 +93,7 @@ export class CancelReasonTableComponent {
 
   displayTableCols(currentLang: string) {
     this.columns = [
-      { keyName: 'reasonId', header: this.languageService.translate('Id'), type: EType.id, show: true },
+      { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: true },
       { keyName: 'enName', header: this.languageService.translate('cancel_reason.form.reason_en'), type: EType.text, show: true },
       { keyName: 'arName', header: this.languageService.translate('cancel_reason.form.reason_ar'), type: EType.text, show: true },
       { keyName: '', header: this.languageService.translate('Action'), type: EType.actions, actions: this.tableActions, show: true }
@@ -101,7 +101,7 @@ export class CancelReasonTableComponent {
 
     this.columnsSmallTable = [
       { keyName: currentLang === 'ar' ? 'arName' : 'enName', header: this.languageService.translate('cancel_reason.form.reason_ar'), type: EType.text, showAs: ETableShow.header },
-      { keyName: 'reasonId', header: this.languageService.translate('Id'), type: EType.id, show: false },
+      { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: false },
       { keyName: currentLang === 'ar' ? 'arDescription' : 'enDescription', header: this.languageService.translate('cancel_reason.form.desc_ar'), type: EType.editor, showAs: ETableShow.content ,show: false }
     ];
   }
@@ -131,7 +131,7 @@ export class CancelReasonTableComponent {
   }
 
   getAllCancelReason() {
-    this.ApiService.post('CancelReason/GetAllCancelReason', this.objectSearch).subscribe((res: any) => {
+    this.ApiService.post('CancleReason/GetAllWithPagination', this.objectSearch).subscribe((res: any) => {
       if (res) {
         this.dataList = res.data.dataList;
         this.totalCount = res.data.totalCount;

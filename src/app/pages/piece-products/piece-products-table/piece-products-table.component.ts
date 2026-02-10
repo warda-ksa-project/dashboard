@@ -140,6 +140,18 @@ export class PieceProductsTableComponent {
         show: true,
       },
       {
+        keyName: 'traderName',
+        header: this.languageService.translate('trader.form.traderName'),
+        type: EType.text,
+        show: true,
+      },
+      {
+        keyName: 'storeName',
+        header: this.languageService.translate('trader.form.storeName'),
+        type: EType.text,
+        show: true,
+      },
+      {
         keyName: '',
         header: this.languageService.translate('Action'),
         type: EType.actions,

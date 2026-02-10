@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { ApiService } from '../../../services/api.service';
@@ -39,9 +39,8 @@ export class TraderDetailsComponent  {
   pageName = signal<string>(global_PageName);
   private ApiService = inject(ApiService)
   private router = inject(Router)
-  lat:any=0
-  lng:any=0
-  showMap=false
+  lat: number = 24.7136
+  lng: number = 46.6753
   private route = inject(ActivatedRoute)
   showConfirmMessage: boolean = false
   private confirm = inject(ConfirmMsgService)
@@ -359,10 +358,12 @@ export class TraderDetailsComponent  {
     return result
   }
 
-  onChangeLocation(event:any){
+  onChangeLocation(event: { lat: number; lng: number }) {
+    this.lat = event.lat;
+    this.lng = event.lng;
     this.form.patchValue({
-      latitude:String(event.lat),
-      logitude:String(event.lng)
+      latitude: String(event.lat),
+      logitude: String(event.lng)
     })
   }
 
@@ -410,9 +411,8 @@ export class TraderDetailsComponent  {
           logitude:String(res.data.addresses[0].logitude),
           
         })
-        this.lat=String(res.data.addresses[0].latitude);
-        this.lng=String(res.data.addresses[0].logitude);
-        this.showMap=true
+        this.lat = Number(res.data.addresses[0].latitude) || 24.7136;
+        this.lng = Number(res.data.addresses[0].logitude) || 46.6753;
         this.editTraderImageProps.props.imgSrc = res.data.image;
         this.editImageIBanProps.props.imgSrc = res.data.iban;
         this.editImageCRProps.props.imgSrc = res.data.cr;
@@ -572,18 +572,18 @@ export class TraderDetailsComponent  {
   navigateToPageTable() {
     this.router.navigateByUrl(global_routeUrl)
   }
-  onValueStepperChange(value:any){
+  onValueStepperChange(value: any) {
     this.gotTo(value)
-
-  }
-  gotTo(pageNumber:number){
-    if(pageNumber==3)
-  {
-    this.lat=this.form.value.addresses[0].latitude??0
-    this.lng=this.form.value.addresses[0].logitude??0
-    
   }
 
+  gotTo(pageNumber: number) {
+    if (pageNumber == 3) {
+      const addresses = this.form.value.addresses;
+      if (addresses && addresses[0]) {
+        this.lat = Number(addresses[0].latitude) || this.lat;
+        this.lng = Number(addresses[0].logitude) || this.lng;
+      }
+    }
   }
   isAddressVaild() {
     const isAddressValid = this.adress.every((obj: any) =>

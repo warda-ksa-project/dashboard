@@ -10,8 +10,9 @@ import { LanguageService } from '../../../services/language.service';
 import { ETableShow, IcolHeaderSmallTable, TableSmallScreenComponent } from '../../../components/table-small-screen/table-small-screen.component';
 import { DrawerComponent } from '../../../components/drawer/drawer.component';
 import { PaginationComponent } from '../../../components/pagination/pagination.component';
-import { TitleCasePipe } from '@angular/common';
+import { TitleCasePipe, CommonModule } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
+import { Roles } from '../../../conts';
 
 const global_pageName='about_us.pageName'
 const global_router_add_url_in_Table ='/about-us/add'
@@ -23,7 +24,7 @@ const global_API_delete='aboutUS/Delete?id'
 @Component({
   selector: 'app-about-us-table',
   standalone: true,
-  imports: [TableComponent, PaginationComponent,TitleCasePipe,TranslatePipe, FormsModule, DrawerComponent, BreadcrumpComponent, RouterModule, InputTextModule, TableSmallScreenComponent],
+  imports: [TableComponent, PaginationComponent,TitleCasePipe,TranslatePipe, FormsModule, DrawerComponent, BreadcrumpComponent, RouterModule, InputTextModule, TableSmallScreenComponent, CommonModule],
   templateUrl: './about-us-table.component.html',
   styleUrl: './about-us-table.component.scss'
 })
@@ -31,25 +32,11 @@ export class AboutUsTableComponent {
 
   global_router_add_url_in_Table =global_router_add_url_in_Table
   pageName =signal<string>(global_pageName);
+  userRole: string = '';
+  isTrader: boolean = false;
 
   showFilter: boolean = false
-  tableActions: ITableAction[] = [
-    {
-      name: EAction.delete,
-      apiName_or_route: global_API_delete,
-      autoCall: true
-    },
-    {
-      name: EAction.view,
-      apiName_or_route:  global_router_view_url,
-      autoCall: true
-    },
-    {
-      name: EAction.edit,
-      apiName_or_route: global_router_edit_url,
-      autoCall: true
-    }
-  ]
+  tableActions: ITableAction[] = []
   private ApiService = inject(ApiService)
 
 
@@ -79,6 +66,40 @@ export class AboutUsTableComponent {
   languageService = inject(LanguageService);
 
   ngOnInit() {
+    this.userRole = localStorage.getItem('role') || '';
+    this.isTrader = this.userRole === Roles.trader;
+    
+    // Set table actions based on user role
+    if (this.isTrader) {
+      // Trader: view only
+      this.tableActions = [
+        {
+          name: EAction.view,
+          apiName_or_route: global_router_view_url,
+          autoCall: true
+        }
+      ];
+    } else {
+      // Admin: full access
+      this.tableActions = [
+        {
+          name: EAction.delete,
+          apiName_or_route: global_API_delete,
+          autoCall: true
+        },
+        {
+          name: EAction.view,
+          apiName_or_route: global_router_view_url,
+          autoCall: true
+        },
+        {
+          name: EAction.edit,
+          apiName_or_route: global_router_edit_url,
+          autoCall: true
+        }
+      ];
+    }
+    
     this.pageName.set(global_pageName)
     this.API_getAll();
     this.selectedLang = this.languageService.translationService.currentLang;
@@ -93,15 +114,19 @@ export class AboutUsTableComponent {
 
   displayTableCols(currentLang: string) {
     this.columns = [
-      { keyName: 'aboutUsId', header: this.languageService.translate('Id'), type: EType.id, show: true },
+      { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: true },
       { keyName: 'image', header: this.languageService.translate('about_us.form.image'), type: EType.image, show: false },
       { keyName: 'enName', header: this.languageService.translate('about_us.form.name_en'), type: EType.text, show: true },
       { keyName: 'arName', header: this.languageService.translate('about_us.form.name_ar'), type: EType.text, show: true },
-      { keyName: '', header: this.languageService.translate('Actions'), type: EType.actions, actions: this.tableActions, show: true },
     ];
+    
+    // Only show actions column for all users (but actions differ based on role)
+    if (!this.isTrader) {
+      this.columns.push({ keyName: '', header: this.languageService.translate('Actions'), type: EType.actions, actions: this.tableActions, show: true });
+    }
 
     this.columnsSmallTable = [
-      { keyName: 'aboutUsId', header: this.languageService.translate('Id'), type: EType.id, show: false },
+      { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: false },
       { keyName: 'image', header: this.languageService.translate('about_us.form.image'), type: EType.image, show: false, showAs: ETableShow.header },
       { keyName: 'enName', header: this.languageService.translate('about_us.form.name_en'), type: EType.text, showAs: ETableShow.content },
       { keyName: 'arName', header: this.languageService.translate('about_us.form.name_ar'), type: EType.text, showAs: ETableShow.content },

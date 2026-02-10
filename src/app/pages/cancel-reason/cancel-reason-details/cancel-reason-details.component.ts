@@ -115,7 +115,7 @@ export class CancelReasonDetailsComponent {
     }
   }
   getCancelReasonsDetails() {
-    this.ApiService.get(`CancelReason/GetCancelReason/${this.getID}`).subscribe((res: any) => {
+    this.ApiService.get(`CancelReason/GetById/${this.getID}`).subscribe((res: any) => {
       if (res)
         this.form.patchValue(res.data)
     })
@@ -151,14 +151,14 @@ export class CancelReasonDetailsComponent {
   }
 
   addCancelReason(payload: any) {
-    this.ApiService.post('CancelReason/CreateCancelReason', payload).subscribe(res => {
+    this.ApiService.post('CancleReason/Create', payload).subscribe(res => {
       if (res)
         this.navigateToPageTable()
     })
   }
 
   editCancelReason(payload: any) {
-    this.ApiService.put('CancelReason/UpdateCancelReason', payload).subscribe(res => {
+    this.ApiService.put('CancleReason/Update', payload).subscribe(res => {
       if (res)
         this.navigateToPageTable()
     })

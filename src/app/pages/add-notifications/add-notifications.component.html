@@ -15,22 +15,41 @@
               <div class="row">
                   <div class="col-lg-6 col-md-6 col-sm-12 mt-3">
                       <app-input-text
-                          [label]="'notifications.form.title'" [control]="form.get('title')"></app-input-text>
+                          [label]="'notifications.form.title_ar'" [control]="form.get('titleAr')"></app-input-text>
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-sm-12 mt-3">
+                      <app-input-text
+                          [label]="'notifications.form.title_en'" [control]="form.get('titleEn')"></app-input-text>
                   </div>
                   <div class="col-lg-6 col-md-6 col-sm-12 mt-3">
                       <app-select [placeholder]="form.get('userType')?.value" class="w-100" [list]="userTypeList"
                       [readOnly]="tyepMode() == 'View'"
                       [disabled]="tyepMode() == 'View'"
+                      (onSelectedValue)="onUserTypeSelected($event)"
                       [label]="'notifications.form.userType'" [control]="form.get('userType')">
+                      </app-select>
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-sm-12 mt-3">
+                      <app-select [placeholder]="'select'" class="w-100" [list]="usersList"
+                      [readOnly]="tyepMode() == 'View'"
+                      [disabled]="tyepMode() == 'View' || !form.get('userType')?.value"
+                      [label]="'notifications.form.users'" [control]="form.get('userId')" type="multi">
                       </app-select>
                   </div>
 
                       <div class=" mt-2 col-lg-12 col-md-12 col-sm-12 mt-3">
                         <div class="title-section mb-2">
-                          <p>{{'notifications.form.note'|translate}}</p>
+                          <p>{{'notifications.form.body_ar'|translate}}</p>
                         </div>
                           <textarea pTextarea id="over_label" rows="6" style="resize: none" class="h-full w-full"
-                          formControlName='body' [style]="{ width: '100%' }"></textarea>
+                          formControlName='bodyAr' [style]="{ width: '100%' }"></textarea>
+                        </div>
+                        <div class=" mt-2 col-lg-12 col-md-12 col-sm-12 mt-3">
+                          <div class="title-section mb-2">
+                            <p>{{'notifications.form.body_en'|translate}}</p>
+                          </div>
+                            <textarea pTextarea id="over_label_en" rows="6" style="resize: none" class="h-full w-full"
+                            formControlName='bodyEn' [style]="{ width: '100%' }"></textarea>
                         </div>
                   <div class="actions mt-5 text-center">
                       <button type="submit" class="submit-btn" [disabled]="!form.valid">

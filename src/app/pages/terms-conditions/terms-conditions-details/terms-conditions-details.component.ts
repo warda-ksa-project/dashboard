@@ -14,17 +14,19 @@ import { DialogComponent } from '../../../components/dialog/dialog.component';
 import { UploadFileComponent } from "../../../components/upload-file/upload-file.component";
 import { TranslatePipe } from '@ngx-translate/core';
 import { LanguageService } from '../../../services/language.service';
+import { userType } from '../../../conts';
+import { SelectComponent } from '../../../components/select/select.component';
 
 const global_PageName='termsAndConditions.pageName';
-const global_API_deialis='TermsAndConditions'+'/GetTermsAndConditions';
-const global_API_create='TermsAndConditions'+'/CreateTermsAndConditions';
-const global_API_update='TermsAndConditions'+'/UpdateTermsAndConditions';
+const global_API_deialis='TermAndCondition'+'/GetById';
+const global_API_create='TermAndCondition'+'/Create';
+const global_API_update='TermAndCondition'+'/Update';
 const global_routeUrl ='/settings/terms_conditions'
 
 @Component({
   selector: 'app-terms-conditions-details',
   standalone: true,
-  imports: [ReactiveFormsModule,TranslatePipe,TitleCasePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, EditorComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
+  imports: [ReactiveFormsModule,TranslatePipe,TitleCasePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, EditorComponent, RouterModule, BreadcrumpComponent, UploadFileComponent, SelectComponent],
   templateUrl: './terms-conditions-details.component.html',
   styleUrl: './terms-conditions-details.component.scss'
 })
@@ -36,6 +38,9 @@ export class TermsConditionsDetailsComponent {
   private route = inject(ActivatedRoute)
   showConfirmMessage: boolean = false
   private confirm = inject(ConfirmMsgService)
+  userTypeList = userType
+  selectedLang: any;
+  languageService = inject(LanguageService);
   form = new FormGroup({
     enName: new FormControl('', {
       validators: [
@@ -61,8 +66,10 @@ export class TermsConditionsDetailsComponent {
         // Validations.arabicCharsValidator()
       ]
     }),
-    termId:new FormControl(this.getID|0,Validators.required),
-    userType: new FormControl(1),
+    id: new FormControl(this.getID|0, Validators.required),
+    userType: new FormControl('', {
+      validators: [Validators.required]
+    }),
   })
 
   bredCrumb: IBreadcrumb = {
@@ -73,15 +80,15 @@ export class TermsConditionsDetailsComponent {
     return this.route.snapshot.params['id']
   }
 
-    selectedLang: any;
-      languageService = inject(LanguageService);
-  
   ngOnInit() {
     this.pageName.set(global_PageName)
     this.getBreadCrumb();
+    this.selectedLang = this.languageService.translationService.currentLang;
+    this.updateUserTypeList();
     this.languageService.translationService.onLangChange.subscribe(() => {
       this.selectedLang = this.languageService.translationService.currentLang;
       this.getBreadCrumb();
+      this.updateUserTypeList();
     });
     if (this.tyepMode() !== 'Add')
       this.API_getItemDetails()
@@ -109,7 +116,7 @@ export class TermsConditionsDetailsComponent {
     }
   }
   API_getItemDetails() {
-    this.ApiService.get(`${global_API_deialis}/${this.getID}`).subscribe((res: any) => {
+    this.ApiService.get(`${global_API_deialis}?Id=${this.getID}`).subscribe((res: any) => {
       if (res)
         this.form.patchValue(res.data)
     })
@@ -156,6 +163,13 @@ export class TermsConditionsDetailsComponent {
       if (res)
         this.navigateToPageTable()
     })
+  }
+
+  updateUserTypeList() {
+    this.userTypeList = userType.map(item => ({
+      ...item,
+      name: this.selectedLang === 'ar' ? item.nameAr : item.name
+    }));
   }
 
 

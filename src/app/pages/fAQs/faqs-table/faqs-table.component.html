@@ -7,8 +7,8 @@
          </div>
         <h2>{{ "faqs.list" | translate | titlecase }}</h2>
       </div>
-      <div class="action-filter">
-        <a routerLink="/settings/faqs/add">
+      <div class="action-filter" *ngIf="!isTrader">
+        <a routerLink="/faqs/add">
           + {{ "shared.add_new" | translate }}</a
         >
         <span class="pi pi-filter pointer" (click)="openFilter()"> </span>

@@ -137,7 +137,11 @@
     "about": "ABOUT US",
     "setting": "Settings",
     "faqs": "FAQs",
-    "target":"Target"
+    "target":"Target",
+    "notifications": "Notifications",
+    "termsAndConditions": "Terms & Conditions",
+    "privacyPolicy": "Privacy Policy",
+    "socialMedia": "Social Media"
   },
   "users":{
     "pageName": "Users",
@@ -776,8 +780,13 @@
     "created": "Created",
     "form": {
       "title": "title",
+      "title_ar": "Title (ar)",
+      "title_en": "Title (en)",
       "userType": "User Type",
-      "note": "Note"
+      "users": "Users",
+      "note": "Note",
+      "body_ar": "Body (ar)",
+      "body_en": "Body (en)"
     }
   },
   "settings": {
@@ -844,7 +853,8 @@
       "title_ar": " Title (ar)",
       "title_en": " Title (en)",
       "desc_en": "Description (en)",
-      "desc_ar": "Description (ar)"
+      "desc_ar": "Description (ar)",
+      "userType": "User Type"
     }
   },
   "privacy": {
@@ -858,7 +868,9 @@
       "title_ar": " Title (ar)",
       "title_en": " Title (en)",
       "desc_en": "Description (en)",
-      "desc_ar": "Description (ar)"
+      "desc_ar": "Description (ar)",
+      "userType": "User Type",
+      "termId": "Terms and Conditions"
     }
   },
 
@@ -868,6 +880,8 @@
     "instgram": "Instgram",
     "tikTok": "TikTok",
     "youTube": "YouTube",
+    "x": "X",
+    "snapChat": "Snapchat",
     "whats": "whatsApp Number",
     "instr_ar": "Basic Instraction (ar)",
     "instr_en": "Basic Instraction (en)"
