@@ -14,7 +14,7 @@ import { IEditImage } from '../../components/edit-mode-image/editImage.interface
 import { environment } from '../../../environments/environment.prod';
 
 const global_PageName = 'profile.pageName';
-const global_API_deialis =  'admin/GetById';
+const global_API_deialis =  'Users';
 const global_routeUrl = '/profile/edit/'
 
 @Component({
@@ -150,7 +150,7 @@ userDataInfo:any[]=[]
       }
     };
   getAllRoles(){
-    this.ApiService.get('role/GetAll').subscribe((res:any)=>{
+    this.ApiService.get('Auth/roles').subscribe((res:any)=>{
        if(res.data){
           res.data.map((item:any) => {
              this.roleList.push({

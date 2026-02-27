@@ -20,7 +20,7 @@ import { DialogModule } from 'primeng/dialog';
 const global_pageName = 'order.pageName'
 const global_router_edit_url = '/order/edit'
 const global_router_view_url = '/order/view'
-const global_API_getAll = 'order/GetAll'
+const global_API_getAll = 'Orders'
 
 @Component({
   selector: 'app-orders-table',
@@ -42,7 +42,7 @@ export class OrdersTableComponent {
   tableActions: ITableAction[] = [
     {
       name: EAction.delete,
-      apiName_or_route: 'Order/Delete?id',
+      apiName_or_route: 'Orders',
       autoCall: true
     },
     {
@@ -134,7 +134,7 @@ export class OrdersTableComponent {
 
 
   objectSearch = {
-    "pageNumber": 0,
+    "pageNumber": 1,
     "pageSize": 8,
     "sortingExpression": "",
     "sortingDirection": 1,
@@ -185,7 +185,7 @@ export class OrdersTableComponent {
     })
   }
   getRoles(){
-    this.ApiService.get('Auth/getRoles').subscribe((res:any)=>{
+    this.ApiService.get('Auth/roles').subscribe((res:any)=>{
       this.role=res.data
     })
   }
@@ -252,7 +252,7 @@ export class OrdersTableComponent {
   // }
 
   API_getStatus(){
-    this.ApiService.get('orderStatus/getAllStatus').subscribe((res:any)=>{
+    this.ApiService.get('OrderStatus').subscribe((res:any)=>{
       if(res.data){
         this.orderStatusList=[]
         res.data.map((item:any)=>{
@@ -293,9 +293,9 @@ export class OrdersTableComponent {
 
 
   API_getAll() {
-    this.ApiService.post(global_API_getAll, this.objectSearch).subscribe((res: any) => {
+    this.ApiService.get(global_API_getAll, this.objectSearch).subscribe((res: any) => {
       if (res) {
-        this.dataList = res.data.dataList;
+        this.dataList = res.data.items;
         this.totalCount = res.data.totalCount;
 
         // Iterate over each data item
@@ -354,7 +354,7 @@ export class OrdersTableComponent {
 
   reset() {
     this.objectSearch = {
-      "pageNumber": 0,
+      "pageNumber": 1,
       "pageSize": 8,
       "sortingExpression": "",
       "sortingDirection": 0,
@@ -387,7 +387,7 @@ export class OrdersTableComponent {
 
   }
   API_Edit(){
-    this.ApiService.put('order/Update',this.form.value).subscribe(res=>{
+    this.ApiService.put('Orders',this.form.value).subscribe(res=>{
       if(res){
        this.API_getAll()
         this.openEditDialog=false

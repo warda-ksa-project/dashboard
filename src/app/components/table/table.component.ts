@@ -222,8 +222,8 @@ export class TableComponent implements OnInit, OnChanges {
 
   onStatusChange(orderId: any) {
     this.ApiService.put(
-      `Order/ChangeStatus?OrderId=${orderId}&orderStatusEnum=1`,
-      {}
+      `Orders/status`,
+      { orderId: orderId, orderStatusEnum: 1 }
     ).subscribe(() => {
       this.reloadGetAllApi.emit(true);
     });

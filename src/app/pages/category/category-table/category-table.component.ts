@@ -17,13 +17,10 @@ import { CategoryDetailsComponent } from '../category-details/category-details.c
 import { PageDialogComponent } from '../../../components/page-dialog/page-dialog.component';
 
 const global_pageName = 'category.pageName';
-const global_API_Name = 'Client';
 const global_router_add_url_in_Table = '/category/add';
 const global_router_view_url = '/category/view';
 const global_router_edit_url = '/category/edit';
-const global_API_getAll = global_API_Name + '/GetAllWithPagination';
-const global_API_Active = global_API_Name + '/Activate?userId';
-const global_API_block = global_API_Name + '/Delete?userId';
+const global_API_getAll = 'Categories/paginated';
 @Component({
   selector: 'app-category-table',
   standalone: true,
@@ -51,7 +48,7 @@ export class CategoryTableComponent {
   tableActions: ITableAction[] = [
     {
       name: EAction.delete,
-      apiName_or_route: 'category/Delete?userId',
+      apiName_or_route: 'Categories',
       autoCall: true
     },
     {
@@ -66,12 +63,12 @@ export class CategoryTableComponent {
     },
     {
       name: EAction.active,
-      apiName_or_route: global_API_Active,
+      apiName_or_route: 'Categories/activate',
       autoCall: true
     },
     {
       name: EAction.block,
-      apiName_or_route: global_API_block,
+      apiName_or_route: 'Categories',
       autoCall: true
     }
   ]
@@ -83,7 +80,7 @@ export class CategoryTableComponent {
   }
 
   objectSearch = {
-    "pageNumber": 0,
+    "pageNumber": 1,
     "pageSize": 8,
     "sortingExpression": "",
     "sortingDirection": 0,
@@ -167,9 +164,9 @@ export class CategoryTableComponent {
 
 
   API_getAll() {
-    this.ApiService.post(global_API_getAll, this.objectSearch).subscribe((res: any) => {
+    this.ApiService.get(global_API_getAll, this.objectSearch).subscribe((res: any) => {
       if (res) {
-        this.dataList = res.data.dataList;
+        this.dataList = res.data.items;
         this.totalCount = res.data.totalCount;
         this.filteredData = [...this.dataList];
       }
@@ -178,7 +175,7 @@ export class CategoryTableComponent {
 
   onPageChange(event: any) {
     console.log(event);
-    this.objectSearch.pageNumber = event;
+    this.objectSearch.pageNumber = event + 1;
     this.API_getAll();
   }
 
@@ -188,7 +185,7 @@ export class CategoryTableComponent {
 
   reset() {
     this.objectSearch = {
-      "pageNumber": 0,
+      "pageNumber": 1,
       "pageSize": 8,
       "sortingExpression": "",
       "sortingDirection": 0,

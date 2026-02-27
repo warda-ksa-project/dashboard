@@ -16,9 +16,9 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { LanguageService } from '../../../services/language.service';
 
 const global_PageName = 'contact_us.pageName';
-const global_API_deialis = 'contact/GetById';
-const global_API_create = 'contact/Create';
-const global_API_update = 'contact/Update';
+const global_API_deialis = 'Content/contact';
+const global_API_create = 'Content/contact';
+const global_API_update = 'Content/contact';
 const global_routeUrl = 'contact-us'
 
 @Component({
@@ -110,7 +110,7 @@ export class ContactUsDetailsComponent {
   }
 
   API_getItemDetails() {
-    this.ApiService.get(`${global_API_deialis}`, { id: this.getID }).subscribe((res: any) => {
+    this.ApiService.get(`${global_API_deialis}/${this.getID}`).subscribe((res: any) => {
       if (res.data)
         this.form.patchValue(res.data)
     })

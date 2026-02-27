@@ -6,9 +6,9 @@ import { NgxSpinnerService } from 'ngx-spinner';
 export const spinnerInterceptor: HttpInterceptorFn = (req, next) => {
   const spinner = inject(NgxSpinnerService);
 
-  // Check if the URL contains 'Notification/GetNotifications'
-  if (!req.url.includes('Notification/GetNotifications')) {
-    // Show the spinner only if the URL does not contain 'Notification/GetNotifications'
+  // Check if the URL contains 'Notifications'
+  if (!req.url.includes('Notifications')) {
+    // Show the spinner only if the URL does not contain 'Notifications'
     spinner.show();
   }
 
@@ -20,7 +20,7 @@ export const spinnerInterceptor: HttpInterceptorFn = (req, next) => {
     }),
     finalize(() => {
       // Hide the spinner once the request is completed (success or error)
-      if (!req.url.includes('Notification/GetNotifications')) {
+      if (!req.url.includes('Notifications')) {
         spinner.hide();
       }
     })

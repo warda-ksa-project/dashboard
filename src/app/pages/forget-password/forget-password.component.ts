@@ -50,7 +50,7 @@ export class ForgetPasswordComponent {
       let mobileNumberObject ={
         "mobileNumber": this.checkMobile.value.mobileNumber
       }
-      this.api.post('Auth/ForgetPassword' , mobileNumberObject).subscribe((res: any) => {
+      this.api.post('Auth/forget-password' , mobileNumberObject).subscribe((res: any) => {
         console.log(res);
         if(res.status) {
           this.openOtpModal = true;
@@ -68,7 +68,7 @@ export class ForgetPasswordComponent {
     if (this.changePassword.valid) {
       console.log('Form Submitted', this.changePassword.value);
       this.changePassword.value.mobileNumber = this.checkMobile.get('mobileNumber')?.value;
-      this.api.post('Authentication/ResetPassword',  this.changePassword.value).subscribe((data: any) => {
+      this.api.post('Auth/reset-password',  this.changePassword.value).subscribe((data: any) => {
         console.log(data.data);
           this.toaster.successToaster(data.message);
           this.router.navigate(['/auth/login']);
@@ -88,7 +88,7 @@ export class ForgetPasswordComponent {
       "mobile": this.checkMobile.get('mobileNumber')?.value,
       "otpCode": e.otpValue
     }
-    this.api.post('Authentication/VerfiyForgetPassword', otpObject).subscribe((data: any) => {
+    this.api.post('Auth/verify-forget-password', otpObject).subscribe((data: any) => {
       console.log(data.data);
       if(data.message == 'Otp Is Not Valid') {
         this.toaster.errorToaster(data.message)

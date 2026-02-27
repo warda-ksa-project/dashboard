@@ -18,8 +18,8 @@ const global_pageName='privacy.pageName';
 const global_router_add_url_in_Table ='/settings/privacy_policy/add';
 const global_router_view_url ='/settings/privacy_policy/view';
 const global_router_edit_url ='/settings/privacy_policy/edit';
-const global_API_getAll ="PrivacyPolicy"+'/GetAllWithPagination';
-const global_API_delete="PrivacyPolicy"+'/Delete?Id';
+const global_API_getAll ='Content/privacy/paginated';
+const global_API_delete='Content/privacy';
 
 
 @Component({
@@ -46,7 +46,7 @@ export class PrivacyPolicyTableComponent {
   }
 
   objectSearch = {
-    pageNumber: 0,
+    pageNumber: 1,
     pageSize: 8,
     sortingExpression: "",
     sortingDirection: 0,
@@ -161,9 +161,9 @@ export class PrivacyPolicyTableComponent {
   }
 
   API_getAll() {
-    this.ApiService.post(global_API_getAll, this.objectSearch).subscribe((res: any) => {
+    this.ApiService.get(global_API_getAll, this.objectSearch).subscribe((res: any) => {
       if (res) {
-        this.dataList = res.data.dataList;
+        this.dataList = res.data.items;
         this.totalCount = res.data.totalCount;
         this.filteredData = [...this.dataList];
       }

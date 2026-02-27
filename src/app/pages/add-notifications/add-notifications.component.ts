@@ -13,8 +13,7 @@ import { TextareaModule } from 'primeng/textarea';
 import { LanguageService } from '../../services/language.service';
 
 const global_PageName = 'notifications.pageName';
-const global_API_create =  'Notification/send';
-const global_API_getUsersByUserTypeId = 'User/GetByUserType';
+const global_API_create = 'Notifications/send';
 
 @Component({
   selector: 'app-add-notifications',
@@ -158,7 +157,7 @@ export class AddNotificationsComponent {
       return;
     }
 
-    this.ApiService.get(global_API_getUsersByUserTypeId, { UserTypeId: userTypeId }).subscribe((res: any) => {
+    this.ApiService.get(`Users/by-type/${userTypeId}`).subscribe((res: any) => {
       const raw = res?.data;
       const data: any[] = Array.isArray(raw) ? raw : (raw ? [raw] : []);
 

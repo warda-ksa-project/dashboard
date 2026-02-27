@@ -14,7 +14,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { TitleCasePipe } from '@angular/common';
 
 const global_toggleOptions:IToggleOptions={
-  apiName:'city/Update',
+  apiName:'Cities',
   autoCall:true,
   }
 @Component({
@@ -29,7 +29,7 @@ export class CitiesTableComponent {
   tableActions: ITableAction[] = [
     {
       name: EAction.delete,
-      apiName_or_route: 'City/Delete?id',
+      apiName_or_route: 'Cities',
       autoCall: true
     },
     {
@@ -62,7 +62,7 @@ export class CitiesTableComponent {
   columnsSmallTable: IcolHeaderSmallTable[] = []
   totalCount: number = 0;
    citySearch={
-    pageNumber: 0,
+    pageNumber: 1,
     pageSize: 8,
     sortingExpression: "",
     sortingDirection: 0,
@@ -124,18 +124,13 @@ export class CitiesTableComponent {
 
   getAllCities() {
   console.log('ggg',this.citySearch)
-    this.ApiService.post('City/GetAllWithPagination',this.citySearch).subscribe((res: any) => {
+    this.ApiService.get('Cities/paginated', this.citySearch).subscribe((res: any) => {
       if (res.data) {
-        this.citiesList = res.data.dataList;
+        this.citiesList = res.data.items;
         this.totalCount = res.data.totalCount;
-        this.filteredData = [...this.citiesList]; // Initialize filtered data
+        this.filteredData = [...this.citiesList];
       }
     })
-    //  this.ApiService.get('City/GetAll').subscribe((res: any) => {
-    //   if (res.data) {
-    //     this.citiesList = res.data;
-    //   }
-    // })
   }
 
   onPageChange(event: any) {
@@ -159,7 +154,7 @@ export class CitiesTableComponent {
 
   reset() {
     this.citySearch = {
-      pageNumber: 0,
+      pageNumber: 1,
       pageSize: 8,
       sortingExpression: "",
       sortingDirection: 0,

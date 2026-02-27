@@ -24,9 +24,9 @@ import { Validations } from '../../../validations';
 import { Roles } from '../../../conts';
 const global_PageName = 'piece_products.pageName';
 const global_routeUrl = 'piece-product'
-const global_API_details = 'pieceproducts' + '/GetById';
-const global_API_create = 'pieceproducts' + '/Create';
-const global_API_update = 'pieceproducts' + '/Update';
+const global_API_details = 'Products';
+const global_API_create = 'Products';
+const global_API_update = 'Products';
 
 @Component({
   selector: 'app-piece-products-details',
@@ -221,7 +221,7 @@ export class PieceProductsDetailsComponent {
       this.API_getItemDetails()
   }
   getRoles(){
-    this.ApiService.get('Auth/getRoles').subscribe((res:any)=>{
+    this.ApiService.get('Auth/roles').subscribe((res:any)=>{
       this.role=res.data
     })
   }
@@ -261,7 +261,7 @@ export class PieceProductsDetailsComponent {
   }
 
   API_getItemDetails() {
-    this.ApiService.get(`${global_API_details}`, { id: this.getID }).subscribe((res: any) => {
+    this.ApiService.get(`${global_API_details}/${this.getID}`).subscribe((res: any) => {
       if (res.data) {
         this.form.patchValue({
           ...res.data,

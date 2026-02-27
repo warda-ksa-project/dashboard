@@ -18,8 +18,8 @@ const global_pageName='about_us.pageName'
 const global_router_add_url_in_Table ='/about-us/add'
 const global_router_view_url ='about-us/view'
 const global_router_edit_url ='about-us/edit'
-const global_API_getAll ='aboutUS/GetAllWithPagination'
-const global_API_delete='aboutUS/Delete?id'
+const global_API_getAll ='Content/about-us/paginated'
+const global_API_delete='Content/about-us'
 
 @Component({
   selector: 'app-about-us-table',
@@ -46,7 +46,7 @@ export class AboutUsTableComponent {
   }
 
   objectSearch = {
-    pageNumber: 0,
+    pageNumber: 1,
     pageSize: 8,
     sortingExpression: "",
     sortingDirection: 0,
@@ -159,9 +159,9 @@ export class AboutUsTableComponent {
   }
 
   API_getAll() {
-    this.ApiService.post(global_API_getAll, this.objectSearch).subscribe((res: any) => {
+    this.ApiService.get(global_API_getAll, this.objectSearch).subscribe((res: any) => {
       if (res) {
-        this.dataList = res.data.dataList;
+        this.dataList = res.data.items;
         this.totalCount = res.data.totalCount;
         this.filteredData = [...this.dataList];
       }
@@ -197,7 +197,7 @@ export class AboutUsTableComponent {
 
   reset() {
     this.objectSearch = {
-      pageNumber: 0,
+      pageNumber: 1,
       pageSize: 8,
       sortingExpression: "",
       sortingDirection: 0,

@@ -28,7 +28,7 @@ const global_pageName = 'piece_products.pageName';
 const global_router_add_url_in_Table = '/piece-product/add';
 const global_router_view_url = '/piece-product/view';
 const global_router_edit_url = '/piece-product/edit';
-const global_API_getAll = 'pieceproducts' + '/GetAllWithPagination';
+const global_API_getAll = 'Products/piece';
 @Component({
   selector: 'app-piece-products-table',
   standalone: true,
@@ -59,7 +59,7 @@ export class PieceProductsTableComponent {
   tableActions: ITableAction[] = [
     {
       name: EAction.delete,
-      apiName_or_route: 'pieceproducts/Delete?id',
+      apiName_or_route: 'Products',
       autoCall: true,
     },
     {
@@ -80,7 +80,7 @@ export class PieceProductsTableComponent {
   };
 
   objectSearch = {
-    pageNumber: 0,
+    pageNumber: 1,
     pageSize: 8,
     sortingExpression: '',
     sortingDirection: 0,
@@ -195,7 +195,7 @@ export class PieceProductsTableComponent {
     };
   }
   getRoles(){
-    this.ApiService.get('Auth/getRoles').subscribe((res:any)=>{
+    this.ApiService.get('Auth/roles').subscribe((res:any)=>{
       this.role=res.data
     })
   }
@@ -208,10 +208,10 @@ export class PieceProductsTableComponent {
   }
 
   API_getAll() {
-    this.ApiService.post(global_API_getAll, this.objectSearch).subscribe(
+    this.ApiService.get(global_API_getAll, this.objectSearch).subscribe(
       (res: any) => {
         if (res) {
-          this.dataList = res.data.dataList;
+          this.dataList = res.data.items;
           this.totalCount = res.data.totalCount;
           this.filteredData = [...this.dataList];
         }
@@ -249,7 +249,7 @@ export class PieceProductsTableComponent {
 
   reset() {
     this.objectSearch = {
-      pageNumber: 0,
+      pageNumber: 1,
       pageSize: 8,
       sortingExpression: '',
       sortingDirection: 0,

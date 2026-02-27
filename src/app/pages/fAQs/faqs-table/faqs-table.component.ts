@@ -39,7 +39,7 @@ export class FaqsTableComponent {
   }
 
   faqSearchCreteria = {
-    pageNumber: 0,
+    pageNumber: 1,
     pageSize: 8,
     sortingExpression: "",
     sortingDirection: 0,
@@ -78,7 +78,7 @@ export class FaqsTableComponent {
       this.tableActions = [
         {
           name: EAction.delete,
-          apiName_or_route: 'FAQ/Delete?id',
+          apiName_or_route: 'Content/faqs',
           autoCall: true
         },
         {
@@ -151,9 +151,9 @@ export class FaqsTableComponent {
   }
 
   getAllFAQS() {
-    this.ApiService.post('FAQ/GetAllWithPagination', this.faqSearchCreteria).subscribe((res: any) => {
+    this.ApiService.get('Content/faqs/paginated', this.faqSearchCreteria).subscribe((res: any) => {
       if (res) {
-        this.faqsList = res.data.dataList;
+        this.faqsList = res.data.items;
         this.totalCount = res.data.totalCount;
         this.filteredData = [...this.faqsList];
       }
@@ -180,7 +180,7 @@ export class FaqsTableComponent {
 
   reset() {
     this.faqSearchCreteria = {
-      pageNumber: 0,
+      pageNumber: 1,
       pageSize: 8,
       sortingExpression: "",
       sortingDirection: 0,

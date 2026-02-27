@@ -55,7 +55,7 @@ export class SocialMediaUpdateComponent {
   }
 
   getAll(){
-    this.apiService.get('SocailMedia/GetAll').subscribe((res:any)=>{
+    this.apiService.get('Settings/social-media').subscribe((res:any)=>{
       const data = Array.isArray(res?.data) ? res.data?.[0] : res?.data;
       if (!data) return;
 
@@ -83,7 +83,7 @@ export class SocialMediaUpdateComponent {
   }
 
   upsertSocialMedia(payload: ISocialMediaUpsertPayload){
-    this.apiService.put('SocailMedia/upsert', payload).subscribe((res:any)=>{
+    this.apiService.put('Settings/social-media', payload).subscribe((res:any)=>{
       if(res?.message)
         this.toaster.successToaster(res.message)
       else

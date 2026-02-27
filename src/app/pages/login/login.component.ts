@@ -119,7 +119,8 @@ export class LoginComponent {
           this.isCheckingAdmin = true;
         }),
         switchMap((phone) =>
-          this.api.get<boolean>('Auth/CheckAdmin', { Phone: phone }).pipe(
+          this.api.get<any>('Auth/check-admin', { Phone: phone }).pipe(
+            map((res: any) => res.data),
             catchError(() => {
               this.isCheckingAdmin = false;
               this.isAdmin = null;
@@ -129,7 +130,7 @@ export class LoginComponent {
         ),
         takeUntil(this.destroy$)
       )
-      .subscribe((isAdmin) => {
+      .subscribe((isAdmin: boolean) => {
         this.isCheckingAdmin = false;
         this.isAdmin = isAdmin;
 
@@ -155,7 +156,7 @@ export class LoginComponent {
     }
   }
   getAllCountries() {
-    this.api.get('Country/GetAll').subscribe((res: any) => {
+    this.api.get('Countries').subscribe((res: any) => {
       if (res.data) {
         this.countries = [];
         this.countriesData = res.data; // Store full country data
@@ -171,28 +172,20 @@ export class LoginComponent {
   }
   getOtpValue(e: any) {
     let otpObject = {
-      mobile: this.mobileNumber,
+      phone: this.mobileNumber,
       otpCode: e.otpValue,
     };
-    this.api.post('Auth/VerfiyOtp', otpObject).subscribe((data: any) => {
-      console.log(data.data);
-      if (data.message == 'Otp Is Not Valid') {
-        this.toaster.errorToaster(data.message);
+    this.api.post('Auth/verify-otp', otpObject).subscribe((data: any) => {
+      if (data.isFailure) {
+        this.toaster.errorToaster(data.error?.message || 'Invalid OTP');
       } else {
-        let dataUser: any = {
-          img: data.data.imgSrc,
-          id: data.data.userId,
-          gender: data.data.gender,
-        };
-        localStorage.setItem('token', data.data.token);
-        localStorage.setItem('userId', data.data.userId);
-        localStorage.setItem('img', data.data.imgSrc);
-        localStorage.setItem('name', data.data.name);
-        localStorage.setItem('email', data.data.email);
-        localStorage.setItem('roleId', data.data.roleId);
-        if(data.data.role == Roles.admin){
+        const user = data.data;
+        localStorage.setItem('token', user.accessToken);
+        localStorage.setItem('userId', user.userId);
+        localStorage.setItem('name', user.userName);
+        if (user.role === Roles.admin) {
           localStorage.setItem('role', Roles.admin.toString());
-        }else{
+        } else {
           localStorage.setItem('role', Roles.trader.toString());
         }
         if (this.selectedCountryId) {
@@ -201,7 +194,7 @@ export class LoginComponent {
           localStorage.removeItem('countryId');
         }
 
-        if (data.data.roleId == Roles.admin)
+        if (user.role === Roles.admin)
           this.router.navigate(['/dashboard-admin']);
         else this.router.navigate(['/dashboard-trader']);
       }
@@ -228,20 +221,23 @@ export class LoginComponent {
   }
   onLogin(loginfrom: any) {
     this.openOtpModal = false;
-    const payload = {
-      userName: loginfrom.userName,
-      roleId: loginfrom.roleId,
-    };
-    this.api.login(payload).subscribe((res: any) => {
-      this.mobileNumber = res.mobilePhone;
-      this.openOtpModal = res.status;
-      if (!res.status) {
+    this.api.post('Auth/send-otp', { phone: loginfrom.userName }).subscribe((res: any) => {
+      if (res.isSuccess) {
+        this.mobileNumber = loginfrom.userName;
+        this.openOtpModal = true;
+      } else {
         localStorage.removeItem('token');
-        this.toaster.errorToaster(res.message);
+        this.toaster.errorToaster(res.error?.message || 'Login failed');
       }
     });
   }
   resendOtp(e: any) {
-    this.onSubmit();
+    this.api.post('Auth/send-otp', { phone: this.mobileNumber }).subscribe((res: any) => {
+      if (res.isSuccess) {
+        this.toaster.successToaster('OTP sent successfully');
+      } else {
+        this.toaster.errorToaster(res.error?.message || 'Failed to resend OTP');
+      }
+    });
   }
 }

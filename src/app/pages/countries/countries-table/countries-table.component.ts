@@ -17,10 +17,10 @@ const global_pageName='country'
 const global_router_add_url_in_Table ='/'+global_pageName+'/add'
 const global_router_view_url =global_pageName+'/view'
 const global_router_edit_url =global_pageName+'/edit'
-const global_API_getAll =global_pageName+'/GetAllWithPagination'
-const global_API_delete=global_pageName+'/delete?id'
+const global_API_getAll ='Countries/paginated'
+const global_API_delete='Countries'
 const global_toggleOptions:IToggleOptions={
-apiName:global_pageName+'/update',
+apiName:'Countries',
 autoCall:true,
 }
 @Component({
@@ -67,7 +67,7 @@ export class CountriesTableComponent {
   }
 
   objectSearch = {
-    pageNumber: 0,
+    pageNumber: 1,
     pageSize: 8,
     sortingExpression: "",
     sortingDirection: 0,
@@ -146,20 +146,14 @@ export class CountriesTableComponent {
   }
 
   API_getAll() {
-    this.ApiService.post(global_API_getAll, this.objectSearch).subscribe((res: any) => {
+    this.ApiService.get(global_API_getAll, this.objectSearch).subscribe((res: any) => {
       if (res) {
-        this.dataList = res.data.dataList;
+        this.dataList = res.data.items;
         this.totalCount = res.data.totalCount;
         this.filteredData = [...this.dataList];
       }
 
     })
-    // this.ApiService.get(global_API_getAll).subscribe((res: any) => {
-    //   if (res.data) {
-    //     this.dataList = res.data;
-    //   }
-
-    // })
   }
 
   onPageChange(event: any) {
@@ -190,7 +184,7 @@ export class CountriesTableComponent {
 
   reset() {
     this.objectSearch = {
-      pageNumber: 0,
+      pageNumber: 1,
       pageSize: 8,
       sortingExpression: "",
       sortingDirection: 0,

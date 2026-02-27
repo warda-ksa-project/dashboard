@@ -22,10 +22,10 @@ import { GalleryComponent } from '../../../components/gallery/gallery.component'
 import { CountryService } from '../../../services/country.service';
 
 const global_PageName ='users.pageName';
-const global_API_Name ='user';
-const global_API_details = global_API_Name + '/GetUser';
-const global_API_create = global_API_Name + '/createUser';
-const global_API_update = global_API_Name + '/updateUser';
+const global_API_Name ='Users';
+const global_API_details = global_API_Name;
+const global_API_create = global_API_Name;
+const global_API_update = global_API_Name;
 const global_routeUrl ="/users"
 @Component({
   selector: 'app-users-details',
@@ -150,7 +150,7 @@ pageName = signal<string>(global_PageName);
   }
 
   API_getItemDetails() {
-    this.ApiService.get(`${global_API_details}`,{id:this.getID}).subscribe((res: any) => {
+    this.ApiService.get(`${global_API_details}/${this.getID}`).subscribe((res: any) => {
       if (res){
         this.form.patchValue(res.data)
        this.editMode=true

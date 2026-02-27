@@ -23,9 +23,8 @@ import { Roles } from '../../../conts';
 
 const global_PageName = 'sub_category.pageName';
 const global_routeUrl = 'sub-category'
-const global_API_details = 'subCategory' + '/GetSubCategoryById';
-const global_API_create = 'subCategory' + '/Create';
-const global_API_update = 'subCategory' + '/Update';
+const global_API_create = 'SubCategories';
+const global_API_update = 'SubCategories';
 
 @Component({
   selector: 'app-sub-category-details',
@@ -118,7 +117,7 @@ role=''
     return result
   }
   getRoles(){
-    this.ApiService.get('Auth/getRoles').subscribe((res:any)=>{
+    this.ApiService.get('Auth/roles').subscribe((res:any)=>{
       this.role=res.data
     })
   }
@@ -137,7 +136,7 @@ role=''
   }
 
   getMainCategory() {
-    this.ApiService.get('MainCategory/GetAll').subscribe((res: any) => {
+    this.ApiService.get('Categories').subscribe((res: any) => {
       if (res.data) {
         this.parentCategoryList = []
         res.data.map((item: any) => {
@@ -151,7 +150,7 @@ role=''
     })
   }
   API_getItemDetails() {
-    this.ApiService.get(`${global_API_details}`, { SubCategoryId: this.getID }).subscribe((res: any) => {
+    this.ApiService.get(`SubCategories/${this.getID}`).subscribe((res: any) => {
       if (res) {
         this.form.patchValue(res.data)
         if (res.data.image) {

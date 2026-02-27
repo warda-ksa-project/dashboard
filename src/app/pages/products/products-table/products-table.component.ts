@@ -28,7 +28,7 @@ const global_pageName = 'products.pageName';
 const global_router_add_url_in_Table = '/product/add';
 const global_router_view_url = '/product/view';
 const global_router_edit_url = '/product/edit';
-const global_API_getAll = 'product' + '/GetAllWithPagination';
+const global_API_getAll = 'Products/paginated';
 @Component({
   selector: 'app-products-table',
   standalone: true,
@@ -59,7 +59,7 @@ export class ProductsTableComponent {
   tableActions: ITableAction[] = [
     {
       name: EAction.delete,
-      apiName_or_route: 'product/Delete?id',
+      apiName_or_route: 'Products',
       autoCall: true,
     },
     {
@@ -80,7 +80,7 @@ export class ProductsTableComponent {
   };
 
   objectSearch = {
-    pageNumber: 0,
+    pageNumber: 1,
     pageSize: 8,
     sortingExpression: '',
     sortingDirection: 0,
@@ -216,10 +216,10 @@ export class ProductsTableComponent {
   }
 
   API_getAll() {
-    this.ApiService.post(global_API_getAll, this.objectSearch).subscribe(
+    this.ApiService.get(global_API_getAll, this.objectSearch).subscribe(
       (res: any) => {
         if (res) {
-          this.dataList = res.data.dataList;
+          this.dataList = res.data.items;
           this.totalCount = res.data.totalCount;
           this.filteredData = [...this.dataList];
         }
@@ -227,7 +227,7 @@ export class ProductsTableComponent {
     );
   }
   getRoles(){
-    this.ApiService.get('Auth/getRoles').subscribe((res:any)=>{
+    this.ApiService.get('Auth/roles').subscribe((res:any)=>{
       this.role=res.data
     })
   }
@@ -261,7 +261,7 @@ export class ProductsTableComponent {
 
   reset() {
     this.objectSearch = {
-      pageNumber: 0,
+      pageNumber: 1,
       pageSize: 8,
       sortingExpression: '',
       sortingDirection: 0,

@@ -20,9 +20,8 @@ import { environment } from '../../../../environments/environment';
 
 const global_PageName='category.pageName';
 const global_routeUrl ='main_category'
-const global_API_details='MainCategory'+'/GetMainCategoryById?Id=';
-const global_API_create='MainCategory'+'/Create';
-const global_API_update='MainCategory'+'/Update';
+const global_API_create='Categories';
+const global_API_update='Categories';
 @Component({
   selector: 'app-main-catogory-details',
   standalone: true,
@@ -117,7 +116,7 @@ pageName =signal<string>(global_PageName);
 
 
   API_getItemDetails() {
-    this.ApiService.get(`${global_API_details}${this.getID}`).subscribe((res: any) => {
+    this.ApiService.get(`Categories/${this.getID}`).subscribe((res: any) => {
       if (res){
         this.form.patchValue(res.data);
         this.editImageProps.props.imgSrc =res.data.image;

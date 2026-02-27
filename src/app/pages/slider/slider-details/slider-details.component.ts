@@ -11,7 +11,6 @@ import { IBreadcrumb } from '../../../components/breadcrump/cerqel-breadcrumb.in
 import { ConfirmMsgService } from '../../../services/confirm-msg.service';
 import { DialogComponent } from '../../../components/dialog/dialog.component';
 import { UploadFileComponent } from "../../../components/upload-file/upload-file.component";
-import { coponeOfferTypeList, coponeTypeList, sliderViewType } from '../../../conts';
 import { SelectComponent } from '../../../components/select/select.component';
 import { EditModeImageComponent } from '../../../components/edit-mode-image/edit-mode-image.component';
 import { IEditImage } from '../../../components/edit-mode-image/editImage.interface';
@@ -20,9 +19,9 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { LanguageService } from '../../../services/language.service';
 
 const global_PageName = 'slider.pageName';
-const global_API_deialis = 'Slider' + '/GetById?Id=';
-const global_API_create = 'Slider' + '/Create';
-const global_API_update = 'Slider' + '/Update';
+const global_API_deialis = 'Sliders';
+const global_API_create = 'Sliders';
+const global_API_update = 'Sliders';
 const global_routeUrl = '/slider' 
 
 @Component({
@@ -42,10 +41,7 @@ export class SliderDetailsComponent {
   editAttachmentMode: boolean = false;
   editAttachmentMode_ar: boolean = false;
   private confirm = inject(ConfirmMsgService)
-  offerTypeList: any[] = coponeOfferTypeList
-  coponeTypeList: any[] = coponeTypeList
   minEndDate: Date = new Date()
-  // viewTypeList = sliderViewType
   editImageProps: IEditImage = {
     props: {
       visible: true,
@@ -167,7 +163,7 @@ export class SliderDetailsComponent {
   }
 
   API_getItemDetails() {
-    this.ApiService.get(`${global_API_deialis}${this.getID}`).subscribe((res: any) => {
+    this.ApiService.get(`${global_API_deialis}/${this.getID}`).subscribe((res: any) => {
       if (res.data) {
         this.form.patchValue(res.data)
         this.editImageProps.props.imgSrc =  res.data.imageEn;

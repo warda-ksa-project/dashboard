@@ -5,7 +5,6 @@ import { LanguageService } from '../../services/language.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterLinkActive, RouterModule } from '@angular/router';
 import { menuItems } from '../../conts';
-import { ApiService } from '../../services/api.service';
 import { InputTextComponent } from "../input-text/input-text.component";
 @Component({
   selector: 'app-side-nav',
@@ -82,7 +81,6 @@ export class SideNavComponent {
 
   selectedLang: any;
   languageService = inject(LanguageService);
-   apiService=inject(ApiService)
   routingList = menuItems
   role:any
   @Input()activeRoute=''
@@ -97,12 +95,7 @@ export class SideNavComponent {
   }
 
   getRoles(){
-    this.apiService.get('Auth/getRoles').subscribe((res:any)=>{
-      console.log("SidebarComponent  this.apiService.get  res:", res)
-
-    this.role=res.data
-    console.log("SidebarComponent  this.apiService.get  this.role:", this.role)
-    })
+    this.role = localStorage.getItem('role') || '';
   }
 
   onFilterMenu(text:string){

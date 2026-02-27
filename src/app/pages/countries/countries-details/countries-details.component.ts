@@ -143,7 +143,7 @@ export class CountriesDetailsComponent implements OnInit {
     }
   };
   getCountryDetails() {
-    this.ApiService.get(`Country/GetById`, { id: this.countryID }).subscribe((res: any) => {
+    this.ApiService.get(`Countries/${this.countryID}`).subscribe((res: any) => {
       if (res.data) {
         this.form.patchValue(res.data)
         this.editImageProps.props.imgSrc =res.data.image;
@@ -169,13 +169,13 @@ export class CountriesDetailsComponent implements OnInit {
 
   }
   addCountry(payload: any) {
-    this.ApiService.post('Country/Create', payload).subscribe(res => {
+    this.ApiService.post('Countries', payload).subscribe(res => {
       if (res)
         this.router.navigateByUrl('country')
     })
   }
   editCountry(payload: any) {
-    this.ApiService.put('Country/Update', payload).subscribe(res => {
+    this.ApiService.put('Countries', payload).subscribe(res => {
       if (res)
         this.router.navigateByUrl('country')
     })

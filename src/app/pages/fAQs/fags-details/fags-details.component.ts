@@ -110,7 +110,7 @@ export class FagsDetailsComponent implements OnInit {
   }
 
   getFaqsDetails() {
-    this.ApiService.get(`FAQ/GetById/`, { id: this.faqsID }).subscribe((res: any) => {
+    this.ApiService.get(`Content/faqs/${this.faqsID}`).subscribe((res: any) => {
       if (res.data)
         this.form.patchValue(res.data)
     })
@@ -143,14 +143,14 @@ export class FagsDetailsComponent implements OnInit {
   }
 
   addFQS(payload: any) {
-    this.ApiService.post('FAQ/Create', payload).subscribe(res => {
+    this.ApiService.post('Content/faqs', payload).subscribe(res => {
       if (res)
         this.router.navigateByUrl('settings/faqs')
     })
   }
 
   editFQS(payload: any) {
-    this.ApiService.put('FAQ/Update', payload).subscribe(res => {
+    this.ApiService.put('Content/faqs', payload).subscribe(res => {
       if (res)
         this.router.navigateByUrl('settings/faqs')
     })

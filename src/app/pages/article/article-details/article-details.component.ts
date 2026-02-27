@@ -22,9 +22,9 @@ import { GalleryComponent } from '../../../components/gallery/gallery.component'
 
 const global_PageName ='article.pageName';
 const global_API_Name ='article';
-const global_API_details = global_API_Name + '/GetById';
-const global_API_create = global_API_Name + '/create';
-const global_API_update = global_API_Name + '/update';
+const global_API_details = 'Content/articles';
+const global_API_create = 'Content/articles';
+const global_API_update = 'Content/articles';
 const global_routeUrl = global_API_Name
 @Component({
   selector: 'app-article-details',
@@ -134,7 +134,7 @@ pageName = signal<string>(global_PageName);
   }
 
   API_getItemDetails() {
-    this.ApiService.get(`${global_API_details}`,{id:this.getID}).subscribe((res: any) => {
+    this.ApiService.get(`${global_API_details}/${this.getID}`).subscribe((res: any) => {
       if (res){
         this.form.patchValue(res.data)
        this.editMode=true

@@ -18,7 +18,7 @@ const global_pageName = 'sub_category.pageName';
 const global_router_add_url_in_Table = '/sub-category/add';
 const global_router_view_url = '/sub-category/view';
 const global_router_edit_url = '/sub-category/edit';
-const global_API_getAll = 'subCategory' + '/GetAllWithPagination';
+const global_API_getAll = 'SubCategories/paginated';
 @Component({
   selector: 'app-sub-category-table',
   standalone: true,
@@ -34,7 +34,7 @@ export class SubCategoryTableComponent {
   tableActions: ITableAction[] = [
      {
        name: EAction.delete,
-       apiName_or_route: 'subCategory/Delete?id',
+       apiName_or_route: 'SubCategories',
        autoCall: true
      },
      {
@@ -57,7 +57,7 @@ export class SubCategoryTableComponent {
   }
 
   objectSearch = {
-    "pageNumber": 0,
+    "pageNumber": 1,
     "pageSize": 8,
     "sortingExpression": "",
     "sortingDirection": 0,
@@ -92,7 +92,7 @@ role=''
     })
   }
   getRoles(){
-    this.ApiService.get('Auth/getRoles').subscribe((res:any)=>{
+    this.ApiService.get('Auth/roles').subscribe((res:any)=>{
       this.role=res.data
     })
   }
@@ -135,9 +135,9 @@ role=''
   }
 
   API_getAll() {
-    this.ApiService.post(global_API_getAll, this.objectSearch).subscribe((res: any) => {
+    this.ApiService.get(global_API_getAll, this.objectSearch).subscribe((res: any) => {
       if (res) {
-        this.dataList = res.data.dataList;
+        this.dataList = res.data.items;
         this.totalCount = res.data.totalCount;
         this.filteredData = [...this.dataList];
       }
@@ -181,7 +181,7 @@ role=''
 
   reset() {
     this.objectSearch = {
-      "pageNumber": 0,
+      "pageNumber": 1,
       "pageSize": 8,
       "sortingExpression": "",
       "sortingDirection": 0,

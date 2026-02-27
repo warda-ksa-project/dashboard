@@ -77,7 +77,7 @@ export class OrderStatusDetailsComponent {
  
 
   getFaqsDetails() {
-    this.ApiService.get(`orderStatus/GetStatusById/`, { id: this.faqsID }).subscribe((res: any) => {
+    this.ApiService.get(`OrderStatus/${this.faqsID}`).subscribe((res: any) => {
       if (res.data)
         this.form.patchValue(res.data)
     })
@@ -110,14 +110,14 @@ export class OrderStatusDetailsComponent {
   }
 
   addFQS(payload: any) {
-    this.ApiService.post('orderStatus/Create', payload).subscribe(res => {
+    this.ApiService.post('OrderStatus', payload).subscribe(res => {
       if (res)
         this.router.navigateByUrl('/orderStatus')
     })
   }
 
   editFQS(payload: any) {
-    this.ApiService.put('orderStatus/Update', payload).subscribe(res => {
+    this.ApiService.put('OrderStatus', payload).subscribe(res => {
       if (res)
         this.router.navigateByUrl('/orderStatus')
     })

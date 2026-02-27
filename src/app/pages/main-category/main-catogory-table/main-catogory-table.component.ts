@@ -16,12 +16,10 @@ import { LanguageService } from '../../../services/language.service';
 
 
 const global_pageName = 'category.pageName';
-const global_API_Name = 'MainCategory';
 const global_router_add_url_in_Table = '/main_category/add';
 const global_router_view_url = '/main_category/view';
 const global_router_edit_url = '/main_category/edit';
-const global_API_getAll = global_API_Name + '/GetAllWithPagination';
-const global_API_block = global_API_Name + '/Delete?Id';
+const global_API_getAll = 'Categories/paginated';
 
 @Component({
   selector: 'app-main-catogory-table',
@@ -49,7 +47,7 @@ export class MainCatogoryTableComponent {
   tableActions: ITableAction[] = [
     {
       name: EAction.delete,
-      apiName_or_route: 'MainCategory/Delete?id',
+      apiName_or_route: 'Categories',
       autoCall: true
     },
     {
@@ -71,7 +69,7 @@ export class MainCatogoryTableComponent {
   }
 
   objectSearch = {
-    "pageNumber": 0,
+    "pageNumber": 1,
     "pageSize": 8,
     "sortingExpression": "",
     "sortingDirection": 0,
@@ -149,9 +147,9 @@ export class MainCatogoryTableComponent {
 
 
   API_getAll() {
-    this.ApiService.post(global_API_getAll, this.objectSearch).subscribe((res: any) => {
+    this.ApiService.get(global_API_getAll, this.objectSearch).subscribe((res: any) => {
       if (res) {
-        this.dataList = res.data.dataList;
+        this.dataList = res.data.items;
         this.totalCount = res.data.totalCount;
         this.filteredData = [...this.dataList];
       }
@@ -160,7 +158,7 @@ export class MainCatogoryTableComponent {
 
   onPageChange(event: any) {
     console.log(event);
-    this.objectSearch.pageNumber = event;
+    this.objectSearch.pageNumber = event + 1;
     this.API_getAll();
   }
 
@@ -170,7 +168,7 @@ export class MainCatogoryTableComponent {
 
   reset() {
     this.objectSearch = {
-      "pageNumber": 0,
+      "pageNumber": 1,
       "pageSize": 8,
       "sortingExpression": "",
       "sortingDirection": 0,

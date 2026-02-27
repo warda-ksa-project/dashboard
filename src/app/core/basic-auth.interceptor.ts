@@ -3,8 +3,7 @@ import { inject } from '@angular/core';
 
 // APIs that should NOT receive X-Country-Id header (to get unfiltered data)
 const SKIP_COUNTRY_HEADER_URLS = [
-  'Country/GetAll',
-  'Country/getAll',
+  'Countries',
 ];
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {

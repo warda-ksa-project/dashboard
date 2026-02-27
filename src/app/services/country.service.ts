@@ -28,7 +28,7 @@ export class CountryService {
   }
 
   loadCountries(): void {
-    this.apiService.get<any>('Country/GetAll').subscribe((res: any) => {
+    this.apiService.get<any>('Countries').subscribe((res: any) => {
       if (res && res.data) {
         this.countriesSubject.next(res.data);
         

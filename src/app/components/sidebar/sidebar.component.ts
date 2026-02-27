@@ -50,7 +50,7 @@ export class SidebarComponent  {
   }
   
   loadCountries() {
-    this.apiService.get('Country/GetAll').subscribe((res: any) => {
+    this.apiService.get('Countries').subscribe((res: any) => {
       if (res.data) {
         this.countries = res.data.map((country: any) => ({
           name: this.selectedLang === 'en' ? country.enName : country.arName,
@@ -80,9 +80,9 @@ export class SidebarComponent  {
     }
   }
   getRoles(){
-    this.apiService.get('Auth/getRoles').subscribe((res:any)=>{
-    this.role=res.data
-    })
+    this.role = (localStorage.getItem('role') || '') as Roles;
+    this.isAdmin = this.role === Roles.admin;
+    this.isTrader = this.role === Roles.trader;
   }
   onFilterMenu(text:string){
     this.routingList= this.routingList.filter(item => item.id.toLowerCase().includes(text.toLowerCase()));

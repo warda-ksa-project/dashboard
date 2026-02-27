@@ -28,9 +28,9 @@ const global_pageName = 'users.pageName';
 const global_router_add_url_in_Table = '/user/add';
 const global_router_view_url = '/user/view';
 const global_router_edit_url = '/user/edit';
-const global_API_getAll = 'user' + '/GetAllWithPagination';
+const global_API_getAll = 'Users/paginated';
 const global_toggleOptions:IToggleOptions={
-  apiName:'user/UpdateUser',
+  apiName:'Users',
   autoCall:true,
   }
 
@@ -81,7 +81,7 @@ global_router_add_url_in_Table = global_router_add_url_in_Table;
   };
 
   objectSearch = {
-    pageNumber: 0,
+    pageNumber: 1,
     pageSize: 8,
     sortingExpression: '',
     sortingDirection: 1,
@@ -217,10 +217,10 @@ global_router_add_url_in_Table = global_router_add_url_in_Table;
   }
 
   API_getAll() {
-    this.ApiService.post(global_API_getAll, this.objectSearch).subscribe(
+    this.ApiService.get(global_API_getAll, this.objectSearch).subscribe(
       (res: any) => {
         if (res) {
-          this.dataList = res.data.dataList;
+          this.dataList = res.data.items;
           this.totalCount = res.data.totalCount;
           this.filteredData = [...this.dataList];
         }
@@ -265,7 +265,7 @@ global_router_add_url_in_Table = global_router_add_url_in_Table;
 
   reset() {
     this.objectSearch = {
-      pageNumber: 0,
+      pageNumber: 1,
       pageSize: 8,
       sortingExpression: '',
       sortingDirection: 1,

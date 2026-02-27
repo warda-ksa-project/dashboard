@@ -183,60 +183,6 @@ export const routes: Routes = [
             loadComponent: () => import('./pages/slider/slider-details/slider-details.component').then(m => m.SliderDetailsComponent) 
           },
 
-          // Roles
-          { 
-            path: 'roles', 
-            loadComponent: () => import('./pages/roles/role-table/role-table.component').then(m => m.RoleTableComponent) 
-          },
-          { 
-            path: 'role/add', 
-            loadComponent: () => import('./pages/roles/role-details/role-details.component').then(m => m.RoleDetailsComponent) 
-          },
-          { 
-            path: 'role/edit/:id', 
-            loadComponent: () => import('./pages/roles/role-details/role-details.component').then(m => m.RoleDetailsComponent) 
-          },
-          { 
-            path: 'role/view/:id', 
-            loadComponent: () => import('./pages/roles/role-details/role-details.component').then(m => m.RoleDetailsComponent) 
-          },
-
-          // Districts
-          { 
-            path: 'district', 
-            loadComponent: () => import('./pages/district/district-table/district-table.component').then(m => m.DistrictTableComponent) 
-          },
-          { 
-            path: 'district/add', 
-            loadComponent: () => import('./pages/district/district-details/district-details.component').then(m => m.DistrictDetailsComponent) 
-          },
-          { 
-            path: 'district/edit/:id', 
-            loadComponent: () => import('./pages/district/district-details/district-details.component').then(m => m.DistrictDetailsComponent) 
-          },
-          { 
-            path: 'district/view/:id', 
-            loadComponent: () => import('./pages/district/district-details/district-details.component').then(m => m.DistrictDetailsComponent) 
-          },
-
-          // Admins
-          { 
-            path: 'admin', 
-            loadComponent: () => import('./pages/admin/admin-table/admin-table.component').then(m => m.AdminTableComponent) 
-          },
-          { 
-            path: 'admin/add', 
-            loadComponent: () => import('./pages/admin/admin-details/admin-details.component').then(m => m.AdminDetailsComponent) 
-          },
-          { 
-            path: 'admin/edit/:id', 
-            loadComponent: () => import('./pages/admin/admin-details/admin-details.component').then(m => m.AdminDetailsComponent) 
-          },
-          { 
-            path: 'admin/view/:id', 
-            loadComponent: () => import('./pages/admin/admin-details/admin-details.component').then(m => m.AdminDetailsComponent) 
-          },
-
           // Notifications
           { 
             path: 'add_notification', 
@@ -677,42 +623,6 @@ export const routes: Routes = [
 
       // ==================== Other Routes (No specific role restrictions) ====================
       
-      // Working Hours
-      { 
-        path: 'working_hours', 
-        loadComponent: () => import('./pages/working-hours/working-hours-table/working-hours-table.component').then(m => m.WorkingHoursTableComponent) 
-      },
-      { 
-        path: 'working_hours/add', 
-        loadComponent: () => import('./pages/working-hours/working-hours-details/working-hours-details.component').then(m => m.WorkingHoursDetailsComponent) 
-      },
-      { 
-        path: 'working_hours/edit/:id', 
-        loadComponent: () => import('./pages/working-hours/working-hours-details/working-hours-details.component').then(m => m.WorkingHoursDetailsComponent) 
-      },
-      { 
-        path: 'working_hours/view/:id', 
-        loadComponent: () => import('./pages/working-hours/working-hours-details/working-hours-details.component').then(m => m.WorkingHoursDetailsComponent) 
-      },
-
-      // Services
-      { 
-        path: 'services', 
-        loadComponent: () => import('./pages/services/services-table/services-table.component').then(m => m.ServicesTableComponent) 
-      },
-      { 
-        path: 'service/add', 
-        loadComponent: () => import('./pages/services/services-details/services-details.component').then(m => m.ServicesDetailsComponent) 
-      },
-      { 
-        path: 'service/view/:id', 
-        loadComponent: () => import('./pages/services/services-details/services-details.component').then(m => m.ServicesDetailsComponent) 
-      },
-      { 
-        path: 'service/edit/:id', 
-        loadComponent: () => import('./pages/services/services-details/services-details.component').then(m => m.ServicesDetailsComponent) 
-      },
-
       // Categories
       { 
         path: 'category', 
@@ -731,24 +641,6 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/category/category-details/category-details.component').then(m => m.CategoryDetailsComponent) 
       },
 
-      // Clients
-      { 
-        path: 'clients', 
-        loadComponent: () => import('./pages/clients/client-table/client-table.component').then(m => m.ClientTableComponent) 
-      },
-      { 
-        path: 'client/add', 
-        loadComponent: () => import('./pages/clients/client-details/client-details.component').then(m => m.ClientDetailsComponent) 
-      },
-      { 
-        path: 'client/view/:id', 
-        loadComponent: () => import('./pages/clients/client-details/client-details.component').then(m => m.ClientDetailsComponent) 
-      },
-      { 
-        path: 'client/edit/:id', 
-        loadComponent: () => import('./pages/clients/client-details/client-details.component').then(m => m.ClientDetailsComponent) 
-      },
-
       // Cancel Reasons
       { 
         path: 'cancel-reason', 
@@ -765,96 +657,6 @@ export const routes: Routes = [
       { 
         path: 'cancel-reason/edit/:id', 
         loadComponent: () => import('./pages/cancel-reason/cancel-reason-details/cancel-reason-details.component').then(m => m.CancelReasonDetailsComponent) 
-      },
-
-      // Complaints
-      { 
-        path: 'complaint', 
-        loadComponent: () => import('./pages/complaint/complaint-table/complaint-table.component').then(m => m.ComplaintTableComponent) 
-      },
-      { 
-        path: 'complaint/add', 
-        loadComponent: () => import('./pages/complaint/complaint-details/complaint-details.component').then(m => m.ComplaintDetailsComponent) 
-      },
-      { 
-        path: 'complaint/view/:id', 
-        loadComponent: () => import('./pages/complaint/complaint-details/complaint-details.component').then(m => m.ComplaintDetailsComponent) 
-      },
-      { 
-        path: 'complaint/edit/:id', 
-        loadComponent: () => import('./pages/complaint/complaint-details/complaint-details.component').then(m => m.ComplaintDetailsComponent) 
-      },
-
-      // Contract Types
-      { 
-        path: 'contract-type', 
-        loadComponent: () => import('./pages/contract-type/contract-type-table/contract-type-table.component').then(m => m.ContractTypeTableComponent) 
-      },
-      { 
-        path: 'contract-type/add', 
-        loadComponent: () => import('./pages/contract-type/contract-type-details/contract-type-details.component').then(m => m.ContractTypeDetailsComponent) 
-      },
-      { 
-        path: 'contract-type/view/:id', 
-        loadComponent: () => import('./pages/contract-type/contract-type-details/contract-type-details.component').then(m => m.ContractTypeDetailsComponent) 
-      },
-      { 
-        path: 'contract-type/edit/:id', 
-        loadComponent: () => import('./pages/contract-type/contract-type-details/contract-type-details.component').then(m => m.ContractTypeDetailsComponent) 
-      },
-
-      // Coupons
-      { 
-        path: 'copone', 
-        loadComponent: () => import('./pages/copone/copone-table/copone-table.component').then(m => m.CoponeTableComponent) 
-      },
-      { 
-        path: 'copone/add', 
-        loadComponent: () => import('./pages/copone/copone-details/copone-details.component').then(m => m.CoponeDetailsComponent) 
-      },
-      { 
-        path: 'copone/view/:id', 
-        loadComponent: () => import('./pages/copone/copone-details/copone-details.component').then(m => m.CoponeDetailsComponent) 
-      },
-      { 
-        path: 'copone/edit/:id', 
-        loadComponent: () => import('./pages/copone/copone-details/copone-details.component').then(m => m.CoponeDetailsComponent) 
-      },
-
-      // Packages
-      { 
-        path: 'package', 
-        loadComponent: () => import('./pages/package/package-table/package-table.component').then(m => m.PackageTableComponent) 
-      },
-      { 
-        path: 'package/add', 
-        loadComponent: () => import('./pages/package/package-details/package-details.component').then(m => m.PackageDetailsComponent) 
-      },
-      { 
-        path: 'package/view/:id', 
-        loadComponent: () => import('./pages/package/package-details/package-details.component').then(m => m.PackageDetailsComponent) 
-      },
-      { 
-        path: 'package/edit/:id', 
-        loadComponent: () => import('./pages/package/package-details/package-details.component').then(m => m.PackageDetailsComponent) 
-      },
-
-      // Technical Specialists
-      { 
-        path: 'technical-specialist', 
-        loadComponent: () => import('./pages/technical-specialist/technical-specialist-table/technical-specialist-table.component').then(m => m.TechnicalSpecialistTableComponent) 
-      },
-      { 
-        path: 'technical-specialist/add', 
-        loadComponent: () => import('./pages/technical-specialist/technical-specialist-details/technical-specialist-details.component').then(m => m.TechnicalSpecialistDetailsComponent) 
-      },
-      { 
-        path: 'technical-specialist/view/:id', 
-        loadComponent: () => import('./pages/technical-specialist/technical-specialist-details/technical-specialist-details.component').then(m => m.TechnicalSpecialistDetailsComponent) 
-      },
-      { 
-        path: 'technical-specialist/edit/:id', 
-        loadComponent: () => import('./pages/technical-specialist/technical-specialist-details/technical-specialist-details.component').then(m => m.TechnicalSpecialistDetailsComponent) 
       },
 
       // About Us (Shared: Admin & Trader - Trader view only)
@@ -883,19 +685,6 @@ export const routes: Routes = [
         data: { roles: [Roles.admin] }
       },
 
-      // Special Orders
-      { 
-        path: 'special-order', 
-        loadComponent: () => import('./pages/special-order/special-order-table/special-order-table.component').then(m => m.SpecialOrderTableComponent) 
-      },
-      { 
-        path: 'special-order/view/:id', 
-        loadComponent: () => import('./pages/special-order/special-order-details/special-order-details.component').then(m => m.SpecialOrderDetailsComponent) 
-      },
-      { 
-        path: 'special-order/edit/:id', 
-        loadComponent: () => import('./pages/special-order/special-order-details/special-order-details.component').then(m => m.SpecialOrderDetailsComponent) 
-      },
     ]
   },
   

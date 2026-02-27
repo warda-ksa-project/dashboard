@@ -29,7 +29,7 @@ pageName = signal<string>(global_pageName);
   tableActions: ITableAction[] = [
     {
       name: EAction.delete,
-      apiName_or_route: 'orderStatus/Delete?id',
+      apiName_or_route: 'OrderStatus',
       autoCall: true
     },
     {
@@ -52,7 +52,7 @@ pageName = signal<string>(global_pageName);
   }
 
   faqSearchCreteria = {
-    pageNumber: 0,
+    pageNumber: 1,
     pageSize: 8,
     sortingExpression: "",
     sortingDirection: 0,
@@ -107,9 +107,9 @@ pageName = signal<string>(global_pageName);
   }
 
   getAllFAQS() {
-    this.ApiService.post('orderStatus/GetAllStatusWithPagination', this.faqSearchCreteria).subscribe((res: any) => {
+    this.ApiService.get('OrderStatus/paginated', this.faqSearchCreteria).subscribe((res: any) => {
       if (res) {
-        this.faqsList = res.data.dataList;
+        this.faqsList = res.data.items;
         this.totalCount = res.data.totalCount;
         this.filteredData = [...this.faqsList];
       }
@@ -136,7 +136,7 @@ pageName = signal<string>(global_pageName);
 
   reset() {
     this.faqSearchCreteria = {
-      pageNumber: 0,
+      pageNumber: 1,
       pageSize: 8,
       sortingExpression: "",
       sortingDirection: 0,

@@ -14,7 +14,7 @@ import { Roles } from '../../../conts';
 
 const global_PageName = 'order.pageName';
 const global_routeUrl = 'orders';
-const global_API_details = 'order' + '/GetById?Id=';
+const global_API_details = 'Orders';
 
 @Component({
   selector: 'app-orders-details',
@@ -86,7 +86,7 @@ export class OrdersDetailsComponent {
   }
 
   API_getItemDetails() {
-    this.ApiService.get(`${global_API_details}${this.getID}`).subscribe((res: any) => {
+    this.ApiService.get(`${global_API_details}/${this.getID}`).subscribe((res: any) => {
       if (res.data) {
         this.data = res.data;
         this.products = res.data.orderItemResponseDtos || [];
@@ -121,7 +121,7 @@ export class OrdersDetailsComponent {
   }
 
   getRoles() {
-    this.ApiService.get('Auth/getRoles').subscribe((res: any) => {
+    this.ApiService.get('Auth/roles').subscribe((res: any) => {
       this.role = res.data;
     });
   }

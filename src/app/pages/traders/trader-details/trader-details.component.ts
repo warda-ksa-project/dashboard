@@ -23,9 +23,8 @@ import { CountryService } from '../../../services/country.service';
 
 const global_PageName = 'trader.pageName';
 const global_routeUrl = 'traders'
-const global_API_details = 'Trader' + '/GetTraderById';
-const global_API_create = 'Trader' + '/Create';
-const global_API_update = 'Trader' + '/Update';
+const global_API_create = 'Traders';
+const global_API_update = 'Traders';
 
 @Component({
   selector: 'app-trader-details',
@@ -383,7 +382,7 @@ export class TraderDetailsComponent  {
   //   })
   // }
   getAllCity(){
-    this.ApiService.get('city/GetAll').subscribe((res: any) => {
+    this.ApiService.get('Cities').subscribe((res: any) => {
       if (res.data) {
         this.cities=[]
        res.data.map((city:any)=>{
@@ -396,7 +395,7 @@ export class TraderDetailsComponent  {
     })
   }
   API_getItemDetails() {
-    this.ApiService.get(`${global_API_details}`, { id: this.getID }).subscribe((res: any) => {
+    this.ApiService.get(`Traders/${this.getID}`).subscribe((res: any) => {
       if (res.data) {
         this.form.patchValue({
           ...res.data,

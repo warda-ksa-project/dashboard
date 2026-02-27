@@ -107,7 +107,7 @@ export class CityDetailsComponent {
   
   }
 getAllCountries(){
-  this.ApiService.get('Country/GetAll').subscribe((res: any) => {
+  this.ApiService.get('Countries').subscribe((res: any) => {
     if (res.data) {
       this.countries=[]
      res.data.map((country:any)=>{
@@ -141,7 +141,7 @@ getBreadCrumb() {
   }
 }
   getCityDetails() {
-    this.ApiService.get(`City/GetById`,{id:this.cityID}).subscribe((res: any) => {
+    this.ApiService.get(`Cities/${this.cityID}`).subscribe((res: any) => {
       if (res.data)
         this.form.patchValue(res.data)
     })
@@ -161,13 +161,13 @@ getBreadCrumb() {
   }
 
   addCity(payload: any) {
-    this.ApiService.post('City/Create', payload).subscribe(res => {
+    this.ApiService.post('Cities', payload).subscribe(res => {
       if (res)
         this.router.navigateByUrl('/city')
     })
   }
   editCity(payload: any) {
-    this.ApiService.put('City/Update', payload).subscribe(res => {
+    this.ApiService.put('Cities', payload).subscribe(res => {
       if (res)
         this.router.navigateByUrl('/city')
     })

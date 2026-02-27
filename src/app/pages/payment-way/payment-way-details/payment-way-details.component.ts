@@ -18,9 +18,9 @@ import { CheckBoxComponent } from '../../../components/check-box/check-box.compo
 
 const global_PageName ='payment.pageName';
 const global_API_Name ='paymentWay';
-const global_API_details = global_API_Name + '/GetById';
-const global_API_create = global_API_Name + '/create';
-const global_API_update = global_API_Name + '/update';
+const global_API_details = 'PaymentWays';
+const global_API_create = 'PaymentWays';
+const global_API_update = 'PaymentWays';
 const global_routeUrl = global_API_Name
 
 @Component({
@@ -100,7 +100,7 @@ export class PaymentWayDetailsComponent {
   }
 
   API_getItemDetails() {
-    this.ApiService.get(`${global_API_details}`,{id:this.getID}).subscribe((res: any) => {
+    this.ApiService.get(`${global_API_details}/${this.getID}`).subscribe((res: any) => {
       if (res)
         this.form.patchValue(res.data)
     })

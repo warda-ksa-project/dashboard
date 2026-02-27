@@ -18,8 +18,8 @@ const global_pageName='termsAndConditions.pageName';
 const global_router_add_url_in_Table ='/settings/terms_conditions/add';
 const global_router_view_url ='/settings/terms_conditions/view';
 const global_router_edit_url ='/settings/terms_conditions/edit';
-const global_API_getAll ="TermAndCondition"+'/GetAllWithPagination';
-const global_API_delete="TermAndCondition"+'/Delete?Id';
+const global_API_getAll ='Content/terms/paginated';
+const global_API_delete='Content/terms';
 @Component({
   selector: 'app-terms-conditions-table',
   standalone: true,
@@ -52,7 +52,7 @@ export class TermsConditionsTableComponent {
   }
 
   objectSearch = {
-    pageNumber: 0,
+    pageNumber: 1,
     pageSize: 8,
     sortingExpression: "",
     sortingDirection: 0,
@@ -167,9 +167,9 @@ export class TermsConditionsTableComponent {
   }
 
   API_getAll() {
-    this.ApiService.post(global_API_getAll, this.objectSearch).subscribe((res: any) => {
+    this.ApiService.get(global_API_getAll, this.objectSearch).subscribe((res: any) => {
       if (res) {
-        this.dataList = res.data.dataList;
+        this.dataList = res.data.items;
         this.totalCount = res.data.totalCount;
         this.filteredData = [...this.dataList];
       }

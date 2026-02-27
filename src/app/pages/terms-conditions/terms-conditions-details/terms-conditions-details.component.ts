@@ -18,9 +18,9 @@ import { userType } from '../../../conts';
 import { SelectComponent } from '../../../components/select/select.component';
 
 const global_PageName='termsAndConditions.pageName';
-const global_API_deialis='TermAndCondition'+'/GetById';
-const global_API_create='TermAndCondition'+'/Create';
-const global_API_update='TermAndCondition'+'/Update';
+const global_API_deialis='Content/terms';
+const global_API_create='Content/terms';
+const global_API_update='Content/terms';
 const global_routeUrl ='/settings/terms_conditions'
 
 @Component({
@@ -116,7 +116,7 @@ export class TermsConditionsDetailsComponent {
     }
   }
   API_getItemDetails() {
-    this.ApiService.get(`${global_API_deialis}?Id=${this.getID}`).subscribe((res: any) => {
+    this.ApiService.get(`${global_API_deialis}/${this.getID}`).subscribe((res: any) => {
       if (res)
         this.form.patchValue(res.data)
     })

@@ -23,9 +23,8 @@ import { SelectComponent } from '../../../components/select/select.component';
 
 const global_PageName = 'trader_request.pageName';
 const global_routeUrl = 'traderRequest'
-const global_API_details = 'Trader' + '/GetTraderRequestById';
-const global_API_create = 'Trader' + '/Create';
-const global_API_update = 'Trader' + '/Update';
+const global_API_create = 'Traders';
+const global_API_update = 'Traders';
 
 @Component({
   selector: 'app-trader-requests-details',
@@ -329,7 +328,7 @@ header=''
     })
   }
   getAllCity(){
-    this.ApiService.get('city/GetAll').subscribe((res: any) => {
+    this.ApiService.get('Cities').subscribe((res: any) => {
       if (res.data) {
         this.cities=[]
        res.data.map((city:any)=>{
@@ -357,7 +356,7 @@ header=''
   //   })
   // }
   API_getItemDetails() {
-    this.ApiService.get(`${global_API_details}`, { TraderId: this.getID }).subscribe((res: any) => {
+    this.ApiService.get(`Traders/requests/${this.getID}`).subscribe((res: any) => {
       if (res.data) {
         this.form.patchValue({
           ...res.data,
@@ -544,7 +543,7 @@ header=''
     let payload={
        id: +this.getID,
     }
-   this.ApiService.post('trader/ApproveTrader',payload).subscribe(res=>{
+   this.ApiService.post('Traders/approve',payload).subscribe(res=>{
          if(res)
           this.navigateToPageTable()
    })
@@ -555,7 +554,7 @@ header=''
        "userId": +this.getID,
        "rejectionReason": this.reasonForRejectionValue
     }
-    this.ApiService.post('trader/RejectTrader',payload).subscribe(res=>{
+    this.ApiService.post('Traders/reject',payload).subscribe(res=>{
       if(res)
         this.navigateToPageTable()
     })

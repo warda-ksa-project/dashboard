@@ -54,7 +54,7 @@ export class NotificationsComponent {
   // }
 
   getNotifications() {
-      this.ApiService.get('Notification/GetNotifications').subscribe((noti: any) => {
+      this.ApiService.get('Notifications').subscribe((noti: any) => {
       this.notificationsList = noti.data.data;
       this.totlaCount = noti.data.totalCount;
       this.totalUnSeen = noti.data.totalUnSeenCount;

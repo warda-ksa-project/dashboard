@@ -12,10 +12,6 @@ export class ApiService {
 
   constructor(private http: HttpClient) {}
 
-  login<T>(body: any): Observable<T> {
-    return this.http.post<T>(`${baseUrl}Auth/Login`, body);
-  }
-
   post<T>(apiName: string, body: any): Observable<T> {
     return this.http.post<T>(`${baseUrl}${apiName}`, body);
   }
@@ -39,6 +35,6 @@ export class ApiService {
   }
 
   delete<T>(apiName: string, id: string): Observable<T> {
-    return this.http.delete<T>(`${baseUrl}${apiName}=${id}`);
+    return this.http.delete<T>(`${baseUrl}${apiName}/${id}`);
   }
 }

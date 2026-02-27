@@ -16,8 +16,8 @@ import { DialogComponent } from '../../components/dialog/dialog.component';
 
 const global_PageName = 'target.pageName';
 const global_routeUrl = '/dashboard-trader'
-const global_API_getAll = 'target' + '/GetAll';
-const global_API_update = 'target' + '/Update';
+const global_API_getAll = 'YearTargets';
+const global_API_update = 'YearTargets';
 
 @Component({
   selector: 'app-target',

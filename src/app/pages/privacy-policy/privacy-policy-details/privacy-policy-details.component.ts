@@ -18,9 +18,9 @@ import { userType } from '../../../conts';
 import { SelectComponent } from '../../../components/select/select.component';
 
 const global_PageName='privacy.pageName';
-const global_API_deialis='PrivacyPolicy'+'/GetById';
-const global_API_create='PrivacyPolicy'+'/Create';
-const global_API_update='PrivacyPolicy'+'/Update';
+const global_API_deialis='Content/privacy';
+const global_API_create='Content/privacy';
+const global_API_update='Content/privacy';
 const global_routeUrl ='/settings/privacy_policy'
 
 @Component({
@@ -119,7 +119,7 @@ export class PrivacyPolicyDetailsComponent {
   }
 
   API_getItemDetails() {
-    this.ApiService.get(`${global_API_deialis}?Id=${this.getID}`).subscribe((res: any) => {
+    this.ApiService.get(`${global_API_deialis}/${this.getID}`).subscribe((res: any) => {
       if (res)
         this.form.patchValue(res.data)
     })

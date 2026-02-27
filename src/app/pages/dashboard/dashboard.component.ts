@@ -52,7 +52,7 @@ export class DashboardComponent {
     selectedLang: any;
     languageService = inject(LanguageService);
     objectSearch = {
-      pageNumber: 0,
+      pageNumber: 1,
       pageSize: 8,
       sortingExpression: '',
       sortingDirection: 0,
@@ -198,7 +198,7 @@ pageinationList:any[]=[
 
   getAllSalesPerMonth(){
 
-  this.ApiService.get('DashboardTrader/GetAllSalesPerMonth').subscribe((res: any) => {
+  this.ApiService.get('admin/dashboard/sales-per-month').subscribe((res: any) => {
     //  this.allMonthSales=Object.values(res).sort((a:any, b:any) => a - b);
     this.allMonthSales=Object.values(res).sort((a:any, b:any) => a - b);
   this.getAllTargetAPI()
@@ -206,7 +206,7 @@ pageinationList:any[]=[
 }
 
 getAllTargetAPI(){
-  this.ApiService.get('target/GetAll').subscribe((res: any) => {
+  this.ApiService.get('YearTargets').subscribe((res: any) => {
     console.log("DashboardComponent  this.ApiService.get  res:", res)
     this.allTargetMonth= this.getTarget(res.data)   
     console.log("DashboardComponent  this.ApiService.get      this.allTargetMonth:",     this.allTargetMonth)
@@ -266,7 +266,7 @@ onPageSelected(number:any){
   // }
 
   getStaticData() {
-    this.ApiService.get('DashboardTrader/GetAllTraderDashboardStatistics').subscribe((res: any) => {
+    this.ApiService.get('admin/dashboard/trader').subscribe((res: any) => {
       // this.staticDetails = res
       this.items[0].price=res.completeOrdersCount
       this.items[1].price=res.pendingOrdersCount
@@ -278,7 +278,7 @@ onPageSelected(number:any){
 
   getAllSalesOrderDashboardStatistics(){
     
-    this.ApiService.get('DashboardTrader/GetAllSalesOrderDashboardStatistics').subscribe((res: any) => {
+    this.ApiService.get('admin/dashboard/trader').subscribe((res: any) => {
        this.staticDetails = res
       // this.items[0].price=res.completeOrdersCount
       // this.items[1].price=res.pendingOrdersCount
@@ -417,7 +417,7 @@ onPageSelected(number:any){
       //     }
       //   }
       // );
-        this.ApiService.get(`Product/BestSellerReport?count=${pageNumber}`).subscribe(
+        this.ApiService.get(`Products/best-sellers`, { count: pageNumber }).subscribe(
         (res: any) => {
           if (res) {
             this.dataList = res.data;
@@ -429,7 +429,7 @@ onPageSelected(number:any){
     }
   
     getRoles(){
-      this.apiService.get('Auth/getRoles').subscribe((res:any)=>{
+      this.apiService.get('Auth/roles').subscribe((res:any)=>{
         this.role=res.data
         if(this.role==Roles.trader){
         this.getAllSalesOrderDashboardStatistics();
@@ -467,7 +467,7 @@ onPageSelected(number:any){
   
     reset() {
       this.objectSearch = {
-        pageNumber: 0,
+        pageNumber: 1,
         pageSize: 8,
         sortingExpression: '',
         sortingDirection: 0,

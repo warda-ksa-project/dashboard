@@ -25,9 +25,9 @@ import { Roles } from '../../../conts';
 
 const global_PageName = 'products.pageName';
 const global_routeUrl = 'product'
-const global_API_details = 'product' + '/GetById';
-const global_API_create = 'product' + '/Create';
-const global_API_update = 'product' + '/Update';
+const global_API_details = 'Products';
+const global_API_create = 'Products';
+const global_API_update = 'Products';
 
 @Component({
   selector: 'app-products-details',
@@ -230,7 +230,7 @@ export class ProductsDetailsComponent {
 }
 
 getRoles(){
-  this.apiService.get('Auth/getRoles').subscribe((res:any)=>{
+  this.apiService.get('Auth/roles').subscribe((res:any)=>{
     this.role=res.data
   if(this.role)
   this.getAllCategory()
@@ -254,7 +254,7 @@ getRoles(){
      this.getMainCategory()
   }
   getMainCategory() {
-    this.ApiService.get('MainCategory/GetAll').subscribe((res: any) => {
+    this.ApiService.get('Categories').subscribe((res: any) => {
       if (res.data) {
         this.categoryList = []
         res.data.map((item: any) => {
@@ -291,7 +291,7 @@ getRoles(){
     })
   }
   getSubCategory() {
-    this.ApiService.get('SubCategory/GetSubCategoryByTraderId').subscribe((res: any) => {
+    this.ApiService.get('SubCategories/by-trader').subscribe((res: any) => {
       if (res.data) {
         this.categoryList = []
         res.data.map((item: any) => {
@@ -305,7 +305,7 @@ getRoles(){
     })
   }
   API_getItemDetails() {
-    this.ApiService.get(`${global_API_details}`, { id: this.getID }).subscribe((res: any) => {
+    this.ApiService.get(`${global_API_details}/${this.getID}`).subscribe((res: any) => {
       if (res.data) {
         this.reviews=res.data.productReviews
         this.form.patchValue({

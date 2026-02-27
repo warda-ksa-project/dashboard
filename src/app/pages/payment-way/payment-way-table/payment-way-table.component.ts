@@ -18,10 +18,10 @@ const global_API_Name='paymentWay'
 const global_router_add_url_in_Table ='/'+global_API_Name+'/add'
 const global_router_view_url =global_API_Name+'/view'
 const global_router_edit_url =global_API_Name+'/edit'
-const global_API_getAll =global_API_Name+'/GetAllWithPagination'
-const global_API_delete=global_API_Name+'/changeStatus?id'
+const global_API_getAll ='PaymentWays/paginated'
+const global_API_delete='PaymentWays/changeStatus'
 const global_toggleOptions:IToggleOptions={
-  apiName:'paymentWay/Update',
+  apiName:'PaymentWays',
   autoCall:true,
   }
 @Component({
@@ -72,7 +72,7 @@ export class PaymentWayTableComponent {
   }
 
   objectSearch = {
-    pageNumber: 0,
+    pageNumber: 1,
     pageSize: 8,
     sortingExpression: "",
     sortingDirection: 0,
@@ -143,9 +143,9 @@ export class PaymentWayTableComponent {
   }
 
   API_getAll() {
-    this.ApiService.post(global_API_getAll, this.objectSearch).subscribe((res: any) => {
+    this.ApiService.get(global_API_getAll, this.objectSearch).subscribe((res: any) => {
       if (res) {
-        this.dataList = res.data.dataList;
+        this.dataList = res.data.items;
         this.totalCount = res.data.totalCount;
         this.filteredData = [...this.dataList];
       }
@@ -182,7 +182,7 @@ export class PaymentWayTableComponent {
 
   reset() {
     this.objectSearch = {
-      pageNumber: 0,
+      pageNumber: 1,
       pageSize: 8,
       sortingExpression: "",
       sortingDirection: 0,

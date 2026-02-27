@@ -60,7 +60,7 @@ export class DashboardAdminComponent {
   selectedLang: any;
   languageService = inject(LanguageService);
   objectSearch = {
-    pageNumber: 0,
+    pageNumber: 1,
     pageSize: 8,
     sortingExpression: '',
     sortingDirection: 0,
@@ -183,7 +183,7 @@ export class DashboardAdminComponent {
   // }
 
   getAllSalesPerWeek() {
-    this.ApiService.get('DashboardAdmin/GetAllSalesOrderPerWeek').subscribe(
+    this.ApiService.get('admin/dashboard/sales-order-per-week').subscribe(
       (res: any) => {
         // this.allWeeksSales = res
         this.firstDateName = `${this.languageService.translationService.instant('dashboard_admin.chart.firstDataName')}  ${this.currencyPipe.transform(res.salesForThisWeek, 'USD', '', '1.0-0')}`;
@@ -196,13 +196,13 @@ export class DashboardAdminComponent {
 
 
   getAllUsers(payload: any) {
-    this.ApiService.post('DashboardAdmin/GetAllUserDashboardStatistics', payload).subscribe((res: any) => {
+    this.ApiService.get('admin/dashboard', payload).subscribe((res: any) => {
       this.usersList = res
     })
   }
 
   getAllRevenueForEveryCity() {
-    this.ApiService.get('DashboardAdmin/GetAllRevenueForEveryCity').subscribe((res: any) => {
+    this.ApiService.get('admin/dashboard/city-revenue').subscribe((res: any) => {
       this.cityData = res
     });
   }
@@ -239,7 +239,7 @@ export class DashboardAdminComponent {
 
   getStaticData() {
     this.ApiService.get(
-      'DashboardAdmin/GetAllAdminDashboardStatistics'
+      'admin/dashboard'
     ).subscribe((res: any) => {
       this.dataCardItems = res;
       if (res) {
@@ -258,7 +258,7 @@ export class DashboardAdminComponent {
 
   getAllSalesOrderDashboardStatistics() {
     this.ApiService.get(
-      'DashboardTrader/GetAllSalesOrderDashboardStatistics'
+      'admin/dashboard/trader'
     ).subscribe((res: any) => {
       this.staticDetails = res;
     });
@@ -283,7 +283,7 @@ export class DashboardAdminComponent {
     return `${year}-${month}-${day}`;
   };
   getRoles() {
-    this.apiService.get('Auth/getRoles').subscribe((res: any) => {
+    this.apiService.get('Auth/roles').subscribe((res: any) => {
       this.role=res.data
       this.getStaticData();
       this.getAllRevenueForEveryCity();

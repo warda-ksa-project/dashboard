@@ -10,7 +10,6 @@ import { LanguageService } from '../../../services/language.service';
 import { ETableShow, IcolHeaderSmallTable, TableSmallScreenComponent } from '../../../components/table-small-screen/table-small-screen.component';
 import { PaginationComponent } from '../../../components/pagination/pagination.component';
 import { TitleCasePipe } from '@angular/common';
-import { coponeOfferTypeList, coponeTypeList } from '../../../conts';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DrawerComponent } from '../../../components/drawer/drawer.component';
 
@@ -18,8 +17,8 @@ const global_pageName = 'slider.pageName'
 const global_router_add_url_in_Table = "slider/add"
 const global_router_view_url = "slider" + '/view'
 const global_router_edit_url = "slider" + '/edit'
-const global_API_getAll = "slider" + '/GetAllWithPagination'
-const global_API_delete = "slider" + '/Delete?Id'
+const global_API_getAll = 'Sliders/paginated'
+const global_API_delete = 'Sliders'
 @Component({
   selector: 'app-slider-table',
   standalone: true,
@@ -58,7 +57,7 @@ export class SliderTableComponent {
   }
 
   objectSearch = {
-    pageNumber: 0,
+    pageNumber: 1,
     pageSize: 8,
     sortingExpression: "",
     sortingDirection: 0,
@@ -72,8 +71,6 @@ export class SliderTableComponent {
   filteredData: any;
   dataList: any = []
   columns: IcolHeader[] = [];
-  offerTypeList: any[] = coponeOfferTypeList
-  coponeTypeList: any[] = coponeTypeList
   columnsSmallTable: IcolHeaderSmallTable[] = []
 
   selectedLang: any;
@@ -144,9 +141,9 @@ export class SliderTableComponent {
     //   }
 
     // })
-    this.ApiService.post(global_API_getAll, this.objectSearch).subscribe((res: any) => {
+    this.ApiService.get(global_API_getAll, this.objectSearch).subscribe((res: any) => {
       if (res) {
-        this.dataList = res.data.dataList;
+        this.dataList = res.data.items;
         this.totalCount = res.data.totalCount;
         this.filteredData = [...this.dataList];
       }
@@ -185,7 +182,7 @@ export class SliderTableComponent {
   }
   reset() {
     this.objectSearch = {
-      pageNumber: 0,
+      pageNumber: 1,
       pageSize: 8,
       sortingExpression: "",
       sortingDirection: 0,

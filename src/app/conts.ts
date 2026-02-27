@@ -79,66 +79,6 @@ export const userType = [
   },
 ]
 
-export const coponeOfferTypeList = [
-  {
-    name: 'Percentage',
-    code: 1
-  },
-  {
-    name: 'Amount',
-    code: 2
-  }
-]
-
-export const coponeTypeList = [
-  {
-    name: 'Gift',
-    code: 1
-  },
-  {
-    name: 'Offer',
-    code: 2
-  }
-]
-
-export const PackageTypeList = [
-  {
-    name: 'Daily',
-    code: 1
-  },
-  {
-    name: 'Monthly',
-    code: 2
-  },
-  {
-    name: 'Qurater',
-    code: 3
-  },
-  {
-    name: 'Biannual',
-    code: 4
-  },
-  {
-    name: 'Yearly',
-    code: 5
-  },
-  {
-    name: 'Weekly',
-    code: 6
-  }
-]
-
-export const packageHourVistList = [
-  {
-    name: '4',
-    code: 4
-  },
-  {
-    name: '8',
-    code: 8
-  }
-]
-
 export const gender = [
   {
     name: 'Male',
@@ -161,21 +101,4 @@ export const order_status = [
   { name: 'Completed', id: 7, code: 7, color: '#49e97c' },
   { name: 'Canceled', id: 8, code: 8, color: '#e94949' }
 ]
-export const special_order_status = [
-  { name: 'Pending', id: 1, code: 1, color: '#c1cd6a' },
-  { name: 'Completed', id: 2, code: 2, color: '#3fac4e' },
-  { name: 'Canceled', id: 3, code: 3, color: '#c32722' }
-]
-
-export const special_order_enum = [
-  {
-    name: 'Emergency',
-    code: 1
-  },
-  {
-    name: 'Special',
-    code: 2
-  }
-]
-
 

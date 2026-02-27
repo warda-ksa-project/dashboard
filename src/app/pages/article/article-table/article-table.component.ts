@@ -27,7 +27,7 @@ const global_pageName = 'article.pageName';
 const global_router_add_url_in_Table = '/article/add';
 const global_router_view_url = '/article/view';
 const global_router_edit_url = '/article/edit';
-const global_API_getAll = 'article' + '/GetAll';
+const global_API_getAll = 'Content/articles/paginated';
 @Component({
   selector: 'app-article-table',
   standalone: true,
@@ -54,7 +54,7 @@ global_router_add_url_in_Table = global_router_add_url_in_Table;
   tableActions: ITableAction[] = [
     {
       name: EAction.delete,
-      apiName_or_route: 'article/Delete?id',
+      apiName_or_route: 'Content/articles',
       autoCall: true,
     },
     {
@@ -75,7 +75,7 @@ global_router_add_url_in_Table = global_router_add_url_in_Table;
   };
 
   objectSearch = {
-    pageNumber: 0,
+    pageNumber: 1,
     pageSize: 8,
     sortingExpression: '',
     sortingDirection: 0,
@@ -194,12 +194,12 @@ global_router_add_url_in_Table = global_router_add_url_in_Table;
     //     }
     //   }
     // );
-    this.ApiService.get(global_API_getAll).subscribe(
+    this.ApiService.get(global_API_getAll, this.objectSearch).subscribe(
       (res: any) => {
         if (res) {
-          this.dataList = res.data;
-          // this.totalCount = res.data.totalCount;
-          // this.filteredData = [...this.dataList];
+          this.dataList = res.data.items;
+          this.totalCount = res.data.totalCount;
+          this.filteredData = [...this.dataList];
         }
       }
     );
@@ -235,7 +235,7 @@ global_router_add_url_in_Table = global_router_add_url_in_Table;
 
   reset() {
     this.objectSearch = {
-      pageNumber: 0,
+      pageNumber: 1,
       pageSize: 8,
       sortingExpression: '',
       sortingDirection: 0,

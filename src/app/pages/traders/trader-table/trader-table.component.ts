@@ -27,7 +27,7 @@ const global_pageName = 'trader.pageName';
 const global_router_add_url_in_Table = '/traders/add';
 const global_router_view_url = '/traders/view';
 const global_router_edit_url = '/traders/edit';
-const global_API_getAll = 'Trader' + '/GetAllTradersWithPagination';
+const global_API_getAll = 'Traders/paginated';
 @Component({
   selector: 'app-trader-table',
   standalone: true,
@@ -54,7 +54,7 @@ export class TraderTableComponent {
   tableActions: ITableAction[] = [
     {
       name: EAction.delete,
-      apiName_or_route: 'trader/DeleteTrader?TraderId',
+      apiName_or_route: 'Traders',
       autoCall: true,
     },
     {
@@ -75,7 +75,7 @@ export class TraderTableComponent {
   };
 
   objectSearch = {
-    pageNumber: 0,
+    pageNumber: 1,
     pageSize: 8,
     sortingExpression: '',
     sortingDirection: 0,
@@ -198,10 +198,10 @@ export class TraderTableComponent {
   }
 
   API_getAll() {
-    this.ApiService.post(global_API_getAll, this.objectSearch).subscribe(
+    this.ApiService.get(global_API_getAll, this.objectSearch).subscribe(
       (res: any) => {
         if (res) {
-          this.dataList = res.data.dataList;
+          this.dataList = res.data.items;
           this.totalCount = res.data.totalCount;
           this.filteredData = [...this.dataList];
         }
@@ -239,7 +239,7 @@ export class TraderTableComponent {
 
   reset() {
     this.objectSearch = {
-      pageNumber: 0,
+      pageNumber: 1,
       pageSize: 8,
       sortingExpression: '',
       sortingDirection: 0,

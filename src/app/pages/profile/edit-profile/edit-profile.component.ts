@@ -21,8 +21,8 @@ import { environment } from '../../../../environments/environment.prod';
 import { BreadcrumpComponent } from '../../../components/breadcrump/breadcrump.component';
 
 const global_PageName = 'profile.pageName';
-const global_API_deialis =  'admin/GetById';
-const global_API_update =  'admin/Update';
+const global_API_deialis =  'Users';
+const global_API_update =  'Users';
 const global_routeUrl = '/profile'
 @Component({
   selector: 'app-edit-profile',
@@ -180,7 +180,7 @@ pageName = signal<string>(global_PageName);
       }
     };
   getAllRoles(){
-    this.ApiService.get('role/GetAll').subscribe((res:any)=>{
+    this.ApiService.get('Auth/roles').subscribe((res:any)=>{
        if(res.data){
           res.data.map((item:any) => {
              this.roleList.push({

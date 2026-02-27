@@ -28,7 +28,7 @@ export class CancelReasonTableComponent {
   tableActions: ITableAction[] = [
     {
       name: EAction.delete,
-      apiName_or_route: 'Canclereason/Delete?id',
+      apiName_or_route: 'CancelReasons',
       autoCall: true
     },
     {
@@ -58,7 +58,7 @@ export class CancelReasonTableComponent {
   }
 
   objectSearch = {
-    pageNumber: 0,
+    pageNumber: 1,
     pageSize: 8,
     sortingExpression: "",
     sortingDirection: 0,
@@ -131,9 +131,9 @@ export class CancelReasonTableComponent {
   }
 
   getAllCancelReason() {
-    this.ApiService.post('CancleReason/GetAllWithPagination', this.objectSearch).subscribe((res: any) => {
+    this.ApiService.get('CancelReasons/paginated', this.objectSearch).subscribe((res: any) => {
       if (res) {
-        this.dataList = res.data.dataList;
+        this.dataList = res.data.items;
         this.totalCount = res.data.totalCount;
         this.filteredData = [...this.dataList];
       }
@@ -173,7 +173,7 @@ export class CancelReasonTableComponent {
 
   reset() {
     this.objectSearch = {
-      pageNumber: 0,
+      pageNumber: 1,
       pageSize: 8,
       sortingExpression: "",
       sortingDirection: 0,

@@ -21,9 +21,9 @@ import { environment } from '../../../../environments/environment';
 import { LanguageService } from '../../../services/language.service';
 
 const global_PageName = 'about_us.pageName';
-const global_API_deialis =  'aboutUs/GetById';
-const global_API_create =  'aboutUs/Create';
-const global_API_update =  'aboutUs/Update';
+const global_API_deialis = 'Content/about-us';
+const global_API_create = 'Content/about-us';
+const global_API_update = 'Content/about-us';
 const global_routeUrl = 'about-us'
 
 @Component({
@@ -149,7 +149,7 @@ export class AboutUsDetailsComponent {
   }
 
   API_getItemDetails() {
-    this.ApiService.get(`${global_API_deialis}?id=${this.getID}`).subscribe((res: any) => {
+    this.ApiService.get(`${global_API_deialis}/${this.getID}`).subscribe((res: any) => {
       if (res){
         this.form.patchValue(res.data)
         this.editImageProps.props.imgSrc = res.data.image;
