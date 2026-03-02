@@ -20,7 +20,7 @@ const global_pageName = 'category.pageName';
 const global_router_add_url_in_Table = '/category/add';
 const global_router_view_url = '/category/view';
 const global_router_edit_url = '/category/edit';
-const global_API_getAll = 'SubCategories/paginated';
+const global_API_getAll = 'Categories/paginated';
 @Component({
   selector: 'app-category-table',
   standalone: true,
@@ -48,7 +48,7 @@ export class CategoryTableComponent {
   tableActions: ITableAction[] = [
     {
       name: EAction.delete,
-      apiName_or_route: 'SubCategories',
+      apiName_or_route: 'Categories',
       autoCall: true
     },
     {
@@ -154,7 +154,7 @@ export class CategoryTableComponent {
 
   onPageChange(event: any) {
     console.log(event);
-    this.objectSearch.pageNumber = event + 1;
+    this.objectSearch.pageNumber = event;
     this.API_getAll();
   }
 

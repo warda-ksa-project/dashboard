@@ -20,7 +20,6 @@ import { environment } from '../../../../environments/environment';
 import { IEditImage } from '../../../components/edit-mode-image/editImage.interface';
 import { GalleryComponent } from '../../../components/gallery/gallery.component';
 import { CountryService } from '../../../services/country.service';
-
 const global_PageName ='users.pageName';
 const global_API_Name ='Users';
 const global_API_details = global_API_Name;
@@ -46,30 +45,17 @@ pageName = signal<string>(global_PageName);
   imageList: any;
 
   form = new FormGroup({
-    name: new FormControl('', {
-      validators: [
-        Validators.required,
-      ],
-    }),
-    email: new FormControl('', {
-      validators: [
-        Validators.required,
-      ],
-    }),
+    name: new FormControl('', { validators: [Validators.required] }),
+    email: new FormControl('', { validators: [Validators.required] }),
     phone: new FormControl('', {
       validators: [
         Validators.required,
         Validations.phoneValidator(this.countryService.getCountries())
       ]
     }),
-    role: new FormControl('', {
-
-    }),
-    isActive: new FormControl('', {
-    }),
-    image:new FormControl(''),
-    id: new FormControl(this.getID|0, {
-    }),
+    isActive: new FormControl(true),
+    image: new FormControl(''),
+    id: new FormControl<number | null>(this.getID as number ?? null),
   })
 
   bredCrumb: IBreadcrumb = {
@@ -95,12 +81,12 @@ pageName = signal<string>(global_PageName);
   ngOnInit() {
     this.pageName.set(global_PageName)
     this.getBreadCrumb()
+
     this.languageService.translationService.onLangChange.subscribe(() => {
       this.selectedLang = this.languageService.translationService.currentLang;
       this.getBreadCrumb();
     });
-    
-    // Subscribe to selected country changes to update phone validator
+
     this.countryService.selectedCountry$.subscribe(selectedCountry => {
       if (selectedCountry) {
         this.form.get('phone')?.setValidators([
@@ -111,7 +97,6 @@ pageName = signal<string>(global_PageName);
       }
     });
 
-    // Also subscribe to all countries as fallback
     this.countryService.countries$.subscribe(countries => {
       if (countries.length > 0 && !this.countryService.getSelectedCountry()) {
         this.form.get('phone')?.setValidators([
@@ -121,12 +106,11 @@ pageName = signal<string>(global_PageName);
         this.form.get('phone')?.updateValueAndValidity();
       }
     });
-    
+
     if (this.tyepMode() !== 'Add')
       this.API_getItemDetails()
   }
 
- 
   tyepMode() {
     const url = this.router.url;
     let result = 'Add'
@@ -151,22 +135,44 @@ pageName = signal<string>(global_PageName);
 
   API_getItemDetails() {
     this.ApiService.get(`${global_API_details}/${this.getID}`).subscribe((res: any) => {
-      if (res){
-        this.form.patchValue(res.data)
-       this.editMode=true
-       this.editImageProps.props.imgSrc =res.data.image;
+      if (res?.data) {
+        const d = res.data;
+        this.form.patchValue({
+          name: d.userName,
+          email: d.email,
+          phone: d.phone,
+          isActive: d.isActive,
+          image: d.image,
+          id: d.id
+        });
+        this.editMode = true;
+        this.editImageProps.props.imgSrc = d.image;
       }
-    })
+    });
   }
 
   onSubmit() {
-    const payload = {
-      ...this.form.value
+    if (this.tyepMode() == 'Add') {
+      const raw = this.form.getRawValue();
+      const selectedCountry = this.countryService.getSelectedCountry();
+      const phone = String(raw.phone || '').replace(/^0+/, '');
+      const payload = {
+        userName: raw.name,
+        phone,
+        countryCode: selectedCountry?.phoneCode || '+966',
+        roleId: 3,
+        email: raw.email || null
+      };
+      this.API_forAddItem(payload);
+    } else {
+      const raw = this.form.getRawValue();
+      const payload = {
+        id: Number(this.getID),
+        userName: raw.name,
+        email: raw.email || null
+      };
+      this.API_forEditItem(payload);
     }
-    if (this.tyepMode() == 'Add')
-      this.API_forAddItem(payload)
-    else
-      this.API_forEditItem(payload)
   }
 
   navigateToPageTable() {

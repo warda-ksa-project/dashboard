@@ -158,7 +158,7 @@ export class MainCatogoryTableComponent {
 
   onPageChange(event: any) {
     console.log(event);
-    this.objectSearch.pageNumber = event + 1;
+    this.objectSearch.pageNumber = event;
     this.API_getAll();
   }
 

@@ -224,8 +224,8 @@ export class ProductsDetailsComponent {
   getRoles() {
     this.apiService.get('Auth/roles').subscribe((res: any) => {
       this.role = res?.data ?? res;
-      if (this.role) this.getAllCategory();
     });
+    this.getAllCategory();
   }
   tyepMode() {
     const url = this.router.url;
@@ -238,21 +238,8 @@ export class ProductsDetailsComponent {
 
 
 
-  getAllCategory(){
-    if(this.role==Roles.trader)
-      this.getSubCategory()
-    else
-     this.getMainCategory()
-  }
-  getMainCategory() {
-    this.ApiService.get('Categories').subscribe((res: any) => {
-      const list = res?.data ?? res ?? [];
-      const arr = Array.isArray(list) ? list : [list];
-      this.categoryList = arr.map((item: any) => ({
-        name: this.selectedLang === 'ar' ? (item.arName ?? item.enName) : (item.enName ?? item.arName),
-        code: item.id
-      }));
-    });
+  getAllCategory() {
+    this.getSubCategory();
   }
   onValueStepperChange(value:any){
     this.goTo(value)

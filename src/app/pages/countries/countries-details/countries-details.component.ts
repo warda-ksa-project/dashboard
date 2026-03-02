@@ -15,7 +15,6 @@ import { UploadFileComponent } from '../../../components/upload-file/upload-file
 import { IEditImage } from '../../../components/edit-mode-image/editImage.interface';
 import { EditModeImageComponent } from '../../../components/edit-mode-image/edit-mode-image.component';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { environment } from '../../../../environments/environment.prod';
 import { LanguageService } from '../../../services/language.service';
 @Component({
   selector: 'app-countries-details',

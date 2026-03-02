@@ -190,6 +190,9 @@ export class LoginComponent {
         }
         if (this.selectedCountryId) {
           localStorage.setItem('countryId', this.selectedCountryId.toString());
+        } else if (user.countryId != null) {
+          // Trader: use country from phone (backend derives from phone country code)
+          localStorage.setItem('countryId', String(user.countryId));
         } else {
           localStorage.removeItem('countryId');
         }

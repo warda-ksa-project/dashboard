@@ -17,7 +17,6 @@ import { gender } from '../../../conts';
 import { EditModeImageComponent } from '../../../components/edit-mode-image/edit-mode-image.component';
 import { UploadFileComponent } from '../../../components/upload-file/upload-file.component';
 import { IEditImage } from '../../../components/edit-mode-image/editImage.interface';
-import { environment } from '../../../../environments/environment.prod';
 import { BreadcrumpComponent } from '../../../components/breadcrump/breadcrump.component';
 
 const global_PageName = 'profile.pageName';
@@ -37,7 +36,6 @@ const global_routeUrl = '/profile'
             TitleCasePipe, 
             InputTextComponent, 
             RouterModule, 
-            BreadcrumpComponent, 
             CheckBoxComponent,
             EditModeImageComponent,
             UploadFileComponent,

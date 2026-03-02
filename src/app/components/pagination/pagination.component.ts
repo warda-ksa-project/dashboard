@@ -19,8 +19,7 @@ export class PaginationComponent {
   isArabic: boolean = false;
 
   onPage(event: any): void {
-    let pageNum = 1;
-    pageNum = (event.first / this.rows);
+    const pageNum = Math.floor(event.first / this.rows) + 1;
     this.onPageChange.emit(pageNum);
   }
 

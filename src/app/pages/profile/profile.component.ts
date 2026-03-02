@@ -11,7 +11,6 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { LanguageService } from '../../services/language.service';
 import { gender } from '../../conts';
 import { IEditImage } from '../../components/edit-mode-image/editImage.interface';
-import { environment } from '../../../environments/environment.prod';
 
 const global_PageName = 'profile.pageName';
 const global_API_deialis =  'Users';
