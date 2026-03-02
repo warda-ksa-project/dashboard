@@ -111,19 +111,23 @@ export class ContactUsDetailsComponent {
 
   API_getItemDetails() {
     this.ApiService.get(`${global_API_deialis}/${this.getID}`).subscribe((res: any) => {
-      if (res.data)
-        this.form.patchValue(res.data)
-    })
+      const d = res?.data ?? res;
+      if (d) this.form.patchValue({ name: d.name, email: d.email, mobile: d.phone ?? d.mobile, message: d.message });
+    });
   }
 
   onSubmit() {
-    const payload = {
-      ...this.form.value
-    }
-    if (this.tyepMode() == 'Add')
-      this.API_forAddItem(payload)
-    else
-      this.API_forEditItem(payload)
+    const raw = this.form.value;
+    const payload: any = {
+      name: raw.name ?? '',
+      email: raw.email || null,
+      phone: raw.mobile || null,
+      subject: null,
+      message: raw.message || null
+    };
+    if (this.tyepMode() === 'Edit') payload.id = Number(this.getID);
+    if (this.tyepMode() === 'Add') this.API_forAddItem(payload);
+    else this.API_forEditItem(payload);
   }
 
   navigateToPageTable() {
@@ -146,17 +150,15 @@ export class ContactUsDetailsComponent {
 
 
   API_forAddItem(payload: any) {
-    this.ApiService.post(global_API_create, payload).subscribe(res => {
-      if (res)
-        this.navigateToPageTable()
-    })
+    this.ApiService.post(global_API_create, payload).subscribe((res: any) => {
+      if (res?.isSuccess !== false) this.navigateToPageTable();
+    });
   }
 
   API_forEditItem(payload: any) {
-    this.ApiService.put(global_API_update, payload).subscribe(res => {
-      if (res)
-        this.navigateToPageTable()
-    })
+    this.ApiService.put(global_API_update, payload).subscribe((res: any) => {
+      if (res?.isSuccess !== false) this.navigateToPageTable();
+    });
   }
 
 

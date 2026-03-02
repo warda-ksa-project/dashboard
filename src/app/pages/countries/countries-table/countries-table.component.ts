@@ -17,7 +17,7 @@ const global_pageName='country'
 const global_router_add_url_in_Table ='/'+global_pageName+'/add'
 const global_router_view_url =global_pageName+'/view'
 const global_router_edit_url =global_pageName+'/edit'
-const global_API_getAll ='Countries/paginated'
+const global_API_getAll = 'Countries'
 const global_API_delete='Countries'
 const global_toggleOptions:IToggleOptions={
 apiName:'Countries',
@@ -104,7 +104,7 @@ export class CountriesTableComponent {
   displayTableCols(currentLang: string) {
     this.columns = [
       { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: true },
-      { keyName: 'img', header: this.languageService.translate('country.form.image'), type: EType.image, show: false },
+      { keyName: 'image', header: this.languageService.translate('country.form.image'), type: EType.image, show: false },
       { keyName: currentLang === 'ar' ? 'arName' : 'enName', header: this.languageService.translate('country.form.name_en'), type: EType.text, show: true },
       { keyName: 'phoneLength', header: this.languageService.translate('country.form.phoneLength'), type: EType.text, show: true },
       { keyName: 'phoneCode', header: this.languageService.translate('country.form.phoneCode'), type: EType.text, show: true },
@@ -146,36 +146,27 @@ export class CountriesTableComponent {
   }
 
   API_getAll() {
-    this.ApiService.get(global_API_getAll, this.objectSearch).subscribe((res: any) => {
-      if (res) {
-        this.dataList = res.data.items;
-        this.totalCount = res.data.totalCount;
-        this.filteredData = [...this.dataList];
-      }
-
-    })
+    this.ApiService.get(global_API_getAll).subscribe((res: any) => {
+      const d = res?.data ?? res;
+      const list = Array.isArray(d) ? d : (d?.items ?? []);
+      this.dataList = list;
+      this.totalCount = list.length;
+      this.filteredData = [...this.dataList];
+    });
   }
 
   onPageChange(event: any) {
-    console.log(event);
     this.objectSearch.pageNumber = event;
     this.API_getAll();
   }
 
   filterData() {
-    this.dataList = this.filteredData;
-    const search = this.searchValue.toLowerCase();
-
-    if (this.searchValue.length == 1) {
-      this.dataList = this.filteredData;
-      return;
-    }
-
-    this.dataList = this.dataList.filter((item: any) =>
-      item.enTitle.toLowerCase().includes(search) ||
-      item.arTitle.toLowerCase().includes(search) ||
-      item.enDescription.toLowerCase().includes(search) ||
-      item.arDescription.toLowerCase().includes(search)
+    const search = (this.searchValue || '').toLowerCase();
+    if (!search) { this.dataList = this.filteredData; return; }
+    this.dataList = this.filteredData.filter((item: any) =>
+      (item.enName || '').toLowerCase().includes(search) ||
+      (item.arName || '').toLowerCase().includes(search) ||
+      (item.phoneCode || '').includes(search)
     );
   }
   onSubmitFilter() {

@@ -48,12 +48,9 @@ export class PrivacyPolicyTableComponent {
   objectSearch = {
     pageNumber: 1,
     pageSize: 8,
-    sortingExpression: "",
-    sortingDirection: 0,
-    name: "",
-    email: "",
-    phoneNumber: ""
-
+    sortBy: '',
+    sortDirection: 'asc' as string,
+    searchTerm: '',
   }
 
   totalCount: number = 0;

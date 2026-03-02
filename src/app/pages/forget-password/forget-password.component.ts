@@ -47,17 +47,14 @@ export class ForgetPasswordComponent {
 
   onSubmit() {
     if (this.checkMobile.valid) {
-      let mobileNumberObject ={
-        "mobileNumber": this.checkMobile.value.mobileNumber
-      }
-      this.api.post('Auth/forget-password' , mobileNumberObject).subscribe((res: any) => {
-        console.log(res);
-        if(res.status) {
+      const payload = { phone: this.checkMobile.value.mobileNumber };
+      this.api.post('Auth/forget-password', payload).subscribe((res: any) => {
+        if (res?.isSuccess !== false) {
           this.openOtpModal = true;
         } else {
-          this.toaster.errorToaster(res.message);
+          this.toaster.errorToaster(res?.error?.message || 'Error');
         }
-      })
+      });
     } else {
       this.toaster.errorToaster('Please add your mobile number');
     }
@@ -66,13 +63,18 @@ export class ForgetPasswordComponent {
 
   onOtpSubmit() {
     if (this.changePassword.valid) {
-      console.log('Form Submitted', this.changePassword.value);
-      this.changePassword.value.mobileNumber = this.checkMobile.get('mobileNumber')?.value;
-      this.api.post('Auth/reset-password',  this.changePassword.value).subscribe((data: any) => {
-        console.log(data.data);
-          this.toaster.successToaster(data.message);
+      const payload = {
+        phone: this.checkMobile.get('mobileNumber')?.value,
+        newPassword: this.changePassword.get('password')?.value
+      };
+      this.api.post('Auth/reset-password', payload).subscribe((data: any) => {
+        if (data?.isSuccess !== false) {
+          this.toaster.successToaster('Password changed successfully');
           this.router.navigate(['/auth/login']);
-      })
+        } else {
+          this.toaster.errorToaster(data?.error?.message || 'Error');
+        }
+      });
     } else {
       if (this.changePassword.hasError('passwordsDoNotMatch')) {
         this.toaster.errorToaster('Passwords do not match');
@@ -83,24 +85,21 @@ export class ForgetPasswordComponent {
   }
 
   getOtpValue(e: any) {
-    console.log(e);
-    let otpObject = {
-      "mobile": this.checkMobile.get('mobileNumber')?.value,
-      "otpCode": e.otpValue
-    }
-    this.api.post('Auth/verify-forget-password', otpObject).subscribe((data: any) => {
-      console.log(data.data);
-      if(data.message == 'Otp Is Not Valid') {
-        this.toaster.errorToaster(data.message)
+    const payload = {
+      phone: this.checkMobile.get('mobileNumber')?.value,
+      otpCode: e.otpValue
+    };
+    this.api.post('Auth/verify-forget-password', payload).subscribe((data: any) => {
+      if (data?.isSuccess !== false) {
+        this.hideCheckForm = true;
+        this.openOtpModal = false;
       } else {
-         this.hideCheckForm = true;
-         this.openOtpModal = false;
+        this.toaster.errorToaster(data?.error?.message || 'Otp Is Not Valid');
       }
-    })
+    });
   }
 
-  resendOtp(e: any) {
-    console.log(e);
+  resendOtp(_e?: any) {
     this.onSubmit();
   }
 

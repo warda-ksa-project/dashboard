@@ -116,7 +116,7 @@ export class TraderTableComponent {
         show: true,
       },
       {
-        keyName: 'name',
+        keyName: 'userName',
         header: this.languageService.translate('trader.form.name'),
         type: EType.text,
         show: true,
@@ -155,7 +155,7 @@ export class TraderTableComponent {
         show: false,
       },
       {
-        keyName: 'name',
+        keyName: 'userName',
         header: this.languageService.translate('trader.form.name'),
         type: EType.text,
         showAs: ETableShow.header,

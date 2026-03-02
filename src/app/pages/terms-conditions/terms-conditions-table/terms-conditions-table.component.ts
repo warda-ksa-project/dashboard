@@ -54,12 +54,9 @@ export class TermsConditionsTableComponent {
   objectSearch = {
     pageNumber: 1,
     pageSize: 8,
-    sortingExpression: "",
-    sortingDirection: 0,
-    name: "",
-    email: "",
-    phoneNumber: ""
-
+    sortBy: '',
+    sortDirection: 'asc' as string,
+    searchTerm: '',
   }
 
   totalCount: number = 0;
@@ -124,11 +121,11 @@ export class TermsConditionsTableComponent {
 
   displayTableCols(currentLang: string) {
     this.columns = [
-      { keyName: 'id', header:  this.languageService.translate('Id'), type: EType.id, show: true },
-      { keyName: 'enName', header:  this.languageService.translate('termsAndConditions.form.title_en'), type: EType.text, show: true },
-      { keyName: 'arName', header:  this.languageService.translate('termsAndConditions.form.title_ar'), type: EType.text, show: true },
-      { keyName: 'enDescription', header:  this.languageService.translate('termsAndConditions.form.desc_en'), type: EType.editor, show: true },
-      { keyName: 'arDescription', header:  this.languageService.translate('termsAndConditions.form.desc_ar'), type: EType.editor, show: true },
+      { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: true },
+      { keyName: 'enTitle', header: this.languageService.translate('termsAndConditions.form.title_en'), type: EType.text, show: true },
+      { keyName: 'arTitle', header: this.languageService.translate('termsAndConditions.form.title_ar'), type: EType.text, show: true },
+      { keyName: 'enContent', header: this.languageService.translate('termsAndConditions.form.desc_en'), type: EType.editor, show: true },
+      { keyName: 'arContent', header: this.languageService.translate('termsAndConditions.form.desc_ar'), type: EType.editor, show: true },
     ];
     
     // Only show actions column for non-trader users
@@ -137,11 +134,11 @@ export class TermsConditionsTableComponent {
     }
 
     this.columnsSmallTable = [
-      { keyName: 'id', header:  this.languageService.translate('Id'), type: EType.id, show: false },
-      { keyName: 'enName', header:  this.languageService.translate('termsAndConditions.form.termsAndConditions.form.title_en'), type: EType.text, showAs: ETableShow.header },
-      { keyName: 'arName', header:  this.languageService.translate('termsAndConditions.form.title_ar'), type: EType.text, showAs: ETableShow.header },
-      { keyName: 'enDescription', header:  this.languageService.translate('termsAndConditions.form.desc_en'), type: EType.editor, showAs: ETableShow.content },
-      { keyName: 'arDescription', header:  this.languageService.translate('termsAndConditions.form.desc_ar'), type: EType.editor, showAs: ETableShow.content }
+      { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: false },
+      { keyName: 'enTitle', header: this.languageService.translate('termsAndConditions.form.title_en'), type: EType.text, showAs: ETableShow.header },
+      { keyName: 'arTitle', header: this.languageService.translate('termsAndConditions.form.title_ar'), type: EType.text, showAs: ETableShow.header },
+      { keyName: 'enContent', header: this.languageService.translate('termsAndConditions.form.desc_en'), type: EType.editor, showAs: ETableShow.content },
+      { keyName: 'arContent', header: this.languageService.translate('termsAndConditions.form.desc_ar'), type: EType.editor, showAs: ETableShow.content }
     ];
   }
 

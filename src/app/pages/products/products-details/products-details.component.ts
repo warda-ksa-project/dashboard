@@ -53,15 +53,8 @@ export class ProductsDetailsComponent {
   payloadFinal:any={}
 
   discountType: any[] = [
-    {
-      name: 'Amount',
-      code: 1
-    },
-    {
-      name: 'Precentage',
-      code: 2
-    }
-
+    { name: 'Amount', code: 2 },
+    { name: 'Percentage', code: 1 }
   ]
   hasDiscount = false
   imageList: any;
@@ -219,7 +212,6 @@ export class ProductsDetailsComponent {
       this.form.get('amount')?.updateValueAndValidity();
       this.form.get('startDate')?.updateValueAndValidity();
       this.form.get('endDate')?.updateValueAndValidity();
-      console.log('ggg2222222@@',this.form.value)
     });
 
     if (this.tyepMode() !== 'Add')
@@ -229,13 +221,12 @@ export class ProductsDetailsComponent {
     return new Date(start) > new Date(end);
 }
 
-getRoles(){
-  this.apiService.get('Auth/roles').subscribe((res:any)=>{
-    this.role=res.data
-  if(this.role)
-  this.getAllCategory()
-  })
-}
+  getRoles() {
+    this.apiService.get('Auth/roles').subscribe((res: any) => {
+      this.role = res?.data ?? res;
+      if (this.role) this.getAllCategory();
+    });
+  }
   tyepMode() {
     const url = this.router.url;
     let result = 'Add'
@@ -255,17 +246,13 @@ getRoles(){
   }
   getMainCategory() {
     this.ApiService.get('Categories').subscribe((res: any) => {
-      if (res.data) {
-        this.categoryList = []
-        res.data.map((item: any) => {
-          this.categoryList.push({
-            name: this.selectedLang == 'en' ? item.enName : item.arName,
-            code: item.id
-          })
-        })
-      }
-
-    })
+      const list = res?.data ?? res ?? [];
+      const arr = Array.isArray(list) ? list : [list];
+      this.categoryList = arr.map((item: any) => ({
+        name: this.selectedLang === 'ar' ? (item.arName ?? item.enName) : (item.enName ?? item.arName),
+        code: item.id
+      }));
+    });
   }
   onValueStepperChange(value:any){
     this.goTo(value)
@@ -286,47 +273,46 @@ getRoles(){
          this.payloadFinal.startDate=new Date(this.payloadFinal.startDate)
          this.payloadFinal.endDate=new Date(this.payloadFinal.endDate)
       }
-      console.log("ProductsDetailsComponent  setTimeout   payloadFinal:",  this.payloadFinal)
-      console.log("ProductsDetailsComponent  goTo  value:", this.form.value)
     })
   }
   getSubCategory() {
-    this.ApiService.get('SubCategories/by-trader').subscribe((res: any) => {
-      if (res.data) {
-        this.categoryList = []
-        res.data.map((item: any) => {
-          this.categoryList.push({
-            name: this.selectedLang == 'en' ? item.enName : item.arName,
-            code: item.id
-          })
-        })
-      }
-
-    })
+    this.ApiService.get('SubCategories').subscribe((res: any) => {
+      const list = res?.data ?? res ?? [];
+      const arr = Array.isArray(list) ? list : [list];
+      this.categoryList = arr.map((item: any) => ({
+        name: this.selectedLang === 'ar' ? (item.arName ?? item.enName) : (item.enName ?? item.arName),
+        code: item.id
+      }));
+    });
   }
   API_getItemDetails() {
     this.ApiService.get(`${global_API_details}/${this.getID}`).subscribe((res: any) => {
-      if (res.data) {
-        this.reviews=res.data.productReviews
+      const d = res?.data ?? res;
+      if (d) {
+        this.reviews = d.productReviews ?? [];
+        const price = d.price ?? (d.prices?.[0]?.amount ?? 0);
         this.form.patchValue({
-          ...res.data,
-          startDate:new Date(res.data.startDate),
-          endDate:new Date(res.data.endDate)
-        })
-        this.imageList = res.data.image;
-        if (this.imageList.length != 0) {
-          this.addUrltoMedia(this.imageList);
-        }
-        this.payloadFinal =JSON.parse(JSON.stringify(this.form.value))
-        this.payloadFinal.startDate=new Date(this.payloadFinal.startDate)
-        this.payloadFinal.endDate=new Date(this.payloadFinal.endDate)
-
+          ...d,
+          price: price,
+          priceAfterDiscount: d.priceAfterDiscount ?? price,
+          startDate: d.startDate ? new Date(d.startDate) : null,
+          endDate: d.endDate ? new Date(d.endDate) : null,
+          hasDiscount: !!d.hasDiscount,
+        });
+        const imgs = d.images ?? d.image ?? [];
+        this.imageList = Array.isArray(imgs)
+          ? imgs.map((x: any) => (typeof x === 'string' ? { src: x, mediaTypeEnum: 1 } : { ...x, src: x.src ?? x.image ?? '', mediaTypeEnum: x.mediaTypeEnum ?? 1 }))
+          : imgs ? [{ src: imgs, mediaTypeEnum: 1 }] : [];
+        if (this.imageList?.length) this.addUrltoMedia(this.imageList);
+        this.payloadFinal = JSON.parse(JSON.stringify(this.form.value));
+        if (this.payloadFinal.startDate) this.payloadFinal.startDate = new Date(this.payloadFinal.startDate);
+        if (this.payloadFinal.endDate) this.payloadFinal.endDate = new Date(this.payloadFinal.endDate);
       }
-    })
+    });
   }
   addUrltoMedia(list: any) {
-    list.forEach((data: any) => {
-      data.src =  data.image;
+    (list || []).forEach((data: any) => {
+      data.src = data.src ?? data.image ?? (typeof data === 'string' ? data : '');
     });
   }
   // onSelect(event: any): void {
@@ -368,45 +354,51 @@ getRoles(){
 
   // }
   onSubmit() {
-    if (this.form.value.image) {
-      let x = this.form.value.image.map((re: any) => ({
-        ...re,
-        "id": 0,
-        "productId": +this.getID || 0,
-      }))
-      this.form.patchValue({
-        image: x
-      })
-    }
-    if(this.form.value.startDate){
-      const start_year = this.form.value.startDate.getFullYear();
-      const start_month = this.form.value.startDate.getMonth();
-      const start_day = this.form.value.startDate.getDate();
-      const start_date  = new Date(start_year, start_month, start_day, 12);
-      const end_year = this.form.value.endDate.getFullYear();
-      const end_month = this.form.value.endDate.getMonth();
-      const end_day = this.form.value.endDate.getDate();
-      const end_date  = new Date(end_year, end_month, end_day, 12);
-      this.form.patchValue({
-        startDate:start_date,
-        endDate:end_date
-      })
-     }
-    const payload = {
-      ...this.form.value,
-      amount:+this.form.value.amount,
-      price:Number(this.form.value.price),
-      stockQuantity:Number(this.form.value.stockQuantity)
-    }
+    const raw = this.form.value;
+    const priceVal = Number(raw.price) || 0;
+    const imagesBase64 = (raw.image || [])
+      .map((x: any) => x?.image ?? x?.src ?? (typeof x === 'string' ? x : null))
+      .filter(Boolean);
 
-
-    if (this.tyepMode() == 'Add') {
-
-      this.API_forAddItem(payload)
-
-    }
-    else {
-      this.API_forEditItem(payload)
+    if (this.tyepMode() === 'Add') {
+      const payload: any = {
+        arName: raw.arName ?? '',
+        enName: raw.enName ?? '',
+        arDescription: raw.arDescription ?? '',
+        enDescription: raw.enDescription ?? '',
+        categoryId: Number(raw.categoryId) || 0,
+        stockQuantity: Number(raw.stockQuantity) || 0,
+        prices: [{ amount: priceVal, currency: 'SAR' }],
+        imagesBase64: imagesBase64.length ? imagesBase64 : null,
+        hasDiscount: !!raw.hasDiscount,
+      };
+      if (raw.hasDiscount && raw.discountType != null && raw.amount != null && raw.startDate && raw.endDate) {
+        payload.discountType = Number(raw.discountType);
+        payload.amount = Number(raw.amount);
+        payload.startDate = raw.startDate instanceof Date ? raw.startDate.toISOString() : raw.startDate;
+        payload.endDate = raw.endDate instanceof Date ? raw.endDate.toISOString() : raw.endDate;
+      }
+      this.API_forAddItem(payload);
+    } else {
+      const payload: any = {
+        id: Number(this.getID),
+        arName: raw.arName ?? '',
+        enName: raw.enName ?? '',
+        arDescription: raw.arDescription ?? '',
+        enDescription: raw.enDescription ?? '',
+        categoryId: Number(raw.categoryId) || 0,
+        stockQuantity: Number(raw.stockQuantity) || 0,
+        prices: [{ amount: priceVal, currency: 'SAR' }],
+        imagesBase64: imagesBase64.length ? imagesBase64 : null,
+        hasDiscount: !!raw.hasDiscount,
+      };
+      if (raw.hasDiscount && raw.discountType != null && raw.amount != null && raw.startDate && raw.endDate) {
+        payload.discountType = Number(raw.discountType);
+        payload.amount = Number(raw.amount);
+        payload.startDate = raw.startDate instanceof Date ? raw.startDate.toISOString() : raw.startDate;
+        payload.endDate = raw.endDate instanceof Date ? raw.endDate.toISOString() : raw.endDate;
+      }
+      this.API_forEditItem(payload);
     }
   }
 
@@ -430,17 +422,15 @@ getRoles(){
 
 
   API_forAddItem(payload: any) {
-    this.ApiService.post(global_API_create, payload).subscribe(res => {
-      if (res)
-        this.navigateToPageTable()
-    })
+    this.ApiService.post(global_API_create, payload).subscribe((res: any) => {
+      if (res?.isSuccess !== false) this.navigateToPageTable();
+    });
   }
 
   API_forEditItem(payload: any) {
-    this.ApiService.put(global_API_update, payload).subscribe(res => {
-      if (res)
-        this.navigateToPageTable()
-    })
+    this.ApiService.put(global_API_update, payload).subscribe((res: any) => {
+      if (res?.isSuccess !== false) this.navigateToPageTable();
+    });
   }
 
 

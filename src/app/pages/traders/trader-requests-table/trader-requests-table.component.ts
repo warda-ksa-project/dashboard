@@ -26,7 +26,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 const global_pageName = 'trader_request.pageName';
 const global_router_add_url_in_Table = '/traderRequest/add';
 const global_router_view_url = '/traderRequest/view';
-const global_API_getAll = 'Traders/requests/paginated';
+const global_API_getAll = 'Traders/requests';
 @Component({
   selector: 'app-trader-requests-table',
   standalone: true,
@@ -71,9 +71,10 @@ export class TraderRequestsTableComponent {
   objectSearch = {
     pageNumber: 1,
     pageSize: 8,
-    sortingExpression: '',
-    sortingDirection: 0,
-    storeName:''
+    searchTerm: '',
+    sortBy: '',
+    sortDirection: 'asc',
+    storeName: ''
   };
 
   totalCount: number = 0;
@@ -217,10 +218,10 @@ export class TraderRequestsTableComponent {
     this.objectSearch = {
       pageNumber: 1,
       pageSize: 8,
-      sortingExpression: '',
-      sortingDirection: 0,
-      storeName:''
-
+      searchTerm: '',
+      sortBy: '',
+      sortDirection: 'asc',
+      storeName: ''
     };
     this.API_getAll();
     this.showFilter = false;

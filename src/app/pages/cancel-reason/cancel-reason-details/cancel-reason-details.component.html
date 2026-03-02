@@ -14,28 +14,12 @@
         <form [formGroup]="form" class="w-70" (ngSubmit)="onSubmit()">
           <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
-              <app-input-text [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'" [label]="'cancel_reason.form.reason_en'"
-                [control]="form.get('enName')"></app-input-text>
+              <app-input-text [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'"
+                [label]="'cancel_reason.form.reason_en'" [control]="form.get('enReason')"></app-input-text>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
-              <app-input-text [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'" [label]="'cancel_reason.form.reason_ar'"
-                [control]="form.get('arName')"></app-input-text>
-            </div>
-            <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
-              <app-select  [readOnly]="tyepMode() == 'View'"
-              [disabled]="tyepMode() == 'View'"
-               [placeholder]="form.get('userType')?.value" class="w-100" 
-               [list]="userTypeList" [label]="'cancel_reason.form.userType'"
-                 [control]="form.get('userType')">
-                </app-select>
-           </div>
-            <div class="row">
-              <div class=" mt-2 col-lg-6 col-md-6 col-sm-12 mt-4">
-                <app-editor [label]="'cancel_reason.form.desc_en'" [control]="form.get('enDescription')"></app-editor>
-              </div>
-              <div class=" mt-2 col-lg-6 col-md-6 col-sm-12 mt-4">
-                <app-editor [label]="'cancel_reason.form.desc_en'" [control]="form.get('arDescription')"></app-editor>
-              </div>
+              <app-input-text [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'"
+                [label]="'cancel_reason.form.reason_ar'" [control]="form.get('arReason')"></app-input-text>
             </div>
             <div class="actions mt-5 text-center">
               <button type="submit" class="submit-btn" [disabled]="!form.valid" *ngIf="tyepMode()!='View'">

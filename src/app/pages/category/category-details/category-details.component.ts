@@ -25,6 +25,8 @@ import { LanguageService } from '../../../services/language.service';
 
 
 const global_PageName = 'category.pageName';
+const global_API_create = 'SubCategories';
+const global_API_update = 'SubCategories';
 
 @Component({
   selector: 'app-category-details',
@@ -44,28 +46,11 @@ pageName = signal<string>(global_PageName);
   private confirm = inject(ConfirmMsgService);
   parentCategoryList:any[]=[]
   form = new FormGroup({
-    enName: new FormControl('', {
-      validators: [
-        Validators.required
-      ],
-    }),
-    arName: new FormControl('', {
-      validators: [
-        Validators.required
-      ]
-    }),
-    enDescription: new FormControl<any>('', {
-      validators: [
-        Validators.required,
-      ]
-    }),
-    arDescription: new FormControl<any>('', {
-      validators: [
-        Validators.required,
-      ]
-    }),
+    enName: new FormControl('', [Validators.required]),
+    arName: new FormControl('', [Validators.required]),
+    parentCategoryId: new FormControl<number | null>(null),
     image: new FormControl(''),
-    userId: new FormControl(this.userId | 0)
+    id: new FormControl(0)
   })
 
 
@@ -88,17 +73,18 @@ pageName = signal<string>(global_PageName);
 
   editMode: boolean = false;
 
-  get userId() {
-    return this.route.snapshot.params['id']
+  get getID() {
+    return this.route.snapshot.params['id'];
   }
 
   ngOnInit() {
-    this.getBreadCrumb()
+    this.selectedLang = this.languageService.translationService.currentLang;
+    this.getBreadCrumb();
+    this.ngOnInitLoadData();
     this.languageService.translationService.onLangChange.subscribe(() => {
       this.selectedLang = this.languageService.translationService.currentLang;
       this.getBreadCrumb();
     });
-
   }
 
   tyepMode() {
@@ -128,7 +114,41 @@ pageName = signal<string>(global_PageName);
 
 
   onSubmit() {
-  
+    const raw = this.form.value;
+    const parentId = raw.parentCategoryId ?? 0;
+    if (this.tyepMode() === 'Add' && !parentId) return; // SubCategory requires parent
+    const payload: any = {
+      arName: raw.arName ?? '',
+      enName: raw.enName ?? '',
+      parentCategoryId: parentId,
+      imageBase64: raw.image || null
+    };
+    if (this.tyepMode() === 'Edit') payload.id = Number(this.getID);
+    if (this.tyepMode() === 'Add') this.addFQS(payload);
+    else this.editFQS(payload);
+  }
+
+  ngOnInitLoadData() {
+    this.ApiService.get('Categories').subscribe((res: any) => {
+      const list = res?.data ?? res ?? [];
+      this.parentCategoryList = (Array.isArray(list) ? list : [list]).map((c: any) => ({
+        name: this.selectedLang === 'ar' ? (c.arName ?? c.enName) : (c.enName ?? c.arName),
+        code: c.id
+      }));
+    });
+    if (this.tyepMode() !== 'Add') {
+      this.ApiService.get(`SubCategories/${this.getID}`).subscribe((res: any) => {
+        const d = res?.data ?? res;
+        if (d) {
+          this.form.patchValue({
+            enName: d.enName, arName: d.arName, parentCategoryId: d.parentCategoryId,
+            id: d.id, image: d.image
+          });
+          this.editImageProps.props.imgSrc = d.image ?? '';
+          this.editMode = true;
+        }
+      });
+    }
   }
 
 
@@ -146,17 +166,15 @@ pageName = signal<string>(global_PageName);
   }
 
   addFQS(payload: any) {
-    this.ApiService.post('Categories', payload).subscribe(res => {
-      if (res)
-        this.router.navigateByUrl('category')
-    })
+    this.ApiService.post(global_API_create, payload).subscribe((res: any) => {
+      if (res?.isSuccess !== false) this.router.navigateByUrl('/category');
+    });
   }
 
   editFQS(payload: any) {
-    this.ApiService.put('Categories', payload).subscribe(res => {
-      if (res)
-        this.router.navigateByUrl('clients')
-    })
+    this.ApiService.put(global_API_update, payload).subscribe((res: any) => {
+      if (res?.isSuccess !== false) this.router.navigateByUrl('/category');
+    });
   }
 
   // getClientOrders() {

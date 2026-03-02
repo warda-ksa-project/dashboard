@@ -102,7 +102,6 @@ export class ProductsTableComponent {
   languageService = inject(LanguageService);
 
   ngOnInit() {
-    debugger;
     this.role = localStorage.getItem('role') || '';
     this.isAdmin = this.role === Roles.admin;
     this.isTrader = this.role === Roles.trader;

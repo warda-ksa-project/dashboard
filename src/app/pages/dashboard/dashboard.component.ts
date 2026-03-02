@@ -196,26 +196,20 @@ pageinationList:any[]=[
     // this.getDashboardDetails();
   }
 
-  getAllSalesPerMonth(){
+  getAllSalesPerMonth() {
+    this.ApiService.get('admin/dashboard/sales-per-month').subscribe((res: any) => {
+      const list = res?.data ?? res ?? [];
+      this.allMonthSales = Array.isArray(list) ? list.map((m: any) => m.totalSales ?? 0) : [];
+      this.getAllTargetAPI();
+    });
+  }
 
-  this.ApiService.get('admin/dashboard/sales-per-month').subscribe((res: any) => {
-    //  this.allMonthSales=Object.values(res).sort((a:any, b:any) => a - b);
-    this.allMonthSales=Object.values(res).sort((a:any, b:any) => a - b);
-  this.getAllTargetAPI()
-  })
-}
-
-getAllTargetAPI(){
-  this.ApiService.get('YearTargets').subscribe((res: any) => {
-    console.log("DashboardComponent  this.ApiService.get  res:", res)
-    this.allTargetMonth= this.getTarget(res.data)   
-    console.log("DashboardComponent  this.ApiService.get      this.allTargetMonth:",     this.allTargetMonth)
-  })
- 
-}
-getTarget(data:any){
-  return data.sort((a:any, b:any) => a.month - b.month).map((item:any) => item.target);
-}
+  getAllTargetAPI() {
+    this.ApiService.get('YearTargets').subscribe((res: any) => {
+      const list = res?.data ?? res ?? [];
+      this.allTargetMonth = Array.isArray(list) ? list.map((item: any) => item.targetAmount ?? item.target ?? 0) : [];
+    });
+  }
 
 
 onPageSelected(number:any){
@@ -267,25 +261,20 @@ onPageSelected(number:any){
 
   getStaticData() {
     this.ApiService.get('admin/dashboard/trader').subscribe((res: any) => {
-      // this.staticDetails = res
-      this.items[0].price=res.completeOrdersCount
-      this.items[1].price=res.pendingOrdersCount
-      this.items[2].price=res.productCount
-      this.items[3].price=res.productPieceCount
-
-    })
+      const d = res?.data ?? res;
+      if (d) {
+        this.items[0].price = d.completedOrders ?? 0;
+        this.items[1].price = d.pendingOrders ?? 0;
+        this.items[2].price = d.totalProducts ?? 0;
+        this.items[3].price = 0;
+      }
+    });
   }
 
-  getAllSalesOrderDashboardStatistics(){
-    
+  getAllSalesOrderDashboardStatistics() {
     this.ApiService.get('admin/dashboard/trader').subscribe((res: any) => {
-       this.staticDetails = res
-      // this.items[0].price=res.completeOrdersCount
-      // this.items[1].price=res.pendingOrdersCount
-      // this.items[2].price=res.productCount
-      // this.items[3].price=res.productPieceCount
-
-    })
+      this.staticDetails = res?.data ?? res;
+    });
   }
 
   updateItemsWithData(data: any) {
@@ -417,7 +406,7 @@ onPageSelected(number:any){
       //     }
       //   }
       // );
-        this.ApiService.get(`Products/best-sellers`, { count: pageNumber }).subscribe(
+        this.ApiService.get('Products/best-sellers').subscribe(
         (res: any) => {
           if (res) {
             this.dataList = res.data;

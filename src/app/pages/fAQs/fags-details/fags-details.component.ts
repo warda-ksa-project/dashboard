@@ -111,20 +111,29 @@ export class FagsDetailsComponent implements OnInit {
 
   getFaqsDetails() {
     this.ApiService.get(`Content/faqs/${this.faqsID}`).subscribe((res: any) => {
-      if (res.data)
-        this.form.patchValue(res.data)
-    })
+      const d = res?.data ?? res;
+      if (d) {
+        this.form.patchValue({
+          enTitle: d.enQuestion ?? d.enTitle,
+          arTitle: d.arQuestion ?? d.arTitle,
+          enDescription: d.enAnswer ?? d.enDescription,
+          arDescription: d.arAnswer ?? d.arDescription
+        });
+      }
+    });
   }
 
   onSubmit() {
-    const payload = {
-      ...this.form.value,
-      id: this.faqsID || 0,
-    }
-    if (this.tyepMode() === 'Add')
-      this.addFQS(payload)
-    else
-      this.editFQS(payload)
+    const raw = this.form.value;
+    const payload: any = {
+      arQuestion: raw.arTitle ?? '',
+      enQuestion: raw.enTitle ?? '',
+      arAnswer: raw.arDescription ?? '',
+      enAnswer: raw.enDescription ?? ''
+    };
+    if (this.tyepMode() === 'Edit') payload.id = Number(this.faqsID);
+    if (this.tyepMode() === 'Add') this.addFQS(payload);
+    else this.editFQS(payload);
   }
 
 
@@ -143,17 +152,15 @@ export class FagsDetailsComponent implements OnInit {
   }
 
   addFQS(payload: any) {
-    this.ApiService.post('Content/faqs', payload).subscribe(res => {
-      if (res)
-        this.router.navigateByUrl('settings/faqs')
-    })
+    this.ApiService.post('Content/faqs', payload).subscribe((res: any) => {
+      if (res?.isSuccess !== false) this.router.navigateByUrl('settings/faqs');
+    });
   }
 
   editFQS(payload: any) {
-    this.ApiService.put('Content/faqs', payload).subscribe(res => {
-      if (res)
-        this.router.navigateByUrl('settings/faqs')
-    })
+    this.ApiService.put('Content/faqs', payload).subscribe((res: any) => {
+      if (res?.isSuccess !== false) this.router.navigateByUrl('settings/faqs');
+    });
   }
 
 

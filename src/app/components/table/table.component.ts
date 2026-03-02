@@ -102,7 +102,6 @@ export class TableComponent implements OnInit, OnChanges {
   defaultImg='assets/images/empty-state.png'
   ngOnInit() {
     this.filterdRecords = this.records;
-    console.log("TableComponent  ngOnInit  this.filterdRecords:", this.filterdRecords)
     this.selectedLang = this.languageService.translationService.currentLang;
 
   }
@@ -147,8 +146,7 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   callDeleteAction(action: ITableAction, id: any) {
-    debugger;
-    this.ApiService.delete(action.apiName_or_route, id).subscribe(res => {
+    this.ApiService.delete(action.apiName_or_route, id).subscribe((res: any) => {
       if (res) {
         this.filterdRecords = this.filterdRecords.filter((item: any) => item[this.getNameOfIDHeader()] != id)
         this.reloadGetAllApi.emit(true);
@@ -220,11 +218,8 @@ export class TableComponent implements OnInit, OnChanges {
     })
   }
 
-  onStatusChange(orderId: any) {
-    this.ApiService.put(
-      `Orders/status`,
-      { orderId: orderId, orderStatusEnum: 1 }
-    ).subscribe(() => {
+  onStatusChange(orderId: any, newStatusId: number = 1) {
+    this.ApiService.put('Orders/status', { orderId, newStatusId }).subscribe(() => {
       this.reloadGetAllApi.emit(true);
     });
   }

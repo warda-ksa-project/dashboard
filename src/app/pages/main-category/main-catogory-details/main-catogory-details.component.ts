@@ -117,26 +117,25 @@ pageName =signal<string>(global_PageName);
 
   API_getItemDetails() {
     this.ApiService.get(`Categories/${this.getID}`).subscribe((res: any) => {
-      if (res){
-        this.form.patchValue(res.data);
-        this.editImageProps.props.imgSrc =res.data.image;
-        console.log(this.editImageProps);
+      const d = res?.data ?? res;
+      if (d) {
+        this.form.patchValue({ enName: d.enName, arName: d.arName, id: d.id });
+        this.editImageProps.props.imgSrc = d.image ?? '';
         this.editMode = true;
       }
-      
-
-
-    })
+    });
   }
 
   onSubmit() {
-    const payload = {
-      ...this.form.value,
-    }
-    if (this.tyepMode() == 'Add')
-      this.API_forAddItem(payload)
-    else
-      this.API_forEditItem(payload)
+    const raw = this.form.value;
+    const payload: any = {
+      arName: raw.arName ?? '',
+      enName: raw.enName ?? '',
+      imageBase64: raw.image || null
+    };
+    if (this.tyepMode() === 'Edit') payload.id = Number(this.getID);
+    if (this.tyepMode() === 'Add') this.API_forAddItem(payload);
+    else this.API_forEditItem(payload);
   }
 
   navigateToPageTable(){
@@ -159,17 +158,15 @@ pageName =signal<string>(global_PageName);
 
 
   API_forAddItem(payload: any) {
-    this.ApiService.post(global_API_create, payload).subscribe(res => {
-      if (res)
-        this.navigateToPageTable()
-    })
+    this.ApiService.post(global_API_create, payload).subscribe((res: any) => {
+      if (res?.isSuccess !== false) this.navigateToPageTable();
+    });
   }
 
   API_forEditItem(payload: any) {
-    this.ApiService.put(global_API_update, payload).subscribe(res => {
-      if (res)
-        this.navigateToPageTable()
-    })
+    this.ApiService.put(global_API_update, payload).subscribe((res: any) => {
+      if (res?.isSuccess !== false) this.navigateToPageTable();
+    });
   }
 
 

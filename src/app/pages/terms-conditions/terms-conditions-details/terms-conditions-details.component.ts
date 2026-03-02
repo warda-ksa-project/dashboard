@@ -4,14 +4,13 @@ import { ButtonModule } from 'primeng/button';
 import { ApiService } from '../../../services/api.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { NgIf, TitleCasePipe } from '@angular/common';
-import { Validations } from '../../../validations';
-import { InputTextComponent } from '../../../components/input-text/input-text.component';
 import { EditorComponent } from '../../../components/editor/editor.component';
 import { BreadcrumpComponent } from "../../../components/breadcrump/breadcrump.component";
 import { IBreadcrumb } from '../../../components/breadcrump/cerqel-breadcrumb.interface';
 import { ConfirmMsgService } from '../../../services/confirm-msg.service';
 import { DialogComponent } from '../../../components/dialog/dialog.component';
 import { UploadFileComponent } from "../../../components/upload-file/upload-file.component";
+import { InputTextComponent } from '../../../components/input-text/input-text.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { LanguageService } from '../../../services/language.service';
 import { userType } from '../../../conts';
@@ -26,7 +25,7 @@ const global_routeUrl ='/settings/terms_conditions'
 @Component({
   selector: 'app-terms-conditions-details',
   standalone: true,
-  imports: [ReactiveFormsModule,TranslatePipe,TitleCasePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, EditorComponent, RouterModule, BreadcrumpComponent, UploadFileComponent, SelectComponent],
+  imports: [ReactiveFormsModule, TranslatePipe, TitleCasePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, EditorComponent, RouterModule, BreadcrumpComponent, SelectComponent],
   templateUrl: './terms-conditions-details.component.html',
   styleUrl: './terms-conditions-details.component.scss'
 })
@@ -42,34 +41,12 @@ export class TermsConditionsDetailsComponent {
   selectedLang: any;
   languageService = inject(LanguageService);
   form = new FormGroup({
-    enName: new FormControl('', {
-      validators: [
-        Validators.required,
-        Validations.englishCharsValidator('faqs.validation_english_title'),
-      ],
-    }),
-    arName: new FormControl('', {
-      validators: [
-        Validators.required,
-        Validations.arabicCharsValidator('isArabic')
-      ]
-    }),
-    enDescription: new FormControl('', {
-      validators: [
-        // Validators.required,
-        // Validations.englishCharsValidator(),
-      ]
-    }),
-    arDescription: new FormControl('', {
-      validators: [
-        // Validators.required,
-        // Validations.arabicCharsValidator()
-      ]
-    }),
-    id: new FormControl(this.getID|0, Validators.required),
-    userType: new FormControl('', {
-      validators: [Validators.required]
-    }),
+    enName: new FormControl('', { validators: [Validators.required] }),
+    arName: new FormControl('', { validators: [Validators.required] }),
+    enDescription: new FormControl('', {}),
+    arDescription: new FormControl('', {}),
+    userType: new FormControl<number | null>(null, { validators: [Validators.required] }),
+    id: new FormControl(this.getID | 0),
   })
 
   bredCrumb: IBreadcrumb = {
@@ -117,19 +94,32 @@ export class TermsConditionsDetailsComponent {
   }
   API_getItemDetails() {
     this.ApiService.get(`${global_API_deialis}/${this.getID}`).subscribe((res: any) => {
-      if (res)
-        this.form.patchValue(res.data)
-    })
+      if (res?.data) {
+        const d = res.data;
+        this.form.patchValue({
+          enName: d.enTitle ?? '',
+          arName: d.arTitle ?? '',
+          enDescription: d.enContent ?? '',
+          arDescription: d.arContent ?? '',
+          userType: d.userType ?? null,
+          id: d.id
+        });
+      }
+    });
   }
 
   onSubmit() {
-    const payload = {
-      ...this.form.value,
-    }
-    if (this.tyepMode() == 'Add')
-      this.API_forAddItem(payload)
-    else
-      this.API_forEditItem(payload)
+    const v = this.form.value;
+    const payload: Record<string, unknown> = {
+      arTitle: v.arName,
+      enTitle: v.enName,
+      arContent: v.arDescription,
+      enContent: v.enDescription,
+      userType: v.userType ?? null,
+    };
+    if (this.tyepMode() === 'Edit') payload['id'] = this.getID;
+    if (this.tyepMode() === 'Add') this.API_forAddItem(payload);
+    else this.API_forEditItem(payload);
   }
 
   navigateToPageTable(){
@@ -171,8 +161,6 @@ export class TermsConditionsDetailsComponent {
       name: this.selectedLang === 'ar' ? item.nameAr : item.name
     }));
   }
-
-
 }
 
 

@@ -150,24 +150,33 @@ export class AboutUsDetailsComponent {
 
   API_getItemDetails() {
     this.ApiService.get(`${global_API_deialis}/${this.getID}`).subscribe((res: any) => {
-      if (res){
-        this.form.patchValue(res.data)
-        this.editImageProps.props.imgSrc = res.data.image;
-        console.log("AboutUsDetailsComponent  this.ApiService.get    this.editImageProps.props.imgSrc:",   this.editImageProps.props.imgSrc)
+      const d = res?.data ?? res;
+      if (d) {
+        this.form.patchValue({
+          enName: d.enTitle ?? d.enName,
+          arName: d.arTitle ?? d.arName,
+          enDescription: d.enContent ?? d.enDescription,
+          arDescription: d.arContent ?? d.arDescription,
+          userType: d.userType
+        });
+        this.editImageProps.props.imgSrc = d.image ?? '';
         this.editMode = true;
       }
-        
-    })
+    });
   }
 
   onSubmit() {
-    const payload = {
-      ...this.form.value
-    }
-    if (this.tyepMode() == 'Add')
-      this.API_forAddItem(payload)
-    else
-      this.API_forEditItem(payload)
+    const raw = this.form.value;
+    const payload: any = {
+      arTitle: raw.arName ?? '',
+      enTitle: raw.enName ?? '',
+      arContent: raw.arDescription ?? '',
+      enContent: raw.enDescription ?? '',
+      imageBase64: raw.image || null
+    };
+    if (this.tyepMode() === 'Edit') payload.id = Number(this.getID);
+    if (this.tyepMode() === 'Add') this.API_forAddItem(payload);
+    else this.API_forEditItem(payload);
   }
 
   navigateToPageTable() {
@@ -190,17 +199,15 @@ export class AboutUsDetailsComponent {
 
 
   API_forAddItem(payload: any) {
-    this.ApiService.post(global_API_create, payload).subscribe(res => {
-      if (res)
-        this.navigateToPageTable()
-    })
+    this.ApiService.post(global_API_create, payload).subscribe((res: any) => {
+      if (res?.isSuccess !== false) this.navigateToPageTable();
+    });
   }
 
   API_forEditItem(payload: any) {
-    this.ApiService.put(global_API_update, payload).subscribe(res => {
-      if (res)
-        this.navigateToPageTable()
-    })
+    this.ApiService.put(global_API_update, payload).subscribe((res: any) => {
+      if (res?.isSuccess !== false) this.navigateToPageTable();
+    });
   }
 
 

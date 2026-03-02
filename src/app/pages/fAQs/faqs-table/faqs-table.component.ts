@@ -109,24 +109,22 @@ export class FaqsTableComponent {
   displayTableCols(currentLang: string) {
     this.columns = [
       { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: true },
-      { keyName: 'enTitle', header: this.languageService.translate('faqs.form.question_en'), type: EType.text, show: true },
-      { keyName: 'arTitle', header: this.languageService.translate('faqs.form.question_ar'), type: EType.text, show: true },
-      { keyName: 'enDescription', header: this.languageService.translate('faqs.form.desc_en'), type: EType.editor, show: true },
-      { keyName: 'arDescription', header: this.languageService.translate('faqs.form.desc_ar'), type: EType.editor, show: true },
+      { keyName: 'enQuestion', header: this.languageService.translate('faqs.form.question_en'), type: EType.text, show: true },
+      { keyName: 'arQuestion', header: this.languageService.translate('faqs.form.question_ar'), type: EType.text, show: true },
+      { keyName: 'enAnswer', header: this.languageService.translate('faqs.form.desc_en'), type: EType.editor, show: true },
+      { keyName: 'arAnswer', header: this.languageService.translate('faqs.form.desc_ar'), type: EType.editor, show: true },
     ];
     
-    // Only show actions column for non-trader users
     if (!this.isTrader) {
       this.columns.push({ keyName: '', header: this.languageService.translate('Actions'), type: EType.actions, actions: this.tableActions, show: true });
     }
 
     this.columnsSmallTable = [
-      { keyName: 'enTitle', header: this.languageService.translate('faqs.form.question_en'), type: EType.text, showAs: ETableShow.header },
+      { keyName: 'enQuestion', header: this.languageService.translate('faqs.form.question_en'), type: EType.text, showAs: ETableShow.header },
       { keyName: 'id', header: 'Id', type: EType.id, show: false },
-      { keyName: 'arTitle', header: this.languageService.translate('faqs.form.question_ar'), type: EType.editor, showAs: ETableShow.content },
-      { keyName: 'enDescription', header: this.languageService.translate('faqs.form.desc_en'), type: EType.editor, showAs: ETableShow.content },
-      { keyName: 'arDescription', header: this.languageService.translate('faqs.form.desc_ar'), type: EType.editor, showAs: ETableShow.content }
-
+      { keyName: 'arQuestion', header: this.languageService.translate('faqs.form.question_ar'), type: EType.editor, showAs: ETableShow.content },
+      { keyName: 'enAnswer', header: this.languageService.translate('faqs.form.desc_en'), type: EType.editor, showAs: ETableShow.content },
+      { keyName: 'arAnswer', header: this.languageService.translate('faqs.form.desc_ar'), type: EType.editor, showAs: ETableShow.content },
     ];
   }
   getBreadCrumb() {
@@ -168,13 +166,11 @@ export class FaqsTableComponent {
   }
 
   onPageChange(event: any) {
-    console.log(event);
     this.faqSearchCreteria.pageNumber = event;
     this.getAllFAQS();
   }
 
   onSubmit() {
-    console.log("Form Submitted:", this.faqSearchCreteria);
     this.getAllFAQS();
   }
 
@@ -186,7 +182,7 @@ export class FaqsTableComponent {
       sortingDirection: 0,
       enTitle: "",
       arTitle: ""
-    }
+    };
     this.getAllFAQS();
     this.showFilter = false
   }

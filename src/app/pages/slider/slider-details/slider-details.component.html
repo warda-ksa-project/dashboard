@@ -13,54 +13,29 @@
         <div class="reactive-form">
             <form [formGroup]="form" class="w-70" (ngSubmit)="onSubmit()">
                 <div class="row">
-                
                     <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
                         <app-input-text [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'"
-                            [label]="'slider.form.title_en'" [control]="form.get('titleEn')"></app-input-text>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
-                        <app-input-text [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'"
-                            [label]="'slider.form.title_ar'" [control]="form.get('titleAr')"></app-input-text>
+                            [label]="'slider.form.url'" [control]="form.get('url')"></app-input-text>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
                         <app-input-text [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'"
                             [label]="'slider.form.displayOrder'" [control]="form.get('displayOrder')"></app-input-text>
                     </div>
-                    <!-- <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
-                        <app-select [readOnly]="tyepMode()=='View'"
-                        [readOnly]="tyepMode() == 'View'"
-                        [disabled]="tyepMode() == 'View'"
-                         [placeholder]="form.get('viewType')?.value" class="w-100" [list]="viewTypeList"
-                            [label]="'slider.form.view_type'" [control]="form.get('viewType')"></app-select>
-                    </div> -->
-                    <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
-                        <ng-container *ngIf="!editAttachmentMode">
-                            <label class="mb-2"> {{'slider.form.img_en'|translate}}</label>
-                        <div class="upload-image-section  mb-4">
-                            <app-upload-file formControlName="imageEn"></app-upload-file>
-                            <div *ngIf="isRequiredError" class="error-message mt-2">
-                               {{'shared.img_required'|translate}}
-                            </div>
-                        </div>
-                        </ng-container>
-                        <div class="edit-mode-section mt-2" *ngIf="editAttachmentMode">
-                            <label class="mb-2">{{'slider.form.upload_img_en'|translate}}</label>
-                            <app-edit-mode-image [editImageProps]="editImageProps" [action]="tyepMode()"></app-edit-mode-image>
-                        </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 mt-4 pt-3">
+                        <app-check-box [isToggle]="true" [label]="'slider.form.isActive'"
+                            [initValue]="true" [readOnly]="tyepMode()=='View'" [disabled]="tyepMode()=='View'"
+                            [control]="form.get('isActive')"></app-check-box>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
-                       <ng-container  *ngIf="!editAttachmentMode_ar">
-                        <label class="mb-2"> {{'slider.form.img_ar'|translate}}</label>
-                        <div class="upload-image-section mb-4">
-                            <app-upload-file formControlName="imageAr"></app-upload-file>
-                            <div *ngIf="isRequiredError_ar" class="error-message mt-2">
-                                {{'shared.img_required'|translate}}
+                        <ng-container *ngIf="!editAttachmentMode">
+                            <label class="mb-2">{{'slider.form.img'|translate}}</label>
+                            <div class="upload-image-section mb-4">
+                                <app-upload-file formControlName="image"></app-upload-file>
                             </div>
-                        </div>
-                       </ng-container>
-                        <div class="edit-mode-section mt-2" *ngIf="editAttachmentMode_ar">
-                            <label class="mb-2">{{'slider.form.upload_img_ar'|translate}}</label>
-                            <app-edit-mode-image [editImageProps]="editImageProps_ar"[action]="tyepMode()"></app-edit-mode-image>
+                        </ng-container>
+                        <div class="edit-mode-section mt-2" *ngIf="editAttachmentMode">
+                            <label class="mb-2">{{'shared.uploaded_img'|translate}}</label>
+                            <app-edit-mode-image [editImageProps]="editImageProps" [action]="tyepMode()"></app-edit-mode-image>
                         </div>
                     </div>
                     <div class="actions mt-5 text-center">

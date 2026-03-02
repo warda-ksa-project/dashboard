@@ -91,10 +91,10 @@ role=''
       this.getRoles()
     })
   }
-  getRoles(){
-    this.ApiService.get('Auth/roles').subscribe((res:any)=>{
-      this.role=res.data
-    })
+  getRoles() {
+    this.ApiService.get('Auth/roles').subscribe((res: any) => {
+      this.role = res?.data ?? res;
+    });
   }
   displayTableCols(currentLang: string) {
     this.columns = [
@@ -136,42 +136,27 @@ role=''
 
   API_getAll() {
     this.ApiService.get(global_API_getAll, this.objectSearch).subscribe((res: any) => {
-      if (res) {
-        this.dataList = res.data.items;
-        this.totalCount = res.data.totalCount;
+      const d = res?.data ?? res;
+      if (d) {
+        this.dataList = d.items ?? d ?? [];
+        this.totalCount = d.totalCount ?? this.dataList.length;
         this.filteredData = [...this.dataList];
       }
-
-    })
-    // this.ApiService.get(global_API_getAll).subscribe((res: any) => {
-    //   if (res.data) {
-    //     this.dataList = res.data;
-    //   }
-
-    // })
+    });
   }
 
-
   onPageChange(event: any) {
-    console.log(event);
     this.objectSearch.pageNumber = event;
     this.API_getAll();
   }
 
   filterData() {
     this.dataList = this.filteredData;
-    const search = this.searchValue.toLowerCase();
-
-    if (this.searchValue.length == 1) {
-      this.dataList = this.filteredData;
-      return;
-    }
-
-    this.dataList = this.dataList.filter((item: any) =>
-      item.enTitle.toLowerCase().includes(search) ||
-      item.arTitle.toLowerCase().includes(search) ||
-      item.enDescription.toLowerCase().includes(search) ||
-      item.arDescription.toLowerCase().includes(search)
+    const search = (this.searchValue || '').toLowerCase();
+    if (!search) return;
+    this.dataList = this.filteredData.filter((item: any) =>
+      (item.enName || '').toLowerCase().includes(search) ||
+      (item.arName || '').toLowerCase().includes(search)
     );
   }
 

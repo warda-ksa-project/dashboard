@@ -397,21 +397,19 @@ export class TraderDetailsComponent  {
   API_getItemDetails() {
     this.ApiService.get(`Traders/${this.getID}`).subscribe((res: any) => {
       if (res.data) {
+        const d = res.data;
+        const addr = d.addresses?.[0];
         this.form.patchValue({
-          ...res.data,
-          phone: res.data.phone?.toString().trim(), // Ensure phone is string and trimmed
-          expalinedAddress:res.data.addresses[0].expalinedAddress,
-          cityId:res.data.addresses[0].cityId,
-          // buildNo:res.data.addresses[0].buildNo,
-          // flatNo:res.data.addresses[0].flatNo,
-          // district:res.data.addresses[0].district,
-          // floorNo:res.data.addresses[0].floorNo,
-          latitude:String(res.data.addresses[0].latitude),
-          logitude:String(res.data.addresses[0].logitude),
-          
+          ...d,
+          name: d.userName ?? d.name,
+          phone: d.phone?.toString().trim(),
+          expalinedAddress: addr?.expalinedAddress ?? addr?.street,
+          cityId: addr?.cityId,
+          latitude: addr?.latitude != null ? String(addr.latitude) : '',
+          logitude: addr?.longitude != null ? String(addr.longitude) : addr?.logitude != null ? String(addr.logitude) : '',
         })
-        this.lat = Number(res.data.addresses[0].latitude) || 24.7136;
-        this.lng = Number(res.data.addresses[0].logitude) || 46.6753;
+        this.lat = addr?.latitude != null ? Number(addr.latitude) : 24.7136;
+        this.lng = addr?.longitude != null ? Number(addr.longitude) : addr?.logitude != null ? Number(addr.logitude) : 46.6753;
         this.editTraderImageProps.props.imgSrc = res.data.image;
         this.editImageIBanProps.props.imgSrc = res.data.iban;
         this.editImageCRProps.props.imgSrc = res.data.cr;
@@ -437,17 +435,14 @@ export class TraderDetailsComponent  {
         });
 
 
-        this.adress = [{
-          expalinedAddress:res.data.addresses[0].expalinedAddress,
-          cityId:res.data.addresses[0].cityId,
-          // buildNo:res.data.addresses[0].buildNo,
-          // flatNo:res.data.addresses[0].flatNo,
-          // district:res.data.addresses[0].district,
-          // floorNo:res.data.addresses[0].floorNo,
-          latitude:String(res.data.addresses[0].latitude),
-          logitude:String(res.data.addresses[0].logitude),
+        this.adress = addr ? [{
+          id: addr.id,
+          expalinedAddress: addr.expalinedAddress ?? addr.street,
+          cityId: addr.cityId,
+          latitude: String(addr.latitude ?? ''),
+          logitude: String(addr.longitude ?? addr.logitude ?? ''),
           userId: Number(localStorage.getItem('userId')) || 0
-        }]
+        }] : this.adress
 
         // this.imageList = res.data.image;
         // if (this.imageList.length != 0) {
@@ -522,39 +517,37 @@ export class TraderDetailsComponent  {
 
 
   onSubmit() {
-    // if(this.form.value.image){
-    //   let x =   this.form.value.image.map((re:any)=>({
-    //        ...re,
-    //        "id": 0,
-    //        "productId": +this.getID||0,
-    //      }))
-    //      this.form.patchValue({
-    //        image:x
-    //      })
-    //    }
-    console.log("TraderDetailsComponent  onSubmit  this.form.value:", this.form.value)
-    console.log("TraderDetailsComponent  onSubmit  this.form.value.cr.length>=0:", this.form.value.cr[0]?.image)
+    const raw = this.form.value;
+    const crVal = Array.isArray(raw.cr) ? raw.cr[0]?.image ?? raw.cr[0] : raw.cr;
+    const licenseVal = Array.isArray(raw.license) ? raw.license[0]?.image ?? raw.license[0] : raw.license;
+    const ibanVal = Array.isArray(raw.iban) ? raw.iban[0]?.image ?? raw.iban[0] : raw.iban;
+    const imageVal = Array.isArray(raw.image) ? raw.image[0]?.image ?? raw.image[0] : raw.image;
 
-    const payload = {
-      ...this.form.value,
-      numberOfBranches: +this.form.value.numberOfBranches,
-      cr: this.form.value.cr[0]?.image?this.form.value.cr[0]?.image:this.form.value.cr,
-      license: this.form.value.license[0]?.image?this.form.value.license[0]?.image:this.form.value.license,
-      iban: this.form.value.iban[0]?.image? this.form.value.iban[0]?.image:this.form.value.iban,
-      "enDescription": null,
-      "arDescription": null,
+    const payload: any = {
+      name: raw.name,
+      email: raw.email,
+      phone: raw.phone,
+      phoneCountryCode: this.countryService.getSelectedCountry()?.phoneCode ?? '+966',
+      storeName: raw.storeName,
+      numberOfBranches: +raw.numberOfBranches || 0,
+      cr: crVal,
+      license: licenseVal,
+      iban: ibanVal,
+      image: imageVal,
+      addresses: this.adress?.length ? [{
+        id: this.adress[0].id,
+        expalinedAddress: raw.expalinedAddress ?? this.adress[0].expalinedAddress,
+        cityId: raw.cityId ?? this.adress[0].cityId,
+        latitude: raw.latitude != null ? +raw.latitude : this.adress[0].latitude,
+        logitude: raw.logitude != null ? +raw.logitude : this.adress[0].logitude,
+      }] : [],
+    };
+
+    if (this.tyepMode() === 'Edit') {
+      payload.id = +this.getID;
     }
 
-    this.setPayload([
-      'expalinedAddress',
-      // 'street',
-      // 'district',
-      // 'buildNo',
-      // 'floorNo',
-      'cityId',
-      'logitude',
-      'latitude'
-    ], payload)
+    this.setPayload(['expalinedAddress', 'cityId', 'logitude', 'latitude'], payload);
 
     console.log('ggg', payload)
 

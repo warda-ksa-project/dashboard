@@ -78,20 +78,27 @@ export class OrderStatusDetailsComponent {
 
   getFaqsDetails() {
     this.ApiService.get(`OrderStatus/${this.faqsID}`).subscribe((res: any) => {
-      if (res.data)
-        this.form.patchValue(res.data)
-    })
+      const d = res?.data ?? res;
+      if (d) this.form.patchValue({ titleEn: d.enName, titleAr: d.arName, color: d.color, displayOrder: d.displayOrder });
+    });
   }
 
   onSubmit() {
-    const payload = {
-      ...this.form.value,
-      id: this.faqsID || 0,
-    }
-    if (this.tyepMode() === 'Add')
-      this.addFQS(payload)
-    else
-      this.editFQS(payload)
+    const raw = this.form.value;
+    const base = {
+      arName: raw.titleAr ?? '',
+      enName: raw.titleEn ?? '',
+      color: raw.color ?? null,
+      displayOrder: Number(raw.displayOrder) ?? 0,
+      statusType: 0,
+      allowEditOrder: false,
+      allowCancelOrder: false,
+      allowRefund: false,
+      isActive: true
+    };
+    const payload = this.tyepMode() === 'Add' ? base : { ...base, id: Number(this.faqsID) };
+    if (this.tyepMode() === 'Add') this.addFQS(payload);
+    else this.editFQS(payload);
   }
 
 
@@ -110,17 +117,15 @@ export class OrderStatusDetailsComponent {
   }
 
   addFQS(payload: any) {
-    this.ApiService.post('OrderStatus', payload).subscribe(res => {
-      if (res)
-        this.router.navigateByUrl('/orderStatus')
-    })
+    this.ApiService.post('OrderStatus', payload).subscribe((res: any) => {
+      if (res?.isSuccess !== false) this.router.navigateByUrl('/orderStatus');
+    });
   }
 
   editFQS(payload: any) {
-    this.ApiService.put('OrderStatus', payload).subscribe(res => {
-      if (res)
-        this.router.navigateByUrl('/orderStatus')
-    })
+    this.ApiService.put('OrderStatus', payload).subscribe((res: any) => {
+      if (res?.isSuccess !== false) this.router.navigateByUrl('/orderStatus');
+    });
   }
 
 

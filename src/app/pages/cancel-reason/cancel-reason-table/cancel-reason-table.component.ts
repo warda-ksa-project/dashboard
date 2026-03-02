@@ -94,15 +94,15 @@ export class CancelReasonTableComponent {
   displayTableCols(currentLang: string) {
     this.columns = [
       { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: true },
-      { keyName: 'enName', header: this.languageService.translate('cancel_reason.form.reason_en'), type: EType.text, show: true },
-      { keyName: 'arName', header: this.languageService.translate('cancel_reason.form.reason_ar'), type: EType.text, show: true },
+      { keyName: 'enReason', header: this.languageService.translate('cancel_reason.form.reason_en'), type: EType.text, show: true },
+      { keyName: 'arReason', header: this.languageService.translate('cancel_reason.form.reason_ar'), type: EType.text, show: true },
       { keyName: '', header: this.languageService.translate('Action'), type: EType.actions, actions: this.tableActions, show: true }
     ];
 
     this.columnsSmallTable = [
-      { keyName: currentLang === 'ar' ? 'arName' : 'enName', header: this.languageService.translate('cancel_reason.form.reason_ar'), type: EType.text, showAs: ETableShow.header },
+      { keyName: currentLang === 'ar' ? 'arReason' : 'enReason', header: this.languageService.translate('cancel_reason.form.reason_en'), type: EType.text, showAs: ETableShow.header },
       { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: false },
-      { keyName: currentLang === 'ar' ? 'arDescription' : 'enDescription', header: this.languageService.translate('cancel_reason.form.desc_ar'), type: EType.editor, showAs: ETableShow.content ,show: false }
+      { keyName: currentLang === 'ar' ? 'enReason' : 'arReason', header: this.languageService.translate('cancel_reason.form.reason_ar'), type: EType.text, showAs: ETableShow.content }
     ];
   }
 
@@ -132,38 +132,26 @@ export class CancelReasonTableComponent {
 
   getAllCancelReason() {
     this.ApiService.get('CancelReasons/paginated', this.objectSearch).subscribe((res: any) => {
-      if (res) {
-        this.dataList = res.data.items;
-        this.totalCount = res.data.totalCount;
+      const d = res?.data ?? res;
+      if (d) {
+        this.dataList = d.items ?? d ?? [];
+        this.totalCount = d.totalCount ?? this.dataList.length;
         this.filteredData = [...this.dataList];
       }
-
-    })
+    });
   }
 
   onPageChange(event: any) {
-    console.log(event);
     this.objectSearch.pageNumber = event;
     this.getAllCancelReason();
   }
 
   filterData() {
-    this.dataList = this.filteredData;
-    const search = this.searchValue.toLowerCase();
-    console.log(search);
-    console.log(this.searchValue.length);
-
-
-    if (this.searchValue.length == 1) {
-      this.dataList = this.filteredData;
-      return;
-    }
-
-    this.dataList = this.dataList.filter((item: any) =>
-      item.enTitle.toLowerCase().includes(search) ||
-      item.arTitle.toLowerCase().includes(search) ||
-      item.enDescription.toLowerCase().includes(search) ||
-      item.arDescription.toLowerCase().includes(search)
+    const search = (this.searchValue || '').toLowerCase();
+    if (!search) { this.dataList = this.filteredData; return; }
+    this.dataList = this.filteredData.filter((item: any) =>
+      (item.enReason || '').toLowerCase().includes(search) ||
+      (item.arReason || '').toLowerCase().includes(search)
     );
   }
 

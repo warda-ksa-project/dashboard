@@ -330,10 +330,11 @@ getBreadCrumb() {
 
   
     API_forAddItem(payload: any) {
-      this.ApiService.post('', payload).subscribe(res => {
-        if (res)
-          this.navigateToPageTable()
-      })
+      // YearTargets: backend has no POST, only PUT - use PUT for update
+      this.ApiService.put(global_API_update, payload).subscribe((res: any) => {
+        if (res?.isSuccess !== false)
+          this.navigateToPageTable();
+      });
     }
   
     API_forEditItem(payload: any) {

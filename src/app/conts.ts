@@ -19,7 +19,7 @@ export const menuItems  : MenuItem[] =
     { icon: 'pi pi-home',id:'dashboard', label: 'side_bar.dashboard', route: '/dashboard-admin',type:[Roles.admin] },
     { icon: 'pi pi-home', id:'dashboard',label: 'side_bar.dashboard', route: '/dashboard-trader',type:[Roles.trader] },
     { icon: 'pi pi-truck', id:'main category',label: 'side_bar.main_category', route: '/main_category',type:[Roles.admin] },
-    { icon: 'pi pi-hashtag', id:'sub categories',label: 'side_bar.sub_category', route: '/sub-category',type:[Roles.trader]  },
+    { icon: 'pi pi-hashtag', id:'sub categories',label: 'side_bar.sub_category', route: '/sub-category',type:[Roles.admin]  },
     { icon: 'pi pi-gauge', id:'piece products',label: 'side_bar.products', route: '/product',type:[Roles.admin,Roles.trader]  },
     { icon: 'pi pi-crown', id:'products',label: 'side_bar.piece_products', route: '/piece-product',type:[Roles.admin,Roles.trader]  },
     { icon: 'pi pi-list', id:'article',label: 'side_bar.article', route: '/article',type:[Roles.admin] },

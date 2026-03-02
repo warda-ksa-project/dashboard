@@ -86,15 +86,15 @@ pageName = signal<string>(global_pageName);
   displayTableCols(currentLang: string) {
     this.columns = [
       { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: true },
-      { keyName: 'titleEn', header: this.languageService.translate('orderStatus.form.name_en'), type: EType.text, show: true },
-      { keyName: 'titleAr', header: this.languageService.translate('orderStatus.form.name_ar'), type: EType.text, show: true },
+      { keyName: 'enName', header: this.languageService.translate('orderStatus.form.name_en'), type: EType.text, show: true },
+      { keyName: 'arName', header: this.languageService.translate('orderStatus.form.name_ar'), type: EType.text, show: true },
       { keyName: '', header: this.languageService.translate('Actions'), type: EType.actions, actions: this.tableActions, show: true },
 
     ]
     this.columnsSmallTable = [
-      { keyName: 'titleEn', header: this.languageService.translate('orderStatus.form.name_en'), type: EType.text, showAs: ETableShow.header },
+      { keyName: 'enName', header: this.languageService.translate('orderStatus.form.name_en'), type: EType.text, showAs: ETableShow.header },
       { keyName: 'id', header: 'Id', type: EType.id, show: false },
-      { keyName: 'titleAr', header: this.languageService.translate('orderStatus.form.name_ar'), type: EType.editor, showAs: ETableShow.content },
+      { keyName: 'arName', header: this.languageService.translate('orderStatus.form.name_ar'), type: EType.text, showAs: ETableShow.content },
     ];
   }
 
@@ -107,14 +107,15 @@ pageName = signal<string>(global_pageName);
   }
 
   getAllFAQS() {
-    this.ApiService.get('OrderStatus/paginated', this.faqSearchCreteria).subscribe((res: any) => {
-      if (res) {
-        this.faqsList = res.data.items;
-        this.totalCount = res.data.totalCount;
+    const params = { ...this.faqSearchCreteria, searchTerm: this.faqSearchCreteria.titleEn || this.faqSearchCreteria.titleAr || '' };
+    this.ApiService.get('OrderStatus/paginated', params).subscribe((res: any) => {
+      const d = res?.data;
+      if (d) {
+        this.faqsList = d.items ?? d ?? [];
+        this.totalCount = d.totalCount ?? 0;
         this.filteredData = [...this.faqsList];
       }
-
-    })
+    });
     // this.ApiService.get('FAQ/GetAll').subscribe((res: any) => {
     //   if (res.data) {
     //     this.faqsList = res.data;

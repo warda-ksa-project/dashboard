@@ -52,7 +52,7 @@ export class AboutUsTableComponent {
     sortingDirection: 0,
     enName: "",
     arName: ""
-   }
+  }
 
   totalCount: number = 0;
 
@@ -116,11 +116,10 @@ export class AboutUsTableComponent {
     this.columns = [
       { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: true },
       { keyName: 'image', header: this.languageService.translate('about_us.form.image'), type: EType.image, show: false },
-      { keyName: 'enName', header: this.languageService.translate('about_us.form.name_en'), type: EType.text, show: true },
-      { keyName: 'arName', header: this.languageService.translate('about_us.form.name_ar'), type: EType.text, show: true },
+      { keyName: 'enTitle', header: this.languageService.translate('about_us.form.name_en'), type: EType.text, show: true },
+      { keyName: 'arTitle', header: this.languageService.translate('about_us.form.name_ar'), type: EType.text, show: true },
     ];
     
-    // Only show actions column for all users (but actions differ based on role)
     if (!this.isTrader) {
       this.columns.push({ keyName: '', header: this.languageService.translate('Actions'), type: EType.actions, actions: this.tableActions, show: true });
     }
@@ -128,10 +127,10 @@ export class AboutUsTableComponent {
     this.columnsSmallTable = [
       { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: false },
       { keyName: 'image', header: this.languageService.translate('about_us.form.image'), type: EType.image, show: false, showAs: ETableShow.header },
-      { keyName: 'enName', header: this.languageService.translate('about_us.form.name_en'), type: EType.text, showAs: ETableShow.content },
-      { keyName: 'arName', header: this.languageService.translate('about_us.form.name_ar'), type: EType.text, showAs: ETableShow.content },
-      { keyName: 'enDescription', header: this.languageService.translate('about_us.form.desc_en'), type: EType.editor, showAs: ETableShow.content,show: false  },
-      { keyName: 'arDescription', header: this.languageService.translate('about_us.form.desc_ar'), type: EType.editor, showAs: ETableShow.content ,show: false },
+      { keyName: 'enTitle', header: this.languageService.translate('about_us.form.name_en'), type: EType.text, showAs: ETableShow.content },
+      { keyName: 'arTitle', header: this.languageService.translate('about_us.form.name_ar'), type: EType.text, showAs: ETableShow.content },
+      { keyName: 'enContent', header: this.languageService.translate('about_us.form.desc_en'), type: EType.editor, showAs: ETableShow.content, show: false },
+      { keyName: 'arContent', header: this.languageService.translate('about_us.form.desc_ar'), type: EType.editor, showAs: ETableShow.content, show: false },
     ];
   }
 
@@ -160,35 +159,28 @@ export class AboutUsTableComponent {
 
   API_getAll() {
     this.ApiService.get(global_API_getAll, this.objectSearch).subscribe((res: any) => {
-      if (res) {
-        this.dataList = res.data.items;
-        this.totalCount = res.data.totalCount;
+      const d = res?.data ?? res;
+      if (d) {
+        this.dataList = d.items ?? d ?? [];
+        this.totalCount = d.totalCount ?? this.dataList.length;
         this.filteredData = [...this.dataList];
       }
-
-    })
+    });
   }
 
   onPageChange(event: any) {
-    console.log(event);
     this.objectSearch.pageNumber = event;
     this.API_getAll();
   }
 
   filterData() {
-    this.dataList = this.filteredData;
-    const search = this.searchValue.toLowerCase();
-
-    if (this.searchValue.length == 1) {
-      this.dataList = this.filteredData;
-      return;
-    }
-
-    this.dataList = this.dataList.filter((item: any) =>
-      item.enTitle.toLowerCase().includes(search) ||
-      item.arTitle.toLowerCase().includes(search) ||
-      item.enDescription.toLowerCase().includes(search) ||
-      item.arDescription.toLowerCase().includes(search)
+    const search = (this.searchValue || '').toLowerCase();
+    if (!search) { this.dataList = this.filteredData; return; }
+    this.dataList = this.filteredData.filter((item: any) =>
+      (item.enTitle || '').toLowerCase().includes(search) ||
+      (item.arTitle || '').toLowerCase().includes(search) ||
+      (item.enContent || '').toLowerCase().includes(search) ||
+      (item.arContent || '').toLowerCase().includes(search)
     );
   }
   onSubmitFilter() {
@@ -202,7 +194,8 @@ export class AboutUsTableComponent {
       sortingExpression: "",
       sortingDirection: 0,
       enName: "",
-      arName: ""     }
+      arName: ""
+    };
     this.API_getAll();
     this.showFilter = false
   }

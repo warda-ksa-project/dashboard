@@ -36,42 +36,9 @@ export class CityDetailsComponent {
   selectedLang: any;
   languageService = inject(LanguageService);
   form = new FormGroup({
-    enName: new FormControl('',{
-      validators: [
-        Validators.required,
-        Validations.englishCharsValidator(),
-      ],
-    }),
-    arName: new FormControl('', {
-      validators:[
-        Validators.required,
-        Validations.arabicCharsValidator()
-      ]
-    }),
-    postalCode: new FormControl('', {
-      validators:[
-        Validators.required,
-        Validations.onlyNumberValidator()
-      ]
-    }),
-    shortCut: new FormControl('', {
-      validators:[
-        Validators.required,
-      ]
-    }),
-    latitude: new FormControl('', {
-      validators:[
-        Validators.required,
-        Validations.decimalNumberValidators()
-      ]
-    }),
-    longitude: new FormControl('', {
-      validators:[
-        Validators.required,
-        Validations.decimalNumberValidators()
-      ]
-    }),
-    status: new FormControl <boolean>(false)
+    enName: new FormControl('', [Validators.required, Validations.englishCharsValidator()]),
+    arName: new FormControl('', [Validators.required, Validations.arabicCharsValidator()]),
+    countryId: new FormControl<number | null>(null)
   })
 
   bredCrumb: IBreadcrumb = {
@@ -106,19 +73,15 @@ export class CityDetailsComponent {
     })
   
   }
-getAllCountries(){
-  this.ApiService.get('Countries').subscribe((res: any) => {
-    if (res.data) {
-      this.countries=[]
-     res.data.map((country:any)=>{
-         this.countries.push({
-          name:this.selectedLang=='en'?country.enName :country.arName,
-          code:country.id
-         })
-     })
-    }
-  })
-}
+  getAllCountries() {
+    this.ApiService.get('Countries').subscribe((res: any) => {
+      const list = res?.data ?? res ?? [];
+      this.countries = (Array.isArray(list) ? list : [list]).map((c: any) => ({
+        name: this.selectedLang === 'ar' ? (c.arName ?? c.enName) : (c.enName ?? c.arName),
+        code: c.id
+      }));
+    });
+  }
 tyepMode() {
   const url = this.router.url;
   let result = 'Add'
@@ -142,35 +105,32 @@ getBreadCrumb() {
 }
   getCityDetails() {
     this.ApiService.get(`Cities/${this.cityID}`).subscribe((res: any) => {
-      if (res.data)
-        this.form.patchValue(res.data)
-    })
+      const d = res?.data ?? res;
+      if (d) this.form.patchValue({ enName: d.enName, arName: d.arName, countryId: d.countryId });
+    });
   }
 
   onSubmit() {
-    console.log('ff',this.form.value)
-    const payload = {
-      ...this.form.value,
-      id: this.cityID|0,
-    }
-    if (this.tyepMode() === 'Add')
-      this.addCity(payload)
-    else
-      this.editCity(payload)
-
+    const raw = this.form.value;
+    const payload: any = {
+      arName: raw.arName ?? '',
+      enName: raw.enName ?? '',
+      countryId: raw.countryId ? Number(raw.countryId) : null
+    };
+    if (this.tyepMode() === 'Edit') payload.id = Number(this.cityID);
+    if (this.tyepMode() === 'Add') this.addCity(payload);
+    else this.editCity(payload);
   }
 
   addCity(payload: any) {
-    this.ApiService.post('Cities', payload).subscribe(res => {
-      if (res)
-        this.router.navigateByUrl('/city')
-    })
+    this.ApiService.post('Cities', payload).subscribe((res: any) => {
+      if (res?.isSuccess !== false) this.router.navigateByUrl('city');
+    });
   }
   editCity(payload: any) {
-    this.ApiService.put('Cities', payload).subscribe(res => {
-      if (res)
-        this.router.navigateByUrl('/city')
-    })
+    this.ApiService.put('Cities', payload).subscribe((res: any) => {
+      if (res?.isSuccess !== false) this.router.navigateByUrl('city');
+    });
   }
 
   cancel(){

@@ -129,13 +129,15 @@ static editorArabicCharsValidator(errorMessage?: string): ValidatorFn {
           // Try to find matching country by checking prefixes and length
           let matchingCountry = null;
 
-          // Check for Saudi Arabia (starts with 05, length 10)
-          if (phoneValue.startsWith('05') && phoneValue.length === 10) {
-            matchingCountry = countries.find(c => c.phoneCode === '966');
+          // Normalize phoneCode (API may return "+966" or "966")
+          const norm = (pc: string) => (pc || '').replace(/^\+/, '');
+          // Saudi Arabia: 05XXXXXXXX (10 digits) or 5XXXXXXXX (9 digits, backend format)
+          if ((phoneValue.startsWith('05') && phoneValue.length === 10) || (phoneValue.startsWith('5') && phoneValue.length === 9)) {
+            matchingCountry = countries.find(c => norm(c.phoneCode || '') === '966');
           }
-          // Check for Oman (starts with 09/07/02, length 9)
+          // Oman: 09/07/02 + 9 digits
           else if ((phoneValue.startsWith('09') || phoneValue.startsWith('07') || phoneValue.startsWith('02')) && phoneValue.length === 9) {
-            matchingCountry = countries.find(c => c.phoneCode === '968');
+            matchingCountry = countries.find(c => norm(c.phoneCode || '') === '968');
           }
 
           if (!matchingCountry) {
@@ -168,23 +170,31 @@ static editorArabicCharsValidator(errorMessage?: string): ValidatorFn {
             };
           }
 
-          const expectedLength = parseInt(country.phoneLength);
+          const expectedLength = parseInt(country.phoneLength) || 9;
+          const code = (country.phoneCode || '').replace(/^\+/, '');
 
-          if (phoneValue.length !== expectedLength) {
+          // Saudi: backend has length 9 (5XXXXXXXX), but users often enter 05XXXXXXXX (10)
+          const isValidLength = code === '966'
+            ? (phoneValue.length === expectedLength || (expectedLength === 9 && phoneValue.length === 10 && phoneValue.startsWith('05')))
+            : phoneValue.length === expectedLength;
+
+          if (!isValidLength) {
             return { 
-              phoneInvalid: errorMessage || `Phone number must be ${expectedLength} digits` 
+              phoneInvalid: errorMessage || (code === '966' 
+                ? `Phone must be 9 digits (5XXXXXXXX) or 10 digits (05XXXXXXXX)` 
+                : `Phone number must be ${expectedLength} digits`) 
             };
           }
 
-          if (country.phoneCode === '966') {
-            if (!phoneValue.startsWith('05')) {
+          if (code === '966') {
+            if (!phoneValue.startsWith('05') && !phoneValue.startsWith('5')) {
               return { 
-                phoneInvalid: errorMessage || 'Saudi phone number must start with 05' 
+                phoneInvalid: errorMessage || 'Saudi phone number must start with 05 or 5' 
               };
             }
           }
 
-          if (country.phoneCode === '968') {
+          if (code === '968') {
             const firstTwoDigits = phoneValue.substring(0, 2);
             const validPrefixes = ['09', '07', '02'];
             

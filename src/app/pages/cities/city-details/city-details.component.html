@@ -4,9 +4,6 @@
          <div class="title">
             <h2>{{tyepMode()|translate|titlecase}} {{pageName()|translate|titlecase}}</h2>
          </div>
-         <!-- <div class="breadcrumb">
-            <app-breadcrump [breadcrumbProps]="bredCrumb"></app-breadcrump>
-         </div> -->
       </div>
    </div>
    <div class=" form-container">
@@ -22,28 +19,9 @@
                      [label]="'city.form.name_ar'" [control]="form.get('arName')"></app-input-text>
                </div>
                <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
-                  <app-input-text [readOnly]="tyepMode()==='View'" [disabled]="tyepMode()==='View'"
-                     [label]="'city.form.postalCode'" [control]="form.get('postalCode')"></app-input-text>
-               </div>
-               <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
-                  <app-input-text [readOnly]="tyepMode()==='View'" [disabled]="tyepMode()==='View'"
-                     [label]="'city.form.shortName'" [control]="form.get('shortCut')"></app-input-text>
-               </div>
-               <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
-                  <app-input-text [readOnly]="tyepMode()==='View'" [disabled]="tyepMode()==='View'" [label]="'city.form.latitude'"
-                     [control]="form.get('latitude')"></app-input-text>
-               </div>
-               <div class="col-lg-6 col-md-6 col-sm-12 mt-4">
-                  <app-input-text [readOnly]="tyepMode()==='View'" [disabled]="tyepMode()==='View'"
-                     [label]="'city.form.longitude'" [control]="form.get('longitude')"></app-input-text>
-               </div>
-           
-               <div class="col-lg-6 col-md-6 col-sm-12 mt-4 pt-3">
-                  <app-check-box [isToggle]="true"
-                   [label]="'city.form.status'" 
-                   [readOnly]="tyepMode() == 'View'"
-                   [disabled]="tyepMode() == 'View'"
-                   [control]="form.get('status')"></app-check-box>
+                  <app-select [readOnly]="tyepMode()==='View'" [disabled]="tyepMode()==='View'"
+                     [label]="'city.form.country'" [control]="form.get('countryId')"
+                     [list]="countries" placeholder="{{'shared.select'|translate}}"></app-select>
                </div>
                <div class="actions mt-5 text-center">
                   <button type="submit" class="submit-btn" [disabled]="!form.valid" *ngIf="tyepMode()!=='View'">

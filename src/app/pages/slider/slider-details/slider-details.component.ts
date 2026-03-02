@@ -12,6 +12,7 @@ import { ConfirmMsgService } from '../../../services/confirm-msg.service';
 import { DialogComponent } from '../../../components/dialog/dialog.component';
 import { UploadFileComponent } from "../../../components/upload-file/upload-file.component";
 import { SelectComponent } from '../../../components/select/select.component';
+import { CheckBoxComponent } from '../../../components/check-box/check-box.component';
 import { EditModeImageComponent } from '../../../components/edit-mode-image/edit-mode-image.component';
 import { IEditImage } from '../../../components/edit-mode-image/editImage.interface';
 import { environment } from '../../../../environments/environment';
@@ -27,7 +28,7 @@ const global_routeUrl = '/slider'
 @Component({
   selector: 'app-slider-details',
   standalone: true,
-  imports: [ReactiveFormsModule, TranslatePipe, TitleCasePipe, EditModeImageComponent, ButtonModule, NgIf, DialogComponent, SelectComponent, InputTextComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
+  imports: [ReactiveFormsModule, TranslatePipe, TitleCasePipe, EditModeImageComponent, ButtonModule, NgIf, DialogComponent, SelectComponent, CheckBoxComponent, InputTextComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
   templateUrl: './slider-details.component.html',
   styleUrl: './slider-details.component.scss'
 })
@@ -39,65 +40,18 @@ export class SliderDetailsComponent {
   private route = inject(ActivatedRoute)
   showConfirmMessage: boolean = false
   editAttachmentMode: boolean = false;
-  editAttachmentMode_ar: boolean = false;
   private confirm = inject(ConfirmMsgService)
   minEndDate: Date = new Date()
   editImageProps: IEditImage = {
-    props: {
-      visible: true,
-      imgSrc: ''
-    },
-    onEditBtn: (e?: Event) => {
-      this.editImageProps.props.visible = false;
-      this.editAttachmentMode = false;
-    }
-  };
-  editImageProps_ar: IEditImage = {
-    props: {
-      visible: true,
-      imgSrc: ''
-    },
-    onEditBtn: (e?: Event) => {
-      this.editImageProps_ar.props.visible = false;
-      this.editAttachmentMode_ar = false;
-    }
+    props: { visible: true, imgSrc: '' },
+    onEditBtn: () => { this.editImageProps.props.visible = false; this.editAttachmentMode = false; }
   };
   form = new FormGroup({
-    titleEn: new FormControl('', {
-      validators: [
-        Validators.required,
-        Validations.editorEnglishCharsValidator()
-      ],
-    }),
-    titleAr: new FormControl<any>('', {
-      validators: [
-        Validators.required,
-        Validations.editorArabicCharsValidator()
-      ]
-    }),
-    imageEn: new FormControl<any>('', {
-      validators: [
-
-      ]
-    }),
-    imageAr: new FormControl<any>('', {
-      validators: [
-
-      ]
-    }),
-    displayOrder: new FormControl<any>('', {
-      validators: [
-        Validators.required,
-        Validations.onlyNumberValidator()
-      ]
-    }),
-    viewType: new FormControl(3, {
-      validators: [
-        Validators.required,
-      ]
-    }),
-
-    id: new FormControl(this.getID | 0),
+    url: new FormControl(''),
+    image: new FormControl(''),
+    displayOrder: new FormControl(0, [Validators.required, Validations.onlyNumberValidator()]),
+    isActive: new FormControl(true),
+    id: new FormControl(this.getID | 0)
   })
 
   bredCrumb: IBreadcrumb = {
@@ -114,13 +68,7 @@ export class SliderDetailsComponent {
 
 
   get isRequiredError(): boolean {
-    const control = this.form.get('imageEn');
-    return control?.touched && control?.hasError('required') || false;
-  }
-
-  get isRequiredError_ar(): boolean {
-    const control = this.form.get('imageAr');
-    return control?.touched && control?.hasError('required') || false;
+    return (this.form.get('image')?.touched && this.form.get('image')?.hasError('required')) || false;
   }
 
   ngOnInit() {
@@ -164,25 +112,26 @@ export class SliderDetailsComponent {
 
   API_getItemDetails() {
     this.ApiService.get(`${global_API_deialis}/${this.getID}`).subscribe((res: any) => {
-      if (res.data) {
-        this.form.patchValue(res.data)
-        this.editImageProps.props.imgSrc =  res.data.imageEn;
+      const d = res?.data ?? res;
+      if (d) {
+        this.form.patchValue({ url: d.url, displayOrder: d.displayOrder, isActive: d.isActive });
+        this.editImageProps.props.imgSrc = d.image ?? '';
         this.editAttachmentMode = true;
-
-        this.editImageProps_ar.props.imgSrc =  res.data.imageAr;
-        this.editAttachmentMode_ar = true;
       }
-    })
+    });
   }
 
   onSubmit() {
-    const payload = {
-      ...this.form.value
-    }
-    if (this.tyepMode() == 'Add')
-      this.API_forAddItem(payload)
-    else
-      this.API_forEditItem(payload)
+    const raw = this.form.value;
+    const payload: any = {
+      imageBase64: raw.image || null,
+      url: raw.url || null,
+      displayOrder: Number(raw.displayOrder) || 0,
+      isActive: raw.isActive ?? true
+    };
+    if (this.tyepMode() === 'Edit') payload.id = Number(this.getID);
+    if (this.tyepMode() === 'Add') this.API_forAddItem(payload);
+    else this.API_forEditItem(payload);
   }
 
   navigateToPageTable() {
@@ -203,17 +152,15 @@ export class SliderDetailsComponent {
 
 
   API_forAddItem(payload: any) {
-    this.ApiService.post(global_API_create, payload).subscribe(res => {
-      if (res)
-        this.navigateToPageTable()
-    })
+    this.ApiService.post(global_API_create, payload).subscribe((res: any) => {
+      if (res?.isSuccess !== false) this.navigateToPageTable();
+    });
   }
 
   API_forEditItem(payload: any) {
-    this.ApiService.put(global_API_update, payload).subscribe(res => {
-      if (res)
-        this.navigateToPageTable()
-    })
+    this.ApiService.put(global_API_update, payload).subscribe((res: any) => {
+      if (res?.isSuccess !== false) this.navigateToPageTable();
+    });
   }
 
 

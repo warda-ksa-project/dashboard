@@ -252,16 +252,16 @@ export class OrdersTableComponent {
   // }
 
   API_getStatus(){
-    this.ApiService.get('OrderStatus').subscribe((res:any)=>{
-      if(res.data){
-        this.orderStatusList=[]
-        res.data.map((item:any)=>{
+    this.ApiService.get('OrderStatus').subscribe((res: any) => {
+      const list = res?.data ?? res;
+      if (list) {
+        this.orderStatusList = [];
+        (Array.isArray(list) ? list : [list]).forEach((item: any) => {
           this.orderStatusList.push({
-            name:this.selectedLang=='en'?item.titleEn:item.titleAr,
-            code:item.id
-          })
-
-        })
+            name: this.selectedLang === 'ar' ? (item.arName ?? item.titleAr) : (item.enName ?? item.titleEn),
+            code: item.id
+          });
+        });
       }
     })
   }
@@ -386,14 +386,14 @@ export class OrdersTableComponent {
 
 
   }
-  API_Edit(){
-    this.ApiService.put('Orders',this.form.value).subscribe(res=>{
-      if(res){
-       this.API_getAll()
-        this.openEditDialog=false
+  API_Edit() {
+    const { orderId, orderStatusId } = this.form.value;
+    this.ApiService.put('Orders/status', { orderId, newStatusId: orderStatusId }).subscribe((res: any) => {
+      if (res?.isSuccess !== false) {
+        this.API_getAll();
+        this.openEditDialog = false;
       }
-
-    })
+    });
   }
   reloadGetAllApi(e: any) {
     if (e) {

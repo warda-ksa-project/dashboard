@@ -183,27 +183,27 @@ export class DashboardAdminComponent {
   // }
 
   getAllSalesPerWeek() {
-    this.ApiService.get('admin/dashboard/sales-order-per-week').subscribe(
-      (res: any) => {
-        // this.allWeeksSales = res
-        this.firstDateName = `${this.languageService.translationService.instant('dashboard_admin.chart.firstDataName')}  ${this.currencyPipe.transform(res.salesForThisWeek, 'USD', '', '1.0-0')}`;
-        this.secondDateName = `${this.languageService.translationService.instant('dashboard_admin.chart.secondDataName')} ${this.currencyPipe.transform(res.salesFromAWeekAgo, 'USD', '', '1.0-0')}`;
-        this.allWeeksSales=[res.saturday,res.sunday,res.monday,res.tuesday,res.wednesday,res.thursday,res.friday],
-        this.allPastWeeks=[res.lastSaturday,res.lastSunday,res.lastMonday,res.lastTuesday,res.lastWednesday,res.lastThursday,res.lastFriday]
-      }
-    );
+    this.ApiService.get('admin/dashboard/sales-order-per-week').subscribe((res: any) => {
+      const list = res?.data ?? res ?? [];
+      const totals = Array.isArray(list) ? list.map((w: any) => w.totalSales ?? 0) : [];
+      const names = ['saturday', 'sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
+      this.allWeeksSales = names.map((_, i) => totals[i] ?? 0);
+      this.allPastWeeks = names.map((_, i) => totals[i + 7] ?? 0);
+      this.firstDateName = `${this.languageService.translationService.instant('dashboard_admin.chart.firstDataName')} ${this.currencyPipe.transform(totals[0] ?? 0, 'USD', '', '1.0-0')}`;
+      this.secondDateName = `${this.languageService.translationService.instant('dashboard_admin.chart.secondDataName')} ${this.currencyPipe.transform(totals[1] ?? 0, 'USD', '', '1.0-0')}`;
+    });
   }
 
 
   getAllUsers(payload: any) {
     this.ApiService.get('admin/dashboard', payload).subscribe((res: any) => {
-      this.usersList = res
-    })
+      this.usersList = res?.data ?? res;
+    });
   }
 
   getAllRevenueForEveryCity() {
     this.ApiService.get('admin/dashboard/city-revenue').subscribe((res: any) => {
-      this.cityData = res
+      this.cityData = res?.data ?? res ?? [];
     });
   }
   // getAllTargetAPI() {
@@ -238,29 +238,25 @@ export class DashboardAdminComponent {
   }
 
   getStaticData() {
-    this.ApiService.get(
-      'admin/dashboard'
-    ).subscribe((res: any) => {
-      this.dataCardItems = res;
-      if (res) {
-        this.items[0].price = res.completeOrdersCount;
-        this.items[1].price = res.canceledOrdersCount;
-        this.items[2].price = res.productCount;
-        this.items[3].price = res.productPieceCount;
-        this.items[4].price = res.categoryCount;
-        this.items[5].price = res.ordersCount;
-        this.items[6].price = res.subCategoryCount;
-        this.items[7].price = res.allSales;
-
+    this.ApiService.get('admin/dashboard').subscribe((res: any) => {
+      const d = res?.data;
+      if (d) {
+        this.dataCardItems = d;
+        this.items[0].price = d.completedOrders ?? 0;
+        this.items[1].price = 0;
+        this.items[2].price = d.totalProducts ?? 0;
+        this.items[3].price = 0;
+        this.items[4].price = 0;
+        this.items[5].price = d.totalOrders ?? 0;
+        this.items[6].price = 0;
+        this.items[7].price = d.totalRevenue ?? 0;
       }
     });
   }
 
   getAllSalesOrderDashboardStatistics() {
-    this.ApiService.get(
-      'admin/dashboard/trader'
-    ).subscribe((res: any) => {
-      this.staticDetails = res;
+    this.ApiService.get('admin/dashboard/trader').subscribe((res: any) => {
+      this.staticDetails = res?.data ?? res;
     });
   }
 

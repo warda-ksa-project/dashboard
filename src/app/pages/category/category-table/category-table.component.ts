@@ -20,7 +20,7 @@ const global_pageName = 'category.pageName';
 const global_router_add_url_in_Table = '/category/add';
 const global_router_view_url = '/category/view';
 const global_router_edit_url = '/category/edit';
-const global_API_getAll = 'Categories/paginated';
+const global_API_getAll = 'SubCategories/paginated';
 @Component({
   selector: 'app-category-table',
   standalone: true,
@@ -48,7 +48,7 @@ export class CategoryTableComponent {
   tableActions: ITableAction[] = [
     {
       name: EAction.delete,
-      apiName_or_route: 'Categories',
+      apiName_or_route: 'SubCategories',
       autoCall: true
     },
     {
@@ -60,16 +60,6 @@ export class CategoryTableComponent {
       name: EAction.edit,
       apiName_or_route: global_router_edit_url,
       autoCall: true
-    },
-    {
-      name: EAction.active,
-      apiName_or_route: 'Categories/activate',
-      autoCall: true
-    },
-    {
-      name: EAction.block,
-      apiName_or_route: 'Categories',
-      autoCall: true
     }
   ]
   private ApiService = inject(ApiService)
@@ -80,21 +70,13 @@ export class CategoryTableComponent {
   }
 
   objectSearch = {
-    "pageNumber": 1,
-    "pageSize": 8,
-    "sortingExpression": "",
-    "sortingDirection": 0,
-    "isActive": null,
-    "fullName": "",
-    "userName": "",
-    "email": ""
-  }
-
-  clientStatuslist = [
-    { id: null, name: 'shared.all' },
-    { id: true, name: 'shared.active' },
-    { id: false, name: 'shared.not_active' },
-  ];
+    pageNumber: 1,
+    pageSize: 8,
+    sortingExpression: '',
+    sortingDirection: 0,
+    enName: '',
+    arName: ''
+  };
 
   totalCount: number = 0;
 
@@ -138,19 +120,15 @@ export class CategoryTableComponent {
 
   displayTableCols(currentLang: string) {
     this.columns = [
-      { keyName: 'userId', header: this.languageService.translate('Id'), type: EType.id, show: true },
-      { keyName: 'fullName', header: this.languageService.translate('client.form.name'), type: EType.text, show: true },
-      { keyName: 'username', header: this.languageService.translate('client.form.userName'), type: EType.text, show: true },
-      { keyName: 'mobileNumber', header: this.languageService.translate('client.form.mobile'), type: EType.text, show: true },
-      { keyName: 'email', header: this.languageService.translate('client.form.email'), type: EType.text, show: true },
-      { keyName: 'isActive', header: this.languageService.translate('client.form.status'), type: EType.boolean, show: true },
-      { keyName: '', header: this.languageService.translate('client.form.action'), type: EType.actions, actions: this.tableActions, show: true },
+      { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: true },
+      { keyName: currentLang === 'ar' ? 'arName' : 'enName', header: this.languageService.translate('category.form.name'), type: EType.text, show: true },
+      { keyName: currentLang === 'ar' ? 'enName' : 'arName', header: this.languageService.translate('category.form.name_ar'), type: EType.text, show: true },
+      { keyName: '', header: this.languageService.translate('Action'), type: EType.actions, actions: this.tableActions, show: true },
     ];
     this.columnsSmallTable = [
-      { keyName: 'userId', header: this.languageService.translate('client.form.userName'), type: EType.id, show: false },
-      { keyName: 'fullName', header: this.languageService.translate('client.form.name'), type: EType.text, showAs: ETableShow.header },
-      { keyName: 'mobileNumber', header: this.languageService.translate('client.form.mobile'), type: EType.text, showAs: ETableShow.header },
-      { keyName: currentLang === 'ar' ? 'arDescription' : 'enDescription', header: this.languageService.translate('client.form.fullName'), type: EType.editor, showAs: ETableShow.content,show: false  }
+      { keyName: 'id', header: 'Id', type: EType.id, show: false },
+      { keyName: 'enName', header: this.languageService.translate('category.form.name'), type: EType.text, showAs: ETableShow.header },
+      { keyName: 'arName', header: this.languageService.translate('category.form.name_ar'), type: EType.text, showAs: ETableShow.content },
     ];
   }
 
@@ -165,9 +143,10 @@ export class CategoryTableComponent {
 
   API_getAll() {
     this.ApiService.get(global_API_getAll, this.objectSearch).subscribe((res: any) => {
-      if (res) {
-        this.dataList = res.data.items;
-        this.totalCount = res.data.totalCount;
+      const d = res?.data;
+      if (d) {
+        this.dataList = d.items ?? d ?? [];
+        this.totalCount = d.totalCount ?? 0;
         this.filteredData = [...this.dataList];
       }
     });
@@ -184,16 +163,7 @@ export class CategoryTableComponent {
   }
 
   reset() {
-    this.objectSearch = {
-      "pageNumber": 1,
-      "pageSize": 8,
-      "sortingExpression": "",
-      "sortingDirection": 0,
-      "isActive": null,
-      "fullName": "",
-      "userName": "",
-      "email": ""
-    };
+    this.objectSearch = { pageNumber: 1, pageSize: 8, sortingExpression: '', sortingDirection: 0, enName: '', arName: '' };
     this.API_getAll();
     this.showFilter = false;
   }

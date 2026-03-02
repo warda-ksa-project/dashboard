@@ -48,15 +48,8 @@ export class PieceProductsDetailsComponent {
   payloadFinal:any={}
   private confirm = inject(ConfirmMsgService)
   discountType: any[] = [
-    {
-      name: 'Amount',
-      code: 1
-    },
-    {
-      name: 'Precentage',
-      code: 2
-    }
-
+    { name: 'Amount', code: 2 },
+    { name: 'Percentage', code: 1 }
   ]
   hasDiscount = false
   imageList: any;
@@ -123,7 +116,7 @@ export class PieceProductsDetailsComponent {
         Validators.required
       ]
     }),
-    categoryId: new FormControl(0)
+    categoryId: new FormControl(1)
   })
 
   bredCrumb: IBreadcrumb = {
@@ -262,28 +255,31 @@ export class PieceProductsDetailsComponent {
 
   API_getItemDetails() {
     this.ApiService.get(`${global_API_details}/${this.getID}`).subscribe((res: any) => {
-      if (res.data) {
+      const d = res?.data ?? res;
+      if (d) {
+        const price = d.price ?? (d.prices?.[0]?.amount ?? 0);
         this.form.patchValue({
-          ...res.data,
-          startDate:new Date(res.data.startDate),
-          endDate:new Date(res.data.endDate)
-        })
-        this.imageList = res.data.image;
-        if (this.imageList.length != 0) {
-          this.addUrltoMedia(this.imageList);
-        }
-        this.payloadFinal =JSON.parse(JSON.stringify(this.form.value))
-        this.payloadFinal.startDate=new Date(this.payloadFinal.startDate)
-        this.payloadFinal.endDate=new Date(this.payloadFinal.endDate)
-
+          ...d,
+          price,
+          priceAfterDiscount: d.priceAfterDiscount ?? price,
+          startDate: d.startDate ? new Date(d.startDate) : null,
+          endDate: d.endDate ? new Date(d.endDate) : null,
+          hasDiscount: !!d.hasDiscount,
+        });
+        const imgs = d.images ?? d.image ?? [];
+        this.imageList = Array.isArray(imgs)
+          ? imgs.map((x: any) => (typeof x === 'string' ? { src: x, mediaTypeEnum: 1 } : { ...x, src: x.src ?? x.image ?? '', mediaTypeEnum: x.mediaTypeEnum ?? 1 }))
+          : imgs ? [{ src: imgs, mediaTypeEnum: 1 }] : [];
+        if (this.imageList?.length) this.addUrltoMedia(this.imageList);
+        this.payloadFinal = JSON.parse(JSON.stringify(this.form.value));
+        if (this.payloadFinal.startDate) this.payloadFinal.startDate = new Date(this.payloadFinal.startDate);
+        if (this.payloadFinal.endDate) this.payloadFinal.endDate = new Date(this.payloadFinal.endDate);
       }
-    })
+    });
   }
   addUrltoMedia(list: any) {
-    console.log(this.imageList);
-    list.forEach((data: any) => {
-      console.log("ProductsDetailsComponent  list.forEach  data:", data)
-      data.src = data.image;
+    (list || []).forEach((data: any) => {
+      data.src = data.src ?? data.image ?? (typeof data === 'string' ? data : '');
     });
   }
   // onSelect(event: any): void {
@@ -329,47 +325,40 @@ export class PieceProductsDetailsComponent {
 
   // }
   onSubmit() {
-    if (this.form.value.image) {
-      let x = this.form.value.image.map((re: any) => ({
-        ...re,
-        "id": 0,
-        "productId": +this.getID || 0,
-      }))
-      this.form.patchValue({
-        image: x
-      })
+    const raw = this.form.value;
+    const priceVal = Number(raw.price) || 0;
+    const imagesBase64 = (raw.image || [])
+      .map((x: any) => x?.image ?? x?.src ?? (typeof x === 'string' ? x : null))
+      .filter(Boolean);
+
+    let startDate = raw.startDate;
+    let endDate = raw.endDate;
+    if (startDate instanceof Date) {
+      startDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), 12, 0, 0);
     }
-   if(this.form.value.startDate){
-    const start_year = this.form.value.startDate.getFullYear();
-    const start_month = this.form.value.startDate.getMonth();
-    const start_day = this.form.value.startDate.getDate();
-    const start_date  = new Date(start_year, start_month, start_day, 12);
-    const end_year = this.form.value.endDate.getFullYear();
-    const end_month = this.form.value.endDate.getMonth();
-    const end_day = this.form.value.endDate.getDate();
-    const end_date  = new Date(end_year, end_month, end_day, 12);
-    this.form.patchValue({
-      startDate:start_date,
-      endDate:end_date
-    })
-   }
-    const payload = {
-      ...this.form.value,
-      amount:+this.form.value.amount,
-      price:Number(this.form.value.price),
-      stockQuantity:Number(this.form.value.stockQuantity),
-  
+    if (endDate instanceof Date) {
+      endDate = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate(), 12, 0, 0);
     }
-    console.log("PieceProductsDetailsComponent  onSubmit  payload:", payload)
 
+    const payload: any = {
+      ...raw,
+      categoryId: 1,
+      price: priceVal,
+      stockQuantity: Number(raw.stockQuantity) || 0,
+      prices: [{ amount: priceVal, currency: 'SAR' }],
+      imagesBase64: imagesBase64.length ? imagesBase64 : null,
+      hasDiscount: !!raw.hasDiscount,
+      amount: raw.amount != null ? Number(raw.amount) : null,
+      startDate: startDate instanceof Date ? startDate.toISOString() : startDate,
+      endDate: endDate instanceof Date ? endDate.toISOString() : endDate,
+      discountType: raw.discountType != null ? Number(raw.discountType) : null,
+    };
 
-    if (this.tyepMode() == 'Add') {
-
-      this.API_forAddItem(payload)
-
-    }
-    else {
-      this.API_forEditItem(payload)
+    if (this.tyepMode() === 'Add') {
+      this.API_forAddItem(payload);
+    } else {
+      payload.id = Number(this.getID);
+      this.API_forEditItem(payload);
     }
   }
 

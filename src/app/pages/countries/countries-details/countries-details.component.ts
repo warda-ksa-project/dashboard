@@ -60,12 +60,7 @@ export class CountriesDetailsComponent implements OnInit {
         Validations.arabicCharsValidator()
       ]
     }),
-    currency: new FormControl('', {
-      validators: [
-        Validators.required,
-        Validations.onlyCharacterValidator()
-      ]
-    }),
+    currencyId: new FormControl<number | null>(null),
     phoneLength: new FormControl('', {
       validators: [
         Validators.required,
@@ -144,41 +139,46 @@ export class CountriesDetailsComponent implements OnInit {
   };
   getCountryDetails() {
     this.ApiService.get(`Countries/${this.countryID}`).subscribe((res: any) => {
-      if (res.data) {
-        this.form.patchValue(res.data)
-        this.editImageProps.props.imgSrc =res.data.image;
+      const d = res?.data ?? res;
+      if (d) {
+        this.form.patchValue({ enName: d.enName, arName: d.arName, phoneLength: d.phoneLength, phoneCode: d.phoneCode, status: d.status, currencyId: d.currencyId, image: d.image });
+        this.editImageProps.props.imgSrc = d.image ?? '';
         this.editMode = true;
       }
-    })
+    });
   }
 
   onSubmit() {
-    console.log('ff', this.form.value)
-    const payload = {
-      ...this.form.value,
-      id: this.countryID || 0,
-    }
-    if (this.tyepMode() === 'Add')
-      this.addCountry(payload)
-    else
-      this.editCountry(payload)
-
+    const raw = this.form.value;
+    const payload: any = {
+      arName: raw.arName ?? '',
+      enName: raw.enName ?? '',
+      image: raw.image || null,
+      currencyId: raw.currencyId ? Number(raw.currencyId) : null,
+      phoneLength: raw.phoneLength ?? null,
+      phoneCode: raw.phoneCode ?? null,
+      status: raw.status ?? true,
+      paymentUrl: null,
+      smsBearerToken: null,
+      smsSenderName: null
+    };
+    if (this.tyepMode() === 'Edit') payload.id = Number(this.countryID);
+    if (this.tyepMode() === 'Add') this.addCountry(payload);
+    else this.editCountry(payload);
   }
   onFileEdit(control:string){
     this.form.get(control)?.setValue(null)
 
   }
   addCountry(payload: any) {
-    this.ApiService.post('Countries', payload).subscribe(res => {
-      if (res)
-        this.router.navigateByUrl('country')
-    })
+    this.ApiService.post('Countries', payload).subscribe((res: any) => {
+      if (res?.isSuccess !== false) this.router.navigateByUrl('country');
+    });
   }
   editCountry(payload: any) {
-    this.ApiService.put('Countries', payload).subscribe(res => {
-      if (res)
-        this.router.navigateByUrl('country')
-    })
+    this.ApiService.put('Countries', payload).subscribe((res: any) => {
+      if (res?.isSuccess !== false) this.router.navigateByUrl('country');
+    });
   }
 
 

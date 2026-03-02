@@ -116,10 +116,10 @@ role=''
     else result = 'Add'
     return result
   }
-  getRoles(){
-    this.ApiService.get('Auth/roles').subscribe((res:any)=>{
-      this.role=res.data
-    })
+  getRoles() {
+    this.ApiService.get('Auth/roles').subscribe((res: any) => {
+      this.role = res?.data ?? res;
+    });
   }
   getBreadCrumb() {
     this.bredCrumb = {
@@ -137,28 +137,25 @@ role=''
 
   getMainCategory() {
     this.ApiService.get('Categories').subscribe((res: any) => {
-      if (res.data) {
-        this.parentCategoryList = []
-        res.data.map((item: any) => {
-          this.parentCategoryList.push({
-            name: this.selectedLang == 'en' ? item.enName : item.arName,
-            code: item.id
-          })
-        })
-      }
-
-    })
+      const list = res?.data ?? res ?? [];
+      const arr = Array.isArray(list) ? list : [list];
+      this.parentCategoryList = arr.map((item: any) => ({
+        name: this.selectedLang === 'ar' ? (item.arName ?? item.enName) : (item.enName ?? item.arName),
+        code: item.id
+      }));
+    });
   }
   API_getItemDetails() {
     this.ApiService.get(`SubCategories/${this.getID}`).subscribe((res: any) => {
-      if (res) {
-        this.form.patchValue(res.data)
-        if (res.data.image) {
-          this.imageList[0].src = res.data.image;
+      const d = res?.data ?? res;
+      if (d) {
+        this.form.patchValue({ enName: d.enName, arName: d.arName, parentCategoryId: d.parentCategoryId });
+        if (d.image) {
+          this.imageList[0].src = d.image;
           this.addUrltoMedia(this.imageList);
         }
       }
-    })
+    });
   }
   addUrltoMedia(list: any) {
     list.forEach((data: any) => {
@@ -166,13 +163,16 @@ role=''
     });
   }
   onSubmit() {
-    const payload = {
-      ...this.form.value,
-    }
-    if (this.tyepMode() == 'Add')
-      this.API_forAddItem(payload)
-    else
-      this.API_forEditItem(payload)
+    const raw = this.form.value;
+    const payload: any = {
+      arName: raw.arName ?? '',
+      enName: raw.enName ?? '',
+      parentCategoryId: Number(raw.parentCategoryId) || 0,
+      imageBase64: raw.image || null
+    };
+    if (this.tyepMode() === 'Edit') payload.id = Number(this.getID);
+    if (this.tyepMode() === 'Add') this.API_forAddItem(payload);
+    else this.API_forEditItem(payload);
   }
 
   navigateToPageTable() {
@@ -195,17 +195,15 @@ role=''
 
 
   API_forAddItem(payload: any) {
-    this.ApiService.post(global_API_create, payload).subscribe(res => {
-      if (res)
-        this.navigateToPageTable()
-    })
+    this.ApiService.post(global_API_create, payload).subscribe((res: any) => {
+      if (res?.isSuccess !== false) this.navigateToPageTable();
+    });
   }
 
   API_forEditItem(payload: any) {
-    this.ApiService.put(global_API_update, payload).subscribe(res => {
-      if (res)
-        this.navigateToPageTable()
-    })
+    this.ApiService.put(global_API_update, payload).subscribe((res: any) => {
+      if (res?.isSuccess !== false) this.navigateToPageTable();
+    });
   }
 
 

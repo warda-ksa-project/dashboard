@@ -367,10 +367,10 @@ header=''
           // district:res.data.addresses[0].district,
           // floorNo:res.data.addresses[0].floorNo,
           latitude:res.data.addresses[0].latitude,
-          logitude:res.data.addresses[0].logitude,
+          logitude: res.data.addresses[0].longitude ?? res.data.addresses[0].logitude,
         })
         this.lat=String(res.data.addresses[0].latitude);
-        this.lng=String(res.data.addresses[0].logitude);
+        this.lng=String(res.data.addresses[0].longitude ?? res.data.addresses[0].logitude);
         this.showMap=true
         this.editTraderImageProps.props.imgSrc = res.data.image;
         this.editImageIBanProps.props.imgSrc =  res.data.iban;
@@ -385,7 +385,7 @@ header=''
           // district:res.data.addresses[0].district,
           // floorNo:res.data.addresses[0].floorNo,
           latitude:res.data.addresses[0].latitude,
-          logitude:res.data.addresses[0].logitude,
+          logitude: res.data.addresses[0].longitude ?? res.data.addresses[0].logitude,
           userId: Number(localStorage.getItem('userId')) || 0
         }]
         console.log("TraderDetailsComponent  this.ApiService.get    this.adress:",   this.form.value)
@@ -539,25 +539,18 @@ header=''
 
   }
 
-  approve(){
-    let payload={
-       id: +this.getID,
-    }
-   this.ApiService.post('Traders/approve',payload).subscribe(res=>{
-         if(res)
-          this.navigateToPageTable()
-   })
+  approve() {
+    this.ApiService.putWithId('Traders/approve', this.getID).subscribe((res: any) => {
+      if (res?.isSuccess !== false)
+        this.navigateToPageTable();
+    });
   }
 
-  reject(){
-    let payload={
-       "userId": +this.getID,
-       "rejectionReason": this.reasonForRejectionValue
-    }
-    this.ApiService.post('Traders/reject',payload).subscribe(res=>{
-      if(res)
-        this.navigateToPageTable()
-    })
+  reject() {
+    this.ApiService.putWithId('Traders/reject', this.getID, this.reasonForRejectionValue || null).subscribe((res: any) => {
+      if (res?.isSuccess !== false)
+        this.navigateToPageTable();
+    });
   }
 
   API_forAddItem(payload: any) {

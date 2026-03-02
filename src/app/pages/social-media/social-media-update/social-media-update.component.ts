@@ -28,8 +28,9 @@ interface ISocialMediaUpsertPayload {
 export class SocialMediaUpdateComponent {
   userRole: string = '';
   isTrader: boolean = false;
-  
-  form:FormGroup=new FormGroup({
+  platformIds: Record<string, number> = {};
+
+  form: FormGroup = new FormGroup({
     id: new FormControl(0),
     whatsAppNumber:new FormControl('',{
       validators: [
@@ -54,15 +55,28 @@ export class SocialMediaUpdateComponent {
     this.getAll()
   }
 
-  getAll(){
-    this.apiService.get('Settings/social-media').subscribe((res:any)=>{
-      const data = Array.isArray(res?.data) ? res.data?.[0] : res?.data;
-      if (!data) return;
-
+  getAll() {
+    this.apiService.get('Settings/social-media').subscribe((res: any) => {
+      const list = res?.data ?? res ?? [];
+      const arr = Array.isArray(list) ? list : [list];
+      const byPlatform: Record<string, string> = {};
+      arr.forEach((item: any) => {
+        if (item?.platform) {
+          const key = item.platform.toLowerCase();
+          byPlatform[key] = item.url || '';
+          this.platformIds[key] = item.id;
+        }
+      });
       this.form.patchValue({
-        ...data,
-      })
-    })
+        whatsAppNumber: byPlatform['whatsapp'] ?? '',
+        instagramLink: byPlatform['instagram'] ?? '',
+        faceBookLink: byPlatform['facebook'] ?? '',
+        xLink: byPlatform['x'] ?? byPlatform['twitter'] ?? '',
+        youTubeLink: byPlatform['youtube'] ?? '',
+        tikTokLink: byPlatform['tiktok'] ?? '',
+        snapChatLink: byPlatform['snapchat'] ?? ''
+      });
+    });
   }
 
   onSubmit() {
@@ -82,13 +96,26 @@ export class SocialMediaUpdateComponent {
     this.upsertSocialMedia(payload)
   }
 
-  upsertSocialMedia(payload: ISocialMediaUpsertPayload){
-    this.apiService.put('Settings/social-media', payload).subscribe((res:any)=>{
-      if(res?.message)
-        this.toaster.successToaster(res.message)
-      else
-        this.toaster.successToaster('Social Media Updated Successfully')
-    })
+  upsertSocialMedia(payload: ISocialMediaUpsertPayload) {
+    const items: { platform: string; url: string; id?: number }[] = [
+      { platform: 'WhatsApp', url: payload.whatsAppNumber, id: this.platformIds['whatsapp'] },
+      { platform: 'Instagram', url: payload.instagramLink, id: this.platformIds['instagram'] },
+      { platform: 'Facebook', url: payload.faceBookLink, id: this.platformIds['facebook'] },
+      { platform: 'X', url: payload.xLink, id: this.platformIds['x'] },
+      { platform: 'YouTube', url: payload.youTubeLink, id: this.platformIds['youtube'] },
+      { platform: 'TikTok', url: payload.tikTokLink, id: this.platformIds['tiktok'] },
+      { platform: 'Snapchat', url: payload.snapChatLink, id: this.platformIds['snapchat'] }
+    ];
+    let done = 0;
+    const total = items.length;
+    items.forEach(item => {
+      const body = { id: item.id ?? null, platform: item.platform, url: item.url || '', isActive: true };
+      this.apiService.put('Settings/social-media', body).subscribe((res: any) => {
+        done++;
+        if (done >= total) this.toaster.successToaster('Social Media Updated Successfully');
+      });
+    });
+    if (total === 0) this.toaster.successToaster('Social Media Updated Successfully');
   }
 
 

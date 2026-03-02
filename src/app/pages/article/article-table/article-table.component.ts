@@ -77,10 +77,9 @@ global_router_add_url_in_Table = global_router_add_url_in_Table;
   objectSearch = {
     pageNumber: 1,
     pageSize: 8,
-    sortingExpression: '',
-    sortingDirection: 0,
-    enTitle: '',
-    arTitle: '',
+    sortBy: '',
+    sortDirection: 'asc' as string,
+    searchTerm: '',
   };
 
   totalCount: number = 0;
@@ -156,8 +155,8 @@ global_router_add_url_in_Table = global_router_add_url_in_Table;
         type: EType.text,
         showAs: ETableShow.header,
       },
-      { keyName: 'enDescription', header: this.languageService.translate('article.form.desc_en'), type: EType.editor, showAs: ETableShow.content,show: false  },
-      { keyName: 'arDescription', header: this.languageService.translate('article.form.desc_ar'), type: EType.editor, showAs: ETableShow.content,show: false  },
+      { keyName: 'enContent', header: this.languageService.translate('article.form.desc_en'), type: EType.editor, showAs: ETableShow.content, show: false },
+      { keyName: 'arContent', header: this.languageService.translate('article.form.desc_ar'), type: EType.editor, showAs: ETableShow.content, show: false },
   
     ];
   }
@@ -222,10 +221,10 @@ global_router_add_url_in_Table = global_router_add_url_in_Table;
 
     this.dataList = this.dataList.filter(
       (item: any) =>
-        item.enTitle.toLowerCase().includes(search) ||
-        item.arTitle.toLowerCase().includes(search) ||
-        item.enDescription.toLowerCase().includes(search) ||
-        item.arDescription.toLowerCase().includes(search)
+        (item.enTitle || '').toLowerCase().includes(search) ||
+        (item.arTitle || '').toLowerCase().includes(search) ||
+        (item.enContent || '').toLowerCase().includes(search) ||
+        (item.arContent || '').toLowerCase().includes(search)
     );
   }
 
@@ -237,10 +236,9 @@ global_router_add_url_in_Table = global_router_add_url_in_Table;
     this.objectSearch = {
       pageNumber: 1,
       pageSize: 8,
-      sortingExpression: '',
-      sortingDirection: 0,
-      enTitle: '',
-      arTitle: '',
+      sortBy: '',
+      sortDirection: 'asc',
+      searchTerm: '',
     };
     this.API_getAll();
     this.showFilter = false;

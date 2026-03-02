@@ -128,22 +128,18 @@ export class AddNotificationsComponent {
 
   onSubmit() {
     const raw = this.form.getRawValue();
-    const payload = {
-      Id: Number(raw.id ?? 0),
-      TitleAr: String(raw.titleAr ?? ''),
-      TitleEn: String(raw.titleEn ?? ''),
-      BodyAr: String(raw.bodyAr ?? ''),
-      BodyEn: String(raw.bodyEn ?? ''),
-      UserId: Array.isArray(raw.userId) ? raw.userId.map(Number) : [],
-      UserType: raw.userType,
+    const userIds: number[] = Array.isArray(raw.userId) ? raw.userId.map(Number) : [Number(raw.userId)];
+    const basePayload = {
+      arTitle: String(raw.titleAr ?? ''),
+      enTitle: String(raw.titleEn ?? ''),
+      arBody: String(raw.bodyAr ?? ''),
+      enBody: String(raw.bodyEn ?? '')
     };
-
-    this.API_forAddItem(payload);
-  }
-
-  API_forAddItem(payload: any) {
-    this.ApiService.post(global_API_create, payload).subscribe(res => {
-    })
+    userIds.forEach(userId => {
+      this.ApiService.post(global_API_create, { userId, ...basePayload }).subscribe((res: any) => {
+        if (res?.isSuccess !== false) this.router.navigate(['/settings/add_notification']);
+      });
+    });
   }
 
   onUserTypeSelected(userTypeId: number) {
@@ -158,7 +154,7 @@ export class AddNotificationsComponent {
     }
 
     this.ApiService.get(`Users/by-type/${userTypeId}`).subscribe((res: any) => {
-      const raw = res?.data;
+      const raw = res?.data ?? res;
       const data: any[] = Array.isArray(raw) ? raw : (raw ? [raw] : []);
 
       this.usersList = data

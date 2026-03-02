@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { EAction, EType, IcolHeader, ITableAction, IToggleOptions, TableComponent } from '../../../components/table/table.component';
+import { EAction, EType, IcolHeader, ITableAction, TableComponent } from '../../../components/table/table.component';
 import { ApiService } from '../../../services/api.service';
 import { Router, RouterModule } from '@angular/router';
 import { IBreadcrumb } from '../../../components/breadcrump/cerqel-breadcrumb.interface';
@@ -13,10 +13,6 @@ import { DrawerComponent } from '../../../components/drawer/drawer.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { TitleCasePipe } from '@angular/common';
 
-const global_toggleOptions:IToggleOptions={
-  apiName:'Cities',
-  autoCall:true,
-  }
 @Component({
   selector: 'app-cities-table',
   standalone: true,
@@ -89,21 +85,14 @@ export class CitiesTableComponent {
     this.columns = [
       { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: true },
       { keyName: 'enName', header: this.languageService.translate('city.form.name_en'), type: EType.text, show: true },
-      { keyName: 'postalCode', header: this.languageService.translate('city.form.postalCode'), type: EType.text, show: true },
-      { keyName: 'latitude', header: this.languageService.translate('city.form.latitude'), type: EType.text, show: true },
-      { keyName: 'longitude', header: this.languageService.translate('city.form.longitude'), type: EType.text, show: true },
-      { keyName: 'shortCut', header: this.languageService.translate('city.form.shortName'), type: EType.text, show: true },
-      { keyName: 'status', header: this.languageService.translate('city.form.status'), type: EType.toggle, toggleOptions: global_toggleOptions, show: true },
+      { keyName: 'arName', header: this.languageService.translate('city.form.name_ar'), type: EType.text, show: true },
       { keyName: '', header: this.languageService.translate('Action'), type: EType.actions, actions: this.tableActions, show: true }
     ];
 
     this.columnsSmallTable = [
       { keyName: 'enName', header: this.languageService.translate('city.form.name_en'), type: EType.text, showAs: ETableShow.header },
       { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: false },
-      { keyName: 'postalCode', header: this.languageService.translate('city.form.postalCode'), type: EType.text, showAs: ETableShow.content },
-      { keyName: 'latitude', header: this.languageService.translate('city.form.latitude'), type: EType.text, showAs: ETableShow.content },
-      { keyName: 'longitude', header: this.languageService.translate('city.form.longitude'), type: EType.text, showAs: ETableShow.content },
-      { keyName: 'shortCut', header: this.languageService.translate('city.form.shortName'), type: EType.text, showAs: ETableShow.content }
+      { keyName: 'arName', header: this.languageService.translate('city.form.name_ar'), type: EType.text, showAs: ETableShow.content }
     ];
   }
 
@@ -123,18 +112,17 @@ export class CitiesTableComponent {
   }
 
   getAllCities() {
-  console.log('ggg',this.citySearch)
     this.ApiService.get('Cities/paginated', this.citySearch).subscribe((res: any) => {
-      if (res.data) {
-        this.citiesList = res.data.items;
-        this.totalCount = res.data.totalCount;
+      const d = res?.data ?? res;
+      if (d) {
+        this.citiesList = d.items ?? d ?? [];
+        this.totalCount = d.totalCount ?? this.citiesList.length;
         this.filteredData = [...this.citiesList];
       }
-    })
+    });
   }
 
   onPageChange(event: any) {
-    console.log(event);
     this.citySearch.pageNumber = event;
     this.getAllCities();
   }

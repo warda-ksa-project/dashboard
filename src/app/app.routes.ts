@@ -105,6 +105,7 @@ export const routes: Routes = [
         canActivate: [roleGuard],
         data: { roles: [Roles.admin] },
         children: [
+          { path: '', redirectTo: 'terms_conditions', pathMatch: 'full' },
           // FAQs
           { 
             path: 'faqs', 
@@ -512,25 +513,25 @@ export const routes: Routes = [
         path: 'sub-category', 
         loadComponent: () => import('./pages/sub-category/sub-category-table/sub-category-table.component').then(m => m.SubCategoryTableComponent),
         canActivate: [roleGuard],
-        data: { roles: [Roles.trader] }
+        data: { roles: [Roles.admin] }
       },
       { 
         path: 'sub-category/add', 
         loadComponent: () => import('./pages/sub-category/sub-category-details/sub-category-details.component').then(m => m.SubCategoryDetailsComponent),
         canActivate: [roleGuard],
-        data: { roles: [Roles.trader] }
+        data: { roles: [Roles.admin] }
       },
       { 
         path: 'sub-category/view/:id', 
         loadComponent: () => import('./pages/sub-category/sub-category-details/sub-category-details.component').then(m => m.SubCategoryDetailsComponent),
         canActivate: [roleGuard],
-        data: { roles: [Roles.trader] }
+        data: { roles: [Roles.admin] }
       },
       { 
         path: 'sub-category/edit/:id', 
         loadComponent: () => import('./pages/sub-category/sub-category-details/sub-category-details.component').then(m => m.SubCategoryDetailsComponent),
         canActivate: [roleGuard],
-        data: { roles: [Roles.trader] }
+        data: { roles: [Roles.admin] }
       },
 
       // Target

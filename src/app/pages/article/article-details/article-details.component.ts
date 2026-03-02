@@ -4,7 +4,6 @@ import { ButtonModule } from 'primeng/button';
 import { ApiService } from '../../../services/api.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { NgIf, TitleCasePipe } from '@angular/common';
-import { Validations } from '../../../validations';
 import { InputTextComponent } from '../../../components/input-text/input-text.component';
 import { EditorComponent } from '../../../components/editor/editor.component';
 import { BreadcrumpComponent } from "../../../components/breadcrump/breadcrump.component";
@@ -25,7 +24,7 @@ const global_API_Name ='article';
 const global_API_details = 'Content/articles';
 const global_API_create = 'Content/articles';
 const global_API_update = 'Content/articles';
-const global_routeUrl = global_API_Name
+const global_routeUrl = '/article';
 @Component({
   selector: 'app-article-details',
   standalone: true,
@@ -54,29 +53,23 @@ pageName = signal<string>(global_PageName);
         Validators.required,
       ]
     }),
-    enDescription: new FormControl('', {
+    enContent: new FormControl('', {
       validators: [
         Validators.required,
       ],
     }),
-    arDescription: new FormControl('', {
+    arContent: new FormControl('', {
       validators: [
         Validators.required,
       ]
     }),
-    displayOrder:new FormControl('', {
-      validators: [
-        Validators.required,
-        Validations.onlyNumberValidator()
-      ],
-    }),
-    image: new FormControl<any>([],{
+    image: new FormControl<string | null>(null, {
       validators: [
         Validators.required,
       ],
     }),
-    id: new FormControl(this.getID|0, {
-    }),
+    isActive: new FormControl(true),
+    id: new FormControl(this.getID | 0),
   })
 
   bredCrumb: IBreadcrumb = {
@@ -90,6 +83,8 @@ pageName = signal<string>(global_PageName);
     onEditBtn: (e?: Event) => {
       this.editImageProps.props.visible = false;
       this.editMode = false;
+      this.form.get('image')?.setValidators(Validators.required);
+      this.form.get('image')?.updateValueAndValidity();
     }
   };
 
@@ -135,22 +130,41 @@ pageName = signal<string>(global_PageName);
 
   API_getItemDetails() {
     this.ApiService.get(`${global_API_details}/${this.getID}`).subscribe((res: any) => {
-      if (res){
-        this.form.patchValue(res.data)
-       this.editMode=true
-       this.editImageProps.props.imgSrc = res.data.image;
+      if (res?.data) {
+        const d = res.data;
+        this.form.patchValue({
+          enTitle: d.enTitle,
+          arTitle: d.arTitle,
+          enContent: d.enContent,
+          arContent: d.arContent,
+          isActive: d.isActive ?? true,
+          id: d.id
+        });
+        this.editMode = true;
+        this.editImageProps.props.imgSrc = d.image;
+        this.form.get('image')?.clearValidators();
+        this.form.get('image')?.updateValueAndValidity();
       }
-    })
+    });
   }
 
   onSubmit() {
-    const payload = {
-      ...this.form.value
+    const v = this.form.value;
+    const payload: Record<string, unknown> = {
+      arTitle: v.arTitle,
+      enTitle: v.enTitle,
+      arContent: v.arContent,
+      enContent: v.enContent,
+      imageBase64: v.image || null,
+      isActive: v.isActive ?? true,
+    };
+    if (this.tyepMode() === 'Edit') {
+      payload['id'] = this.getID;
     }
-    if (this.tyepMode() == 'Add')
-      this.API_forAddItem(payload)
+    if (this.tyepMode() === 'Add')
+      this.API_forAddItem(payload);
     else
-      this.API_forEditItem(payload)
+      this.API_forEditItem(payload);
   }
 
   navigateToPageTable() {
