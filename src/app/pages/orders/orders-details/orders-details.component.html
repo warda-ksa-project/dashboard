@@ -40,6 +40,10 @@
               </div>
               <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
                 <app-input-text [readOnly]="true" [disabled]="true"
+                  [label]="'order.form.deliveryType'" [control]="form.get('deliveryType')"></app-input-text>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
+                <app-input-text [readOnly]="true" [disabled]="true"
                   [label]="'order.form.totalPrice'" [control]="form.get('totalPrice')"></app-input-text>
               </div>
             </div>

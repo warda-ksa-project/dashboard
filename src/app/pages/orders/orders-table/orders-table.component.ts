@@ -210,6 +210,7 @@ export class OrdersTableComponent {
       { keyName: 'customerName', header: this.languageService.translate('order.form.clientName'), type: EType.text, show: true },
       { keyName: 'traderName', header: this.languageService.translate('order.form.traderName'), type: EType.text, show: true },
       { keyName: 'paymentWay', header: this.languageService.translate('order.form.paymentWay'), type: EType.text, show: true },
+      { keyName: currentLang === 'ar' ? 'deliveryTypeAr' : 'deliveryTypeEn', header: this.languageService.translate('order.form.deliveryType'), type: EType.text, show: true },
       { keyName: 'totalPrice', header: this.languageService.translate('order.form.price'), type: EType.text, show: true },
       { keyName: 'addedDate', header: this.languageService.translate('order.form.date'), type: EType.date, show: true },
       { keyName: currentLang === 'ar' ? 'statusAr' : 'statusEn', header: this.languageService.translate('order.form.status'), type: EType.status,statusId:'statusEn', show: true },
@@ -292,10 +293,21 @@ export class OrdersTableComponent {
   }
 
 
+  private static readonly DeliveryTypeLabels: Record<string, { ar: string; en: string }> = {
+    'Delivery': { ar: 'توصيل', en: 'Delivery' },
+    'StorePickup': { ar: 'استلام', en: 'Store Pickup' },
+  };
+
   API_getAll() {
     this.ApiService.get(global_API_getAll, this.objectSearch).subscribe((res: any) => {
       if (res) {
-        this.dataList = res.data.items;
+        const items = res.data.items ?? [];
+        const labels = OrdersTableComponent.DeliveryTypeLabels;
+        this.dataList = items.map((item: any) => {
+          const key = item.deliveryTypeName ?? (item.deliveryType === 2 ? 'StorePickup' : 'Delivery');
+          const t = labels[key] ?? { ar: key, en: key };
+          return { ...item, deliveryTypeAr: t.ar, deliveryTypeEn: t.en };
+        });
         this.totalCount = res.data.totalCount;
 
         // Iterate over each data item

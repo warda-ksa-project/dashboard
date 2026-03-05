@@ -660,6 +660,7 @@
       "status": "Order Status",
       "price": "Price",
       "paymentWay": "Payment Way",
+      "deliveryType": "Delivery Type",
       "date": "Creation Date",
       "itemsCount": "Items Count",
       "productDetails":"Products",

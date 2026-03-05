@@ -53,6 +53,7 @@ export class OrdersDetailsComponent {
     id: new FormControl(this.getID | 0),
     status: new FormControl(''),
     paymentWay: new FormControl(''),
+    deliveryType: new FormControl(''),
     totalPrice: new FormControl(''),
     addedDate: new FormControl(''),
     // Customer info
@@ -83,6 +84,18 @@ export class OrdersDetailsComponent {
     this.languageService.translationService.onLangChange.subscribe(() => {
       this.selectedLang = this.languageService.translationService.currentLang;
       this.getRoles();
+      if (this.data?.id) {
+        const labels: Record<string, { ar: string; en: string }> = {
+          'Delivery': { ar: 'توصيل', en: 'Delivery' },
+          'StorePickup': { ar: 'استلام', en: 'Store Pickup' },
+        };
+        const dKey = this.data.deliveryTypeName ?? (this.data.deliveryType === 2 ? 'StorePickup' : 'Delivery');
+        const dLabel = labels[dKey] ?? { ar: dKey, en: dKey };
+        this.form.patchValue({
+          status: this.selectedLang == 'ar' ? this.data.statusAr : this.data.statusEn,
+          deliveryType: this.selectedLang == 'ar' ? dLabel.ar : dLabel.en,
+        });
+      }
     });
     if (this.tyepMode() !== 'Add')
       this.API_getItemDetails();
@@ -109,10 +122,17 @@ export class OrdersDetailsComponent {
           this.customerLng = Number(res.data.address.logitude ?? res.data.address.longitude) || 0;
         }
 
+        const labels: Record<string, { ar: string; en: string }> = {
+          'Delivery': { ar: 'توصيل', en: 'Delivery' },
+          'StorePickup': { ar: 'استلام', en: 'Store Pickup' },
+        };
+        const dKey = res.data.deliveryTypeName ?? (res.data.deliveryType === 2 ? 'StorePickup' : 'Delivery');
+        const dLabel = labels[dKey] ?? { ar: dKey, en: dKey };
         this.form.patchValue({
           ...res.data,
           address: res.data.address?.expalinedAddress ?? res.data.address?.street ?? '-',
           status: this.selectedLang == 'ar' ? res.data.statusAr : res.data.statusEn,
+          deliveryType: this.selectedLang == 'ar' ? dLabel.ar : dLabel.en,
           totalPrice: res.data.totalPrice,
           addedDate: this.convertDate(res.data.addedDate),
         });

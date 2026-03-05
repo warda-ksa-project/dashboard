@@ -646,6 +646,7 @@
     "status": "حالة الطلب",
     "price": "السعر",
     "paymentWay": "طريقة الدفع",
+    "deliveryType": "نوع الاستلام",
     "date": "تاريخ الإنشاء",
     "itemsCount": "عدد المنتجات",
     "productDetails": "المنتجات",
