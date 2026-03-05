@@ -37,7 +37,6 @@ import { environment } from '../../../environments/environment';
     ButtonModule,
     RouterModule,
     ValidationHandlerPipePipe,
-    SelectComponent,
     SelectModule,
   ],
   templateUrl: './login.component.html',
@@ -55,7 +54,6 @@ export class LoginComponent {
   languageService = inject(LanguageService);
   currentLang = 'en';
   selectedLang = localStorage.getItem('lang') || 'en';
-  selectedCountryId: number | null = null;
   selectedCountry: { phoneLength: number; phoneCode: string } | null = null;
   isAdmin: boolean | null = null;
   isCheckingAdmin = false;
@@ -69,10 +67,6 @@ export class LoginComponent {
   getSelectedPhoneCountry() {
     const id = this.loginForm.get('country')?.value;
     return this.countries.find((c) => c.code === id) || null;
-  }
-
-  onAdminCountryChange(countryId: number) {
-    this.selectedCountryId = countryId;
   }
 
   onCountryChange(countryId: number) {
@@ -135,11 +129,9 @@ export class LoginComponent {
   private watchCanSubmit() {
     const countryCtrl = this.loginForm.get('country')!;
     const phoneCtrl = this.loginForm.get('phoneNumber')!;
-    const adminCountryCtrl = this.loginForm.get('adminCountry')!;
     combineLatest([
       countryCtrl.valueChanges.pipe(startWith(countryCtrl.value)),
       phoneCtrl.valueChanges.pipe(startWith(phoneCtrl.value)),
-      adminCountryCtrl.valueChanges.pipe(startWith(adminCountryCtrl.value)),
     ])
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => this.updateCanSubmit());
@@ -149,13 +141,11 @@ export class LoginComponent {
     const len = this.selectedCountry?.phoneLength ?? 0;
     const phone = (this.loginForm.get('phoneNumber')?.value ?? '').toString().replace(/\D/g, '');
     const hasMinLength = len > 0 && phone.length >= len;
-    const adminCountryOk = this.isAdmin !== true || !!this.loginForm.get('adminCountry')?.value;
     this.canSubmit = !!(
       this.loginForm.valid &&
       hasMinLength &&
       this.isAdmin !== null &&
-      !this.isCheckingAdmin &&
-      adminCountryOk
+      !this.isCheckingAdmin
     );
   }
 
@@ -207,14 +197,8 @@ export class LoginComponent {
         this.isAdmin = isAdmin;
         if (isAdmin) {
           roleIdControl?.setValue(1);
-          this.loginForm.get('adminCountry')?.setValidators([Validators.required]);
-          this.loginForm.get('adminCountry')?.setValue(null);
-          this.loginForm.get('adminCountry')?.updateValueAndValidity();
-          this.selectedCountryId = null;
         } else {
           roleIdControl?.setValue(2);
-          this.loginForm.get('adminCountry')?.clearValidators();
-          this.loginForm.get('adminCountry')?.updateValueAndValidity();
         }
         this.updateCanSubmit();
       });
@@ -293,9 +277,15 @@ export class LoginComponent {
         } else {
           localStorage.setItem('role', Roles.trader.toString());
         }
-        const adminCountryId = this.loginForm.get('adminCountry')?.value ?? this.selectedCountryId;
-        if (adminCountryId) {
-          localStorage.setItem('countryId', adminCountryId.toString());
+        if (user.role === Roles.admin) {
+          const countryIdFromInput = this.loginForm.get('country')?.value;
+          if (countryIdFromInput) {
+            localStorage.setItem('countryId', countryIdFromInput.toString());
+          } else if (user.countryId != null) {
+            localStorage.setItem('countryId', String(user.countryId));
+          } else {
+            localStorage.removeItem('countryId');
+          }
         } else if (user.countryId != null) {
           // Trader: use country from phone (backend derives from phone country code)
           localStorage.setItem('countryId', String(user.countryId));
@@ -338,6 +328,10 @@ export class LoginComponent {
           this.toaster.errorToaster(errMsg);
         } else {
           this.mobileNumber = digits;
+          if (this.isAdmin) {
+            const countryId = loginData.country;
+            if (countryId) localStorage.setItem('countryId', String(countryId));
+          }
           this.openOtpModal = true;
         }
       },
