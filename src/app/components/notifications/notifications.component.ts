@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, inject, OnDestroy, ViewChild } from '@angular/core';
 import { Popover } from 'primeng/popover';
 import { ApiService } from '../../services/api.service';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
@@ -16,7 +16,7 @@ import { LanguageService } from '../../services/language.service';
   templateUrl: './notifications.component.html',
   styleUrl: './notifications.component.scss'
 })
-export class NotificationsComponent {
+export class NotificationsComponent implements OnDestroy {
 
   private ApiService = inject(ApiService);
 
@@ -31,6 +31,7 @@ export class NotificationsComponent {
   totlaCount = 0;
   totalUnSeen = 0;
   @ViewChild('op') popover: Popover | undefined; // Reference to the popover
+  private notificationsInterval: ReturnType<typeof setInterval> | null = null;
 
 
 
@@ -41,9 +42,15 @@ export class NotificationsComponent {
       this.selectedLang = this.languageService.translationService.currentLang;
       this.getNotifications();
     })
-      setInterval(() => {
+    this.notificationsInterval = setInterval(() => {
       this.getNotifications();
     }, 180000);
+  }
+
+  ngOnDestroy(): void {
+    if (this.notificationsInterval) {
+      clearInterval(this.notificationsInterval);
+    }
   }
   // ngOnInit(): void {
   //   this.getNotifications();

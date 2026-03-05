@@ -28,8 +28,11 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
       switch (error.status) {
         case 401:
-          toaster.errorToaster(message || 'Unauthorized');
-          router.navigate(['/auth/login']);
+          const isOnLogin = router.url.includes('/auth/login');
+          if (!isOnLogin) {
+            toaster.errorToaster(message || 'Unauthorized');
+            router.navigate(['/auth/login']);
+          }
           break;
 
         case 403:

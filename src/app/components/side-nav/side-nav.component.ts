@@ -3,7 +3,7 @@ import { Component, inject, Input } from '@angular/core';
 import { Tooltip } from 'primeng/tooltip';
 import { LanguageService } from '../../services/language.service';
 import { TranslateModule } from '@ngx-translate/core';
-import { RouterLinkActive, RouterModule } from '@angular/router';
+import { Router, RouterLinkActive, RouterModule } from '@angular/router';
 import { menuItems } from '../../conts';
 import { InputTextComponent } from "../input-text/input-text.component";
 @Component({
@@ -104,8 +104,9 @@ export class SideNavComponent {
             this.routingList=   menuItems
     }
 
-logOut(){
-  localStorage.clear()
+private router = inject(Router);
 
-}
+  logOut(){
+    this.router.navigate(['/auth/login']).then(() => localStorage.clear());
+  }
 }

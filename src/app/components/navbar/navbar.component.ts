@@ -1,6 +1,6 @@
 import { Component, Inject, inject} from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 import { AutoComplete } from 'primeng/autocomplete';
 import { Select } from 'primeng/select';
@@ -86,9 +86,9 @@ export class NavbarComponent {
   }
   
 
-  logout() {
-    localStorage.clear()
-    
+  private router = inject(Router);
 
+  logout() {
+    this.router.navigate(['/auth/login']).then(() => localStorage.clear());
   }
 }

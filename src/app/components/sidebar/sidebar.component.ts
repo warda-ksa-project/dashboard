@@ -3,7 +3,7 @@ import { Component, inject, Input} from '@angular/core';
 import { Tooltip } from 'primeng/tooltip';
 import { LanguageService } from '../../services/language.service';
 import { TranslateModule } from '@ngx-translate/core';
-import { RouterLinkActive, RouterModule } from '@angular/router';
+import { Router, RouterLinkActive, RouterModule } from '@angular/router';
 import { MenuItem, menuItems, Roles } from '../../conts';
 import { environment } from '../../../environments/environment';
 import { ApiService } from '../../services/api.service';
@@ -90,8 +90,9 @@ export class SidebarComponent  {
             this.routingList=   menuItems
     }
 
-  logOut(){
-    localStorage.clear()
+  private router = inject(Router);
 
+  logOut(){
+    this.router.navigate(['/auth/login']).then(() => localStorage.clear());
   }
 }
