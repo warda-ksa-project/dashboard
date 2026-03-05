@@ -409,23 +409,20 @@ onPageSelected(number:any){
         this.ApiService.get('Products/best-sellers').subscribe(
         (res: any) => {
           if (res) {
-            this.dataList = res.data;
-            // this.totalCount = res.data.totalCount;
-            // this.filteredData = [...this.dataList];
+            this.dataList = res?.data ?? res ?? [];
           }
         }
       );
     }
   
-    getRoles(){
-      this.apiService.get('Auth/roles').subscribe((res:any)=>{
-        this.role=res.data
-        if(this.role==Roles.trader){
+    getRoles() {
+      // Use localStorage for current user role - Auth/roles returns list of all roles, not current user
+      this.role = (localStorage.getItem('role') || '') as Roles;
+      if (this.role === Roles.trader) {
         this.getAllSalesOrderDashboardStatistics();
-        this.getAllSalesPerMonth()
+        this.getAllSalesPerMonth();
         this.getStaticData();
       }
-      })
     }
     // onPageChange(event: any) {
     //   this.objectSearch.pageNumber = event;

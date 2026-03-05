@@ -35,6 +35,18 @@ export class OrdersDetailsComponent {
   products: any[] = [];
   customerLat: number = 0;
   customerLng: number = 0;
+  private defaultLat = 24.7136;
+  private defaultLng = 46.6753;
+
+  get mapLat(): number {
+    return (this.customerLat && this.customerLng) ? this.customerLat : this.defaultLat;
+  }
+  get mapLng(): number {
+    return (this.customerLat && this.customerLng) ? this.customerLng : this.defaultLng;
+  }
+  get hasValidCoords(): boolean {
+    return !!(this.customerLat && this.customerLng);
+  }
 
   form = new FormGroup({
     // Order info
@@ -94,12 +106,12 @@ export class OrdersDetailsComponent {
         // Set customer location from address
         if (res.data.address) {
           this.customerLat = Number(res.data.address.latitude) || 0;
-          this.customerLng = Number(res.data.address.logitude) || 0;
+          this.customerLng = Number(res.data.address.logitude ?? res.data.address.longitude) || 0;
         }
 
         this.form.patchValue({
           ...res.data,
-          address: res.data.address?.expalinedAddress || '-',
+          address: res.data.address?.expalinedAddress ?? res.data.address?.street ?? '-',
           status: this.selectedLang == 'ar' ? res.data.statusAr : res.data.statusEn,
           totalPrice: res.data.totalPrice,
           addedDate: this.convertDate(res.data.addedDate),

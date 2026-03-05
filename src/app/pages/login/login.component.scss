@@ -45,6 +45,86 @@
             width: 30rem;
           }
 
+          .phone-input-inline {
+            width: 30rem;
+          }
+
+          .phone-input-inner {
+            display: flex;
+            align-items: stretch;
+            border: 1px solid var(--p-input-border-color, #ced4da);
+            border-radius: var(--p-input-border-radius, 6px);
+            background: var(--p-input-filled-bg, #fff);
+            overflow: hidden;
+            transition: border-color 0.2s, box-shadow 0.2s;
+
+            &:focus-within {
+              border-color: var(--p-primary-color, #3b82f6);
+              box-shadow: 0 0 0 2px rgba(var(--p-primary-500), 0.2);
+            }
+          }
+
+          .country-dropdown-inline {
+            flex-shrink: 0;
+            border: none !important;
+            background: transparent !important;
+            border-inline-end: 1px solid var(--p-input-border-color, #ced4da);
+
+            ::ng-deep .p-select,
+            ::ng-deep .p-select-trigger,
+            ::ng-deep .p-select-label-container {
+              border: none !important;
+              box-shadow: none !important;
+              background: transparent !important;
+              min-width: 90px;
+            }
+
+            ::ng-deep .p-select-trigger {
+              padding: 0.5rem 0.4rem;
+            }
+
+            ::ng-deep .p-select-label {
+              padding-inline: 0.25rem;
+            }
+          }
+
+          .phone-digits-input {
+            flex: 1;
+            min-width: 0;
+            border: none !important;
+            box-shadow: none !important;
+            background: transparent !important;
+            padding-inline: 0.75rem;
+
+            &:focus {
+              outline: none;
+            }
+          }
+
+          .country-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+
+            .country-flag {
+              width: 24px;
+              height: 16px;
+              object-fit: cover;
+            }
+          }
+
+          .checking-msg {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--p-primary-color);
+          }
+
+          .hint {
+            font-size: 0.85rem;
+            color: #666;
+          }
+
           .send-btn {
             display: flex;
             align-items: center;
@@ -91,10 +171,13 @@
   .form-section {
     flex-basis: 100% !important;
     form {
-    input {
-      width: 100% !important;
+      input {
+        width: 100% !important;
+      }
+      .phone-input-inline {
+        width: 100% !important;
+      }
     }
-  }
   }
 }
 
@@ -111,6 +194,9 @@
       input {
         width: 20rem !important;
       }
+      .phone-input-inline {
+        width: 20rem !important;
+      }
     }
   }
 }
@@ -125,6 +211,9 @@
 
     form {
       input {
+        width: 20rem !important;
+      }
+      .phone-input-inline {
         width: 20rem !important;
       }
     }

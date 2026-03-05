@@ -227,6 +227,31 @@ export const routes: Routes = [
         canActivate: [roleGuard],
         data: { roles: [Roles.admin] }
       },
+      // Currencies
+      { 
+        path: 'currency', 
+        loadComponent: () => import('./pages/currencies/currencies-table/currencies-table.component').then(m => m.CurrenciesTableComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'currency/add', 
+        loadComponent: () => import('./pages/currencies/currencies-details/currencies-details.component').then(m => m.CurrenciesDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'currency/view/:id', 
+        loadComponent: () => import('./pages/currencies/currencies-details/currencies-details.component').then(m => m.CurrenciesDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'currency/edit/:id', 
+        loadComponent: () => import('./pages/currencies/currencies-details/currencies-details.component').then(m => m.CurrenciesDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
       { 
         path: 'country/add', 
         loadComponent: () => import('./pages/countries/countries-details/countries-details.component').then(m => m.CountriesDetailsComponent),

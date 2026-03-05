@@ -108,7 +108,7 @@ export class CountriesTableComponent {
       { keyName: currentLang === 'ar' ? 'arName' : 'enName', header: this.languageService.translate('country.form.name_en'), type: EType.text, show: true },
       { keyName: 'phoneLength', header: this.languageService.translate('country.form.phoneLength'), type: EType.text, show: true },
       { keyName: 'phoneCode', header: this.languageService.translate('country.form.phoneCode'), type: EType.text, show: true },
-      // { keyName: 'shortName', header: this.languageService.translate('country.form.shortName'), type: EType.text, show: true },
+      { keyName: 'currencyCode', header: this.languageService.translate('country.form.currency'), type: EType.text, show: true },
       { keyName: 'status', header: this.languageService.translate('country.form.status'), type: EType.toggle, toggleOptions: global_toggleOptions, show: true },
       { keyName: '', header: this.languageService.translate('Action'), type: EType.actions, actions: this.tableActions, show: true }
     ];

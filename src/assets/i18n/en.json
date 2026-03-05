@@ -96,7 +96,15 @@
     "password": "Password",
     "password_required": "Password is required",
     "btn_login": "login",
-    "forget_password": "Forget Password"
+    "forget_password": "Forget Password",
+    "select_country": "Select country",
+    "select_country_first": "Please select a country first",
+    "phone_placeholder": "Enter phone number",
+    "phone_hint": "Enter {{count}} digits",
+    "phone_length_invalid": "Phone number must be exactly {{count}} digits",
+    "checking": "Verifying your account...",
+    "wait_verification": "Please wait for verification to complete",
+    "complete_all_fields": "Please complete all fields"
   },
   "otp": {
     "verify_mobile_no": "Verify Your Mobile Number",
@@ -125,6 +133,7 @@
     "services": "SERVICES",
     "working_hours": "WORKING HOURS",
     "country": "COUNTRIES",
+    "currency": "CURRENCIES",
     "city": "CITIES",
     "reason": "CANCEL REASON",
     "complaint": "COMPLAINT",
@@ -518,6 +527,23 @@
       "status": "Status"
     }
   },
+  "currency": {
+    "pageName": "Currency",
+    "list": "Currencies List",
+    "pageName_filter": "Filter Currency",
+    "pageName_Add_crumb": "Add Currency",
+    "pageName_Edit_crumb": "Edit Currency",
+    "pageName_View_crumb": "View Currency",
+    "form": {
+      "name_en": "Name (en)",
+      "name_ar": "Name (ar)",
+      "code": "Code",
+      "symbol": "Symbol",
+      "icon": "Icon",
+      "image": "Image",
+      "status": "Status"
+    }
+  },
   "country": {
     "pageName": "Country",
     "list": "Countries List",
@@ -535,7 +561,11 @@
       "phoneLength": "Phone Length",
       "status": "Status",
       "phoneCode": "Phone Code",
-      "content": "Content"
+      "paymentUrl": "Payment URL",
+      "smsBearerToken": "SMS Bearer Token",
+      "smsSenderName": "SMS Sender Name",
+      "content": "Content",
+      "image": "Image"
     }
   },
   "contact_us": {

@@ -4,16 +4,27 @@ import { catchError, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { ToasterService } from '../services/toaster.service';
 
+function extractErrorMessage(errBody: any, error: HttpErrorResponse): string {
+  if (!errBody) return error?.message || 'shared.errors.general';
+  if (typeof errBody === 'string' && errBody.trim()) return errBody;
+  return (
+    errBody?.error?.message ||
+    (typeof errBody?.error === 'string' ? errBody.error : null) ||
+    errBody?.message ||
+    errBody?.title ||
+    errBody?.detail ||
+    'shared.errors.general'
+  );
+}
+
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
   const toaster = inject(ToasterService);
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
-      const message =
-        error?.error?.message ||
-        error?.error?.title ||
-        'shared.errors.general';
+      const errBody = error?.error;
+      const message = extractErrorMessage(errBody, error);
 
       switch (error.status) {
         case 401:
@@ -34,7 +45,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
           break;
 
         default:
-          toaster.errorToaster('shared.errors.server');
+          toaster.errorToaster(message || 'shared.errors.server');
           break;
       }
 

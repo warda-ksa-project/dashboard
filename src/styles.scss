@@ -705,3 +705,20 @@ border-color: #6d54a9!important;
   top: auto !important;
   bottom: 100% !important;
 }
+
+// Login country dropdown - smaller flag in list
+.login-country-panel {
+  .country-item-dropdown,
+  .country-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .country-flag-dropdown,
+  .country-flag {
+    width: 24px !important;
+    height: 16px !important;
+    object-fit: cover !important;
+    flex-shrink: 0;
+  }
+}

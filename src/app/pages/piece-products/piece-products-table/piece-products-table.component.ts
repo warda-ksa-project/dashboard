@@ -207,12 +207,24 @@ export class PieceProductsTableComponent {
     this.showFilter = false;
   }
 
+  /** Normalize piece product item: ensure traderName & storeName from API (trader object or root) */
+  private mapProductItem(item: any): any {
+    if (!item) return item;
+    const t = item.trader;
+    return {
+      ...item,
+      traderName: item.traderName ?? t?.userName ?? t?.name ?? t?.traderName ?? '-',
+      storeName: item.storeName ?? t?.storeName ?? '-',
+    };
+  }
+
   API_getAll() {
     this.ApiService.get(global_API_getAll, this.objectSearch).subscribe(
       (res: any) => {
         if (res) {
-          this.dataList = res.data.items;
-          this.totalCount = res.data.totalCount;
+          const items = (res.data?.items ?? res.data ?? []) as any[];
+          this.dataList = items.map((i: any) => this.mapProductItem(i));
+          this.totalCount = res.data?.totalCount ?? items.length;
           this.filteredData = [...this.dataList];
         }
       }

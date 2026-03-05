@@ -84,8 +84,8 @@ export class DashboardAdminComponent {
       typeAr: 'طلب ',
     },
     {
-      titleAr: ' عدد الطلبات  الملغية',
-      titleEn: ' Cancel Order Count',
+      titleAr: 'عدد الطلبات قيد الانتظار',
+      titleEn: 'Pending Orders Count',
       icon: 'pi pi-shop',
       price: '0',
       status: '60%',
@@ -111,13 +111,13 @@ export class DashboardAdminComponent {
       typeAr: ' منتج ',
     },
     {
-      titleAr: 'عدد الفئات',
-      titleEn: 'Category Count',
+      titleAr: 'عدد التجار',
+      titleEn: 'Traders Count',
       icon: 'pi pi-inbox',
       price: '0',
       status: '60%',
-      type: 'Category',
-      typeAr: 'فئة',
+      type: 'Trader',
+      typeAr: 'تاجر',
     },
     {
       titleAr: 'عدد الطلبات',
@@ -129,13 +129,13 @@ export class DashboardAdminComponent {
       typeAr: 'طلب',
     },
     {
-      titleAr: 'عدد الفئات الفرعية',
-      titleEn: 'subCategory Count',
+      titleAr: 'عدد المستخدمين',
+      titleEn: 'Users Count',
       icon: 'pi pi-inbox',
       price: '0',
       status: '60%',
-      type: 'subCategory',
-      typeAr: 'فئة فرعية',
+      type: 'User',
+      typeAr: 'مستخدم',
     },
     {
       titleAr: 'المبيعات',
@@ -239,17 +239,17 @@ export class DashboardAdminComponent {
 
   getStaticData() {
     this.ApiService.get('admin/dashboard').subscribe((res: any) => {
-      const d = res?.data;
+      const d = res?.data ?? res;
       if (d) {
         this.dataCardItems = d;
-        this.items[0].price = d.completedOrders ?? 0;
-        this.items[1].price = 0;
-        this.items[2].price = d.totalProducts ?? 0;
-        this.items[3].price = 0;
-        this.items[4].price = 0;
-        this.items[5].price = d.totalOrders ?? 0;
-        this.items[6].price = 0;
-        this.items[7].price = d.totalRevenue ?? 0;
+        this.items[0].price = String(d.completedOrders ?? 0);
+        this.items[1].price = String(d.pendingOrders ?? 0);
+        this.items[2].price = String(d.totalProducts ?? 0);
+        this.items[3].price = '0';
+        this.items[4].price = String(d.totalTraders ?? 0);
+        this.items[5].price = String(d.totalOrders ?? 0);
+        this.items[6].price = String(d.totalUsers ?? 0);
+        this.items[7].price = String(d.totalRevenue ?? 0);
       }
     });
   }
@@ -279,17 +279,15 @@ export class DashboardAdminComponent {
     return `${year}-${month}-${day}`;
   };
   getRoles() {
-    this.apiService.get('Auth/roles').subscribe((res: any) => {
-      this.role=res.data
-      this.getStaticData();
-      this.getAllRevenueForEveryCity();
-      // this.getAllSalesPerMonth();
-      this.getAllSalesPerWeek();
-      const formattedRange = {
-        fromDate: this.formatDate(this.dateRange[0]),
-        toDate: this.formatDate(this.dateRange[1])
-      };
-      this.getAllUsers(formattedRange)
-    });
+    // Use localStorage for current user role - Auth/roles returns list of all roles, not current user
+    this.role = (localStorage.getItem('role') || '') as Roles;
+    this.getStaticData();
+    this.getAllRevenueForEveryCity();
+    this.getAllSalesPerWeek();
+    const formattedRange = {
+      fromDate: this.formatDate(this.dateRange[0]),
+      toDate: this.formatDate(this.dateRange[1])
+    };
+    this.getAllUsers(formattedRange);
   }
 }

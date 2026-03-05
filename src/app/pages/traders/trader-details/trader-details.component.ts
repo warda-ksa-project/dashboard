@@ -75,7 +75,7 @@ export class TraderDetailsComponent  {
     phone: new FormControl('', {
       validators: [
         Validators.required,
-        Validations.phoneValidator(this.countryService.getCountries())
+        //Validations.phoneValidator(this.countryService.getCountries())
       ]
     }),
 
@@ -236,26 +236,26 @@ export class TraderDetailsComponent  {
     });
 
     // Subscribe to selected country changes to update phone validator
-    this.countryService.selectedCountry$.subscribe(selectedCountry => {
-      if (selectedCountry) {
-        this.form.get('phone')?.setValidators([
-          Validators.required,
-          Validations.phoneValidatorForSelectedCountry(selectedCountry)
-        ]);
-        this.form.get('phone')?.updateValueAndValidity();
-      }
-    });
+    // this.countryService.selectedCountry$.subscribe(selectedCountry => {
+    //   if (selectedCountry) {
+    //     this.form.get('phone')?.setValidators([
+    //       Validators.required,
+    //       Validations.phoneValidatorForSelectedCountry(selectedCountry)
+    //     ]);
+    //     this.form.get('phone')?.updateValueAndValidity();
+    //   }
+    // });
 
     // Also subscribe to all countries as fallback
-    this.countryService.countries$.subscribe(countries => {
-      if (countries.length > 0 && !this.countryService.getSelectedCountry()) {
-        this.form.get('phone')?.setValidators([
-          Validators.required,
-          Validations.phoneValidator(countries)
-        ]);
-        this.form.get('phone')?.updateValueAndValidity();
-      }
-    });
+    // this.countryService.countries$.subscribe(countries => {
+    //   if (countries.length > 0 && !this.countryService.getSelectedCountry()) {
+    //     this.form.get('phone')?.setValidators([
+    //       Validators.required,
+    //       Validations.phoneValidator(countries)
+    //     ]);
+    //     this.form.get('phone')?.updateValueAndValidity();
+    //   }
+    // });
 
     // this.form.get('street')?.valueChanges.subscribe(res => {
     //   this.adress[0].street = res;

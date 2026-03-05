@@ -95,7 +95,15 @@
     "password": "كلمة المرور",
     "password_required": "كلمة المرور مطلوبة",
     "btn_login": "تسجيل الدخول",
-    "forget_password": "نسيت كلمة المرور"
+    "forget_password": "نسيت كلمة المرور",
+    "select_country": "اختر الدولة",
+    "select_country_first": "يرجى اختيار الدولة أولاً",
+    "phone_placeholder": "أدخل رقم الجوال",
+    "phone_hint": "أدخل {{count}} أرقام",
+    "phone_length_invalid": "يجب أن يكون رقم الجوال {{count}} أرقام بالضبط",
+    "checking": "جاري التحقق من حسابك...",
+    "wait_verification": "يرجى انتظار انتهاء التحقق",
+    "complete_all_fields": "يرجى إكمال جميع الحقول"
   },
   "otp": {
     "verify_mobile_no": "تحقق من رقم هاتفك",
@@ -124,6 +132,7 @@
     "services": "الخدمات",
     "working_hours": "ساعات العمل",
     "country": "الدول",
+    "currency": "العملات",
     "city": "المدن",
     "reason": "سبب الإلغاء",
     "complaint": "الشكاوى",
@@ -519,6 +528,23 @@
         "status": "الحالة"
       }
     },
+    "currency": {
+      "pageName": "العملة",
+      "list": "قائمة العملات",
+      "pageName_filter": "تصفية العملات",
+      "pageName_Add_crumb": "إضافة عملة",
+      "pageName_Edit_crumb": "تعديل العملة",
+      "pageName_View_crumb": "عرض العملة",
+      "form": {
+        "name_en": "الاسم (بالإنجليزية)",
+        "name_ar": "الاسم (بالعربية)",
+        "code": "الرمز",
+        "symbol": "الرمز",
+        "icon": "الأيقونة",
+        "image": "الصورة",
+        "status": "الحالة"
+      }
+    },
     "country": {
       "pageName": "الدولة",
       "list": "قائمة الدول",
@@ -536,7 +562,11 @@
         "phoneLength": "طول رقم الهاتف",
         "status": "الحالة",
         "phoneCode": "رمز الهاتف",
-        "content": "المحتوى"
+        "paymentUrl": "رابط الدفع",
+        "smsBearerToken": "رمز SMS",
+        "smsSenderName": "اسم مرسل SMS",
+        "content": "المحتوى",
+        "image": "الصورة"
       }
     },
     "contact_us": {

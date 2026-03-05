@@ -11,6 +11,7 @@ import { BreadcrumpComponent } from '../../../components/breadcrump/breadcrump.c
 import { ConfirmMsgService } from '../../../services/confirm-msg.service';
 import { DialogComponent } from '../../../components/dialog/dialog.component';
 import { CheckBoxComponent } from '../../../components/check-box/check-box.component';
+import { SelectComponent } from '../../../components/select/select.component';
 import { UploadFileComponent } from '../../../components/upload-file/upload-file.component';
 import { IEditImage } from '../../../components/edit-mode-image/editImage.interface';
 import { EditModeImageComponent } from '../../../components/edit-mode-image/edit-mode-image.component';
@@ -27,6 +28,7 @@ import { LanguageService } from '../../../services/language.service';
     InputTextComponent,
     DialogComponent,
     CheckBoxComponent,
+    SelectComponent,
     UploadFileComponent,
     EditModeImageComponent,
     TranslatePipe,
@@ -74,9 +76,7 @@ export class CountriesDetailsComponent implements OnInit {
     }),
     status: new FormControl(true),
     image: new FormControl(null, {
-      validators: [
-        Validators.required,
-      ]
+      validators: [Validators.required]
     })
   })
 
@@ -94,15 +94,19 @@ export class CountriesDetailsComponent implements OnInit {
   }
   selectedLang: any;
   languageService = inject(LanguageService);
+  currencies: any[] = [];
+
   ngOnInit() {
-    this.pageName.set('country.pageName')
-    this.getBreadCrumb()
+    this.pageName.set('country.pageName');
+    this.getBreadCrumb();
+    this.selectedLang = this.languageService.translationService.currentLang;
+    this.getAllCurrencies();
     this.languageService.translationService.onLangChange.subscribe(() => {
       this.selectedLang = this.languageService.translationService.currentLang;
       this.getBreadCrumb();
+      this.getAllCurrencies();
     });
-    if (this.tyepMode() !== 'Add')
-      this.getCountryDetails()
+    if (this.tyepMode() !== 'Add') this.getCountryDetails();
   }
 
   tyepMode() {
@@ -136,13 +140,33 @@ export class CountriesDetailsComponent implements OnInit {
       this.editMode = false;
     }
   };
+  getAllCurrencies() {
+    this.ApiService.get('Currencies').subscribe((res: any) => {
+      const list = res?.data ?? res ?? [];
+      this.currencies = (Array.isArray(list) ? list : []).map((c: any) => ({
+        name: this.selectedLang === 'ar' ? (c.arName ?? c.enName) : (c.enName ?? c.arName),
+        code: c.id
+      }));
+    });
+  }
+
   getCountryDetails() {
     this.ApiService.get(`Countries/${this.countryID}`).subscribe((res: any) => {
       const d = res?.data ?? res;
       if (d) {
-        this.form.patchValue({ enName: d.enName, arName: d.arName, phoneLength: d.phoneLength, phoneCode: d.phoneCode, status: d.status, currencyId: d.currencyId, image: d.image });
+        // API returns full URL for image; backend expects path when keeping existing
+        const imgPath = d.image ? (d.image.includes('/uploads/') ? d.image.substring(d.image.indexOf('/uploads/')) : d.image) : null;
+        this.form.patchValue({
+          enName: d.enName,
+          arName: d.arName,
+          phoneLength: d.phoneLength,
+          phoneCode: d.phoneCode,
+          status: d.status,
+          currencyId: d.currencyId,
+          image: imgPath
+        });
         this.editImageProps.props.imgSrc = d.image ?? '';
-        this.editMode = true;
+        this.editMode = !!d.image;
       }
     });
   }

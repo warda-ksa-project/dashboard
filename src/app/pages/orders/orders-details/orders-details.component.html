@@ -98,7 +98,7 @@
           </div>
 
           <!-- Right Column: Map -->
-          <div class="col-lg-5 col-md-12 mt-4" *ngIf="customerLat && customerLng">
+          <div class="col-lg-5 col-md-12 mt-4">
             <div class="mb-4">
               <h3>
                 <span class="rounded-icon pi pi-map-marker"></span>
@@ -106,8 +106,8 @@
               </h3>
             </div>
             <div class="map-section">
-              <app-map [lat]="customerLat" [lng]="customerLng" [readonly]="true" [autoLocate]="false"></app-map>
-              <a class="google-maps-link mt-3" [href]="'https://www.google.com/maps?q=' + customerLat + ',' + customerLng" target="_blank">
+              <app-map [lat]="mapLat" [lng]="mapLng" [readonly]="true" [autoLocate]="false"></app-map>
+              <a class="google-maps-link mt-3" *ngIf="hasValidCoords" [href]="'https://www.google.com/maps?q=' + mapLat + ',' + mapLng" target="_blank">
                 <i class="pi pi-external-link"></i>
                 {{'order.form.openInGoogleMaps' | translate}}
               </a>

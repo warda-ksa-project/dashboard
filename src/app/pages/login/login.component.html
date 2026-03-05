@@ -1,54 +1,89 @@
 <div class="login-container">
   <div class="content">
     <div class="form-section">
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" (keydown)="onFormKeydown($event)">
         <div class="details d-flex justify-content-between">
-
-
           <div class="d-flex flex-col">
             <h2>{{'login.welcome'|translate}}</h2>
-          <p>{{'login.sign_to_dashboard'|translate}}</p>
+            <p>{{'login.sign_to_dashboard'|translate}}</p>
           </div>
-
           <div class="user-section">
             <button type="button" class="lang-btn" (click)="toggleLanguage()">
               {{ selectedLang.toUpperCase() == 'AR' ? 'EN' : 'AR' }}
             </button>
           </div>
-
-
         </div>
+
         <div class="d-flex flex-col gap-2">
-          <label  for="email">{{'login.userName'|translate}}</label>
-          <input pInputText id="userName" formControlName="userName" />
-          <small *ngIf="loginForm.get('userName')?.errors && loginForm.get('userName')?.touched">
-            {{ loginForm.get('userName')?.errors | validationHandlerPipe }}
+          <label for="country">{{'login.userName'|translate}}</label>
+          <div class="phone-input-inline">
+            <div class="phone-input-inner">
+              <p-select
+                [formControl]="countryControl"
+                [options]="countries"
+                optionLabel="name"
+                optionValue="code"
+                (onChange)="onCountryChange($event.value)"
+                [placeholder]="('login.select_country'|translate) || 'Select country'"
+                appendTo="body"
+                panelStyleClass="login-country-panel"
+                class="country-dropdown-inline"
+              >
+                <ng-template let-country pTemplate="item">
+                  <div class="country-item country-item-dropdown">
+                    <img *ngIf="country.imageUrl" [src]="country.imageUrl" [alt]="country.name" class="country-flag country-flag-dropdown" onerror="this.style.display='none'" />
+                    <span class="pi pi-flag" *ngIf="!country?.imageUrl"></span>
+                    <span>{{ country.name }}</span>
+                  </div>
+                </ng-template>
+                <ng-template pTemplate="selectedItem">
+                  <div class="country-item" *ngIf="getSelectedPhoneCountry() as c">
+                    <img *ngIf="c.imageUrl" [src]="c.imageUrl" [alt]="c.name" class="country-flag" onerror="this.style.display='none'" />
+                    <span class="pi pi-flag" *ngIf="!c?.imageUrl"></span>
+                    <span>{{ c.phoneCode || '' }}</span>
+                  </div>
+                </ng-template>
+              </p-select>
+              <input
+                pInputText
+                type="tel"
+                inputmode="numeric"
+                formControlName="phoneNumber"
+                [placeholder]="'login.phone_placeholder'|translate"
+                [attr.maxlength]="selectedCountry?.phoneLength ?? 15"
+                class="phone-digits-input"
+              />
+            </div>
+          </div>
+          <small *ngIf="loginForm.get('phoneNumber')?.errors && loginForm.get('phoneNumber')?.touched">
+            {{ loginForm.get('phoneNumber')?.errors | validationHandlerPipe }}
           </small>
+          <small *ngIf="selectedCountry && !loginForm.get('phoneNumber')?.errors?.['minlength'] && !loginForm.get('phoneNumber')?.errors?.['maxlength']" class="hint">
+            {{ 'login.phone_hint' | translate:{ count: selectedCountry.phoneLength } }}
+          </small>
+          <div *ngIf="isCheckingAdmin" class="checking-msg">
+            <span class="pi pi-spin pi-spinner"></span> {{ 'login.checking' | translate }}
+          </div>
         </div>
+
         <div class="d-flex flex-col gap-2" *ngIf="isAdmin === true">
-          <label for="country"> {{ "country.pageName" | translate }} </label>
+          <label for="adminCountry">{{ "country.pageName" | translate }}</label>
           <app-select
             label=""
-            [control]="loginForm.get('country')"
+            [control]="loginForm.get('adminCountry')"
             [list]="countries"
             optionLabel="name"
             optionValue="code"
-            (onSelectedValue)="onCountryChange($event)"
+            (onSelectedValue)="onAdminCountryChange($event)"
             type="single"
           ></app-select>
         </div>
-        <!-- <div class="d-flex flex-col gap-2 ">
-          <label for="password"> {{'login.password'|translate}}  </label>
-          <p-password formControlName="password" [toggleMask]="true" [feedback]="false"></p-password>
-          <small *ngIf="loginForm.get('password')?.errors && loginForm.get('password')?.touched">
-            {{ loginForm.get('password')?.errors | validationHandlerPipe }}
-          </small>
-        </div> -->
+
         <div class="actions">
-          <button type="submit" class="send-btn"> {{'login.btn_login'|translate}}
+          <button type="submit" class="send-btn" [disabled]="!canSubmit">
+            {{'login.btn_login'|translate}}
             <span class="pi pi-arrow-right"></span>
           </button>
-          <!-- <a routerLink='/auth/forget_password'>{{'login.forget_password'|translate}}</a> -->
         </div>
       </form>
     </div>

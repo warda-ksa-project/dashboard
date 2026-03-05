@@ -1,6 +1,7 @@
 import { Component, Inject, inject, OnDestroy } from '@angular/core';
 import {
   FormBuilder,
+  FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
@@ -8,19 +9,20 @@ import {
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
+import { SelectModule } from 'primeng/select';
 import { DOCUMENT, NgIf } from '@angular/common';
-import { ToasterService } from '../../services/toaster.service'; // Import here
+import { ToasterService } from '../../services/toaster.service';
 import { ApiService } from '../../services/api.service';
 import { Router, RouterModule } from '@angular/router';
 import { OtpModalComponent } from '../../components/otp-modal/otp-modal.component';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../services/language.service';
-import { RoleId, Roles } from '../../conts';
+import { Roles } from '../../conts';
 import { ValidationHandlerPipePipe } from '../../pipes/validation-handler-pipe.pipe';
-import { Validations } from '../../validations';
 import { SelectComponent } from '../../components/select/select.component';
-import { Subject, EMPTY } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, map, switchMap, takeUntil, tap, catchError } from 'rxjs/operators';
+import { Subject, EMPTY, combineLatest } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, map, switchMap, takeUntil, tap, catchError, startWith } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -36,6 +38,7 @@ import { debounceTime, distinctUntilChanged, filter, map, switchMap, takeUntil, 
     RouterModule,
     ValidationHandlerPipePipe,
     SelectComponent,
+    SelectModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
@@ -44,25 +47,62 @@ import { debounceTime, distinctUntilChanged, filter, map, switchMap, takeUntil, 
 export class LoginComponent {
   loginForm: FormGroup;
   toaster = inject(ToasterService);
-  otpValue: string = '';
-  mobileNumber: string = '';
-  openOtpModal: boolean = false;
-  countries: any = [];
-  countriesData: any[] = []; // Store full country data with phoneLength
+  otpValue = '';
+  mobileNumber = '';
+  openOtpModal = false;
+  countries: { name: string; code: number; phoneCode: string; phoneLength: number; imageUrl?: string }[] = [];
+  countriesData: any[] = [];
   languageService = inject(LanguageService);
   currentLang = 'en';
-  selectedLang: string = localStorage.getItem('lang') || 'en';
+  selectedLang = localStorage.getItem('lang') || 'en';
   selectedCountryId: number | null = null;
+  selectedCountry: { phoneLength: number; phoneCode: string } | null = null;
   isAdmin: boolean | null = null;
-  isCheckingAdmin: boolean = false;
+  isCheckingAdmin = false;
+  canSubmit = false;
   private destroy$ = new Subject<void>();
-  
-  // Minimum phone length required before checking admin (most countries have 9+ digits)
-  private readonly MIN_PHONE_LENGTH = 9;
-  onCountryChange(countryId: number) {
+
+  get countryControl(): FormControl {
+    return this.loginForm.get('country') as FormControl;
+  }
+
+  getSelectedPhoneCountry() {
+    const id = this.loginForm.get('country')?.value;
+    return this.countries.find((c) => c.code === id) || null;
+  }
+
+  onAdminCountryChange(countryId: number) {
     this.selectedCountryId = countryId;
   }
-  
+
+  onCountryChange(countryId: number) {
+    const c = this.countriesData.find((x: any) => x.id === countryId);
+    this.selectedCountry = c
+      ? { phoneLength: this.getPhoneLength(c), phoneCode: c.phoneCode || '+966' }
+      : null;
+    this.updatePhoneValidators();
+    this.isAdmin = null;
+  }
+
+  private getPhoneLength(c: any): number {
+    const pl = c?.phoneLength;
+    if (typeof pl === 'number') return pl;
+    if (typeof pl === 'string') return parseInt(pl, 10) || 9;
+    return 9;
+  }
+
+  private updatePhoneValidators() {
+    const ctrl = this.loginForm.get('phoneNumber');
+    const len = this.selectedCountry?.phoneLength ?? 9;
+    ctrl?.setValidators([
+      Validators.required,
+      Validators.pattern(/^\d+$/),
+      Validators.minLength(len),
+      Validators.maxLength(len),
+    ]);
+    ctrl?.updateValueAndValidity();
+  }
+
   constructor(
     private fb: FormBuilder,
     @Inject(DOCUMENT) private document: Document,
@@ -71,24 +111,20 @@ export class LoginComponent {
     private router: Router
   ) {
     this.loginForm = this.fb.group({
-      userName: [
-        '',
-        [
-          Validators.required,
-        ],
-      ],
-      roleId: [1, []],    
-      country : [null, []],
+      country: [null, [Validators.required]],
+      phoneNumber: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+      adminCountry: [null, []],
+      roleId: [1, []],
     });
-
     this.translate.setDefaultLang('en');
-    this.translate.use('en'); // You can change this dynamically
+    this.translate.use('en');
   }
-  
+
   ngOnInit(): void {
     this.initAppTranslation();
     this.getAllCountries();
     this.watchPhoneAndCheckAdmin();
+    this.watchCanSubmit();
   }
 
   ngOnDestroy(): void {
@@ -96,77 +132,146 @@ export class LoginComponent {
     this.destroy$.complete();
   }
 
+  private watchCanSubmit() {
+    const countryCtrl = this.loginForm.get('country')!;
+    const phoneCtrl = this.loginForm.get('phoneNumber')!;
+    const adminCountryCtrl = this.loginForm.get('adminCountry')!;
+    combineLatest([
+      countryCtrl.valueChanges.pipe(startWith(countryCtrl.value)),
+      phoneCtrl.valueChanges.pipe(startWith(phoneCtrl.value)),
+      adminCountryCtrl.valueChanges.pipe(startWith(adminCountryCtrl.value)),
+    ])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => this.updateCanSubmit());
+  }
+
+  private updateCanSubmit() {
+    const len = this.selectedCountry?.phoneLength ?? 0;
+    const phone = (this.loginForm.get('phoneNumber')?.value ?? '').toString().replace(/\D/g, '');
+    const hasMinLength = len > 0 && phone.length >= len;
+    const adminCountryOk = this.isAdmin !== true || !!this.loginForm.get('adminCountry')?.value;
+    this.canSubmit = !!(
+      this.loginForm.valid &&
+      hasMinLength &&
+      this.isAdmin !== null &&
+      !this.isCheckingAdmin &&
+      adminCountryOk
+    );
+  }
+
   private watchPhoneAndCheckAdmin() {
-    const userNameControl = this.loginForm.get('userName');
+    const phoneControl = this.loginForm.get('phoneNumber');
     const roleIdControl = this.loginForm.get('roleId');
     const countryControl = this.loginForm.get('country');
 
-    userNameControl?.valueChanges
+    const countryCtrl = this.loginForm.get('country')!;
+    const phoneCtrl = this.loginForm.get('phoneNumber')!;
+    combineLatest([
+      countryCtrl.valueChanges.pipe(startWith(countryCtrl.value)),
+      phoneCtrl.valueChanges.pipe(startWith(phoneCtrl.value ?? '')),
+    ])
       .pipe(
-        debounceTime(500),
-        map((v) => (v ?? '').toString().trim()),
-        distinctUntilChanged(),
-        tap((phone) => {
-          // Reset admin state if phone length is less than minimum
-          if (phone.length < this.MIN_PHONE_LENGTH) {
+        debounceTime(400),
+        map(([countryId, phone]: [unknown, unknown]) => {
+          const c = this.countriesData.find((x: any) => x.id === countryId);
+          const len = c ? this.getPhoneLength(c) : 0;
+          const digits = (phone ?? '').toString().replace(/\D/g, '');
+          return { countryId, digits, requiredLen: len };
+        }),
+        distinctUntilChanged((a, b) => a.digits === b.digits && a.requiredLen === b.requiredLen),
+        tap(({ requiredLen, digits }) => {
+          if (digits.length < requiredLen) {
             this.isAdmin = null;
             this.isCheckingAdmin = false;
           }
         }),
-        // Only check when phone length reaches minimum threshold
-        filter((phone) => phone.length >= this.MIN_PHONE_LENGTH),
-        tap(() => {
-          this.isCheckingAdmin = true;
-        }),
-        switchMap((phone) =>
-          this.api.get<any>('Auth/check-admin', { Phone: phone }).pipe(
-            map((res: any) => res.data),
-            catchError(() => {
+        filter(({ requiredLen, digits }) => requiredLen > 0 && digits.length >= requiredLen),
+        tap(() => (this.isCheckingAdmin = true)),
+        switchMap(({ digits }) => {
+          return this.api.get<any>('Auth/check-admin', { Phone: digits }).pipe(
+            map((res: any) => !!(res?.data ?? res?.result ?? res)),
+            catchError((err) => {
               this.isCheckingAdmin = false;
               this.isAdmin = null;
+              this.updateCanSubmit();
+              const msg = err?.error?.error?.message || err?.error?.message || err?.message;
+              if (msg) this.toaster.errorToaster(msg);
               return EMPTY;
             })
-          )
-        ),
+          );
+        }),
         takeUntil(this.destroy$)
       )
       .subscribe((isAdmin: boolean) => {
         this.isCheckingAdmin = false;
         this.isAdmin = isAdmin;
-
         if (isAdmin) {
           roleIdControl?.setValue(1);
-          countryControl?.setValidators([Validators.required]);
-          countryControl?.setValue(null);
-          countryControl?.updateValueAndValidity();
+          this.loginForm.get('adminCountry')?.setValidators([Validators.required]);
+          this.loginForm.get('adminCountry')?.setValue(null);
+          this.loginForm.get('adminCountry')?.updateValueAndValidity();
           this.selectedCountryId = null;
         } else {
           roleIdControl?.setValue(2);
-          countryControl?.clearValidators();
-          countryControl?.updateValueAndValidity();
+          this.loginForm.get('adminCountry')?.clearValidators();
+          this.loginForm.get('adminCountry')?.updateValueAndValidity();
         }
+        this.updateCanSubmit();
       });
   }
 
   onSubmit() {
-    if (this.loginForm.valid) {
-      this.onLogin(this.loginForm.value);
-    } else {
-      this.toaster.errorToaster('Please Complete All Feilds');
+    const phoneCtrl = this.loginForm.get('phoneNumber');
+    const digits = (phoneCtrl?.value ?? '').toString().replace(/\D/g, '');
+    const requiredLen = this.selectedCountry?.phoneLength ?? 0;
+
+    phoneCtrl?.markAsTouched();
+
+    if (!this.selectedCountry) {
+      this.toaster.errorToaster(this.translate.instant('login.select_country_first'));
+      return;
+    }
+    if (requiredLen > 0 && digits.length !== requiredLen) {
+      this.toaster.errorToaster(
+        this.translate.instant('login.phone_length_invalid', { count: requiredLen })
+      );
+      return;
+    }
+    if (!this.canSubmit) {
+      if (this.isCheckingAdmin) this.toaster.errorToaster(this.translate.instant('login.wait_verification'));
+      else if (this.isAdmin === null && digits.length >= requiredLen)
+        this.toaster.errorToaster(this.translate.instant('login.wait_verification'));
+      else this.toaster.errorToaster(this.translate.instant('login.complete_all_fields'));
+      return;
+    }
+    this.onLogin(this.loginForm.value);
+  }
+
+  onFormKeydown(event: KeyboardEvent) {
+    if (event.key === 'Enter' && !this.canSubmit) {
+      event.preventDefault();
     }
   }
+
   getAllCountries() {
     this.api.get('Countries').subscribe((res: any) => {
       if (res.data) {
         this.countries = [];
-        this.countriesData = res.data; // Store full country data
-        res.data.map((country: any) => {
+        this.countriesData = res.data;
+        const base = environment.baseUrl.replace('/api/', '');
+        res.data.forEach((country: any) => {
           this.countries.push({
-            name: this.selectedLang == 'en' ? country.enName : country.arName,
+            name: (this.selectedLang === 'en' ? country.enName : country.arName) + ' (' + (country.phoneCode || '') + ')',
             code: country.id,
-            phoneLength: country.phoneLength, // Include phoneLength for reference
+            phoneCode: country.phoneCode || '+966',
+            phoneLength: this.getPhoneLength(country),
+            imageUrl: country.image ? (country.image.startsWith('http') ? country.image : base + (country.image.startsWith('/') ? country.image : '/' + country.image)) : undefined,
           });
         });
+        if (this.countries.length && !this.loginForm.get('country')?.value) {
+          this.loginForm.patchValue({ country: this.countries[0].code });
+          this.onCountryChange(this.countries[0].code);
+        }
       }
     });
   }
@@ -188,8 +293,9 @@ export class LoginComponent {
         } else {
           localStorage.setItem('role', Roles.trader.toString());
         }
-        if (this.selectedCountryId) {
-          localStorage.setItem('countryId', this.selectedCountryId.toString());
+        const adminCountryId = this.loginForm.get('adminCountry')?.value ?? this.selectedCountryId;
+        if (adminCountryId) {
+          localStorage.setItem('countryId', adminCountryId.toString());
         } else if (user.countryId != null) {
           // Trader: use country from phone (backend derives from phone country code)
           localStorage.setItem('countryId', String(user.countryId));
@@ -222,16 +328,23 @@ export class LoginComponent {
     this.languageService.changeHtmlLang(this.selectedLang);
     this.languageService.use(this.selectedLang);
   }
-  onLogin(loginfrom: any) {
+  onLogin(loginData: any) {
     this.openOtpModal = false;
-    this.api.post('Auth/send-otp', { phone: loginfrom.userName }).subscribe((res: any) => {
-      if (res.isSuccess) {
-        this.mobileNumber = loginfrom.userName;
-        this.openOtpModal = true;
-      } else {
-        localStorage.removeItem('token');
-        this.toaster.errorToaster(res.error?.message || 'Login failed');
-      }
+    const digits = (loginData.phoneNumber ?? '').toString().replace(/\D/g, '');
+    this.api.post('Auth/send-otp', { phone: digits }).subscribe({
+      next: (res: any) => {
+        if (res?.isFailure) {
+          const errMsg = res?.error?.message || res?.message || 'Login failed';
+          this.toaster.errorToaster(errMsg);
+        } else {
+          this.mobileNumber = digits;
+          this.openOtpModal = true;
+        }
+      },
+      error: (err) => {
+        const msg = err?.error?.error?.message || err?.error?.message || err?.message || 'Login failed';
+        this.toaster.errorToaster(msg);
+      },
     });
   }
   resendOtp(e: any) {

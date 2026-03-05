@@ -24,6 +24,7 @@ export const menuItems  : MenuItem[] =
     { icon: 'pi pi-crown', id:'products',label: 'side_bar.piece_products', route: '/piece-product',type:[Roles.admin,Roles.trader]  },
     { icon: 'pi pi-list', id:'article',label: 'side_bar.article', route: '/article',type:[Roles.admin] },
     { icon: 'pi pi-globe', id:'countries',label: 'side_bar.country', route: '/country',type:[Roles.admin] },
+    { icon: 'pi pi-dollar', id:'currencies',label: 'side_bar.currency', route: '/currency',type:[Roles.admin] },
     { icon: 'pi pi-building', id:'cities',label: 'side_bar.city', route: '/city',type:[Roles.admin]  },
     { icon: 'pi pi-bullseye', id:'traders',label: 'side_bar.trader', route: '/traders',type:[Roles.admin]  },
     { icon: 'pi pi-users', id:'requests',label: 'side_bar.trader_request', route: '/traderRequest',type:[Roles.admin]  },
