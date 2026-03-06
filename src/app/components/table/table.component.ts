@@ -174,8 +174,11 @@ export class TableComponent implements OnInit, OnChanges {
     })
   }
 
-  convertDate(originalDate: string) {
+  convertDate(originalDate: string | number | null | undefined) {
+    if (originalDate == null || originalDate === '' || originalDate === '-') return '-';
+    if (typeof originalDate !== 'string' && typeof originalDate !== 'number') return '-';
     const date = new Date(originalDate);
+    if (isNaN(date.getTime())) return '-';
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const year = date.getFullYear();
