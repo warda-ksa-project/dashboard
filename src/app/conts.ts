@@ -36,6 +36,7 @@ export const menuItems  : MenuItem[] =
     { icon: 'pi pi-credit-card', id:'payment way',label: 'side_bar.payment', route: '/paymentWay',type:[Roles.admin]  },
     { icon: 'pi pi-images', id:'slider',label: 'side_bar.slider', route: '/slider',type:[Roles.admin]  },
     { icon: 'pi pi-chart-bar', id:'target',label: 'side_bar.target', route: '/target',type:[Roles.trader]  },
+    { icon: 'pi pi-clock', id:'working_hours',label: 'side_bar.working_hours', route: '/store-working-hours',type:[Roles.admin,Roles.trader]  },
     { icon: 'pi pi-users', id:'users',label: 'side_bar.users', route: '/users',type:[Roles.admin]  },
     { icon: 'pi pi-bell', id:'notifications',label: 'side_bar.notifications', route: '/settings/add_notification',type:[Roles.admin] },
     { icon: 'pi pi-database', id:'aboutus',label: 'side_bar.about', route: '/about-us',type:[Roles.admin,Roles.trader] },
@@ -71,12 +72,12 @@ export const userType = [
   {
     name: 'Trader',
     nameAr: 'تاجر',
-    code: 2
+    code: 1
   },
   {
     name: 'Client',
     nameAr: 'عميل',
-    code: 3
+    code: 2
   },
 ]
 

@@ -567,6 +567,14 @@ export const routes: Routes = [
         data: { roles: [Roles.trader] }
       },
 
+      // Store Working Hours (Admin & Trader)
+      { 
+        path: 'store-working-hours', 
+        loadComponent: () => import('./pages/store-working-hours/store-working-hours.component').then(m => m.StoreWorkingHoursComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin, Roles.trader] }
+      },
+
       // ==================== Shared Routes (Admin & Trader) ====================
       
       // Products

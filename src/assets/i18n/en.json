@@ -173,6 +173,14 @@
     "pageName": "Target",
     "pageName_Edit_crumb": "Edit Target"
   },
+  "storeWorkingHours": {
+    "pageName": "Store Working Hours",
+    "select_trader": "Select Trader",
+    "day": "Day",
+    "is_open": "Open",
+    "open_time": "Open Time",
+    "close_time": "Close Time"
+  },
   "client": {
     "pageName": "Clients",
     "pageTitle": "Client",

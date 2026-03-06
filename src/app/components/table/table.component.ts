@@ -1,4 +1,5 @@
 import { NgFor, NgIf } from '@angular/common';
+import { StripHtmlPipe } from '../../pipes/strip-html.pipe';
 import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { ApiService } from '../../services/api.service';
@@ -69,7 +70,7 @@ export interface IcolHeader {
 @Component({
   selector: 'app-table',
   standalone: true,
-  imports: [TableModule, NgFor, NgIf, TranslatePipe, TooltipModule, DialogComponent, CheckBoxComponent],
+  imports: [TableModule, NgFor, NgIf, TranslatePipe, TooltipModule, DialogComponent, CheckBoxComponent, StripHtmlPipe],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss'
 })

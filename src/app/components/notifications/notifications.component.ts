@@ -61,12 +61,14 @@ export class NotificationsComponent implements OnDestroy {
   // }
 
   getNotifications() {
-      this.ApiService.get('Notifications').subscribe((noti: any) => {
-      this.notificationsList = noti.data.data;
-      this.totlaCount = noti.data.totalCount;
-      this.totalUnSeen = noti.data.totalUnSeenCount;
+    this.ApiService.get('Notifications').subscribe((noti: any) => {
+      // Backend returns { data: [...] } - data is the list directly
+      const list = noti?.data ?? [];
+      this.notificationsList = Array.isArray(list) ? list : [];
+      this.totlaCount = this.notificationsList.length;
+      this.totalUnSeen = this.notificationsList.filter((n: any) => !n.isRead).length;
 
-      const newCount = noti.data.totalUnSeenCount;
+      const newCount = this.totalUnSeen;
       const oldCount = this.totalUnSeenCount$.value;
 
       if (oldCount !== null && newCount > oldCount && this.isUserInteracted) {
@@ -84,8 +86,9 @@ export class NotificationsComponent implements OnDestroy {
 
   constructor(private router: Router) { }
 
-  getModuleIcon(module: number): string {
-    switch (module) {
+  getModuleIcon(module: number | string): string {
+    const m = typeof module === 'string' ? this.parseModuleType(module) : module;
+    switch (m) {
       case ModuleTypeEnum.Order:
         return 'OR';
       case ModuleTypeEnum.SpecialOrder:
@@ -97,28 +100,33 @@ export class NotificationsComponent implements OnDestroy {
     }
   }
 
+  private parseModuleType(type: string): number {
+    if (type === 'Order') return ModuleTypeEnum.Order;
+    if (type === 'SpecialOrder') return ModuleTypeEnum.SpecialOrder;
+    return ModuleTypeEnum.Text;
+  }
+
   handleNotificationClick(notification: any) {
-    if (notification.module === ModuleTypeEnum.Text) {
+    const module = typeof notification.type === 'string' ? this.parseModuleType(notification.type) : (notification.module ?? 0);
+    const id = notification.id ?? notification.notificationId;
+    const refId = notification.referenceId ?? notification.entityId;
+
+    if (module === ModuleTypeEnum.Text) {
       this.selectedNotification = notification;
       this.showDialog = true;
-      this.seenNotification(notification.notificationId);
+      this.seenNotification(id);
     } else {
-      // Navigate to the appropriate route based on the module type
-      const route = notification.module === ModuleTypeEnum.Order
-        ? `/order/edit/${notification.entityId}`
-        : `/special-order/edit/${notification.entityId}`;
-      this.seenNotification(notification.notificationId);
+      const route = module === ModuleTypeEnum.Order
+        ? `/order/edit/${refId}`
+        : `/special-order/edit/${refId}`;
+      this.seenNotification(id);
       this.router.navigate([route]);
     }
     this.closePopover();
   }
 
-  seenNotification(orderId: any) {
-    this.ApiService.put(
-      `Notification/seenNotification?id=${orderId}`,
-      {}
-    ).subscribe((res: any) => {
-      console.log(res);
+  seenNotification(notificationId: number | string) {
+    this.ApiService.putWithId('Notifications/mark-seen', notificationId, {}).subscribe(() => {
       this.getNotifications();
     });
   }

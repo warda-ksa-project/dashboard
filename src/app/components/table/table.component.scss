@@ -54,21 +54,17 @@
           text-align: right !important;
         }
 
-        // Editor content styling
+        // Editor content styling (plain text display in table)
         .editor-content {
-          max-width: 400px;
-          max-height: 150px;
-          overflow: auto;
           line-height: 1.5;
           font-size: 0.85rem;
-          
-          p, div, span {
-            margin: 0 !important;
-            padding: 0 !important;
-          }
-          
-          * {
-            font-size: inherit !important;
+
+          &.editor-plain-text {
+            display: block;
+            max-width: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
           }
         }
 

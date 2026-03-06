@@ -90,7 +90,7 @@ export class SidebarComponent  {
             this.routingList=   menuItems
     }
 
-  private router = inject(Router);
+  private router: Router = inject(Router);
 
   logOut(){
     this.router.navigate(['/auth/login']).then(() => localStorage.clear());

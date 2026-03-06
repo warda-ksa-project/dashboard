@@ -21,16 +21,16 @@
           </div>
         </div>
         <div class="notification-content-section">
-          <div *ngFor="let notification of notificationsList" [class.unseen]="!notification.isSeen"
+          <div *ngFor="let notification of notificationsList" [class.unseen]="!notification.isRead"
             class="notification-item mt-3" (click)="handleNotificationClick(notification)">
             <div class="notification-image">
-              {{ getModuleIcon(notification.module) }}
+              {{ getModuleIcon(notification.type ?? notification.module) }}
             </div>
             <div class="notification-content">
-              <div class="notification-title">{{selectedLang=='en'?notification.titleEn:notification.titleAr }}</div>
-              <div class="notification-body">{{ selectedLang=='en'?notification.bodyEn:notification.bodyAr }}</div>
+              <div class="notification-title">{{selectedLang=='en'?(notification.titleEn ?? notification.title):(notification.titleAr ?? notification.title) }}</div>
+              <div class="notification-body">{{ selectedLang=='en'?(notification.bodyEn ?? notification.body):(notification.bodyAr ?? notification.body) }}</div>
               <div class="notification-time">
-                {{ notification.creationTime | date:'medium' }}
+                {{ (notification.createdDate ?? notification.creationTime) | date:'medium' }}
               </div>
             </div>
           </div>
@@ -43,9 +43,9 @@
 <p-dialog [(visible)]="showDialog" [header]="'Text Notification Details'" [modal]="true"
   [style]="{width: '30vw'}">
   <div class="dialog-content" *ngIf="selectedNotification">
-    <h3>{{selectedNotification?.title}}</h3>
-    <p><strong>{{'notifications.id'|translate}}:</strong> {{ selectedNotification.notificationId }}</p>
-    <p><strong>{{'notifications.message'|translate}}:</strong> {{ selectedNotification.body }}</p>
-    <p><strong>{{'notifications.created'|translate}}:</strong> {{ selectedNotification.creationTime | date:'medium' }}</p>
+    <h3>{{selectedLang=='en'?(selectedNotification.titleEn ?? selectedNotification.title):(selectedNotification.titleAr ?? selectedNotification.title)}}</h3>
+    <p><strong>{{'notifications.id'|translate}}:</strong> {{ selectedNotification.id ?? selectedNotification.notificationId }}</p>
+    <p><strong>{{'notifications.message'|translate}}:</strong> {{ selectedNotification.bodyEn ?? selectedNotification.body }}</p>
+    <p><strong>{{'notifications.created'|translate}}:</strong> {{ (selectedNotification.createdDate ?? selectedNotification.creationTime) | date:'medium' }}</p>
   </div>
 </p-dialog>

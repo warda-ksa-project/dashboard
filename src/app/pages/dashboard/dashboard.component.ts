@@ -263,10 +263,10 @@ onPageSelected(number:any){
     this.ApiService.get('admin/dashboard/trader').subscribe((res: any) => {
       const d = res?.data ?? res;
       if (d) {
-        this.items[0].price = d.completedOrders ?? 0;
+        this.items[0].price = d.completedOrders ?? Math.max(0, (d.totalOrders ?? 0) - (d.pendingOrders ?? 0));
         this.items[1].price = d.pendingOrders ?? 0;
         this.items[2].price = d.totalProducts ?? 0;
-        this.items[3].price = 0;
+        this.items[3].price = d.productPieceCount ?? 0;
       }
     });
   }
@@ -396,6 +396,24 @@ onPageSelected(number:any){
 
   
 
+  /** Maps Product API response to Best Seller table row structure */
+  mapProductToBestSellerRow(p: any): any {
+    const price = p.priceAfterDiscount ?? p.price ?? 0;
+    const currency = p.prices?.[0]?.currency ?? 'SAR';
+    return {
+      productId: p.id,
+      image: Array.isArray(p.images) && p.images.length > 0 ? p.images[0] : null,
+      enName: p.enName ?? '-',
+      arName: p.arName ?? '-',
+      categoryEnName: p.enCategoryName ?? '-',
+      categoryArName: p.arCategoryName ?? '-',
+      revenue: `${price} ${currency}`,
+      totalSold: p.totalSold ?? '-',
+      isAvaliable: p.stockQuantity > 0 ? (this.selectedLang === 'ar' ? 'متوفر' : 'Available') : (this.selectedLang === 'ar' ? 'غير متوفر' : 'Unavailable'),
+      lastOrderDate: p.lastOrderDate ?? '-',
+    };
+  }
+
   API_getAll(pageNumber:any) {
       // this.ApiService.post(global_API_getAll, this.objectSearch).subscribe(
       //   (res: any) => {
@@ -408,9 +426,8 @@ onPageSelected(number:any){
       // );
         this.ApiService.get('Products/best-sellers').subscribe(
         (res: any) => {
-          if (res) {
-            this.dataList = res?.data ?? res ?? [];
-          }
+          const raw = res?.data ?? res ?? [];
+          this.dataList = Array.isArray(raw) ? raw.map((p: any) => this.mapProductToBestSellerRow(p)) : [];
         }
       );
     }

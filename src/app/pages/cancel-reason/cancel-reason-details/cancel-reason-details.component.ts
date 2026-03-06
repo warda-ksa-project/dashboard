@@ -12,11 +12,13 @@ import { ConfirmMsgService } from '../../../services/confirm-msg.service';
 import { DialogComponent } from '../../../components/dialog/dialog.component';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../../services/language.service';
+import { userType } from '../../../conts';
+import { SelectComponent } from '../../../components/select/select.component';
 
 @Component({
   selector: 'app-cancel-reason-details',
   standalone: true,
-  imports: [ReactiveFormsModule, TranslatePipe, ButtonModule, NgIf, DialogComponent, TitleCasePipe, InputTextComponent, RouterModule, BreadcrumpComponent],
+  imports: [ReactiveFormsModule, TranslatePipe, ButtonModule, NgIf, DialogComponent, TitleCasePipe, InputTextComponent, RouterModule, BreadcrumpComponent, SelectComponent],
   templateUrl: './cancel-reason-details.component.html',
   styleUrl: './cancel-reason-details.component.scss'
 })
@@ -28,10 +30,12 @@ export class CancelReasonDetailsComponent {
   showConfirmMessage: boolean = false
   private confirm = inject(ConfirmMsgService)
   private translateService = inject(TranslateService)
+  userTypeList = userType
 
   form = new FormGroup({
     enReason: new FormControl('', [Validators.required, Validations.englishCharsValidator()]),
-    arReason: new FormControl('', [Validators.required, Validations.arabicCharsValidator()])
+    arReason: new FormControl('', [Validators.required, Validations.arabicCharsValidator()]),
+    userType: new FormControl<number | null>(null, [Validators.required])
   })
 
   bredCrumb: IBreadcrumb = {
@@ -86,13 +90,21 @@ export class CancelReasonDetailsComponent {
   getCancelReasonsDetails() {
     this.ApiService.get(`CancelReasons/${this.getID}`).subscribe((res: any) => {
       const d = res?.data ?? res;
-      if (d) this.form.patchValue({ enReason: d.enReason ?? d.enName, arReason: d.arReason ?? d.arName });
+      if (d) this.form.patchValue({
+        enReason: d.enReason ?? d.enName,
+        arReason: d.arReason ?? d.arName,
+        userType: d.userType ?? null
+      });
     });
   }
 
   onSubmit() {
     const raw = this.form.value;
-    const payload: any = { arReason: raw.arReason ?? '', enReason: raw.enReason ?? '' };
+    const payload: any = {
+      arReason: raw.arReason ?? '',
+      enReason: raw.enReason ?? '',
+      userType: raw.userType ?? 1
+    };
     if (this.tyepMode() === 'Edit') payload.id = Number(this.getID);
     if (this.tyepMode() === 'Add') this.addCancelReason(payload);
     else this.editCancelReason(payload);

@@ -173,6 +173,14 @@
     "pageName": "الهدف",
     "pageName_Edit_crumb": "تعديل الهدف"
   },
+  "storeWorkingHours": {
+    "pageName": "ساعات العمل",
+    "select_trader": "اختر التاجر",
+    "day": "اليوم",
+    "is_open": "مفتوح",
+    "open_time": "وقت الفتح",
+    "close_time": "وقت الإغلاق"
+  },
  "client": {
     "pageName": "العملاء",
     "pageTitle": "العميل",

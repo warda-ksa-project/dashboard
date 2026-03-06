@@ -117,7 +117,8 @@ export class FagsDetailsComponent implements OnInit {
           enTitle: d.enQuestion ?? d.enTitle,
           arTitle: d.arQuestion ?? d.arTitle,
           enDescription: d.enAnswer ?? d.enDescription,
-          arDescription: d.arAnswer ?? d.arDescription
+          arDescription: d.arAnswer ?? d.arDescription,
+          userType: d.userType ?? null
         });
       }
     });
@@ -129,7 +130,8 @@ export class FagsDetailsComponent implements OnInit {
       arQuestion: raw.arTitle ?? '',
       enQuestion: raw.enTitle ?? '',
       arAnswer: raw.arDescription ?? '',
-      enAnswer: raw.enDescription ?? ''
+      enAnswer: raw.enDescription ?? '',
+      userType: raw.userType ?? 1
     };
     if (this.tyepMode() === 'Edit') payload.id = Number(this.faqsID);
     if (this.tyepMode() === 'Add') this.addFQS(payload);
