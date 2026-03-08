@@ -1,4 +1,4 @@
-import { NgFor, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { StripHtmlPipe } from '../../pipes/strip-html.pipe';
 import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { TableModule } from 'primeng/table';
@@ -21,6 +21,7 @@ export enum EAction {
   delete = "delete",
   view = "view",
   edit = "edit",
+  updateStatus = "updateStatus",
   block = "block",
   active = "active"
 }
@@ -70,7 +71,7 @@ export interface IcolHeader {
 @Component({
   selector: 'app-table',
   standalone: true,
-  imports: [TableModule, NgFor, NgIf, TranslatePipe, TooltipModule, DialogComponent, CheckBoxComponent, StripHtmlPipe],
+  imports: [TableModule, CommonModule, TranslatePipe, TooltipModule, DialogComponent, CheckBoxComponent, StripHtmlPipe],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss'
 })
@@ -85,6 +86,8 @@ export class TableComponent implements OnInit, OnChanges {
   @Output() onActionCliked = new EventEmitter();
   @Output() onstatusChanged = new EventEmitter();
   @Output() reloadGetAllApi = new EventEmitter();
+  @Input() statusClickable = false;
+  @Output() onStatusCellClick = new EventEmitter<any>();
 
   showConfirmMessage: boolean = false;
   showBlockConfirmationMessage: boolean = false;

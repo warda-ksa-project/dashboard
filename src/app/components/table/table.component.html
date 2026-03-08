@@ -3,7 +3,7 @@
     <ng-template #header let-columns>
       <tr>
         <th *ngFor="let col of columns">
-          <span *ngIf="col.show" class="col-header"> {{ col.header }}</span>
+          <span *ngIf="col.show" class="col-header"> {{ col.header | translate }}</span>
         </th>
       </tr>
     </ng-template>
@@ -50,8 +50,8 @@
                   alt="image">
                 <span> {{ rowData[col.keyName][col.nested.text]?rowData[col.keyName][col.nested.text]:'-'}}</span>
               </span>
-              <span *ngIf="col.type=='status'">
-                <button [class]="rowData[col.keyName]"> {{ rowData[col.keyName]}}</button>
+              <span *ngIf="col.type=='status'" class="status-clickable-wrapper">
+                <button [class]="rowData[col.keyName]" [class.clickable]="statusClickable" (click)="statusClickable && onStatusCellClick.emit(rowData)"> {{ rowData[col.keyName]}}</button>
               </span>
               <span *ngIf="col.type=='status_id'">
                 <button [class]="rowData[col.statusId]"> {{ rowData[col.keyName]}}</button>
@@ -65,6 +65,7 @@
                   <div class="actions-icon" (click)="onAction(action,rowData)">
                     <img *ngIf="action.name==='delete'" src="assets/images/delete.svg"  pTooltip="{{'actions.delete'|translate}}" tooltipPosition="top" alt="edit">
                     <img *ngIf="action.name==='edit'"  src="assets/images/edit.svg"  pTooltip="{{'actions.edit'|translate}}" tooltipPosition="top" alt="edit">
+                    <img *ngIf="action.name==='updateStatus'" src="assets/images/edit.svg"  pTooltip="{{'Status_Action'|translate}}" tooltipPosition="top" alt="update-status">
                     <img *ngIf="action.name==='view'" src="assets/images/view.svg"  pTooltip="{{'actions.view'|translate}}" tooltipPosition="top" alt="edit">
                     <!-- <span *ngIf="action.name==='active'" class="pi pi-bullseye" pTooltip="Active"
                       tooltipPosition="top"></span>

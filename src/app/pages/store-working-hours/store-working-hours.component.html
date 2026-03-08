@@ -15,8 +15,7 @@
               [label]="'storeWorkingHours.select_trader' | translate"
               [placeholder]="'shared.select' | translate"
               [list]="tradersList"
-              [control]="form.get('traderId')"
-              (onSelectedValue)="onTraderChange($event)">
+              [control]="form.get('traderId')">
             </app-select>
           </div>
 
@@ -31,7 +30,7 @@
                 </tr>
               </thead>
               <tbody formArrayName="days">
-                <tr *ngFor="let dayCtrl of daysArray.controls; let i = index" [formGroupName]="i">
+                <tr *ngFor="let dayCtrl of daysArray.controls; let i = index; trackBy: trackByDayIndex" [formGroupName]="i">
                   <td>{{ getDayName(daysConfig[i]) }}</td>
                   <td>
                     <app-check-box

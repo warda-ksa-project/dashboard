@@ -91,17 +91,17 @@ export class SliderTableComponent {
 
   displayTableCols(currentLang: string) {
     this.columns = [
-      { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: true },
-      { keyName: 'image', header: this.languageService.translate('slider.form.img'), type: EType.image, show: true },
-      { keyName: 'url', header: this.languageService.translate('slider.form.url'), type: EType.text, show: true },
-      { keyName: 'displayOrder', header: this.languageService.translate('slider.form.displayOrder'), type: EType.text, show: true },
-      { keyName: 'isActive', header: this.languageService.translate('slider.form.isActive'), type: EType.boolean, show: true },
-      { keyName: '', header: this.languageService.translate('Actions'), type: EType.actions, actions: this.tableActions, show: true }
+      { keyName: 'id', header: 'Id', type: EType.id, show: true },
+      { keyName: 'image', header: 'slider.form.img', type: EType.image, show: true },
+      { keyName: 'url', header: 'slider.form.url', type: EType.text, show: true },
+      { keyName: 'displayOrder', header: 'slider.form.displayOrder', type: EType.text, show: true },
+      { keyName: 'isActive', header: 'slider.form.isActive', type: EType.boolean, show: true },
+      { keyName: '', header: 'Actions', type: EType.actions, actions: this.tableActions, show: true }
     ];
     this.columnsSmallTable = [
-      { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: false },
-      { keyName: 'url', header: this.languageService.translate('slider.form.url'), type: EType.text, showAs: ETableShow.header },
-      { keyName: 'displayOrder', header: this.languageService.translate('slider.form.displayOrder'), type: EType.text, showAs: ETableShow.content }
+      { keyName: 'id', header: 'Id', type: EType.id, show: false },
+      { keyName: 'url', header: 'slider.form.url', type: EType.text, showAs: ETableShow.header },
+      { keyName: 'displayOrder', header: 'slider.form.displayOrder', type: EType.text, showAs: ETableShow.content }
     ];
   }
   getBreadCrumb() {

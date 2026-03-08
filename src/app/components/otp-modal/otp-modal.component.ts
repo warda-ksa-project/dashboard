@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, inject, Input, Output, ViewChild } from '@angular/core';
 import { ModalComponent } from '../modal/modal.component';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
@@ -17,7 +17,7 @@ import { TranslatePipe } from '@ngx-translate/core';
   templateUrl: './otp-modal.component.html',
   styleUrls: ['./otp-modal.component.scss']
 })
-export class OtpModalComponent {
+export class OtpModalComponent implements AfterViewInit {
   toaster = inject(ToasterService);
   otp: any;
   timer: number = 60;
@@ -27,10 +27,11 @@ export class OtpModalComponent {
 
   dialogProps: IDialog = {
     props: {
-      visible: true
+      visible: true,
+      focusOnShow: false
     },
     onHide: (e?: Event) => { },
-    onShow: (e?: Event) => { }
+    onShow: (e?: Event) => { this.focusFirstOtpInput(); }
   };
 
   interval: any;
@@ -40,6 +41,10 @@ export class OtpModalComponent {
   ngOnInit(): void {
     this.mobileNumber = this.addStarsIntoMobileNumber(this.mobileNumber);
     this.startTimer();
+  }
+
+  ngAfterViewInit(): void {
+    this.focusFirstOtpInput();
   }
 
   addStarsIntoMobileNumber(mobileNumber: string): string {
@@ -83,6 +88,22 @@ export class OtpModalComponent {
 
   ngOnDestroy(): void {
     this.clearTimer();
+  }
+
+  focusFirstOtpInput(): void {
+    const tryFocus = (attempt: number = 0) => {
+      const maxAttempts = 12;
+      const delay = 200 + attempt * 150;
+      setTimeout(() => {
+        const firstInput = document.getElementById('otp-input-0') || document.querySelector<HTMLInputElement>('.custom-otp-input');
+        if (firstInput) {
+          firstInput.focus();
+        } else if (attempt < maxAttempts) {
+          tryFocus(attempt + 1);
+        }
+      }, delay);
+    };
+    tryFocus(0);
   }
 
   checkOtpValue(e: any) {

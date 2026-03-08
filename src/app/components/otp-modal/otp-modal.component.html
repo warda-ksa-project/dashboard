@@ -7,10 +7,13 @@
       <p>{{'otp.enter_degits'|translate}} <span>{{ mobileNumber }}</span> </p>
     </div>
     <div class="otp">
-      <p-inputotp (onChange)="checkOtpValue($event)" [(ngModel)]="otp" [length]="4">
+      <p-inputotp #otpInputRef [autofocus]="true" (onChange)="checkOtpValue($event)" [(ngModel)]="otp" [length]="4">
         <ng-template #input let-token let-events="events" let-index="index">
           <input
+            #firstInput
             type="text"
+            [id]="'otp-input-' + index"
+            [attr.autofocus]="index === 0 ? '' : null"
             [maxLength]="1"
             (input)="events.input($event)"
             (keydown)="events.keydown($event)"

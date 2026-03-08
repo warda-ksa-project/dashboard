@@ -161,6 +161,9 @@ export class AboutUsDetailsComponent {
         });
         this.editImageProps.props.imgSrc = d.image ?? '';
         this.editMode = true;
+        // في وضع التعديل الصورة موجودة فعلاً، فلا نجعلها مطلوبة حتى يكون الفورم صالحاً
+        this.form.get('image')?.clearValidators();
+        this.form.get('image')?.updateValueAndValidity();
       }
     });
   }
@@ -172,7 +175,8 @@ export class AboutUsDetailsComponent {
       enTitle: raw.enName ?? '',
       arContent: raw.arDescription ?? '',
       enContent: raw.enDescription ?? '',
-      imageBase64: raw.image || null
+      imageBase64: raw.image || null,
+      userType: raw.userType ?? 0
     };
     if (this.tyepMode() === 'Edit') payload.id = Number(this.getID);
     if (this.tyepMode() === 'Add') this.API_forAddItem(payload);

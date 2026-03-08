@@ -31,6 +31,21 @@
                   [label]="'order.form.status'" [control]="form.get('status')"></app-input-text>
               </div>
               <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
+                <app-select [list]="orderStatusList" [label]="'Status_Action'|translate"
+                  [control]="form.get('statusId')" [placeholder]="'order.form.select_order_status'|translate"></app-select>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
+                <label class="mb-2">{{'order.form.statusImage'|translate}}</label>
+                <div class="upload-image-section">
+                  <app-upload-file accept="image/*" formControlName="statusImage"></app-upload-file>
+                </div>
+              </div>
+              <div class="col-lg-12 mt-3">
+                <button type="button" class="submit-btn" (click)="API_UpdateStatus()" [disabled]="!form.get('statusId')?.value">
+                  {{'order.form.updateStatus'|translate}}
+                </button>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
                 <app-input-text [readOnly]="true" [disabled]="true"
                   [label]="'order.form.date'" [control]="form.get('addedDate')"></app-input-text>
               </div>

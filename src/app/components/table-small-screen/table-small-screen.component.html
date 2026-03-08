@@ -63,7 +63,7 @@
         <div *ngFor="let item of sortedItemsIncolsHeaderSmallTable">
            <ng-container *ngIf="item.type!==EType.editor;else isEditor">
             <div class="info d-flex justify-content-between">
-              <span class="black bold">{{item.header}}</span>
+              <span class="black bold">{{item.header | translate}}</span>
               <span *ngIf="item.type !==EType.status">{{ record[item.keyName]}}</span>
               <span *ngIf="item.type ==EType.status">
                 <span class="active" *ngIf="record[item.keyName]==true">
@@ -79,7 +79,7 @@
            </ng-container>
            <ng-template #isEditor>
               <div class="card-desc">
-                <span class="black bold">{{item.header}}</span>
+                <span class="black bold">{{item.header | translate}}</span>
                <div class="desc-content">
                 <span [innerHTML]="record[item.keyName]"></span>
                </div>

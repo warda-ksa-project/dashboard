@@ -677,7 +677,10 @@
        "quantity":"Quantity",
        "discount":"Discount",
        "pricePiece":"Price/Piece",
-       "totalPrice":"Total Price"
+       "totalPrice":"Total Price",
+       "select_order_status": "Select order status",
+       "statusImage": "Status Image",
+       "updateStatus": "Update Status"
 
     }
    },
@@ -722,8 +725,11 @@
     "pageName_Edit_crumb": "Edit Slider",
     "pageName_View_crumb": "View Slider",
     "form": {
+      "img": "Image",
       "img_ar": " Image (ar)",
       "img_en": " Image (en)",
+      "url": "URL",
+      "isActive": "Active",
       "upload_img_en": "Upload Image (en)",
       "upload_img_ar": "Upload Image (ar)",
       "title_ar": " Title (ar)",
@@ -834,7 +840,8 @@
       "users": "Users",
       "note": "Note",
       "body_ar": "Body (ar)",
-      "body_en": "Body (en)"
+      "body_en": "Body (en)",
+      "image": "Notification Image"
     }
   },
   "settings": {

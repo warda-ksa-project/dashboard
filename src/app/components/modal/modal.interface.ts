@@ -2,6 +2,7 @@ export interface IDialog {
   props: {
       visible: boolean;
       styles?: { [klass: string]: any } | null;
+      focusOnShow?: boolean;
   };
   onHide: (e?: Event) => void;
   onShow: (e?: Event) => void;

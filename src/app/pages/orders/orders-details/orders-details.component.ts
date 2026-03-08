@@ -2,7 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { ApiService } from '../../../services/api.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { LanguageService } from '../../../services/language.service';
 import { ConfirmMsgService } from '../../../services/confirm-msg.service';
@@ -10,6 +10,8 @@ import { InputTextComponent } from '../../../components/input-text/input-text.co
 import { DialogComponent } from '../../../components/dialog/dialog.component';
 import { TableModule } from 'primeng/table';
 import { MapComponent } from '../../../components/map/map.component';
+import { SelectComponent } from '../../../components/select/select.component';
+import { UploadFileComponent } from '../../../components/upload-file/upload-file.component';
 import { Roles } from '../../../conts';
 
 const global_PageName = 'order.pageName';
@@ -19,7 +21,7 @@ const global_API_details = 'Orders';
 @Component({
   selector: 'app-orders-details',
   standalone: true,
-  imports: [TableModule, InputTextComponent, DialogComponent, ReactiveFormsModule, TranslatePipe, RouterModule, CommonModule, FormsModule, MapComponent],
+  imports: [TableModule, InputTextComponent, DialogComponent, SelectComponent, UploadFileComponent, ReactiveFormsModule, TranslatePipe, RouterModule, CommonModule, FormsModule, MapComponent],
   templateUrl: './orders-details.component.html',
   styleUrl: './orders-details.component.scss'
 })
@@ -48,10 +50,14 @@ export class OrdersDetailsComponent {
     return !!(this.customerLat && this.customerLng);
   }
 
+  orderStatusList: any[] = [];
+
   form = new FormGroup({
     // Order info
     id: new FormControl(this.getID | 0),
     status: new FormControl(''),
+    statusId: new FormControl<number | null>(null),
+    statusImage: new FormControl<string | null>(null),
     paymentWay: new FormControl(''),
     deliveryType: new FormControl(''),
     totalPrice: new FormControl(''),
@@ -97,8 +103,41 @@ export class OrdersDetailsComponent {
         });
       }
     });
-    if (this.tyepMode() !== 'Add')
+    if (this.tyepMode() !== 'Add') {
       this.API_getItemDetails();
+      this.API_getStatus();
+    }
+  }
+
+  API_getStatus() {
+    this.ApiService.get('OrderStatus').subscribe((res: any) => {
+      const list = res?.data ?? res;
+      if (list) {
+        this.orderStatusList = [];
+        (Array.isArray(list) ? list : [list]).forEach((item: any) => {
+          this.orderStatusList.push({
+            name: this.selectedLang === 'ar' ? (item.arName ?? item.titleAr) : (item.enName ?? item.titleEn),
+            code: item.id
+          });
+        });
+      }
+    });
+  }
+
+  API_UpdateStatus() {
+    const statusId = this.form.get('statusId')?.value;
+    if (!statusId || !this.data?.id) return;
+    const payload: any = { orderId: this.data.id, newStatusId: statusId };
+    const img = this.form.get('statusImage')?.value;
+    if (img) {
+      payload.imageBase64 = img;
+    }
+    this.ApiService.put('Orders/status', payload).subscribe((res: any) => {
+      if (res?.isSuccess !== false) {
+        this.form.patchValue({ statusImage: null });
+        this.API_getItemDetails();
+      }
+    });
   }
 
   tyepMode() {
@@ -132,6 +171,7 @@ export class OrdersDetailsComponent {
           ...res.data,
           address: res.data.address?.expalinedAddress ?? res.data.address?.street ?? '-',
           status: this.selectedLang == 'ar' ? res.data.statusAr : res.data.statusEn,
+          statusId: res.data.statusId ?? res.data.orderStatusId,
           deliveryType: this.selectedLang == 'ar' ? dLabel.ar : dLabel.en,
           totalPrice: res.data.totalPrice,
           addedDate: this.convertDate(res.data.addedDate),

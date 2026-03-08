@@ -8,6 +8,7 @@ import { IBreadcrumb } from '../../components/breadcrump/cerqel-breadcrumb.inter
 import { TranslatePipe } from '@ngx-translate/core';
 import { userType } from '../../conts';
 import { SelectComponent } from '../../components/select/select.component';
+import { UploadFileComponent } from '../../components/upload-file/upload-file.component';
 import { IEditImage } from '../../components/edit-mode-image/editImage.interface';
 import { TextareaModule } from 'primeng/textarea';
 import { LanguageService } from '../../services/language.service';
@@ -18,7 +19,7 @@ const global_API_create = 'Notifications/send';
 @Component({
   selector: 'app-add-notifications',
   standalone: true,
- imports: [ReactiveFormsModule, TextareaModule, TranslatePipe, SelectComponent, ButtonModule, InputTextComponent, RouterModule],
+ imports: [ReactiveFormsModule, TextareaModule, TranslatePipe, SelectComponent, UploadFileComponent, ButtonModule, InputTextComponent, RouterModule],
   templateUrl: './add-notifications.component.html',
   styleUrl: './add-notifications.component.scss'
 })
@@ -75,7 +76,8 @@ export class AddNotificationsComponent {
       validators: [
         Validators.required,
       ]
-    })
+    }),
+    imageBase64: new FormControl<string | null>(null),
   })
 
   bredCrumb: IBreadcrumb = {
@@ -129,12 +131,15 @@ export class AddNotificationsComponent {
   onSubmit() {
     const raw = this.form.getRawValue();
     const userIds: number[] = Array.isArray(raw.userId) ? raw.userId.map(Number) : [Number(raw.userId)];
-    const basePayload = {
+    const basePayload: any = {
       arTitle: String(raw.titleAr ?? ''),
       enTitle: String(raw.titleEn ?? ''),
       arBody: String(raw.bodyAr ?? ''),
       enBody: String(raw.bodyEn ?? '')
     };
+    if (raw.imageBase64) {
+      basePayload.imageBase64 = raw.imageBase64;
+    }
     userIds.forEach(userId => {
       this.ApiService.post(global_API_create, { userId, ...basePayload }).subscribe((res: any) => {
         if (res?.isSuccess !== false) this.router.navigate(['/settings/add_notification']);

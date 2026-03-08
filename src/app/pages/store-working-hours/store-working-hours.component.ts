@@ -3,7 +3,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { TitleCasePipe } from '@angular/common';
 import { BreadcrumpComponent } from '../../components/breadcrump/breadcrump.component';
 import { NgFor, NgIf } from '@angular/common';
-import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { Router } from '@angular/router';
@@ -90,6 +90,12 @@ export class StoreWorkingHoursComponent {
     if (this.isAdmin) {
       this.loadTraders();
       this.form.get('traderId')?.setValidators(Validators.required);
+      this.form.get('traderId')?.valueChanges.subscribe((tid) => {
+        if (tid != null) {
+          this.traderId = tid;
+          this.loadWorkingHours();
+        }
+      });
     } else {
       this.traderId = userId;
       this.form.patchValue({ traderId: userId });
@@ -117,6 +123,7 @@ export class StoreWorkingHoursComponent {
 
   onTraderChange(traderId: number) {
     this.traderId = traderId;
+    this.form.patchValue({ traderId });
     this.loadWorkingHours();
   }
 
@@ -125,20 +132,26 @@ export class StoreWorkingHoursComponent {
     if (!tid) return;
 
     this.ApiService.get(`${global_API}/${tid}`).subscribe((res: any) => {
+      const currentTid = this.traderId ?? this.form.get('traderId')?.value;
+      if (Number(currentTid) !== Number(tid)) return;
       const list = res?.data ?? [];
-      if (Array.isArray(list) && list.length > 0) {
-        this.daysArray.controls.forEach((ctrl, i) => {
-          const dayOfWeek = DAYS[i].dayOfWeek;
-          const match = list.find((w: any) => w.dayOfWeek === dayOfWeek);
-          if (match) {
-            ctrl.patchValue({
-              isOpen: match.isOpen ?? false,
-              openTime: this.toTimeForInput(match.openTime),
-              closeTime: this.toTimeForInput(match.closeTime),
-            });
-          }
-        });
-      }
+      this.daysArray.controls.forEach((ctrl, i) => {
+        const dayOfWeek = DAYS[i].dayOfWeek;
+        const match = Array.isArray(list) ? list.find((w: any) => Number(w.dayOfWeek) === dayOfWeek) : null;
+        if (match) {
+          ctrl.patchValue({
+            isOpen: match.isOpen ?? false,
+            openTime: this.toTimeForInput(match.openTime),
+            closeTime: this.toTimeForInput(match.closeTime),
+          });
+        } else {
+          ctrl.patchValue({
+            isOpen: false,
+            openTime: '09:00',
+            closeTime: '18:00',
+          });
+        }
+      });
     });
   }
 
@@ -157,6 +170,10 @@ export class StoreWorkingHoursComponent {
         { label: this.languageService.translate(this.pageName()), routerLink: '' },
       ],
     };
+  }
+
+  trackByDayIndex(index: number, _item: AbstractControl) {
+    return index;
   }
 
   getDayName(day: { en: string; ar: string }) {

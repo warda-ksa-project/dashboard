@@ -5,7 +5,7 @@ import { Router, RouterModule } from '@angular/router';
 import { IBreadcrumb } from '../../../components/breadcrump/cerqel-breadcrumb.interface';
 import { BreadcrumpComponent } from '../../../components/breadcrump/breadcrump.component';
 import { InputTextModule } from 'primeng/inputtext';
-import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LanguageService } from '../../../services/language.service';
 import { ETableShow, IcolHeaderSmallTable, TableSmallScreenComponent } from '../../../components/table-small-screen/table-small-screen.component';
 import { PaginationComponent } from '../../../components/pagination/pagination.component';
@@ -13,6 +13,7 @@ import { TitleCasePipe, NgIf } from '@angular/common';
 import { DrawerComponent } from '../../../components/drawer/drawer.component';
 import { order_status, Roles } from '../../../conts';
 import { SelectComponent } from '../../../components/select/select.component';
+import { UploadFileComponent } from '../../../components/upload-file/upload-file.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DatePicker } from 'primeng/datepicker';
 import { DialogModule } from 'primeng/dialog';
@@ -25,7 +26,7 @@ const global_API_getAll = 'Orders'
 @Component({
   selector: 'app-orders-table',
   standalone: true,
-  imports: [TableComponent, NgIf, SelectComponent,DialogModule, TitleCasePipe, TranslatePipe, PaginationComponent, FormsModule, DrawerComponent, BreadcrumpComponent, RouterModule, InputTextModule, TableSmallScreenComponent, DatePicker],
+  imports: [TableComponent, NgIf, SelectComponent, UploadFileComponent, DialogModule, TitleCasePipe, TranslatePipe, ReactiveFormsModule, PaginationComponent, FormsModule, DrawerComponent, BreadcrumpComponent, RouterModule, InputTextModule, TableSmallScreenComponent, DatePicker],
   templateUrl: './orders-table.component.html',
   styleUrl: './orders-table.component.scss'
 })
@@ -68,6 +69,7 @@ export class OrdersTableComponent {
         Validators.required,
       ],
     }),
+    statusImage: new FormControl<string | null>(null),
   })
 
 
@@ -385,23 +387,38 @@ export class OrdersTableComponent {
     this.showFilter = false
   }
 
-  onEditOrder(e:any){
-  console.log("OrdersTableComponent  onEditOrder  e:", e)
-  if(e.action.name=='edit'){
-    this.openEditDialog=true;
-    this.form.patchValue({
-      orderId:e.record?.id,
-      orderStatusId:e.record.statusId,
-    })
+  onEditOrder(e: any) {
+    const actionName = e?.action?.name;
+    if (actionName === 'edit' || actionName === 'updateStatus') {
+      const rec = e?.record;
+      const orderId = rec?.id ?? rec?.orderId;
+      const statusId = rec?.statusId ?? rec?.orderStatusId;
+      this.openEditDialog = true;
+      this.form.patchValue({
+        orderId: orderId ?? '',
+        orderStatusId: statusId ?? '',
+      });
+    }
   }
-  console.log("OrdersTableComponent  onEditOrder  e:", this.form.value)
 
-
+  onStatusCellClick(record: any) {
+    const orderId = record?.id ?? record?.orderId;
+    const statusId = record?.statusId ?? record?.orderStatusId;
+    this.openEditDialog = true;
+    this.form.patchValue({
+      orderId: orderId ?? '',
+      orderStatusId: statusId ?? '',
+    });
   }
   API_Edit() {
-    const { orderId, orderStatusId } = this.form.value;
-    this.ApiService.put('Orders/status', { orderId, newStatusId: orderStatusId }).subscribe((res: any) => {
+    const { orderId, orderStatusId, statusImage } = this.form.value;
+    const payload: any = { orderId, newStatusId: orderStatusId };
+    if (statusImage) {
+      payload.imageBase64 = statusImage;
+    }
+    this.ApiService.put('Orders/status', payload).subscribe((res: any) => {
       if (res?.isSuccess !== false) {
+        this.form.patchValue({ statusImage: null });
         this.API_getAll();
         this.openEditDialog = false;
       }

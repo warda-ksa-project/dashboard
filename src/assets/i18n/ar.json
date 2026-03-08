@@ -663,7 +663,10 @@
     "quantity": "الكمية",
     "discount": "الخصم",
     "pricePiece": "السعر/للقطعة",
-    "totalPrice": "السعر الإجمالي"
+    "totalPrice": "السعر الإجمالي",
+    "select_order_status": "اختر حالة الطلب",
+    "statusImage": "صورة الحالة",
+    "updateStatus": "تحديث الحالة"
   }
 },
 "payment": {
@@ -707,8 +710,11 @@
     "pageName_Edit_crumb": "تعديل السلايدر",
     "pageName_View_crumb": "عرض السلايدر",
     "form": {
+      "img": "الصورة",
       "img_ar": "الصورة (عربي)",
       "img_en": "الصورة (إنجليزي)",
+      "url": "الرابط",
+      "isActive": "نشط",
       "upload_img_en": "رفع الصورة (إنجليزي)",
       "upload_img_ar": "رفع الصورة (عربي)",
       "title_ar": "العنوان (عربي)",
@@ -759,7 +765,8 @@
       "users": "المستخدمون",
       "note": "ملاحظة",
       "body_ar": "المحتوى (عربي)",
-      "body_en": "المحتوى (إنجليزي)"
+      "body_en": "المحتوى (إنجليزي)",
+      "image": "صورة الإشعار"
     }
   },
   "privacy": {
