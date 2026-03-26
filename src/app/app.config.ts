@@ -44,7 +44,7 @@ export const appConfig: ApplicationConfig = {
         preset: Aura,
         options: {
           prefix: 'p',
-          darkModeSelector: 'system',
+          darkModeSelector: '.never-dark', // لا يُفعّل الدارك أبداً — الثيم أبيض فقط
           cssLayer: false
         },
       }

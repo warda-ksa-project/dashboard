@@ -72,12 +72,12 @@ export const userType = [
   {
     name: 'Trader',
     nameAr: 'تاجر',
-    code: 1
+    code: 2
   },
   {
     name: 'Client',
     nameAr: 'عميل',
-    code: 2
+    code: 3
   },
 ]
 

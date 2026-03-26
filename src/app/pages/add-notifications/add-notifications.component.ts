@@ -12,6 +12,8 @@ import { UploadFileComponent } from '../../components/upload-file/upload-file.co
 import { IEditImage } from '../../components/edit-mode-image/editImage.interface';
 import { TextareaModule } from 'primeng/textarea';
 import { LanguageService } from '../../services/language.service';
+import { ToasterService } from '../../services/toaster.service';
+import { forkJoin } from 'rxjs';
 
 const global_PageName = 'notifications.pageName';
 const global_API_create = 'Notifications/send';
@@ -29,6 +31,7 @@ export class AddNotificationsComponent {
   private ApiService = inject(ApiService)
   private router = inject(Router)
   private route = inject(ActivatedRoute)
+  private toaster = inject(ToasterService)
   showConfirmMessage: boolean = false
   userTypeList = userType
   usersList: Array<{ name: string; code: number }> = [];
@@ -130,7 +133,11 @@ export class AddNotificationsComponent {
 
   onSubmit() {
     const raw = this.form.getRawValue();
-    const userIds: number[] = Array.isArray(raw.userId) ? raw.userId.map(Number) : [Number(raw.userId)];
+    const userIds: number[] = Array.isArray(raw.userId) ? raw.userId.map(Number).filter(Boolean) : (raw.userId != null ? [Number(raw.userId)] : []);
+    if (userIds.length === 0) {
+      this.toaster.errorToaster('notifications.form.users');
+      return;
+    }
     const basePayload: any = {
       arTitle: String(raw.titleAr ?? ''),
       enTitle: String(raw.titleEn ?? ''),
@@ -140,10 +147,22 @@ export class AddNotificationsComponent {
     if (raw.imageBase64) {
       basePayload.imageBase64 = raw.imageBase64;
     }
-    userIds.forEach(userId => {
-      this.ApiService.post(global_API_create, { userId, ...basePayload }).subscribe((res: any) => {
-        if (res?.isSuccess !== false) this.router.navigate(['/settings/add_notification']);
-      });
+    const requests = userIds.map(userId =>
+      this.ApiService.post(global_API_create, { userId, ...basePayload })
+    );
+    forkJoin(requests).subscribe({
+      next: (responses: any[]) => {
+        const allOk = responses.every(res => res?.isSuccess !== false);
+        if (allOk) {
+          this.toaster.successToaster('notifications.sent_success');
+          this.router.navigate(['/settings/add_notification']);
+        } else {
+          this.toaster.errorToaster('notifications.sent_error');
+        }
+      },
+      error: () => {
+        this.toaster.errorToaster('notifications.sent_error');
+      }
     });
   }
 

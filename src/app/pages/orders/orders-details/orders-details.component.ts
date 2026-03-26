@@ -13,6 +13,7 @@ import { MapComponent } from '../../../components/map/map.component';
 import { SelectComponent } from '../../../components/select/select.component';
 import { UploadFileComponent } from '../../../components/upload-file/upload-file.component';
 import { Roles } from '../../../conts';
+import { parseApiDateTime } from '../../../utils/api-datetime-parse';
 
 const global_PageName = 'order.pageName';
 const global_routeUrl = 'orders';
@@ -174,7 +175,7 @@ export class OrdersDetailsComponent {
           statusId: res.data.statusId ?? res.data.orderStatusId,
           deliveryType: this.selectedLang == 'ar' ? dLabel.ar : dLabel.en,
           totalPrice: res.data.totalPrice,
-          addedDate: this.convertDate(res.data.addedDate),
+          addedDate: this.convertDate(res.data.createdDate),
         });
       }
     });
@@ -198,9 +199,10 @@ export class OrdersDetailsComponent {
     });
   }
 
-  convertDate(dateStr: string): string {
-    if (!dateStr) return '-';
-    const date = new Date(dateStr);
+  convertDate(dateStr: string | number | null | undefined): string {
+    if (dateStr == null || dateStr === '') return '-';
+    const date = parseApiDateTime(dateStr);
+    if (!date) return '-';
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const year = date.getFullYear();

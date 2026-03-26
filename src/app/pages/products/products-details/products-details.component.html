@@ -142,6 +142,19 @@
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 mt-2 pt-1">
                       <app-select
+                        [readOnly]="tyepMode() == 'View'"
+                        [disabled]="tyepMode() == 'View'"
+                        [placeholder]="form.get('mainCategoryId')?.value"
+                        class="w-100"
+                        [list]="mainCategoryList"
+                        [label]="'products.form.mainCategoryId'"
+                        [control]="form.get('mainCategoryId')"
+                        (onSelectedValue)="onMainCategoryChange($event)"
+                      >
+                      </app-select>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 mt-2 pt-1">
+                      <app-select
                       [readOnly]="tyepMode() == 'View'"
                       [disabled]="tyepMode() == 'View'"
                         [placeholder]="form.get('categoryId')?.value"

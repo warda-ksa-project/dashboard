@@ -3,6 +3,11 @@
 @use "primeicons/primeicons.css";
 @use "./assets/scss/fonts";
 
+/* ثيم فاتح فقط — منع الدارك من النظام والبراوزر */
+html {
+  color-scheme: light;
+}
+
 :root {
   --main-text-color: redF2F3E;
 }

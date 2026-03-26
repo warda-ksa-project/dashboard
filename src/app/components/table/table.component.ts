@@ -11,6 +11,7 @@ import { environment } from '../../../environments/environment';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ToasterService } from '../../services/toaster.service';
 import { LanguageService } from '../../services/language.service';
+import { parseApiDateTime } from '../../utils/api-datetime-parse';
 
 export interface IToggleOptions {
   autoCall: boolean,
@@ -180,8 +181,8 @@ export class TableComponent implements OnInit, OnChanges {
   convertDate(originalDate: string | number | null | undefined) {
     if (originalDate == null || originalDate === '' || originalDate === '-') return '-';
     if (typeof originalDate !== 'string' && typeof originalDate !== 'number') return '-';
-    const date = new Date(originalDate);
-    if (isNaN(date.getTime())) return '-';
+    const date = parseApiDateTime(originalDate);
+    if (!date) return '-';
     const day = date.getDate().toString().padStart(2, '0');
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const year = date.getFullYear();
@@ -190,7 +191,9 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   getCurrentTime(originalDate: string): string {
-    const now = new Date(originalDate);
+    if (originalDate == null || originalDate === '' || originalDate === '-') return '-';
+    const now = parseApiDateTime(originalDate);
+    if (!now) return '-';
     let hours = now.getHours();
     const minutes = now.getMinutes();
     const isAM = hours < 12;

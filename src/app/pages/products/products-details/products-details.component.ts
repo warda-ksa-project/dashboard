@@ -48,6 +48,7 @@ export class ProductsDetailsComponent {
   private route = inject(ActivatedRoute)
   showConfirmMessage: boolean = false
   private confirm = inject(ConfirmMsgService)
+  mainCategoryList: any[] = []
   categoryList: any[] = []
   reviews:any[]=[]
   payloadFinal:any={}
@@ -122,6 +123,9 @@ export class ProductsDetailsComponent {
       validators: [
         Validators.required
       ]
+    }),
+    mainCategoryId: new FormControl<number | null>(null, {
+      validators: [Validators.required],
     }),
     categoryId: new FormControl('', {
       validators: [
@@ -239,8 +243,39 @@ export class ProductsDetailsComponent {
 
 
   getAllCategory() {
-    this.getSubCategory();
+    this.getMainCategories();
   }
+
+  getMainCategories() {
+    this.ApiService.get('Categories').subscribe((res: any) => {
+      const list = res?.data ?? res ?? [];
+      const arr = Array.isArray(list) ? list : [list];
+      this.mainCategoryList = arr.map((item: any) => ({
+        name: this.selectedLang === 'ar' ? (item.arName ?? item.enName) : (item.enName ?? item.arName),
+        code: item.id
+      }));
+    });
+  }
+
+  onMainCategoryChange(mainCategoryId: number | null | undefined) {
+    this.form.patchValue({ categoryId: '' });
+    this.categoryList = [];
+    if (mainCategoryId != null) {
+      this.getSubCategoriesByMain(Number(mainCategoryId));
+    }
+  }
+
+  getSubCategoriesByMain(mainCategoryId: number) {
+    this.ApiService.get(`SubCategories/by-main-category/${mainCategoryId}`).subscribe((res: any) => {
+      const list = res?.data ?? res ?? [];
+      const arr = Array.isArray(list) ? list : [list];
+      this.categoryList = arr.map((item: any) => ({
+        name: this.selectedLang === 'ar' ? (item.arName ?? item.enName) : (item.enName ?? item.arName),
+        code: item.id
+      }));
+    });
+  }
+
   onValueStepperChange(value:any){
     this.goTo(value)
 
@@ -262,16 +297,6 @@ export class ProductsDetailsComponent {
       }
     })
   }
-  getSubCategory() {
-    this.ApiService.get('SubCategories').subscribe((res: any) => {
-      const list = res?.data ?? res ?? [];
-      const arr = Array.isArray(list) ? list : [list];
-      this.categoryList = arr.map((item: any) => ({
-        name: this.selectedLang === 'ar' ? (item.arName ?? item.enName) : (item.enName ?? item.arName),
-        code: item.id
-      }));
-    });
-  }
   API_getItemDetails() {
     this.ApiService.get(`${global_API_details}/${this.getID}`).subscribe((res: any) => {
       const d = res?.data ?? res;
@@ -285,7 +310,11 @@ export class ProductsDetailsComponent {
           startDate: d.startDate ? new Date(d.startDate) : null,
           endDate: d.endDate ? new Date(d.endDate) : null,
           hasDiscount: !!d.hasDiscount,
+          mainCategoryId: d.mainCategoryId ?? null,
         });
+        if (d.mainCategoryId) {
+          this.getSubCategoriesByMain(d.mainCategoryId);
+        }
         const imgs = d.images ?? d.image ?? [];
         this.imageList = Array.isArray(imgs)
           ? imgs.map((x: any) => (typeof x === 'string' ? { src: x, mediaTypeEnum: 1 } : { ...x, src: x.src ?? x.image ?? '', mediaTypeEnum: x.mediaTypeEnum ?? 1 }))
@@ -353,6 +382,7 @@ export class ProductsDetailsComponent {
         enName: raw.enName ?? '',
         arDescription: raw.arDescription ?? '',
         enDescription: raw.enDescription ?? '',
+        mainCategoryId: raw.mainCategoryId != null ? Number(raw.mainCategoryId) : null,
         categoryId: Number(raw.categoryId) || 0,
         stockQuantity: Number(raw.stockQuantity) || 0,
         prices: [{ amount: priceVal, currency: 'SAR' }],
@@ -373,6 +403,7 @@ export class ProductsDetailsComponent {
         enName: raw.enName ?? '',
         arDescription: raw.arDescription ?? '',
         enDescription: raw.enDescription ?? '',
+        mainCategoryId: raw.mainCategoryId != null ? Number(raw.mainCategoryId) : null,
         categoryId: Number(raw.categoryId) || 0,
         stockQuantity: Number(raw.stockQuantity) || 0,
         prices: [{ amount: priceVal, currency: 'SAR' }],

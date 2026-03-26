@@ -308,7 +308,7 @@ export class OrdersTableComponent {
         this.dataList = items.map((item: any) => {
           const key = item.deliveryTypeName ?? (item.deliveryType === 2 ? 'StorePickup' : 'Delivery');
           const t = labels[key] ?? { ar: key, en: key };
-          return { ...item, deliveryTypeAr: t.ar, deliveryTypeEn: t.en };
+          return { ...item, deliveryTypeAr: t.ar, deliveryTypeEn: t.en, addedDate: item.createdDate  };
         });
         this.totalCount = res.data.totalCount;
 
