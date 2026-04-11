@@ -33,6 +33,10 @@ export class ChartComponent {
         const textColor = documentStyle.getPropertyValue('--p-text-color');
         const textColorSecondary = documentStyle.getPropertyValue('--p-text-muted-color');
         const surfaceBorder = documentStyle.getPropertyValue('--p-content-border-color');
+        const wardaPrimary =
+          documentStyle.getPropertyValue('--warda-primary').trim() || '#7a1e3b';
+        const wardaPrimaryLight =
+          documentStyle.getPropertyValue('--warda-primary-light').trim() || '#9b3a5a';
 
         this.data = {
             labels: this.labels,
@@ -40,16 +44,16 @@ export class ChartComponent {
                 {
                     type: this.type, // ✅ Use the input type dynamically
                     label: this.firstDataNAme,
-                    backgroundColor: '#B49ABF',
-                    borderColor: '#B49ABF', // Needed for line charts
+                    backgroundColor: wardaPrimary,
+                    borderColor: wardaPrimary,
                     fill: this.type === 'line' ? false : true, // Ensure line charts are not filled
                     data: this.firstData,
                 },
                 {
                     type: this.type, // ✅ Use the input type dynamically
                     label: this.secondDataName,
-                    backgroundColor: '#DBCDE0',
-                    borderColor: '#DBCDE0',
+                    backgroundColor: wardaPrimaryLight,
+                    borderColor: wardaPrimaryLight,
                     fill: this.type === 'line' ? false : true,
                     data: this.secondData
                 }

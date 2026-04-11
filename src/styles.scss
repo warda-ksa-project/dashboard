@@ -9,7 +9,16 @@ html {
 }
 
 :root {
-  --main-text-color: redF2F3E;
+  --main-text-color: #2f2f3e;
+  /* هوية وردة — محاذاة مع البورتال */
+  --warda-primary: #7a1e3b;
+  --warda-primary-dark: #5c1530;
+  --warda-primary-light: #9b3a5a;
+  --p-primary-color: #7a1e3b;
+  --p-button-primary-background: #7a1e3b;
+  --p-button-primary-hover-background: #5c1530;
+  --p-button-primary-active-background: #4a1120;
+  --p-button-primary-border-color: #7a1e3b;
 }
 
 @font-face {
@@ -123,11 +132,11 @@ body {
 }
 
 .drawer-submit-btn {
-  background-color: #8174A0;
+  background-color: #7A1E3B;
   color: #fff;
 
   &:hover {
-    background-color: #aea2ca;
+    background-color: #9B3A5A;
     color: #fff;
   }
 
@@ -200,7 +209,7 @@ small {
   display: block;
 }
 .active_routing{
-  background: #8174A0;
+  background: #7A1E3B;
     border-radius: 16px;
     color: white;
 }
@@ -383,13 +392,13 @@ small {
       .submit-btn {
         padding: 6px 30px;
         color: white;
-        background: #8174A0;
+        background: #7A1E3B;
         border-radius: 4px;
         border: none;
         font-size: 20px;
 
         &:hover {
-          background: #a791d9;
+          background: #B86B82;
         }
 
         &:disabled {
@@ -553,7 +562,7 @@ small {
   gap: 10px;
 
   .images {
-    background-color: #8174A0;
+    background-color: #7A1E3B;
     border-radius: 50%;
     padding: 6px 9px;
     span {
@@ -583,12 +592,12 @@ p-dialog.order-status{
 }
 
 .btn-primary-bk{
-  background: #8174A0;
+  background: #7A1E3B;
   color: white;
   border-radius: 16px;
   padding: 8px 35px;
   &:hover{
-    background: #887e9e;
+    background: #5C1530;
     color: white;
   }
 }
@@ -598,14 +607,14 @@ p-dialog.order-status{
 }
 .action-filter {
   a {
-    background: #8174A0;
+    background: #7A1E3B;
     color: white;
     border-radius: 17px;
     padding: 8px 18px;
     margin: 0px 10px;
     text-decoration: none;
     &:hover {
-      background: #ad98de;
+      background: #9B3A5A;
     }
 
     span {
@@ -618,7 +627,7 @@ p-dialog.order-status{
   }
 
   .pi-filter {
-    background-color: #8174A0;
+    background-color: #7A1E3B;
     padding:11px 10px;
     border-radius: 8px;
     &::before {
@@ -660,7 +669,7 @@ p-table.order{
   color:#000!important
 }
 .rounded-icon {
-  background-color: #B79CC2;
+  background-color: #9B3A5A;
   color:#fff;
   border-radius: 50%;
   padding: 8px;
@@ -670,38 +679,38 @@ p-table.order{
   border-radius: 16px;
 }
 // .p-toggleswitch .p-toggleswitch-slider {
-//   background-color:#8174A0 !important;
+//   background-color:#7A1E3B !important;
 // }
 .p-toggleswitch.p-toggleswitch-checked .p-toggleswitch-slider {
-  background-color:#8174A0 !important;
+  background-color:#7A1E3B !important;
 }
 
 .p-step-active .p-step-title  {
-  color: #6d54a9!important;
+  color: #5C1530!important;
   font-weight: bolder;
 }
 .p-step:has(~ .p-step-active) .p-stepper-separator {
-  background-color:#8174A0 !important;
+  background-color:#7A1E3B !important;
 }
 .p-step-active .p-step-number {
   color: #fff!important;
-  background-color: #6d54a9!important;
+  background-color: #5C1530!important;
 }
 .p-datepicker-day-selected {
-  background-color: #6d54a9!important;
+  background-color: #5C1530!important;
 }
 .p-button-text.p-button-secondary{
   color: #fff!important;
 }
 .p-inputtext:enabled:focus{
-border-color: #6d54a9!important;
+border-color: #5C1530!important;
 }
 
 .text-white{
   color:#fff
 }
 .p-progressbar-value {
-  background-color: #8174A0 !important; /* Change color when progress is 50% */
+  background-color: #7A1E3B !important; /* Change color when progress is 50% */
 }
 
 // Dropdown that opens upward (for sidebar country selector)
@@ -726,4 +735,29 @@ border-color: #6d54a9!important;
     object-fit: cover !important;
     flex-shrink: 0;
   }
+}
+
+/* ngx-spinner — خلفية هوية وردة */
+.ngx-spinner-overlay {
+  background: radial-gradient(
+      ellipse 130% 100% at 50% 15%,
+      #8b2d48 0%,
+      #7a1e3b 38%,
+      #5c1530 72%,
+      #2a0c12 100%
+    )
+    !important;
+  background-color: #5c1530 !important;
+}
+
+.ngx-spinner-overlay > div:not(.loading-text) {
+  display: none !important;
+}
+
+.ngx-spinner-overlay .loading-text {
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: 100%;
+  max-width: 400px;
 }

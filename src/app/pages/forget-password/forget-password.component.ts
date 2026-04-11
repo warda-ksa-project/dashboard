@@ -9,6 +9,8 @@ import { ApiService } from '../../services/api.service';
 import { Router, RouterModule } from '@angular/router';
 import { OtpModalComponent } from '../../components/otp-modal/otp-modal.component';
 import { ValidationHandlerPipePipe } from '../../pipes/validation-handler-pipe.pipe';
+import { LanguageService } from '../../services/language.service';
+import { wardaLogoPath } from '../../core/brand-assets';
 
 @Component({
   selector: 'app-forget-password',
@@ -21,7 +23,12 @@ export class ForgetPasswordComponent {
   checkMobile: FormGroup;
   changePassword: FormGroup;
 
-  toaster = inject(ToasterService)  ;
+  toaster = inject(ToasterService);
+  private languageService = inject(LanguageService);
+
+  get brandLogoSrc(): string {
+    return wardaLogoPath(this.languageService.getCurrentLang());
+  }
   hideCheckForm: boolean = false;
   openOtpModal: boolean = false;
 

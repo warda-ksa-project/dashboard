@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { Toast } from 'primeng/toast';
 import { LanguageService } from './services/language.service';
+import { wardaLogoPath } from './core/brand-assets';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +18,12 @@ export class AppComponent implements OnInit {
 
   private languageService = inject(LanguageService);
 
+  loaderLogoSrc = wardaLogoPath(localStorage.getItem('lang'));
+
   ngOnInit(): void {
-    // Language service will handle direction on init
+    this.loaderLogoSrc = wardaLogoPath(this.languageService.getCurrentLang());
+    this.languageService.onLangChange.subscribe(() => {
+      this.loaderLogoSrc = wardaLogoPath(this.languageService.getCurrentLang());
+    });
   }
 }

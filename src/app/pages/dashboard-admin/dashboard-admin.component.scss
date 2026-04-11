@@ -30,7 +30,7 @@
               margin: 0px 5px;
             }
             .icon {
-              background: #8174a0;
+              background: var(--warda-primary, #7a1e3b);
               padding: 8px;
               color: #fff;
               border-radius: 50%;
@@ -86,7 +86,7 @@
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
       hr {
-        border: 3px solid #8174a0;
+        border: 3px solid var(--warda-primary, #7a1e3b);
       }
     }
     .chart-container {

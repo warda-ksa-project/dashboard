@@ -1,4 +1,7 @@
 {
+  "LOADER": {
+    "PLEASE_WAIT": "Loading…"
+  },
   "GENERAL": "General",
   "success":"Success",
   "error":"Error",

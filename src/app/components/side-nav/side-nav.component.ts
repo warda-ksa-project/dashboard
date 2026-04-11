@@ -6,6 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { Router, RouterLinkActive, RouterModule } from '@angular/router';
 import { menuItems } from '../../conts';
 import { InputTextComponent } from "../input-text/input-text.component";
+import { wardaLogoPath } from '../../core/brand-assets';
 @Component({
   selector: 'app-side-nav',
   standalone: true,
@@ -84,6 +85,10 @@ export class SideNavComponent {
   routingList = menuItems
   role:any
   @Input()activeRoute=''
+
+  get brandLogoSrc(): string {
+    return wardaLogoPath(this.languageService.getCurrentLang());
+  }
 
   ngOnInit(): void {
     this.getRoles()

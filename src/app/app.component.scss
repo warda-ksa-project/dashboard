@@ -1,0 +1,34 @@
+.warda-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 0 1rem;
+}
+
+.warda-loader__logo {
+  width: min(78vw, 260px);
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 36px rgba(0, 0, 0, 0.45));
+  animation: warda-loader-breathe 1.5s ease-in-out infinite;
+}
+
+.warda-loader__text {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.94);
+}
+
+@keyframes warda-loader-breathe {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}

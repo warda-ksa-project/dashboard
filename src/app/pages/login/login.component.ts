@@ -17,6 +17,7 @@ import { Router, RouterModule } from '@angular/router';
 import { OtpModalComponent } from '../../components/otp-modal/otp-modal.component';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { LanguageService } from '../../services/language.service';
+import { wardaLogoPath } from '../../core/brand-assets';
 import { Roles } from '../../conts';
 import { ValidationHandlerPipePipe } from '../../pipes/validation-handler-pipe.pipe';
 import { SelectComponent } from '../../components/select/select.component';
@@ -62,6 +63,10 @@ export class LoginComponent {
 
   get countryControl(): FormControl {
     return this.loginForm.get('country') as FormControl;
+  }
+
+  get brandLogoSrc(): string {
+    return wardaLogoPath(this.languageService.getCurrentLang());
   }
 
   getSelectedPhoneCountry() {

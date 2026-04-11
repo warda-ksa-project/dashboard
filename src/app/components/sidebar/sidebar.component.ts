@@ -11,6 +11,7 @@ import { InputTextComponent } from '../input-text/input-text.component';
 import { SelectComponent } from '../select/select.component';
 import { FormControl } from '@angular/forms';
 import { CountryService } from '../../services/country.service';
+import { wardaLogoPath } from '../../core/brand-assets';
 
 @Component({
   selector: 'app-sidebar',
@@ -32,6 +33,10 @@ export class SidebarComponent  {
   defaultImage=this.userDate?.gender==1?'assets/images/arabian-man.png':'assets/images/arabian-woman.png'
   routingList : MenuItem[] = menuItems
   role!:Roles;
+
+  get brandLogoSrc(): string {
+    return wardaLogoPath(this.languageService.getCurrentLang());
+  }
   
   // Country dropdown
   countries: any[] = [];
