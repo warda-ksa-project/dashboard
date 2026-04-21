@@ -107,7 +107,9 @@
     "phone_length_invalid": "Phone number must be exactly {{count}} digits",
     "checking": "Verifying your account...",
     "wait_verification": "Please wait for verification to complete",
-    "complete_all_fields": "Please complete all fields"
+    "complete_all_fields": "Please complete all fields",
+    "captcha_required": "Please complete the security check before requesting a verification code.",
+    "resend_complete_captcha": "Complete the security check below, then tap login again to receive a new code."
   },
   "otp": {
     "verify_mobile_no": "Verify Your Mobile Number",

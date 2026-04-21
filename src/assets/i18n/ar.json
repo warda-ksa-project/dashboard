@@ -103,7 +103,9 @@
     "phone_length_invalid": "يجب أن يكون رقم الجوال {{count}} أرقام بالضبط",
     "checking": "جاري التحقق من حسابك...",
     "wait_verification": "يرجى انتظار انتهاء التحقق",
-    "complete_all_fields": "يرجى إكمال جميع الحقول"
+    "complete_all_fields": "يرجى إكمال جميع الحقول",
+    "captcha_required": "يرجى إكمال التحقق الأمني قبل إرسال رمز التحقق.",
+    "resend_complete_captcha": "أكمل التحقق الأمني أسفل النموذج ثم اضغط تسجيل الدخول لإرسال رمز جديد."
   },
   "otp": {
     "verify_mobile_no": "تحقق من رقم هاتفك",

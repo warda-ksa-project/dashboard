@@ -120,6 +120,16 @@
             color: var(--p-primary-color);
           }
 
+          .recaptcha-wrap {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+
+            .recaptcha-container {
+              min-height: 78px;
+            }
+          }
+
           .hint {
             font-size: 0.85rem;
             color: #666;

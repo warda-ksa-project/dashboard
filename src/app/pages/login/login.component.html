@@ -66,6 +66,10 @@
           </div>
         </div>
 
+        <div class="recaptcha-wrap" *ngIf="recaptchaSiteKey">
+          <div #recaptchaContainer class="recaptcha-container"></div>
+        </div>
+
         <div class="actions">
           <button type="submit" class="send-btn" [disabled]="!canSubmit">
             {{'login.btn_login'|translate}}

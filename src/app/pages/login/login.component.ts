@@ -1,4 +1,12 @@
-import { Component, Inject, inject, OnDestroy } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Inject,
+  inject,
+  OnDestroy,
+  ViewChild,
+} from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -25,6 +33,16 @@ import { Subject, EMPTY, combineLatest } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, switchMap, takeUntil, tap, catchError, startWith } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 
+declare global {
+  interface Window {
+    grecaptcha?: {
+      ready: (callback: () => void) => void;
+      render: (container: HTMLElement, opts: Record<string, unknown>) => number;
+      reset: (widgetId: number) => void;
+    };
+  }
+}
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -44,9 +62,17 @@ import { environment } from '../../../environments/environment';
   styleUrl: './login.component.scss',
   providers: [ApiService],
 })
-export class LoginComponent {
+export class LoginComponent implements OnDestroy, AfterViewInit {
+  @ViewChild('recaptchaContainer') recaptchaContainer?: ElementRef<HTMLDivElement>;
+
   loginForm: FormGroup;
   toaster = inject(ToasterService);
+
+  readonly recaptchaSiteKey = (environment.recaptchaSiteKey ?? '').trim();
+  captchaToken = '';
+  private recaptchaWidgetId: number | null = null;
+  private static readonly recaptchaScriptSrc =
+    'https://www.google.com/recaptcha/api.js?render=explicit';
   otpValue = '';
   mobileNumber = '';
   openOtpModal = false;
@@ -126,9 +152,67 @@ export class LoginComponent {
     this.watchCanSubmit();
   }
 
+  ngAfterViewInit(): void {
+    if (this.recaptchaSiteKey) {
+      this.loadRecaptchaScript();
+    }
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  private loadRecaptchaScript(): void {
+    if (typeof document === 'undefined') return;
+    if (document.querySelector(`script[src*="recaptcha/api.js"]`)) {
+      this.renderRecaptcha();
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = LoginComponent.recaptchaScriptSrc;
+    script.async = true;
+    script.defer = true;
+    script.onload = () => this.renderRecaptcha();
+    document.body.appendChild(script);
+  }
+
+  private renderRecaptcha(): void {
+    const el = this.recaptchaContainer?.nativeElement;
+    if (!el || !this.recaptchaSiteKey) return;
+
+    const runRender = () => {
+      const g = window.grecaptcha;
+      if (!g || typeof g.render !== 'function') return;
+      if (this.recaptchaWidgetId != null) return;
+      this.recaptchaWidgetId = g.render(el, {
+        sitekey: this.recaptchaSiteKey,
+        callback: (token: string) => {
+          this.captchaToken = token;
+          this.updateCanSubmit();
+        },
+        'expired-callback': () => {
+          this.captchaToken = '';
+          this.updateCanSubmit();
+        },
+      });
+    };
+
+    const g = window.grecaptcha;
+    if (g && typeof g.ready === 'function') {
+      g.ready(() => runRender());
+    } else {
+      runRender();
+    }
+  }
+
+  private resetRecaptcha(): void {
+    const g = window.grecaptcha;
+    if (g && this.recaptchaWidgetId != null && typeof g.reset === 'function') {
+      g.reset(this.recaptchaWidgetId);
+    }
+    this.captchaToken = '';
+    this.updateCanSubmit();
   }
 
   private watchCanSubmit() {
@@ -146,11 +230,13 @@ export class LoginComponent {
     const len = this.selectedCountry?.phoneLength ?? 0;
     const phone = (this.loginForm.get('phoneNumber')?.value ?? '').toString().replace(/\D/g, '');
     const hasMinLength = len > 0 && phone.length >= len;
+    const captchaOk = !this.recaptchaSiteKey || !!this.captchaToken;
     this.canSubmit = !!(
       this.loginForm.valid &&
       hasMinLength &&
       this.isAdmin !== null &&
-      !this.isCheckingAdmin
+      !this.isCheckingAdmin &&
+      captchaOk
     );
   }
 
@@ -231,6 +317,10 @@ export class LoginComponent {
       else if (this.isAdmin === null && digits.length >= requiredLen)
         this.toaster.errorToaster(this.translate.instant('login.wait_verification'));
       else this.toaster.errorToaster(this.translate.instant('login.complete_all_fields'));
+      return;
+    }
+    if (this.recaptchaSiteKey && !this.captchaToken) {
+      this.toaster.errorToaster(this.translate.instant('login.captcha_required'));
       return;
     }
     this.onLogin(this.loginForm.value);
@@ -326,7 +416,11 @@ export class LoginComponent {
   onLogin(loginData: any) {
     this.openOtpModal = false;
     const digits = (loginData.phoneNumber ?? '').toString().replace(/\D/g, '');
-    this.api.post('Auth/send-otp', { phone: digits }).subscribe({
+    const body: { phone: string; captchaToken?: string } = { phone: digits };
+    if (this.recaptchaSiteKey && this.captchaToken) {
+      body.captchaToken = this.captchaToken;
+    }
+    this.api.post('Auth/send-otp', body).subscribe({
       next: (res: any) => {
         if (res?.isFailure) {
           const errMsg = res?.error?.message || res?.message || 'Login failed';
@@ -347,12 +441,9 @@ export class LoginComponent {
     });
   }
   resendOtp(e: any) {
-    this.api.post('Auth/send-otp', { phone: this.mobileNumber }).subscribe((res: any) => {
-      if (res.isSuccess) {
-        this.toaster.successToaster('OTP sent successfully');
-      } else {
-        this.toaster.errorToaster(res.error?.message || 'Failed to resend OTP');
-      }
-    });
+    if (!e) return;
+    this.openOtpModal = false;
+    this.resetRecaptcha();
+    this.toaster.successToaster(this.translate.instant('login.resend_complete_captcha'));
   }
 }
