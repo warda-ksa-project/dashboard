@@ -149,6 +149,13 @@
             &:hover {
               color: #3bbf75;
             }
+
+            &.send-btn--not-ready {
+              opacity: 0.65;
+            }
+            &[aria-disabled='true'] {
+              cursor: pointer;
+            }
           }
           a {
             text-decoration: none;

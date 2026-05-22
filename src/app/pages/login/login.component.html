@@ -1,7 +1,7 @@
 <div class="login-container">
   <div class="content">
     <div class="form-section">
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" (keydown)="onFormKeydown($event)">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <div class="details d-flex justify-content-between">
           <div class="d-flex flex-col">
             <h2>{{'login.welcome'|translate}}</h2>
@@ -71,7 +71,12 @@
         </div>
 
         <div class="actions">
-          <button type="submit" class="send-btn" [disabled]="!canSubmit">
+          <button
+            type="submit"
+            class="send-btn"
+            [class.send-btn--not-ready]="!canSubmit"
+            [attr.aria-disabled]="!canSubmit"
+          >
             {{'login.btn_login'|translate}}
             <span class="pi pi-arrow-right"></span>
           </button>

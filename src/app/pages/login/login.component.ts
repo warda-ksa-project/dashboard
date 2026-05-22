@@ -326,12 +326,6 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
     this.onLogin(this.loginForm.value);
   }
 
-  onFormKeydown(event: KeyboardEvent) {
-    if (event.key === 'Enter' && !this.canSubmit) {
-      event.preventDefault();
-    }
-  }
-
   getAllCountries() {
     this.api.get('Countries').subscribe((res: any) => {
       if (res.data) {
