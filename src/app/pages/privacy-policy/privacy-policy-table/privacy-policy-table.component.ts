@@ -1,18 +1,14 @@
 import { Component, inject, signal } from '@angular/core';
 import { EAction, EType, IcolHeader, ITableAction, TableComponent } from '../../../components/table/table.component';
 import { ApiService } from '../../../services/api.service';
-import { RouterModule } from '@angular/router';
 import { IBreadcrumb } from '../../../components/breadcrump/cerqel-breadcrumb.interface';
-import { BreadcrumpComponent } from '../../../components/breadcrump/breadcrump.component';
-import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { LanguageService } from '../../../services/language.service';
 import { ETableShow, IcolHeaderSmallTable, TableSmallScreenComponent } from '../../../components/table-small-screen/table-small-screen.component';
-import { DrawerComponent } from '../../../components/drawer/drawer.component';
 import { PaginationComponent } from '../../../components/pagination/pagination.component';
-import { TitleCasePipe, CommonModule } from '@angular/common';
-import { TranslatePipe } from '@ngx-translate/core';
 import { Roles } from '../../../conts';
+import { ListPageShellComponent } from '../../../components/list-page-shell/list-page-shell.component';
+import { ListPageFilterMixin } from '../../../core/list-page.mixin';
 
 const global_pageName='privacy.pageName';
 const global_router_add_url_in_Table ='/settings/privacy_policy/add';
@@ -25,7 +21,7 @@ const global_API_delete='Content/privacy';
 @Component({
   selector: 'app-privacy-policy-table',
   standalone: true,
-  imports: [TableComponent,TitleCasePipe, PaginationComponent, FormsModule, TranslatePipe, BreadcrumpComponent, RouterModule, InputTextModule, TableSmallScreenComponent, CommonModule],
+  imports: [TableComponent, PaginationComponent, FormsModule, TableSmallScreenComponent, ListPageShellComponent],
   templateUrl: './privacy-policy-table.component.html',
   styleUrl: './privacy-policy-table.component.scss'
 })
@@ -35,8 +31,8 @@ export class PrivacyPolicyTableComponent {
   pageName =signal<string>(global_pageName);
   userRole: string = '';
   isTrader: boolean = false;
+  filterMixin = new ListPageFilterMixin();
 
-  showFilter: boolean = false
   tableActions: ITableAction[] = []
   private ApiService = inject(ApiService)
 
@@ -69,9 +65,7 @@ export class PrivacyPolicyTableComponent {
     this.userRole = localStorage.getItem('role') || '';
     this.isTrader = this.userRole === Roles.trader;
     
-    // Set table actions based on user role
     if (this.isTrader) {
-      // Trader: view only
       this.tableActions = [
         {
           name: EAction.view,
@@ -80,7 +74,6 @@ export class PrivacyPolicyTableComponent {
         }
       ];
     } else {
-      // Admin: full access
       this.tableActions = [
         {
           name: EAction.delete,
@@ -122,7 +115,6 @@ export class PrivacyPolicyTableComponent {
       { keyName: 'arDescription', header: this.languageService.translate('privacy.form.desc_ar'), type: EType.editor, show: true },
     ];
     
-    // Only show actions column for non-trader users
     if (!this.isTrader) {
       this.columns.push({ keyName: '', header: 'Actions', type: EType.actions, actions: this.tableActions, show: true });
     }
@@ -149,13 +141,6 @@ export class PrivacyPolicyTableComponent {
       ]
     }
   }
-  openFilter() {
-    this.showFilter = true
-  }
-
-  onCloseFilter(event: any) {
-    this.showFilter = false
-  }
 
   API_getAll() {
     this.ApiService.get(global_API_getAll, this.objectSearch).subscribe((res: any) => {
@@ -174,6 +159,25 @@ export class PrivacyPolicyTableComponent {
     this.API_getAll();
   }
 
+  onSearch(value: string) {
+    this.filterMixin.onSearchChange(value, () => this.API_getAll(), this.objectSearch, 'searchTerm');
+  }
+
+  onChipRemove(key: string) {
+    this.filterMixin.removeChip(key, this.objectSearch, () => this.API_getAll());
+  }
+
+  reset() {
+    this.objectSearch = {
+      pageNumber: 1,
+      pageSize: 8,
+      sortBy: '',
+      sortDirection: 'asc',
+      searchTerm: '',
+    };
+    this.filterMixin.searchValue = '';
+    this.filterMixin.filterChips = [];
+    this.filterMixin.filtersExpanded = false;
+    this.API_getAll();
+  }
 }
-
-

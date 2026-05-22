@@ -100,5 +100,5 @@ export class ChartComponent {
 
         this.cd.markForCheck();
     }
-}
+  }
 }

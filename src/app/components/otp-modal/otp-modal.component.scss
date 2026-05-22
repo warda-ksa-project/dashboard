@@ -1,84 +1,71 @@
 .otp-content {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: var(--warda-space-5);
   align-items: center;
   justify-content: center;
+  padding: var(--warda-space-4);
 
-
-  .title {
-     p {
-      font-size: 30px;
-      color: black;
-     }
+  .title p {
+    font-size: var(--warda-text-xl);
+    font-weight: 700;
+    color: var(--warda-text-primary);
+    margin: 0;
+    text-align: center;
   }
 
-  .desc {
-    p {
-      font-size: 20px;
-      color: rgb(166, 166, 166);
-      span {
-        color: black !important;
-      }
+  .desc p {
+    font-size: var(--warda-text-sm);
+    color: var(--warda-text-secondary);
+    margin: 0;
+    text-align: center;
+
+    span {
+      color: var(--warda-primary);
+      font-weight: 600;
     }
   }
 
   .otp {
-    margin-top: 30px;
+    margin-top: var(--warda-space-4);
+  }
+
+  .timer {
+    font-size: var(--warda-text-sm);
+    color: var(--warda-text-muted);
   }
 
   .resend-link {
     cursor: pointer;
-    font-size: 17px;
-    color: #4989dc;
+    font-size: var(--warda-text-sm);
+    color: var(--warda-primary);
+    font-weight: 500;
+    margin-inline-start: var(--warda-space-2);
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   .custom-otp-input {
-    width: 48px !important;
-    height: 48px;
-    font-size: 24px;
+    width: 52px !important;
+    height: 52px;
+    font-size: var(--warda-text-xl);
+    font-weight: 600;
     appearance: none;
     text-align: center;
-    transition: all 0.2s;
-    border: 1px solid var(--p-inputtext-border-color);
-    background: transparent;
+    transition: all 0.15s;
+    border: 1px solid var(--warda-border);
+    background: var(--warda-card-bg);
     outline-offset: -2px;
     outline-color: transparent;
-    color: var(--p-inputtext-color);
-    border-radius: 0;
+    color: var(--warda-text-primary);
+    border-radius: var(--warda-radius-md);
 
     &:focus {
-      outline: 2px solid var(--p-focus-ring-color);
-    }
-
-    /* Rounded corners for the first input */
-    &:first-child {
-      border-top-left-radius: 12px;
-      border-bottom-left-radius: 12px;
-    }
-
-    /* Rounded corners for the last input */
-    &:last-child {
-      border-top-right-radius: 12px;
-      border-bottom-right-radius: 12px;
-    }
-
-    /* Add right border for intermediate inputs */
-    &:not(:last-child) {
-      border-right-width: 1px;
-      border-right-style: solid;
-      border-right-color: var(--p-inputtext-border-color);
+      outline: none;
+      border-color: var(--warda-primary);
+      box-shadow: 0 0 0 3px rgba(122, 30, 59, 0.12);
     }
   }
-
-  /* Style the separator (optional) */
-  .p-inputotp .px-4 {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--p-inputtext-border-color);
-    /* Match separator color with input borders */
-  }
-
-
 }

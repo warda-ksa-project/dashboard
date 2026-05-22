@@ -1,18 +1,15 @@
 import { Component, inject, signal } from '@angular/core';
 import { EAction, EType, IcolHeader, ITableAction, TableComponent } from '../../../components/table/table.component';
 import { ApiService } from '../../../services/api.service';
-import { RouterModule } from '@angular/router';
 import { IBreadcrumb } from '../../../components/breadcrump/cerqel-breadcrumb.interface';
-import { BreadcrumpComponent } from '../../../components/breadcrump/breadcrump.component';
-import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { LanguageService } from '../../../services/language.service';
 import { ETableShow, IcolHeaderSmallTable, TableSmallScreenComponent } from '../../../components/table-small-screen/table-small-screen.component';
-import { DrawerComponent } from '../../../components/drawer/drawer.component';
 import { PaginationComponent } from '../../../components/pagination/pagination.component';
-import { TitleCasePipe, CommonModule } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Roles } from '../../../conts';
+import { ListPageShellComponent } from '../../../components/list-page-shell/list-page-shell.component';
+import { ListPageFilterMixin } from '../../../core/list-page.mixin';
 
 const global_pageName='about_us.pageName'
 const global_router_add_url_in_Table ='/about-us/add'
@@ -24,7 +21,7 @@ const global_API_delete='Content/about-us'
 @Component({
   selector: 'app-about-us-table',
   standalone: true,
-  imports: [TableComponent, PaginationComponent,TitleCasePipe,TranslatePipe, FormsModule, DrawerComponent, BreadcrumpComponent, RouterModule, InputTextModule, TableSmallScreenComponent, CommonModule],
+  imports: [TableComponent, PaginationComponent, TranslatePipe, FormsModule, TableSmallScreenComponent, ListPageShellComponent],
   templateUrl: './about-us-table.component.html',
   styleUrl: './about-us-table.component.scss'
 })
@@ -34,8 +31,8 @@ export class AboutUsTableComponent {
   pageName =signal<string>(global_pageName);
   userRole: string = '';
   isTrader: boolean = false;
+  filterMixin = new ListPageFilterMixin();
 
-  showFilter: boolean = false
   tableActions: ITableAction[] = []
   private ApiService = inject(ApiService)
 
@@ -69,9 +66,7 @@ export class AboutUsTableComponent {
     this.userRole = localStorage.getItem('role') || '';
     this.isTrader = this.userRole === Roles.trader;
     
-    // Set table actions based on user role
     if (this.isTrader) {
-      // Trader: view only
       this.tableActions = [
         {
           name: EAction.view,
@@ -80,7 +75,6 @@ export class AboutUsTableComponent {
         }
       ];
     } else {
-      // Admin: full access
       this.tableActions = [
         {
           name: EAction.delete,
@@ -149,14 +143,6 @@ export class AboutUsTableComponent {
     }
   }
 
-  openFilter() {
-    this.showFilter = true
-  }
-
-  onCloseFilter(event: any) {
-    this.showFilter = false
-  }
-
   API_getAll() {
     this.ApiService.get(global_API_getAll, this.objectSearch).subscribe((res: any) => {
       const d = res?.data ?? res;
@@ -173,18 +159,22 @@ export class AboutUsTableComponent {
     this.API_getAll();
   }
 
-  filterData() {
-    const search = (this.searchValue || '').toLowerCase();
-    if (!search) { this.dataList = this.filteredData; return; }
-    this.dataList = this.filteredData.filter((item: any) =>
-      (item.enTitle || '').toLowerCase().includes(search) ||
-      (item.arTitle || '').toLowerCase().includes(search) ||
-      (item.enContent || '').toLowerCase().includes(search) ||
-      (item.arContent || '').toLowerCase().includes(search)
-    );
+  onSearch(value: string) {
+    this.filterMixin.onSearchChange(value, () => this.API_getAll(), this.objectSearch, 'enName');
   }
+
   onSubmitFilter() {
+    this.filterMixin.updateChips([
+      { key: 'enName', label: 'about_us.form.name_en', value: this.objectSearch.enName },
+      { key: 'arName', label: 'about_us.form.name_ar', value: this.objectSearch.arName },
+    ]);
+    this.objectSearch.pageNumber = 1;
     this.API_getAll();
+    this.filterMixin.filtersExpanded = false;
+  }
+
+  onChipRemove(key: string) {
+    this.filterMixin.removeChip(key, this.objectSearch, () => this.API_getAll());
   }
 
   reset() {
@@ -196,8 +186,9 @@ export class AboutUsTableComponent {
       enName: "",
       arName: ""
     };
+    this.filterMixin.searchValue = '';
+    this.filterMixin.filterChips = [];
+    this.filterMixin.filtersExpanded = false;
     this.API_getAll();
-    this.showFilter = false
   }
 }
-

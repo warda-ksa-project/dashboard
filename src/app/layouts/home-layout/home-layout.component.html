@@ -1,24 +1,39 @@
 <div class="layout-container">
+  <div class="content">
+    <aside
+      class="side-nav"
+      [class.collapsed]="sidebarState.collapsed()"
+    >
+      <app-sidebar
+        [activeRoute]="router.url"
+        [collapsed]="sidebarState.collapsed()"
+        (toggleSidebar)="sidebarState.toggle()"
+      ></app-sidebar>
+    </aside>
 
-  <div class="content d-flex justify-content-start gap-10">
-    <div class="side-nav">
-      <app-sidebar [activeRoute]="this.router.url"></app-sidebar>
-    </div>
-  <div class="main-home-content">
-    <app-navbar></app-navbar>
-    <img  class="menu-grid-icon" src="assets/images/menu-navigation-grid.svg" width="20px" alt="menu" (click)="onClickMenuIcon()">
-    <div class="home-content"[class.bk-gray]="isDashboardStyle">
+    <div class="main-home-content">
+      <app-navbar
+        (menuToggle)="onMobileMenuToggle()"
+        (sidebarToggle)="sidebarState.toggle()"
+        [sidebarCollapsed]="sidebarState.collapsed()"
+      ></app-navbar>
 
-      <router-outlet />
+      <div class="home-content" [class.bk-gray]="isDashboardStyle">
+        <router-outlet />
+      </div>
     </div>
   </div>
-  </div>
+
   @if (showMenuIcon) {
-    <div class="side-nav-bar"appClickOutside (onClickOutSideCompleted)="onClickOutSideCompleted($event)">
-      <app-side-nav [activeRoute]="this.router.url"></app-side-nav>
+    <div
+      class="side-nav-bar"
+      appClickOutside
+      (onClickOutSideCompleted)="onClickOutSideCompleted($event)"
+    >
+      <app-side-nav [activeRoute]="router.url"></app-side-nav>
     </div>
+    <div class="mobile-overlay" (click)="showMenuIcon = false"></div>
   }
 </div>
-
 
 <p-toast [position]="selectedLang == 'ar' ? 'top-left' : 'top-right'"></p-toast>

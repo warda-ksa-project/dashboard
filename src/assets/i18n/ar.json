@@ -72,6 +72,8 @@
     "list": "قائمة",
     "add_new": "إضافة جديد",
     "filter": "فلترة",
+    "search": "بحث...",
+    "no_data": "لا توجد بيانات",
     "enter": "أدخل",
     "select": "اختر",
     "view_more": "عرض المزيد",
@@ -96,6 +98,8 @@
     "password_required": "كلمة المرور مطلوبة",
     "btn_login": "تسجيل الدخول",
     "forget_password": "نسيت كلمة المرور",
+    "new_password": "كلمة مرور جديدة",
+    "confirm_password": "تأكيد كلمة المرور",
     "select_country": "اختر الدولة",
     "select_country_first": "يرجى اختيار الدولة أولاً",
     "phone_placeholder": "أدخل رقم الجوال",
@@ -113,7 +117,9 @@
     "resend": "إعادة الإرسال"
   },
   "nav": {
-    "search": "بحث في الصفحات"
+    "search": "بحث في الصفحات",
+    "expand": "توسيع القائمة",
+    "collapse": "طي القائمة"
   },
   "side_bar": {
     "dashboard": "لوحة التحكم",
@@ -427,8 +433,9 @@
       }
     },
     "dashboard_admin": {
-  "revenue": "إجمالي الإيرادات حسب المدن",
-  "users": "المستخدمون",
+    "revenue": "إجمالي الإيرادات حسب المدن",
+    "weekly_sales": "مبيعات الأسبوع",
+    "users": "المستخدمون",
   "total_users": "إجمالي المستخدمين",
   "active_users": "المستخدمون النشطون",
   "new_users": "المستخدمون الجدد",
@@ -465,6 +472,7 @@
       "TOTAL_ORDERS_PER_WEEK_AMOUNT": "إجمالي قيمة الطلبات الأسبوعية",
       "TOTAL_ORDERS_PER_MONTH_AMOUNT": "إجمالي قيمة الطلبات الشهرية",
       "chart":{
+        "title":"المبيعات الشهرية",
         "firstDataName":"هدف السنة الحالية",
         "secondDataName":"هدف السنة الماضية"
       }

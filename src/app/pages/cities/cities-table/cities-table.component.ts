@@ -1,27 +1,25 @@
 import { Component, inject, signal } from '@angular/core';
 import { EAction, EType, IcolHeader, ITableAction, TableComponent } from '../../../components/table/table.component';
 import { ApiService } from '../../../services/api.service';
-import { Router, RouterModule } from '@angular/router';
 import { IBreadcrumb } from '../../../components/breadcrump/cerqel-breadcrumb.interface';
-import { BreadcrumpComponent } from '../../../components/breadcrump/breadcrump.component';
-import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { LanguageService } from '../../../services/language.service';
 import { ETableShow, IcolHeaderSmallTable, TableSmallScreenComponent } from '../../../components/table-small-screen/table-small-screen.component';
 import { PaginationComponent } from '../../../components/pagination/pagination.component';
-import { DrawerComponent } from '../../../components/drawer/drawer.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { TitleCasePipe } from '@angular/common';
+import { ListPageShellComponent } from '../../../components/list-page-shell/list-page-shell.component';
+import { ListPageFilterMixin } from '../../../core/list-page.mixin';
 
 @Component({
   selector: 'app-cities-table',
   standalone: true,
-  imports: [TableComponent, PaginationComponent,TranslatePipe,TitleCasePipe, FormsModule, DrawerComponent, BreadcrumpComponent, RouterModule, InputTextModule, TableSmallScreenComponent],
+  imports: [TableComponent, PaginationComponent, TranslatePipe, FormsModule, TableSmallScreenComponent, ListPageShellComponent],
   templateUrl: './cities-table.component.html',
   styleUrl: './cities-table.component.scss'
 })
 export class CitiesTableComponent {
-  pageName =signal<string>('');
+  pageName = signal<string>('');
+  filterMixin = new ListPageFilterMixin();
   tableActions: ITableAction[] = [
     {
       name: EAction.delete,
@@ -40,15 +38,11 @@ export class CitiesTableComponent {
     }
   ]
   private ApiService = inject(ApiService)
-  private router = inject(Router)
-
 
   bredCrumb: IBreadcrumb = {
     crumbs: [
     ]
   }
-
-  showFilter: boolean = false
 
   searchValue: any = '';
   filteredData: any;
@@ -127,18 +121,23 @@ export class CitiesTableComponent {
     this.getAllCities();
   }
 
-  openFilter() {
-    this.showFilter = true
-  }
-
-  onCloseFilter(event: any) {
-    this.showFilter = false
+  onSearch(value: string) {
+    this.filterMixin.onSearchChange(value, () => this.getAllCities(), this.citySearch, 'enName');
   }
 
   onSubmitFilter() {
+    this.filterMixin.updateChips([
+      { key: 'enName', label: 'city.form.name_en', value: this.citySearch.enName },
+      { key: 'arName', label: 'city.form.name_ar', value: this.citySearch.arName },
+    ]);
+    this.citySearch.pageNumber = 1;
     this.getAllCities();
+    this.filterMixin.filtersExpanded = false;
   }
 
+  onChipRemove(key: string) {
+    this.filterMixin.removeChip(key, this.citySearch, () => this.getAllCities());
+  }
 
   reset() {
     this.citySearch = {
@@ -148,9 +147,10 @@ export class CitiesTableComponent {
       sortingDirection: 0,
       enName: "",
       arName: "",
-      // postalCode: ""
-    }
+    };
+    this.filterMixin.searchValue = '';
+    this.filterMixin.filterChips = [];
+    this.filterMixin.filtersExpanded = false;
     this.getAllCities();
-    this.showFilter = false
   }
 }

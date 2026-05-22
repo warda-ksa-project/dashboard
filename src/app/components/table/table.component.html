@@ -1,5 +1,12 @@
 <ng-container *ngIf="filterdRecords?.length>0;else  emptyData">
-  <p-table [columns]="colsHeader" [value]="filterdRecords" [tableStyle]="{ 'min-width': '50rem' }">
+  <p-table
+    [columns]="colsHeader"
+    [value]="filterdRecords"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    [scrollable]="true"
+    scrollHeight="flex"
+    styleClass="warda-datatable"
+  >
     <ng-template #header let-columns>
       <tr>
         <th *ngFor="let col of columns">
@@ -82,9 +89,7 @@
   </p-table>
 </ng-container>
 <ng-template #emptyData>
-  <div class="text-center w-100 mt-5">
-    {{'shared.no_data_found'|translate}}
-  </div>
+  <app-empty-state icon="pi pi-inbox" title="shared.no_data"></app-empty-state>
 </ng-template>
 
 <app-dialog [message]="'table_delete_msg'" [visible]="showConfirmMessage">

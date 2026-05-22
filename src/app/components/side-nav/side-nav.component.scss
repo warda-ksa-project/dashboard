@@ -1,205 +1,70 @@
-// .content{
-//    background-color: #fff;
-//    height: 100%;
-//    width:250px;
-//    padding:25px 0px;
-//    box-shadow: 0 0 21px #59667a1a;
-//  .header{
-//     padding: 10px;
-//     .logo{
-//         span{
-//             color:var(--main-text-color);
-//             letter-spacing: 8px;
-//         }
-//        }
-//  }
-
-
-// }
-
-
-// .items-nav{
- 
-//     .item{
-//         cursor: pointer;
-//     }
-//     .btn-link {
-//         text-decoration: none;
-//         color: #2B5F60;
-//         span{
-//             margin: 0px 10px;
-//         }
-//       }
-  
-//       .active,.btn-link:hover  {
-//         background-color: #E9EFEF;
-//         padding:10px;
-//         border-radius: 16px;
-//        }
-
-//    .nav-footer{
-//     // position: absolute;
-//     // bottom: 135px;
-//     cursor: pointer;
-//     .user-img {
-// padding-bottom: 10px;
-//     } 
-//    }    
-//    hr{
-//     color: #ada5a5;
-//    }
-// }
-
-// .w-90{
-//     width:90%;
-//     margin: 5%;
-//     border-radius: 16px;
-
-// }
-
-//  .nav-container{
-//     background-color: #f6f9f9;
-    
-//     // height: 100vh;
-//     width: 80%;
-//     margin:0px 10%;
-// border-radius: 16px;
-// }
-// .item-close{
-//     width: 70%;
-//     margin: 0px 15%;
-//     padding: 5px 10px 10px 10px;
-//     border-radius: 16px;
-//     .item{
-//           background-color: unset;
-//     }
-   
-//  }
-
-
-// //  @media screen and (max-width: 500px) {
-// //     .content {
-// //      display: none;
-// //     }
-// //     .show-menu{
-// //         // pointer-events: none;
-        
-// //     }
-// //   }
-
-// //   @media screen and (min-width: 500px) {
-
-// //     .collapse-menu{
-// //         display: none;
-// //     }
-// //     .show-menu{
-// //         display: block;
-// //         overflow-y: unset!important;
-// //      }
-// //   }
- 
 :host ::ng-deep {
-    .sidebar-container {
-      padding: 3px 12px 3px;
+  .sidebar-container {
+    height: 100%;
+
+    .content {
+      gap: var(--warda-space-4);
+      background-color: var(--warda-sidebar-bg);
+      padding: var(--warda-space-4);
+      border-radius: var(--warda-radius-lg);
       height: 100%;
-  
-      .content {
-        // height: 99vh;
-        gap: 20px;
-        background-color: #f8fafc;
-        padding: 10px;
-        border-radius: 1rem;
-        height: 100%;
-        width: 250px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  
-        .logo-section {
-          padding: 7px;
-          cursor: pointer;
-          img {
-            cursor: pointer;
-          }
+      width: 260px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border: 1px solid var(--warda-border);
+      box-shadow: var(--warda-shadow-lg);
+
+      .logo-section {
+        padding: var(--warda-space-2);
+        cursor: pointer;
+
+        img {
+          max-width: 120px;
         }
-  
-        .routing-section {
-          height: 100%;
+      }
+
+      .routing-section {
+        width: 100%;
+        flex: 1;
+        overflow-y: auto;
+
+        .pages-routing-section {
           display: flex;
           flex-direction: column;
-          align-items: center;
-          justify-content: space-between;
-  
-          .pages-routing-section {
+          gap: var(--warda-space-1);
+
+          .routing-action {
+            cursor: pointer;
+            padding: var(--warda-space-3) var(--warda-space-4);
             display: flex;
-            flex-direction: column;
-            align-items: start;
-            gap: 10px;
-  
-            .routing-action {
-              cursor: pointer;
-              padding: 7px 12px;
-              &:hover {
-                background-color: rgb(208, 207, 207);
-                border-radius: 6px;
-              }
-            }
-  
-            .active {
-              background:#7A1E3B;
-              border-radius: 6px;
-              color: white;
-              &:hover {
-                background:#7A1E3B;
-                border-radius: 6px;
-              }
-            }
-          }
-  
-          .setting-section {
-            display: flex;
-            flex-direction: column;
             align-items: center;
-            gap: 10px;
-  
-            .routing-action {
-              cursor: pointer;
-              padding: 7px 12px;
-              &:hover {
-                background-color: rgb(208, 207, 207);
-                border-radius: 6px;
-              }
+            gap: var(--warda-space-3);
+            border-radius: var(--warda-radius-md);
+            color: var(--warda-text-secondary);
+            transition: all 0.15s;
+
+            &:hover {
+              background-color: var(--warda-surface-muted);
             }
-  
-            .user-image-section {
-              border-top: 1px solid rgb(186, 184, 184);
-              padding-top: 10px;
-              position: relative;
-              cursor: pointer;
-  
-              img {
-                width: 40px;
-                border-radius: 50%;
-              }
-            }
-  
-            .active {
-              background: linear-gradient(to bottom, #81ef62, #42d0b6);
-              border-radius: 6px;
-              color: white;
-              &:hover {
-                background: linear-gradient(to bottom, #81ef62, #42d0b6);
-                border-radius: 6px;
-              }
+
+            p {
+              margin: 0;
+              font-size: var(--warda-text-sm);
             }
           }
-  
-          .section-color {
-            color: #64748b;
+
+          .active,
+          .active_routing {
+            background: var(--warda-primary);
+            color: white;
+
+            &:hover {
+              background: var(--warda-primary-dark);
+            }
           }
         }
       }
     }
   }
-  
+}

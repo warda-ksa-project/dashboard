@@ -76,6 +76,8 @@
     "list": "List",
     "add_new": "Add New",
     "filter": "Filter",
+    "search": "Search...",
+    "no_data": "No data found",
     "enter": "Enter",
     "select": "Select",
     "view_more": "View More",
@@ -100,6 +102,8 @@
     "password_required": "Password is required",
     "btn_login": "login",
     "forget_password": "Forget Password",
+    "new_password": "New Password",
+    "confirm_password": "Confirm Password",
     "select_country": "Select country",
     "select_country_first": "Please select a country first",
     "phone_placeholder": "Enter phone number",
@@ -117,7 +121,9 @@
     "resend": "Resend"
   },
   "nav": {
-    "search": "Search Pages"
+    "search": "Search Pages",
+    "expand": "Expand sidebar",
+    "collapse": "Collapse sidebar"
   },
   "side_bar": {
     "dashboard": "Dashboard",
@@ -431,6 +437,7 @@
   },
   "dashboard_admin":{
     "revenue":"Total Revenue By Cities",
+    "weekly_sales":"Weekly Sales",
     "users":"Users",
     "total_users":"Total Users",
     "active_users":"Active Users",
@@ -468,6 +475,7 @@
     "TOTAL_ORDERS_PER_WEEK_AMOUNT": "Total Orders per Week Amount",
     "TOTAL_ORDERS_PER_MONTH_AMOUNT": "Total Orders per Month Amount",
     "chart":{
+      "title":"Monthly Sales",
       "firstDataName":"Target current year",
       "secondDataName":"Target past year"
     }

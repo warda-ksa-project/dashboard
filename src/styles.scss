@@ -2,23 +2,12 @@
 @use 'bootstrap/dist/css/bootstrap.min.css';
 @use "primeicons/primeicons.css";
 @use "./assets/scss/fonts";
+@use "./assets/scss/tokens";
+@use "./assets/scss/components";
 
 /* ثيم فاتح فقط — منع الدارك من النظام والبراوزر */
 html {
   color-scheme: light;
-}
-
-:root {
-  --main-text-color: #2f2f3e;
-  /* هوية وردة — محاذاة مع البورتال */
-  --warda-primary: #7a1e3b;
-  --warda-primary-dark: #5c1530;
-  --warda-primary-light: #9b3a5a;
-  --p-primary-color: #7a1e3b;
-  --p-button-primary-background: #7a1e3b;
-  --p-button-primary-hover-background: #5c1530;
-  --p-button-primary-active-background: #4a1120;
-  --p-button-primary-border-color: #7a1e3b;
 }
 
 @font-face {
@@ -86,7 +75,8 @@ html {
 body {
 
   font-family: 'Bahij', sans-serif;
-  background: #F2F3F5;
+  background: var(--warda-page-bg);
+  color: var(--warda-text-primary);
 
   &:lang(ar) {
     font-family: 'tajawal', sans-serif;
@@ -126,6 +116,14 @@ body {
     .actions-icon-in-small-table {
       right: unset;
       left: 25px;
+    }
+
+    .page-toolbar__search input {
+      text-align: right;
+    }
+
+    .filter-panel__actions {
+      flex-direction: row-reverse;
     }
 
   }
@@ -208,10 +206,10 @@ small {
 .block {
   display: block;
 }
-.active_routing{
-  background: #7A1E3B;
-    border-radius: 16px;
-    color: white;
+.active_routing {
+  background: var(--warda-primary);
+  border-radius: var(--warda-radius-lg);
+  color: white;
 }
 @media (max-width: 768px) {
   .pr-pl-30-small-screen {
@@ -222,38 +220,46 @@ small {
 
 // Table Scss code for all modules
 .table-container {
-
   .content {
     h2 {
-      color: #7d7d7d;
+      color: var(--warda-text-primary);
     }
 
     .title-bredcrumb-section {
       display: flex;
       justify-content: space-between;
-      padding-inline: 7px;
+      align-items: center;
+      padding-inline: 0;
+      margin-bottom: var(--warda-space-4);
     }
 
     .details-container {
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-      margin-top: 30px;
-      border-radius: 8px;
-      padding: 20px;
+      background: var(--warda-card-bg);
+      border: 1px solid var(--warda-border);
+      box-shadow: var(--warda-shadow-sm);
+      margin-top: 0;
+      border-radius: var(--warda-radius-lg);
+      padding: var(--warda-space-6);
+      overflow: hidden;
 
       .action-filter {
         display: flex;
         justify-content: space-between;
         align-items: center;
         flex-wrap: wrap;
+        gap: var(--warda-space-2);
 
         span.pi-filter {
-          padding: 8px;
-          border: 1px solid gray;
-          border-radius: 6px;
+          padding: var(--warda-space-2);
+          border: 1px solid var(--warda-border);
+          border-radius: var(--warda-radius-md);
+          cursor: pointer;
+          transition: all 0.15s;
 
           &:hover {
-            color: #fff;
-            background-color: gray;
+            color: var(--warda-text-inverse);
+            background-color: var(--warda-primary);
+            border-color: var(--warda-primary);
           }
         }
 
@@ -378,68 +384,49 @@ small {
 // Scss code for any form (Add , Edit and View Details)
 .form-container {
   div.reactive-form {
-    background-color: #f8fafc5e;
-    padding: 20px;
-    border: 1px solid #dfdfdf;
-    border-radius: 8px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: var(--warda-card-bg);
+    padding: var(--warda-space-6);
+    border: 1px solid var(--warda-border);
+    border-radius: var(--warda-radius-lg);
+    box-shadow: var(--warda-shadow-sm);
 
     .actions {
       display: flex;
-      gap: 20px;
+      gap: var(--warda-space-4);
       justify-content: flex-end;
+      margin-top: var(--warda-space-4);
+      padding-top: var(--warda-space-4);
+      border-top: 1px solid var(--warda-border-light);
 
       .submit-btn {
-        padding: 6px 30px;
-        color: white;
-        background: #7A1E3B;
-        border-radius: 4px;
-        border: none;
-        font-size: 20px;
-
-        &:hover {
-          background: #B86B82;
-        }
+        @extend .warda-btn;
+        @extend .warda-btn-primary;
+        padding: 0 var(--warda-space-8);
+        font-size: var(--warda-text-base);
 
         &:disabled {
-          background: rgb(209, 209, 209);
-          color: #a2a1a1;
-          border: 1px solid #cac6c6;
+          background: var(--warda-surface-muted);
+          color: var(--warda-text-muted);
+          border-color: var(--warda-border);
           cursor: not-allowed;
         }
       }
 
       .reject-btn {
-        padding: 6px 30px;
-        color: white;
-        background: #bc0808;
-        border-radius: 4px;
-        border: none;
-        font-size: 20px;
-
-        &:hover {
-          background: #bc0808;
-        }
-
-        &:disabled {
-          background: rgb(209, 209, 209);
-          color: #a2a1a1;
-          border: 1px solid #cac6c6;
-          cursor: not-allowed;
-        }
+        @extend .warda-btn;
+        @extend .warda-btn-danger;
+        padding: 0 var(--warda-space-8);
+        font-size: var(--warda-text-base);
       }
 
-
       .cancel-btn {
-        background: #ffffff00;
-        border: 1px solid red;
-        color: red;
-        padding: 6px 27px;
-        border-radius: 4px;
+        @extend .warda-btn;
+        @extend .warda-btn-secondary;
+        color: var(--warda-error);
+        border-color: var(--warda-error);
 
         &:hover {
-          background: red;
-          color: white;
+          background: var(--warda-error-bg);
         }
       }
     }
@@ -447,6 +434,7 @@ small {
     @media only screen and (min-width:250.98px) and (max-width: 575.98px) {
       .actions {
         justify-content: center !important;
+        flex-wrap: wrap;
       }
     }
   }
@@ -454,8 +442,8 @@ small {
   .disabled-view {
     cursor: not-allowed;
     pointer-events: none;
-    background-color: #F9F9F9;
-    color: #a5a0a0;
+    background-color: var(--warda-surface-muted);
+    color: var(--warda-text-muted);
   }
 }
 
@@ -559,23 +547,30 @@ small {
 .page-title {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--warda-space-3);
 
   .images {
-    background-color: #7A1E3B;
-    border-radius: 50%;
-    padding: 6px 9px;
+    background-color: var(--warda-primary-subtle);
+    border-radius: var(--warda-radius-md);
+    padding: var(--warda-space-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     span {
-      color: white;
+      color: var(--warda-primary);
+      font-size: var(--warda-text-lg);
     }
 
     img {
-      width: 30px;
+      width: 24px;
     }
   }
 
   h2 {
-    color: black !important;
+    color: var(--warda-text-primary) !important;
+    font-size: var(--warda-text-xl);
+    font-weight: 600;
   }
 }
 p-dialog.order-status{
@@ -607,19 +602,17 @@ p-dialog.order-status{
 }
 .action-filter {
   a {
-    background: #7A1E3B;
-    color: white;
-    border-radius: 17px;
-    padding: 8px 18px;
-    margin: 0px 10px;
+    @extend .warda-btn;
+    @extend .warda-btn-primary;
+    border-radius: var(--warda-radius-md);
+    padding: 0 var(--warda-space-4);
+    height: 40px;
+    margin: 0;
     text-decoration: none;
-    &:hover {
-      background: #9B3A5A;
-    }
 
     span {
       padding: 0 4px;
-      border: 1px solid white;
+      border: 1px solid rgba(255, 255, 255, 0.5);
       border-radius: 50%;
       margin-inline: 3px;
       font-size: 11px;
@@ -627,11 +620,24 @@ p-dialog.order-status{
   }
 
   .pi-filter {
-    background-color: #7A1E3B;
-    padding:11px 10px;
-    border-radius: 8px;
+    background-color: var(--warda-card-bg);
+    border: 1px solid var(--warda-border);
+    padding: 10px;
+    border-radius: var(--warda-radius-md);
+    cursor: pointer;
+    transition: all 0.15s;
+
     &::before {
-      color: white !important;
+      color: var(--warda-text-secondary) !important;
+    }
+
+    &:hover {
+      background-color: var(--warda-primary);
+      border-color: var(--warda-primary);
+
+      &::before {
+        color: white !important;
+      }
     }
   }
 }
@@ -651,8 +657,9 @@ input:-internal-autofill-selected {
   background-color: transparent !important;
   color: fieldtext !important;
 }
-.p-inputtext,.p-select{
-  border-radius: 16px!important;
+.p-inputtext, .p-select {
+  border-radius: var(--warda-radius-md) !important;
+  border-color: var(--warda-border) !important;
 }
 
 p-table.order{

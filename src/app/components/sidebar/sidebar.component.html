@@ -1,19 +1,24 @@
-<div class="sidebar-container">
+<div class="sidebar-container" [class.sidebar-container--collapsed]="collapsed">
   <div class="content">
     <div class="logo-section">
-      <img width="100" routerLink="/dashboard-admin" [src]="brandLogoSrc" alt="Warda" />
+      <img
+        [width]="collapsed ? 40 : 100"
+        routerLink="/dashboard-admin"
+        [src]="brandLogoSrc"
+        alt="Warda"
+      />
     </div>
 
     <div class="routing-section">
       <div class="pages-routing-section section-color">
-        <!-- [pTooltip]="route.label | translate"
-            [tooltipPosition]="selectedLang == 'ar' ? 'left' : 'right'" -->
-        <div class="mb-4">
-          <app-input-text
-            [label]="'search'"
-            (onValueChange)="onFilterMenu($event)"
-          ></app-input-text>
-        </div>
+        @if (!collapsed) {
+          <div class="sidebar-search mb-3">
+            <app-input-text
+              [label]="'search'"
+              (onValueChange)="onFilterMenu($event)"
+            ></app-input-text>
+          </div>
+        }
         <ng-container *ngFor="let route of routingList">
           <div
             [class.active_routing]="activeRoute.includes(route.route)"
@@ -22,15 +27,18 @@
             class="routing-action"
             routerLinkActive="active"
             [routerLinkActiveOptions]="{ exact: true }"
+            [pTooltip]="collapsed ? (route.label | translate) : ''"
+            [tooltipPosition]="selectedLang == 'ar' ? 'left' : 'right'"
           >
             <span [class]="route.icon"></span>
-            <p>{{ route.label | translate }}</p>
+            @if (!collapsed) {
+              <p>{{ route.label | translate }}</p>
+            }
           </div>
         </ng-container>
       </div>
-      
-      <!-- Country Selector for Traders -->
-      <div class="country-selector-section" *ngIf="isAdmin">
+
+      <div class="country-selector-section" *ngIf="isAdmin && !collapsed">
         <div class="country-dropdown">
           <label class="country-label">
             <span class="pi pi-globe"></span>
@@ -49,5 +57,15 @@
         </div>
       </div>
     </div>
+
+    <button
+      type="button"
+      class="sidebar-toggle"
+      (click)="onToggleSidebar()"
+      [pTooltip]="collapsed ? ('nav.expand' | translate) : ('nav.collapse' | translate)"
+      [tooltipPosition]="selectedLang == 'ar' ? 'left' : 'right'"
+    >
+      <span class="pi" [ngClass]="toggleIconClass"></span>
+    </button>
   </div>
 </div>

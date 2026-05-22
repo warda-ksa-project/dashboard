@@ -1,0 +1,12 @@
+@if (chips.length > 0) {
+  <div class="warda-filter-chips">
+    @for (chip of chips; track chip.key) {
+      <span class="warda-filter-chip">
+        {{ chip.label | translate }}: {{ chip.value }}
+        <button type="button" (click)="remove.emit(chip.key)" aria-label="Remove filter">
+          <span class="pi pi-times"></span>
+        </button>
+      </span>
+    }
+  </div>
+}

@@ -1,18 +1,15 @@
 import { Component, inject, signal } from '@angular/core';
 import { EAction, EType, IcolHeader, ITableAction, TableComponent } from '../../../components/table/table.component';
 import { ApiService } from '../../../services/api.service';
-import { RouterModule } from '@angular/router';
 import { IBreadcrumb } from '../../../components/breadcrump/cerqel-breadcrumb.interface';
-import { BreadcrumpComponent } from '../../../components/breadcrump/breadcrump.component';
-import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { LanguageService } from '../../../services/language.service';
 import { ETableShow, IcolHeaderSmallTable, TableSmallScreenComponent } from '../../../components/table-small-screen/table-small-screen.component';
-import { DrawerComponent } from '../../../components/drawer/drawer.component';
 import { PaginationComponent } from '../../../components/pagination/pagination.component';
-import { TitleCasePipe } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Roles } from '../../../conts';
+import { ListPageShellComponent } from '../../../components/list-page-shell/list-page-shell.component';
+import { ListPageFilterMixin } from '../../../core/list-page.mixin';
 
 const global_pageName = 'sub_category.pageName';
 const global_router_add_url_in_Table = '/sub-category/add';
@@ -22,15 +19,15 @@ const global_API_getAll = 'SubCategories/paginated';
 @Component({
   selector: 'app-sub-category-table',
   standalone: true,
-  imports: [TableComponent,TitleCasePipe, PaginationComponent,TranslatePipe, FormsModule, DrawerComponent, BreadcrumpComponent, RouterModule, InputTextModule, TableSmallScreenComponent],
+  imports: [TableComponent, PaginationComponent, TranslatePipe, FormsModule, TableSmallScreenComponent, ListPageShellComponent],
   templateUrl: './sub-category-table.component.html',
   styleUrl: './sub-category-table.component.scss'
 })
 export class SubCategoryTableComponent {
  global_router_add_url_in_Table =global_router_add_url_in_Table
   pageName =signal<string>(global_pageName);
+  filterMixin = new ListPageFilterMixin();
 
-  showFilter: boolean = false
   tableActions: ITableAction[] = [
      {
        name: EAction.delete,
@@ -99,7 +96,6 @@ role=''
   displayTableCols(currentLang: string) {
     this.columns = [
       { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: true },
-      // { keyName: 'enName', header: this.languageService.translate('sub_category.form.enName'), type: EType.imageWithText,nested:{img:'image',text:''}, show: true },
       { keyName: 'enName', header: this.languageService.translate('sub_category.form.enName'), type: EType.text, show: true },
       { keyName: 'arName', header: this.languageService.translate('sub_category.form.arName'), type: EType.text, show: true },
       { keyName: '', header: this.languageService.translate('Action'), type: EType.actions, actions: this.tableActions, show: true },
@@ -126,14 +122,6 @@ role=''
     }
   }
 
-  openFilter() {
-    this.showFilter = true
-  }
-
-  onCloseFilter(event: any) {
-    this.showFilter = false
-  }
-
   API_getAll() {
     this.ApiService.get(global_API_getAll, this.objectSearch).subscribe((res: any) => {
       const d = res?.data ?? res;
@@ -150,18 +138,22 @@ role=''
     this.API_getAll();
   }
 
-  filterData() {
-    this.dataList = this.filteredData;
-    const search = (this.searchValue || '').toLowerCase();
-    if (!search) return;
-    this.dataList = this.filteredData.filter((item: any) =>
-      (item.enName || '').toLowerCase().includes(search) ||
-      (item.arName || '').toLowerCase().includes(search)
-    );
+  onSearch(value: string) {
+    this.filterMixin.onSearchChange(value, () => this.API_getAll(), this.objectSearch, 'enName');
   }
 
   onSubmitFilter() {
+    this.filterMixin.updateChips([
+      { key: 'enName', label: 'sub_category.form.enName', value: this.objectSearch.enName },
+      { key: 'arName', label: 'sub_category.form.arName', value: this.objectSearch.arName },
+    ]);
+    this.objectSearch.pageNumber = 1;
     this.API_getAll();
+    this.filterMixin.filtersExpanded = false;
+  }
+
+  onChipRemove(key: string) {
+    this.filterMixin.removeChip(key, this.objectSearch, () => this.API_getAll());
   }
 
   reset() {
@@ -173,9 +165,10 @@ role=''
         "enName": "",
         "arName": ""
     };
+    this.filterMixin.searchValue = '';
+    this.filterMixin.filterChips = [];
+    this.filterMixin.filtersExpanded = false;
     this.API_getAll();
-    this.showFilter = false
   }
 
 }
-

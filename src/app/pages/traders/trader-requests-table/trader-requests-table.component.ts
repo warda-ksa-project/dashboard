@@ -7,10 +7,7 @@ import {
   TableComponent,
 } from '../../../components/table/table.component';
 import { ApiService } from '../../../services/api.service';
-import { RouterModule } from '@angular/router';
 import { IBreadcrumb } from '../../../components/breadcrump/cerqel-breadcrumb.interface';
-import { BreadcrumpComponent } from '../../../components/breadcrump/breadcrump.component';
-import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { LanguageService } from '../../../services/language.service';
 import {
@@ -18,10 +15,10 @@ import {
   IcolHeaderSmallTable,
   TableSmallScreenComponent,
 } from '../../../components/table-small-screen/table-small-screen.component';
-import { DrawerComponent } from '../../../components/drawer/drawer.component';
 import { PaginationComponent } from '../../../components/pagination/pagination.component';
-import { TitleCasePipe } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
+import { ListPageShellComponent } from '../../../components/list-page-shell/list-page-shell.component';
+import { ListPageFilterMixin } from '../../../core/list-page.mixin';
 
 const global_pageName = 'trader_request.pageName';
 const global_router_add_url_in_Table = '/traderRequest/add';
@@ -32,15 +29,11 @@ const global_API_getAll = 'Traders/requests';
   standalone: true,
   imports: [
     TableComponent,
-    TitleCasePipe,
     PaginationComponent,
     TranslatePipe,
     FormsModule,
-    DrawerComponent,
-    BreadcrumpComponent,
-    RouterModule,
-    InputTextModule,
     TableSmallScreenComponent,
+    ListPageShellComponent,
   ],
   templateUrl: './trader-requests-table.component.html',
   styleUrl: './trader-requests-table.component.scss',
@@ -48,8 +41,7 @@ const global_API_getAll = 'Traders/requests';
 export class TraderRequestsTableComponent {
   global_router_add_url_in_Table = global_router_add_url_in_Table;
   pageName = signal<string>(global_pageName);
-
-  showFilter: boolean = false;
+  filterMixin = new ListPageFilterMixin();
   tableActions: ITableAction[] = [
     {
       name: EAction.view,
@@ -166,14 +158,6 @@ export class TraderRequestsTableComponent {
     };
   }
 
-  openFilter() {
-    this.showFilter = true;
-  }
-
-  onCloseFilter(event: any) {
-    this.showFilter = false;
-  }
-
   API_getAll() {
     this.ApiService.get(global_API_getAll, this.objectSearch).subscribe(
       (res: any) => {
@@ -187,31 +171,25 @@ export class TraderRequestsTableComponent {
   }
 
   onPageChange(event: any) {
-    console.log(event);
     this.objectSearch.pageNumber = event;
     this.API_getAll();
   }
 
-  filterData() {
-    this.dataList = this.filteredData;
-    const search = this.searchValue.toLowerCase();
-
-    if (this.searchValue.length == 1) {
-      this.dataList = this.filteredData;
-      return;
-    }
-
-    this.dataList = this.dataList.filter(
-      (item: any) =>
-        item.enTitle.toLowerCase().includes(search) ||
-        item.arTitle.toLowerCase().includes(search) ||
-        item.enDescription.toLowerCase().includes(search) ||
-        item.arDescription.toLowerCase().includes(search)
-    );
+  onSearch(value: string) {
+    this.filterMixin.onSearchChange(value, () => this.API_getAll(), this.objectSearch, 'searchTerm');
   }
 
   onSubmitFilter() {
+    this.filterMixin.updateChips([
+      { key: 'storeName', label: 'trader.form.storeName', value: this.objectSearch.storeName },
+    ]);
+    this.objectSearch.pageNumber = 1;
     this.API_getAll();
+    this.filterMixin.filtersExpanded = false;
+  }
+
+  onChipRemove(key: string) {
+    this.filterMixin.removeChip(key, this.objectSearch, () => this.API_getAll());
   }
 
   reset() {
@@ -221,9 +199,11 @@ export class TraderRequestsTableComponent {
       searchTerm: '',
       sortBy: '',
       sortDirection: 'asc',
-      storeName: ''
+      storeName: '',
     };
+    this.filterMixin.searchValue = '';
+    this.filterMixin.filterChips = [];
+    this.filterMixin.filtersExpanded = false;
     this.API_getAll();
-    this.showFilter = false;
   }
 }

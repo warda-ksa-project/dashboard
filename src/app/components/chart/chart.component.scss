@@ -1,8 +1,11 @@
-::ng-deep p-chart {
-    canvas{
-        max-height: 355px!important;
-        width: 100%!important;
-        padding: 15px;
-        
-    }
+.chart-wrapper {
+  width: 100%;
+  min-height: 300px;
+  max-height: 400px;
+}
+
+:host ::ng-deep {
+  canvas {
+    max-height: 380px !important;
   }
+}

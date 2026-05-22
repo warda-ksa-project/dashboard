@@ -1,0 +1,208 @@
+/* Buttons */
+.warda-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--warda-space-2);
+  padding: 0 var(--warda-space-4);
+  height: 40px;
+  font-size: var(--warda-text-sm);
+  font-weight: 500;
+  border-radius: var(--warda-radius-md);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s, box-shadow 0.15s;
+  text-decoration: none;
+  white-space: nowrap;
+
+  &:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+}
+
+.warda-btn-primary,
+.btn-primary-bk {
+  background: var(--warda-primary);
+  color: var(--warda-text-inverse);
+  border-color: var(--warda-primary);
+
+  &:hover:not(:disabled) {
+    background: var(--warda-primary-dark);
+    border-color: var(--warda-primary-dark);
+    color: var(--warda-text-inverse);
+  }
+}
+
+.warda-btn-secondary {
+  background: var(--warda-card-bg);
+  color: var(--warda-text-primary);
+  border-color: var(--warda-border);
+
+  &:hover:not(:disabled) {
+    background: var(--warda-surface-muted);
+  }
+}
+
+.warda-btn-ghost {
+  background: transparent;
+  color: var(--warda-text-secondary);
+  border-color: transparent;
+
+  &:hover:not(:disabled) {
+    background: var(--warda-surface-muted);
+    color: var(--warda-text-primary);
+  }
+}
+
+.warda-btn-danger {
+  background: var(--warda-error);
+  color: var(--warda-text-inverse);
+  border-color: var(--warda-error);
+
+  &:hover:not(:disabled) {
+    background: #b91c1c;
+  }
+}
+
+.warda-btn-sm {
+  height: 32px;
+  padding: 0 var(--warda-space-3);
+  font-size: var(--warda-text-xs);
+}
+
+.warda-btn-icon {
+  width: 40px;
+  padding: 0;
+}
+
+/* Cards */
+.warda-card {
+  background: var(--warda-card-bg);
+  border: 1px solid var(--warda-border);
+  border-radius: var(--warda-radius-lg);
+  box-shadow: var(--warda-shadow-sm);
+}
+
+.warda-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--warda-space-4) var(--warda-space-6);
+  border-bottom: 1px solid var(--warda-border-light);
+
+  h3 {
+    margin: 0;
+    font-size: var(--warda-text-base);
+    font-weight: 600;
+    color: var(--warda-text-primary);
+  }
+}
+
+.warda-card-body {
+  padding: var(--warda-space-6);
+}
+
+/* Badges */
+.warda-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  font-size: var(--warda-text-xs);
+  font-weight: 500;
+  border-radius: var(--warda-radius-full);
+  line-height: 1.5;
+}
+
+.warda-badge-success {
+  background: var(--warda-success-bg);
+  color: var(--warda-success);
+}
+
+.warda-badge-warning {
+  background: var(--warda-warning-bg);
+  color: var(--warda-warning);
+}
+
+.warda-badge-error {
+  background: var(--warda-error-bg);
+  color: var(--warda-error);
+}
+
+.warda-badge-neutral {
+  background: var(--warda-surface-muted);
+  color: var(--warda-text-secondary);
+}
+
+/* Form fields global */
+.warda-input {
+  height: 40px;
+  padding: 0 var(--warda-space-3);
+  border: 1px solid var(--warda-border);
+  border-radius: var(--warda-radius-md);
+  font-size: var(--warda-text-sm);
+  color: var(--warda-text-primary);
+  background: var(--warda-card-bg);
+  transition: border-color 0.15s, box-shadow 0.15s;
+  width: 100%;
+
+  &:focus {
+    outline: none;
+    border-color: var(--warda-primary);
+    box-shadow: 0 0 0 3px rgba(122, 30, 59, 0.12);
+  }
+
+  &::placeholder {
+    color: var(--warda-text-muted);
+  }
+}
+
+/* Filter fields in list pages */
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--warda-space-1);
+
+  label {
+    font-size: var(--warda-text-sm);
+    font-weight: 500;
+    color: var(--warda-text-secondary);
+  }
+}
+
+/* Filter chips */
+.warda-filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--warda-space-2);
+  padding: var(--warda-space-3) 0 0;
+}
+
+.warda-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--warda-space-1);
+  padding: 4px 10px;
+  background: var(--warda-primary-subtle);
+  color: var(--warda-primary);
+  border-radius: var(--warda-radius-full);
+  font-size: var(--warda-text-xs);
+  font-weight: 500;
+
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: inherit;
+    padding: 0;
+    font-size: 10px;
+    opacity: 0.7;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}

@@ -1,25 +1,22 @@
 import { Component, inject, signal } from '@angular/core';
 import { EAction, EType, IcolHeader, ITableAction, TableComponent } from '../../../components/table/table.component';
 import { ApiService } from '../../../services/api.service';
-import { Router, RouterModule } from '@angular/router';
 import { IBreadcrumb } from '../../../components/breadcrump/cerqel-breadcrumb.interface';
-import { BreadcrumpComponent } from '../../../components/breadcrump/breadcrump.component';
-import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { LanguageService } from '../../../services/language.service';
 import { ETableShow, IcolHeaderSmallTable, TableSmallScreenComponent } from '../../../components/table-small-screen/table-small-screen.component';
-import { DrawerComponent } from '../../../components/drawer/drawer.component';
 import { PaginationComponent } from '../../../components/pagination/pagination.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { TitleCasePipe, CommonModule } from '@angular/common';
 import { Roles } from '../../../conts';
+import { ListPageShellComponent } from '../../../components/list-page-shell/list-page-shell.component';
+import { ListPageFilterMixin } from '../../../core/list-page.mixin';
 
 const global_pageName = 'faqs.pageName';
 
 @Component({
   selector: 'app-faqs',
   standalone: true,
-  imports: [TableComponent, TranslatePipe, TitleCasePipe, PaginationComponent, FormsModule, DrawerComponent, BreadcrumpComponent, RouterModule, InputTextModule, TableSmallScreenComponent, CommonModule],
+  imports: [TableComponent, TranslatePipe, PaginationComponent, FormsModule, TableSmallScreenComponent, ListPageShellComponent],
   templateUrl: './faqs-table.component.html',
   styleUrl: './faqs-table.component.scss'
 })
@@ -27,11 +24,10 @@ export class FaqsTableComponent {
   pageName = signal<string>(global_pageName);
   userRole: string = '';
   isTrader: boolean = false;
+  filterMixin = new ListPageFilterMixin();
 
-  showFilter: boolean = false
   tableActions: ITableAction[] = []
   private ApiService = inject(ApiService)
-  private router = inject(Router)
 
 
   bredCrumb: IBreadcrumb = {
@@ -63,9 +59,7 @@ export class FaqsTableComponent {
     this.userRole = localStorage.getItem('role') || '';
     this.isTrader = this.userRole === Roles.trader;
     
-    // Set table actions based on user role
     if (this.isTrader) {
-      // Trader: view only
       this.tableActions = [
         {
           name: EAction.view,
@@ -74,7 +68,6 @@ export class FaqsTableComponent {
         }
       ];
     } else {
-      // Admin: full access
       this.tableActions = [
         {
           name: EAction.delete,
@@ -140,13 +133,6 @@ export class FaqsTableComponent {
       ]
     }
   }
-  openFilter() {
-    this.showFilter = true
-  }
-
-  onCloseFilter(event: any) {
-    this.showFilter = false
-  }
 
   getAllFAQS() {
     this.ApiService.get('Content/faqs/paginated', this.faqSearchCreteria).subscribe((res: any) => {
@@ -157,12 +143,6 @@ export class FaqsTableComponent {
       }
 
     })
-    // this.ApiService.get('FAQ/GetAll').subscribe((res: any) => {
-    //   if (res.data) {
-    //     this.faqsList = res.data;
-    //   }
-
-    // })
   }
 
   onPageChange(event: any) {
@@ -170,8 +150,22 @@ export class FaqsTableComponent {
     this.getAllFAQS();
   }
 
-  onSubmit() {
+  onSearch(value: string) {
+    this.filterMixin.onSearchChange(value, () => this.getAllFAQS(), this.faqSearchCreteria, 'enTitle');
+  }
+
+  onSubmitFilter() {
+    this.filterMixin.updateChips([
+      { key: 'enTitle', label: 'faqs.form.title_en', value: this.faqSearchCreteria.enTitle },
+      { key: 'arTitle', label: 'faqs.form.title_ar', value: this.faqSearchCreteria.arTitle },
+    ]);
+    this.faqSearchCreteria.pageNumber = 1;
     this.getAllFAQS();
+    this.filterMixin.filtersExpanded = false;
+  }
+
+  onChipRemove(key: string) {
+    this.filterMixin.removeChip(key, this.faqSearchCreteria, () => this.getAllFAQS());
   }
 
   reset() {
@@ -183,7 +177,9 @@ export class FaqsTableComponent {
       enTitle: "",
       arTitle: ""
     };
+    this.filterMixin.searchValue = '';
+    this.filterMixin.filterChips = [];
+    this.filterMixin.filtersExpanded = false;
     this.getAllFAQS();
-    this.showFilter = false
   }
 }

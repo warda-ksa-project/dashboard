@@ -7,10 +7,7 @@ import {
   TableComponent,
 } from '../../../components/table/table.component';
 import { ApiService } from '../../../services/api.service';
-import { RouterModule } from '@angular/router';
 import { IBreadcrumb } from '../../../components/breadcrump/cerqel-breadcrumb.interface';
-import { BreadcrumpComponent } from '../../../components/breadcrump/breadcrump.component';
-import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { LanguageService } from '../../../services/language.service';
 import {
@@ -18,11 +15,11 @@ import {
   IcolHeaderSmallTable,
   TableSmallScreenComponent,
 } from '../../../components/table-small-screen/table-small-screen.component';
-import { DrawerComponent } from '../../../components/drawer/drawer.component';
 import { PaginationComponent } from '../../../components/pagination/pagination.component';
-import { NgIf, TitleCasePipe } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
 import { Roles } from '../../../conts';
+import { ListPageShellComponent } from '../../../components/list-page-shell/list-page-shell.component';
+import { ListPageFilterMixin } from '../../../core/list-page.mixin';
 
 const global_pageName = 'piece_products.pageName';
 const global_router_add_url_in_Table = '/piece-product/add';
@@ -33,17 +30,12 @@ const global_API_getAll = 'Products/piece';
   selector: 'app-piece-products-table',
   standalone: true,
   imports: [
-    NgIf,
     TableComponent,
-    TitleCasePipe,
     PaginationComponent,
     TranslatePipe,
     FormsModule,
-    DrawerComponent,
-    BreadcrumpComponent,
-    RouterModule,
-    InputTextModule,
     TableSmallScreenComponent,
+    ListPageShellComponent,
   ],
   templateUrl: './piece-products-table.component.html',
   styleUrl: './piece-products-table.component.scss',
@@ -51,11 +43,10 @@ const global_API_getAll = 'Products/piece';
 export class PieceProductsTableComponent {
   global_router_add_url_in_Table = global_router_add_url_in_Table;
   pageName = signal<string>(global_pageName);
+  filterMixin = new ListPageFilterMixin();
   isTrader: boolean = false;
   isAdmin: boolean = false;
 
-
-  showFilter: boolean = false;
   tableActions: ITableAction[] = [
     {
       name: EAction.delete,
@@ -199,13 +190,6 @@ export class PieceProductsTableComponent {
       this.role=res.data
     })
   }
-  openFilter() {
-    this.showFilter = true;
-  }
-
-  onCloseFilter(event: any) {
-    this.showFilter = false;
-  }
 
   /** Normalize piece product item: ensure traderName & storeName from API (trader object or root) */
   private mapProductItem(item: any): any {
@@ -237,26 +221,22 @@ export class PieceProductsTableComponent {
     this.API_getAll();
   }
 
-  filterData() {
-    this.dataList = this.filteredData;
-    const search = this.searchValue.toLowerCase();
-
-    if (this.searchValue.length == 1) {
-      this.dataList = this.filteredData;
-      return;
-    }
-
-    this.dataList = this.dataList.filter(
-      (item: any) =>
-        item.enTitle.toLowerCase().includes(search) ||
-        item.arTitle.toLowerCase().includes(search) ||
-        item.enDescription.toLowerCase().includes(search) ||
-        item.arDescription.toLowerCase().includes(search)
-    );
+  onSearch(value: string) {
+    this.filterMixin.onSearchChange(value, () => this.API_getAll(), this.objectSearch, 'enName');
   }
 
   onSubmitFilter() {
+    this.filterMixin.updateChips([
+      { key: 'enName', label: 'piece_products.form.enName', value: this.objectSearch.enName },
+      { key: 'arName', label: 'piece_products.form.arName', value: this.objectSearch.arName },
+    ]);
+    this.objectSearch.pageNumber = 1;
     this.API_getAll();
+    this.filterMixin.filtersExpanded = false;
+  }
+
+  onChipRemove(key: string) {
+    this.filterMixin.removeChip(key, this.objectSearch, () => this.API_getAll());
   }
 
   reset() {
@@ -268,7 +248,9 @@ export class PieceProductsTableComponent {
       enName: '',
       arName: '',
     };
+    this.filterMixin.searchValue = '';
+    this.filterMixin.filterChips = [];
+    this.filterMixin.filtersExpanded = false;
     this.API_getAll();
-    this.showFilter = false;
   }
 }

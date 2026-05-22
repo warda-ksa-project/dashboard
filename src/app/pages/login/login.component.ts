@@ -4,6 +4,7 @@ import {
   ElementRef,
   Inject,
   inject,
+  NgZone,
   OnDestroy,
   ViewChild,
 } from '@angular/core';
@@ -67,6 +68,7 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
 
   loginForm: FormGroup;
   toaster = inject(ToasterService);
+  private ngZone = inject(NgZone);
 
   readonly recaptchaSiteKey = (environment.recaptchaSiteKey ?? '').trim();
   captchaToken = '';
@@ -107,6 +109,7 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
       : null;
     this.updatePhoneValidators();
     this.isAdmin = null;
+    this.updateCanSubmit();
   }
 
   private getPhoneLength(c: any): number {
@@ -188,12 +191,16 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
       this.recaptchaWidgetId = g.render(el, {
         sitekey: this.recaptchaSiteKey,
         callback: (token: string) => {
-          this.captchaToken = token;
-          this.updateCanSubmit();
+          this.ngZone.run(() => {
+            this.captchaToken = token;
+            this.updateCanSubmit();
+          });
         },
         'expired-callback': () => {
-          this.captchaToken = '';
-          this.updateCanSubmit();
+          this.ngZone.run(() => {
+            this.captchaToken = '';
+            this.updateCanSubmit();
+          });
         },
       });
     };
@@ -229,15 +236,20 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
   private updateCanSubmit() {
     const len = this.selectedCountry?.phoneLength ?? 0;
     const phone = (this.loginForm.get('phoneNumber')?.value ?? '').toString().replace(/\D/g, '');
-    const hasMinLength = len > 0 && phone.length >= len;
+    const countryOk = !!this.loginForm.get('country')?.value;
+    const phoneOk = len > 0 && phone.length === len && /^\d+$/.test(phone);
     const captchaOk = !this.recaptchaSiteKey || !!this.captchaToken;
-    this.canSubmit = !!(
-      this.loginForm.valid &&
-      hasMinLength &&
-      this.isAdmin !== null &&
-      !this.isCheckingAdmin &&
-      captchaOk
-    );
+    this.canSubmit = countryOk && phoneOk && captchaOk;
+  }
+
+  private getPhoneDigits(): string {
+    return (this.loginForm.get('phoneNumber')?.value ?? '').toString().replace(/\D/g, '');
+  }
+
+  private isPhoneValid(): boolean {
+    const len = this.selectedCountry?.phoneLength ?? 0;
+    const phone = this.getPhoneDigits();
+    return len > 0 && phone.length === len && /^\d+$/.test(phone);
   }
 
   private watchPhoneAndCheckAdmin() {
@@ -264,10 +276,14 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
           if (digits.length < requiredLen) {
             this.isAdmin = null;
             this.isCheckingAdmin = false;
+            this.updateCanSubmit();
           }
         }),
         filter(({ requiredLen, digits }) => requiredLen > 0 && digits.length >= requiredLen),
-        tap(() => (this.isCheckingAdmin = true)),
+        tap(() => {
+          this.isCheckingAdmin = true;
+          this.updateCanSubmit();
+        }),
         switchMap(({ digits }) => {
           return this.api.get<any>('Auth/check-admin', { Phone: digits }).pipe(
             map((res: any) => !!(res?.data ?? res?.result ?? res)),
@@ -297,7 +313,7 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
 
   onSubmit() {
     const phoneCtrl = this.loginForm.get('phoneNumber');
-    const digits = (phoneCtrl?.value ?? '').toString().replace(/\D/g, '');
+    const digits = this.getPhoneDigits();
     const requiredLen = this.selectedCountry?.phoneLength ?? 0;
 
     phoneCtrl?.markAsTouched();
@@ -306,24 +322,49 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
       this.toaster.errorToaster(this.translate.instant('login.select_country_first'));
       return;
     }
-    if (requiredLen > 0 && digits.length !== requiredLen) {
+    if (!this.isPhoneValid()) {
       this.toaster.errorToaster(
         this.translate.instant('login.phone_length_invalid', { count: requiredLen })
       );
-      return;
-    }
-    if (!this.canSubmit) {
-      if (this.isCheckingAdmin) this.toaster.errorToaster(this.translate.instant('login.wait_verification'));
-      else if (this.isAdmin === null && digits.length >= requiredLen)
-        this.toaster.errorToaster(this.translate.instant('login.wait_verification'));
-      else this.toaster.errorToaster(this.translate.instant('login.complete_all_fields'));
       return;
     }
     if (this.recaptchaSiteKey && !this.captchaToken) {
       this.toaster.errorToaster(this.translate.instant('login.captcha_required'));
       return;
     }
+    if (this.isCheckingAdmin) {
+      this.toaster.errorToaster(this.translate.instant('login.wait_verification'));
+      return;
+    }
+
+    if (this.isAdmin === null) {
+      this.resolveAdminAndLogin(digits);
+      return;
+    }
+
     this.onLogin(this.loginForm.value);
+  }
+
+  private resolveAdminAndLogin(digits: string) {
+    this.isCheckingAdmin = true;
+    this.api.get<any>('Auth/check-admin', { Phone: digits }).subscribe({
+      next: (res: any) => {
+        this.isCheckingAdmin = false;
+        this.isAdmin = !!(res?.data ?? res?.result ?? res);
+        this.loginForm.get('roleId')?.setValue(this.isAdmin ? 1 : 2);
+        this.updateCanSubmit();
+        this.onLogin(this.loginForm.value);
+      },
+      error: (err) => {
+        this.isCheckingAdmin = false;
+        this.isAdmin = false;
+        this.loginForm.get('roleId')?.setValue(2);
+        this.updateCanSubmit();
+        const msg = err?.error?.error?.message || err?.error?.message || err?.message;
+        if (msg) this.toaster.errorToaster(msg);
+        else this.onLogin(this.loginForm.value);
+      },
+    });
   }
 
   getAllCountries() {
@@ -345,6 +386,7 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
           this.loginForm.patchValue({ country: this.countries[0].code });
           this.onCountryChange(this.countries[0].code);
         }
+        this.updateCanSubmit();
       }
     });
   }

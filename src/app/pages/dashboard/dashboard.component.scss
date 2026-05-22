@@ -1,225 +1,75 @@
-.showSmallTable{
-  display: none;
-}
-.fz-20 {
-  font-size: 20px;
-}
-.color-gray {
-  color: #b8b2b2;
+.dashboard-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--warda-space-6);
 }
 
-.table-container {
-  h2 {
-    color: #7d7d7d;
-    margin-bottom: 20px;
+.dashboard-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--warda-space-4);
+}
+
+.trader-hero {
+  padding: var(--warda-space-6);
+  background: linear-gradient(135deg, var(--warda-primary-subtle) 0%, var(--warda-card-bg) 100%);
+  border-color: var(--warda-primary);
+
+  &__content {
+    display: flex;
+    align-items: center;
+    gap: var(--warda-space-4);
   }
-  .page-trader-container {
-    .header{
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      .card-container {
-         width: 50%;
-        .card {
-          min-width: 240px;
-          border-radius: 15px;
-          min-height: 100px;
-          border: unset;
-          margin: 10px;
-          padding: 10px;
-          background-color: #fff;
-          transition: transform 0.3s ease, box-shadow 0.3s ease;
-          box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-          .item-header {
-            display: flex;
-            justify-items: center;
-            margin-bottom: 10px;
-            .title {
-              margin: 0px 5px;
-            }
-            .icon {
-              background: var(--warda-primary, #7a1e3b);
-              padding: 8px;
-              color: #fff;
-              border-radius: 50%;
-            }
-          }
-          .item-footer {
-            text-align: end;
-          }
-          &:hover {
-            transform: translateY(-10px);
-          }
-        }
-      
-      }
-      .chart-container{
-        width: 50%;
-        min-width: 274px;
-        .card{
-          border: unset;
-          box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-        }
-       .chart{
-        padding: 10px;
 
-       }
-      }
-    }
-   
-    .pop-products {
-      background-color: #fff;
-      padding: 10px;
-      border-radius: 8px;
-      margin-top: 30px;
-      box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    background: var(--warda-primary);
+    color: white;
+    border-radius: var(--warda-radius-lg);
+    font-size: 1.5rem;
+  }
 
-      h2.prod{
-        span{
-          background: var(--warda-primary, #7a1e3b);
-        padding: 10px;
-        color: #fff;
-        border-radius: 50%;
-        }
-      }
-      .pi-filter{
-        // border-radius: 8px;
-        // background-color: red;
-      }
+  &__label {
+    margin: 0 0 var(--warda-space-1);
+    font-size: var(--warda-text-sm);
+    color: var(--warda-text-secondary);
+  }
+
+  &__value {
+    margin: 0;
+    font-size: var(--warda-text-2xl);
+    font-weight: 700;
+    color: var(--warda-text-primary);
+
+    span {
+      font-size: var(--warda-text-sm);
+      font-weight: 500;
+      color: var(--warda-text-muted);
+      margin-inline-start: var(--warda-space-1);
     }
   }
 }
 
-@media only screen and (max-width:990px) {
-  .card-container{
-    width: auto!important;
-  }
-  .chart-container{
-    width: 100%!important;
-    margin-top: 10px;
-  }
-  .showSmallTable{
-    display: block!important;
+.dashboard-chart-card {
+  min-height: 360px;
+}
+
+.warda-card-header h3 {
+  display: flex;
+  align-items: center;
+  gap: var(--warda-space-2);
+
+  .pi {
+    color: var(--warda-primary);
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// .dashboard-container {
-//   h2 {
-//     color: #7d7d7d;
-//     margin-bottom: 20px;
-//   }
-
-// .static-dashboard-data {
-//   border-radius: 16px;
-//   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-//   padding: 15px;
-//   .static-section-data {
-//     .static-card {
-//       border-radius: 6px;
-//       box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-//       padding: 10px;
-
-//       .content {
-//         display: flex;
-//         flex-direction: column;
-//         justify-content: center;
-//         align-items: center;
-//         gap: 20px;
-
-//         .data {}
-
-//         .title {
-//           p {
-//             font-size: 20px;
-//             color: gray;
-//           }
-//         }
-//       }
-//     }
-//   }
-// }
-
-//   .content {
-//     .card {
-//       border-radius: 15px;
-//       border: 1px solid #d0d0d09e;
-//       box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-//       height: 150px;
-//       display: flex;
-//       flex-direction: column;
-//       justify-content: space-between;
-//       transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-//       &:hover {
-//         transform: translateY(-10px);
-//         border-color: rgb(22, 184, 22);
-//       }
-
-//       .static-section {
-//         flex-direction: row;
-//         padding: 10px 30px;
-
-//         .details-section {
-//           display: flex;
-//           flex-direction: column;
-//           align-items: flex-end;
-
-//           .value {
-//             p {
-//               font-size: 30px;
-//             }
-//           }
-
-//           .title {
-//             p {
-//               font-size: 20px;
-//               color: gray;
-//             }
-//           }
-//         }
-//       }
-
-//       .routing-section {
-//         border-top: 1px solid #d0d0d0;
-//         height: 40px;
-//         cursor: pointer;
-//         text-decoration: none;
-
-//         .content {
-//           display: flex;
-//           justify-content: space-between;
-//           align-items: center;
-//           flex-direction: row;
-//           padding-inline: 17px;
-//           margin-top: 5px;
-
-//           .arrow {
-//             img {
-//               &:lang(ar) {
-//                 transform: rotate(180deg) !important;
-//               }
-//             }
-//           }
-//         }
-//       }
-
-//     }
-//   }
-// }
+@media (max-width: 576px) {
+  .dashboard-kpi-grid {
+    grid-template-columns: 1fr;
+  }
+}

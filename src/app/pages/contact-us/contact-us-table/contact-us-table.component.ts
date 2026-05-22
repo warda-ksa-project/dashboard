@@ -1,17 +1,14 @@
 import { Component, inject, signal } from '@angular/core';
 import { EAction, EType, IcolHeader, ITableAction, TableComponent } from '../../../components/table/table.component';
 import { ApiService } from '../../../services/api.service';
-import { RouterModule } from '@angular/router';
 import { IBreadcrumb } from '../../../components/breadcrump/cerqel-breadcrumb.interface';
-import { BreadcrumpComponent } from '../../../components/breadcrump/breadcrump.component';
-import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { LanguageService } from '../../../services/language.service';
 import { ETableShow, IcolHeaderSmallTable, TableSmallScreenComponent } from '../../../components/table-small-screen/table-small-screen.component';
-import { DrawerComponent } from '../../../components/drawer/drawer.component';
 import { PaginationComponent } from '../../../components/pagination/pagination.component';
-import { TitleCasePipe } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
+import { ListPageShellComponent } from '../../../components/list-page-shell/list-page-shell.component';
+import { ListPageFilterMixin } from '../../../core/list-page.mixin';
 
 const global_pageName='contact_us.pageName'
 const global_router_add_url_in_Table ='/contact-us/add'
@@ -23,15 +20,15 @@ const global_API_delete='Content/contact'
 @Component({
   selector: 'app-contact-us-table',
   standalone: true,
-  imports: [TableComponent, PaginationComponent,TitleCasePipe,TranslatePipe, FormsModule, DrawerComponent, BreadcrumpComponent, RouterModule, InputTextModule, TableSmallScreenComponent],
+  imports: [TableComponent, PaginationComponent, TranslatePipe, FormsModule, TableSmallScreenComponent, ListPageShellComponent],
   templateUrl: './contact-us-table.component.html',
   styleUrl: './contact-us-table.component.scss'
 })
 export class ContactUsTableComponent {
   global_router_add_url_in_Table =global_router_add_url_in_Table
   pageName =signal<string>(global_pageName);
+  filterMixin = new ListPageFilterMixin();
 
-  showFilter: boolean = false
   tableActions: ITableAction[] = [
     {
       name: EAction.delete,
@@ -43,11 +40,6 @@ export class ContactUsTableComponent {
       apiName_or_route:  global_router_view_url,
       autoCall: true
     },
-    // {
-    //   name: EAction.edit,
-    //   apiName_or_route: global_router_edit_url,
-    //   autoCall: true
-    // }
   ]
   private ApiService = inject(ApiService)
 
@@ -122,14 +114,6 @@ export class ContactUsTableComponent {
     }
   }
 
-  openFilter() {
-    this.showFilter = true
-  }
-
-  onCloseFilter(event: any) {
-    this.showFilter = false
-  }
-
   API_getAll() {
     this.ApiService.get(global_API_getAll, this.objectSearch).subscribe((res: any) => {
       if (res) {
@@ -139,12 +123,6 @@ export class ContactUsTableComponent {
       }
 
     })
-    // this.ApiService.get(global_API_getAll).subscribe((res: any) => {
-    //   if (res.data) {
-    //     this.dataList = res.data;
-    //   }
-
-    // })
   }
 
   onPageChange(event: any) {
@@ -153,24 +131,21 @@ export class ContactUsTableComponent {
     this.API_getAll();
   }
 
-  filterData() {
-    this.dataList = this.filteredData;
-    const search = this.searchValue.toLowerCase();
-
-    if (this.searchValue.length == 1) {
-      this.dataList = this.filteredData;
-      return;
-    }
-
-    this.dataList = this.dataList.filter((item: any) =>
-      item.enTitle.toLowerCase().includes(search) ||
-      item.arTitle.toLowerCase().includes(search) ||
-      item.enDescription.toLowerCase().includes(search) ||
-      item.arDescription.toLowerCase().includes(search)
-    );
+  onSearch(value: string) {
+    this.filterMixin.onSearchChange(value, () => this.API_getAll(), this.objectSearch, 'name');
   }
+
   onSubmitFilter() {
+    this.filterMixin.updateChips([
+      { key: 'name', label: 'contact_us.form.name', value: this.objectSearch.name },
+    ]);
+    this.objectSearch.pageNumber = 1;
     this.API_getAll();
+    this.filterMixin.filtersExpanded = false;
+  }
+
+  onChipRemove(key: string) {
+    this.filterMixin.removeChip(key, this.objectSearch, () => this.API_getAll());
   }
 
   reset() {
@@ -181,8 +156,9 @@ export class ContactUsTableComponent {
       sortingDirection: 0,
       name:''
     }
+    this.filterMixin.searchValue = '';
+    this.filterMixin.filterChips = [];
+    this.filterMixin.filtersExpanded = false;
     this.API_getAll();
-    this.showFilter = false
   }
 }
-

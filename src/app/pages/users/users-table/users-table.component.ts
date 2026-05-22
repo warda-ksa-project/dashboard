@@ -8,10 +8,6 @@ import {
   TableComponent,
 } from '../../../components/table/table.component';
 import { ApiService } from '../../../services/api.service';
-import { RouterModule } from '@angular/router';
-import { IBreadcrumb } from '../../../components/breadcrump/cerqel-breadcrumb.interface';
-import { BreadcrumpComponent } from '../../../components/breadcrump/breadcrump.component';
-import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { LanguageService } from '../../../services/language.service';
 import {
@@ -19,50 +15,42 @@ import {
   IcolHeaderSmallTable,
   TableSmallScreenComponent,
 } from '../../../components/table-small-screen/table-small-screen.component';
-import { DrawerComponent } from '../../../components/drawer/drawer.component';
 import { PaginationComponent } from '../../../components/pagination/pagination.component';
-import { TitleCasePipe } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
+import { IBreadcrumb } from '../../../components/breadcrump/cerqel-breadcrumb.interface';
+import { ListPageShellComponent } from '../../../components/list-page-shell/list-page-shell.component';
+import { ListPageFilterMixin } from '../../../core/list-page.mixin';
 
 const global_pageName = 'users.pageName';
 const global_router_add_url_in_Table = '/user/add';
 const global_router_view_url = '/user/view';
 const global_router_edit_url = '/user/edit';
 const global_API_getAll = 'Users/paginated';
-const global_toggleOptions:IToggleOptions={
-  apiName:'Users',
-  autoCall:true,
-  }
+const global_toggleOptions: IToggleOptions = {
+  apiName: 'Users',
+  autoCall: true,
+};
 
 @Component({
   selector: 'app-users-table',
   standalone: true,
   imports: [
     TableComponent,
-    TitleCasePipe,
     PaginationComponent,
     TranslatePipe,
     FormsModule,
-    DrawerComponent,
-    BreadcrumpComponent,
-    RouterModule,
-    InputTextModule,
     TableSmallScreenComponent,
+    ListPageShellComponent,
   ],
   templateUrl: './users-table.component.html',
-  styleUrl: './users-table.component.scss'
+  styleUrl: './users-table.component.scss',
 })
 export class UsersTableComponent {
-global_router_add_url_in_Table = global_router_add_url_in_Table;
+  global_router_add_url_in_Table = global_router_add_url_in_Table;
   pageName = signal<string>(global_pageName);
+  filterMixin = new ListPageFilterMixin();
 
-  showFilter: boolean = false;
   tableActions: ITableAction[] = [
-    // {
-    //   name: EAction.delete,
-    //   apiName_or_route: 'user/DeactiveUser?id',
-    //   autoCall: true,
-    // },
     {
       name: EAction.view,
       apiName_or_route: global_router_view_url,
@@ -76,9 +64,7 @@ global_router_add_url_in_Table = global_router_add_url_in_Table;
   ];
   private ApiService = inject(ApiService);
 
-  bredCrumb: IBreadcrumb = {
-    crumbs: [],
-  };
+  bredCrumb: IBreadcrumb = { crumbs: [] };
 
   objectSearch = {
     pageNumber: 1,
@@ -87,17 +73,13 @@ global_router_add_url_in_Table = global_router_add_url_in_Table;
     sortingDirection: 1,
     nameAr: '',
     phone: '',
+    searchTerm: '',
   };
 
   totalCount: number = 0;
-
-  searchValue: any = '';
-  filteredData: any;
   dataList: any = [];
   columns: IcolHeader[] = [];
-
   columnsSmallTable: IcolHeaderSmallTable[] = [];
-
   selectedLang: any;
   languageService = inject(LanguageService);
 
@@ -116,151 +98,62 @@ global_router_add_url_in_Table = global_router_add_url_in_Table;
 
   displayTableCols(currentLang: string) {
     this.columns = [
-      {
-        keyName: 'id',
-        header: this.languageService.translate('Id'),
-        type: EType.id,
-        show: true,
-      },
-      {
-        keyName: 'name',
-        header: this.languageService.translate('users.form.name'),
-        type: EType.text,
-        show: true,
-      },
-      {
-        keyName: 'role',
-        header: this.languageService.translate('users.form.role'),
-        type: EType.text,
-        show: true,
-      },
-      {
-        keyName: 'email',
-        header: this.languageService.translate('users.form.email'),
-        type: EType.text,
-        show: true,
-      },
-      {
-        keyName: 'phone',
-        header: this.languageService.translate('users.form.phone'),
-        type: EType.text,
-        show: true,
-      },
-            { keyName: 'isActive', header: this.languageService.translate('users.form.status'), type: EType.toggle, toggleOptions: global_toggleOptions, show: true },
-      
-     
-      {
-        keyName: '',
-        header: this.languageService.translate('Action'),
-        type: EType.actions,
-        actions: this.tableActions,
-        show: true,
-      },
-          
+      { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: true },
+      { keyName: 'name', header: this.languageService.translate('users.form.name'), type: EType.text, show: true },
+      { keyName: 'role', header: this.languageService.translate('users.form.role'), type: EType.text, show: true },
+      { keyName: 'email', header: this.languageService.translate('users.form.email'), type: EType.text, show: true },
+      { keyName: 'phone', header: this.languageService.translate('users.form.phone'), type: EType.text, show: true },
+      { keyName: 'isActive', header: this.languageService.translate('users.form.status'), type: EType.toggle, toggleOptions: global_toggleOptions, show: true },
+      { keyName: '', header: this.languageService.translate('Action'), type: EType.actions, actions: this.tableActions, show: true },
     ];
     this.columnsSmallTable = [
-      {
-        keyName: 'id',
-        header: this.languageService.translate('Id'),
-        type: EType.id,
-        show: false,
-      },
-      {
-        keyName: 'name',
-        header: this.languageService.translate('users.form.name'),
-        type: EType.text,
-        showAs: ETableShow.header,
-      },
-      {
-        keyName: 'role',
-        header: this.languageService.translate('users.form.role'),
-        type: EType.text,
-        showAs: ETableShow.header,
-      },
-      {
-        keyName: 'email',
-        header: this.languageService.translate('users.form.email'),
-        type: EType.text,
-        showAs: ETableShow.header,
-      },
-      {
-        keyName: 'phone',
-        header: this.languageService.translate('users.form.phone'),
-        type: EType.text,
-        showAs: ETableShow.header,
-      },
-      
-      
+      { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: false },
+      { keyName: 'name', header: this.languageService.translate('users.form.name'), type: EType.text, showAs: ETableShow.header },
+      { keyName: 'role', header: this.languageService.translate('users.form.role'), type: EType.text, showAs: ETableShow.header },
+      { keyName: 'email', header: this.languageService.translate('users.form.email'), type: EType.text, showAs: ETableShow.header },
+      { keyName: 'phone', header: this.languageService.translate('users.form.phone'), type: EType.text, showAs: ETableShow.header },
     ];
   }
 
   getBreadCrumb() {
     this.bredCrumb = {
       crumbs: [
-        {
-          label: this.languageService.translate('Home'),
-          routerLink: '/dashboard-admin',
-        },
-        {
-          label: this.languageService.translate(this.pageName()),
-        },
+        { label: this.languageService.translate('Home'), routerLink: '/dashboard-admin' },
+        { label: this.languageService.translate(this.pageName()) },
       ],
     };
   }
 
-  openFilter() {
-    this.showFilter = true;
-  }
-
-  onCloseFilter(event: any) {
-    this.showFilter = false;
-  }
-
   API_getAll() {
-    this.ApiService.get(global_API_getAll, this.objectSearch).subscribe(
-      (res: any) => {
-        if (res) {
-          this.dataList = res.data.items;
-          this.totalCount = res.data.totalCount;
-          this.filteredData = [...this.dataList];
-        }
+    this.ApiService.get(global_API_getAll, this.objectSearch).subscribe((res: any) => {
+      if (res) {
+        this.dataList = res.data.items;
+        this.totalCount = res.data.totalCount;
       }
-    );
-    // this.ApiService.get(global_API_getAll).subscribe(
-    //   (res: any) => {
-    //     if (res) {
-    //       this.dataList = res.data;
-    //     }
-    //   }
-    // );
+    });
   }
 
   onPageChange(event: any) {
-    console.log(event);
     this.objectSearch.pageNumber = event;
     this.API_getAll();
   }
 
-  filterData() {
-    this.dataList = this.filteredData;
-    const search = this.searchValue.toLowerCase();
-
-    if (this.searchValue.length == 1) {
-      this.dataList = this.filteredData;
-      return;
-    }
-
-    this.dataList = this.dataList.filter(
-      (item: any) =>
-        item.enTitle.toLowerCase().includes(search) ||
-        item.arTitle.toLowerCase().includes(search) ||
-        item.enDescription.toLowerCase().includes(search) ||
-        item.arDescription.toLowerCase().includes(search)
-    );
+  onSearch(value: string) {
+    this.filterMixin.onSearchChange(value, () => this.API_getAll(), this.objectSearch, 'phone');
   }
 
   onSubmitFilter() {
+    this.filterMixin.updateChips([
+      { key: 'phone', label: 'users.form.phone', value: this.objectSearch.phone },
+      { key: 'nameAr', label: 'users.form.name', value: this.objectSearch.nameAr },
+    ]);
+    this.objectSearch.pageNumber = 1;
     this.API_getAll();
+    this.filterMixin.filtersExpanded = false;
+  }
+
+  onChipRemove(key: string) {
+    this.filterMixin.removeChip(key, this.objectSearch, () => this.API_getAll());
   }
 
   reset() {
@@ -271,8 +164,11 @@ global_router_add_url_in_Table = global_router_add_url_in_Table;
       sortingDirection: 1,
       nameAr: '',
       phone: '',
+      searchTerm: '',
     };
+    this.filterMixin.searchValue = '';
+    this.filterMixin.filterChips = [];
+    this.filterMixin.filtersExpanded = false;
     this.API_getAll();
-    this.showFilter = false;
   }
 }

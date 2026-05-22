@@ -1,0 +1,21 @@
+<div class="stat-card">
+  <div class="stat-card__header">
+    <span class="stat-card__icon" [class]="icon"></span>
+    <span class="stat-card__label">{{ label | translate }}</span>
+  </div>
+  <div class="stat-card__value">
+    <span class="stat-card__number">{{ value }}</span>
+    @if (suffix) {
+      <span class="stat-card__suffix">{{ suffix }}</span>
+    }
+  </div>
+  @if (trend !== undefined && trend !== null) {
+    <div class="stat-card__footer" [class.stat-card__footer--up]="trend >= 0" [class.stat-card__footer--down]="trend < 0">
+      <span class="pi" [class.pi-arrow-up]="trend >= 0" [class.pi-arrow-down]="trend < 0"></span>
+      <span>{{ trend >= 0 ? '+' : '' }}{{ trend }}%</span>
+      @if (trendLabel) {
+        <span class="stat-card__trend-label">{{ trendLabel | translate }}</span>
+      }
+    </div>
+  }
+</div>

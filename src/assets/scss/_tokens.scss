@@ -1,0 +1,85 @@
+:root {
+  /* Surfaces */
+  --warda-page-bg: #f8fafc;
+  --warda-card-bg: #ffffff;
+  --warda-sidebar-bg: #ffffff;
+  --warda-surface-muted: #f1f5f9;
+  --warda-surface-hover: #f8fafc;
+
+  /* Text */
+  --warda-text-primary: #0f172a;
+  --warda-text-secondary: #64748b;
+  --warda-text-muted: #94a3b8;
+  --warda-text-inverse: #ffffff;
+
+  /* Brand */
+  --warda-primary: #7a1e3b;
+  --warda-primary-dark: #5c1530;
+  --warda-primary-light: #9b3a5a;
+  --warda-primary-subtle: #fdf2f5;
+
+  /* Borders & shadows */
+  --warda-border: #e2e8f0;
+  --warda-border-light: #f1f5f9;
+  --warda-shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+  --warda-shadow-md: 0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --warda-shadow-lg: 0 4px 12px rgba(15, 23, 42, 0.08);
+
+  /* Semantic */
+  --warda-success: #16a34a;
+  --warda-success-bg: #f0fdf4;
+  --warda-warning: #d97706;
+  --warda-warning-bg: #fffbeb;
+  --warda-error: #dc2626;
+  --warda-error-bg: #fef2f2;
+  --warda-info: #0284c7;
+  --warda-info-bg: #f0f9ff;
+
+  /* Radius */
+  --warda-radius-sm: 6px;
+  --warda-radius-md: 8px;
+  --warda-radius-lg: 12px;
+  --warda-radius-xl: 16px;
+  --warda-radius-full: 9999px;
+
+  /* Spacing */
+  --warda-space-1: 4px;
+  --warda-space-2: 8px;
+  --warda-space-3: 12px;
+  --warda-space-4: 16px;
+  --warda-space-5: 20px;
+  --warda-space-6: 24px;
+  --warda-space-8: 32px;
+  --warda-space-10: 40px;
+  --warda-space-12: 48px;
+
+  /* Layout */
+  --warda-sidebar-width: 260px;
+  --warda-sidebar-collapsed: 72px;
+  --warda-navbar-height: 64px;
+  --warda-content-padding: 24px;
+  --warda-content-padding-mobile: 16px;
+
+  /* Typography */
+  --warda-text-xs: 0.75rem;
+  --warda-text-sm: 0.875rem;
+  --warda-text-base: 1rem;
+  --warda-text-lg: 1.125rem;
+  --warda-text-xl: 1.25rem;
+  --warda-text-2xl: 1.5rem;
+
+  /* Z-index */
+  --warda-z-sidebar: 100;
+  --warda-z-navbar: 200;
+  --warda-z-drawer: 300;
+  --warda-z-modal: 400;
+  --warda-z-toast: 500;
+
+  /* PrimeNG bridge */
+  --main-text-color: var(--warda-text-primary);
+  --p-primary-color: var(--warda-primary);
+  --p-button-primary-background: var(--warda-primary);
+  --p-button-primary-hover-background: var(--warda-primary-dark);
+  --p-button-primary-active-background: #4a1120;
+  --p-button-primary-border-color: var(--warda-primary);
+}

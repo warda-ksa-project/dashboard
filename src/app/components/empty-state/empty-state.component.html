@@ -1,0 +1,8 @@
+<div class="empty-state">
+  <span class="empty-state__icon" [class]="icon"></span>
+  <h3 class="empty-state__title">{{ title | translate }}</h3>
+  @if (description) {
+    <p class="empty-state__desc">{{ description | translate }}</p>
+  }
+  <ng-content></ng-content>
+</div>

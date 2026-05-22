@@ -1,21 +1,28 @@
 <div class="login-container">
-  <div class="content">
-    <div class="form-section">
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <div class="details d-flex justify-content-between">
-          <div class="d-flex flex-col">
-            <h2>{{'login.welcome'|translate}}</h2>
-            <p>{{'login.sign_to_dashboard'|translate}}</p>
+  <div class="login-card">
+    <div class="login-brand hide-part">
+      <div class="login-brand__content">
+        <img [src]="brandLogoSrc" alt="Warda" class="login-brand__logo" />
+        <h1>{{ 'login.welcome' | translate }}</h1>
+        <p>{{ 'login.sign_to_dashboard' | translate }}</p>
+      </div>
+      <div class="login-brand__pattern"></div>
+    </div>
+
+    <div class="login-form-section">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+        <div class="login-form__header">
+          <div>
+            <h2>{{ 'login.welcome' | translate }}</h2>
+            <p>{{ 'login.sign_to_dashboard' | translate }}</p>
           </div>
-          <div class="user-section">
-            <button type="button" class="lang-btn" (click)="toggleLanguage()">
-              {{ selectedLang.toUpperCase() == 'AR' ? 'EN' : 'AR' }}
-            </button>
-          </div>
+          <button type="button" class="warda-btn warda-btn-secondary warda-btn-sm lang-btn" (click)="toggleLanguage()">
+            {{ selectedLang.toUpperCase() == 'AR' ? 'EN' : 'AR' }}
+          </button>
         </div>
 
-        <div class="d-flex flex-col gap-2">
-          <label for="country">{{'login.userName'|translate}}</label>
+        <div class="form-field">
+          <label for="country">{{ 'login.userName' | translate }}</label>
           <div class="phone-input-inline">
             <div class="phone-input-inner">
               <p-select
@@ -24,7 +31,7 @@
                 optionLabel="name"
                 optionValue="code"
                 (onChange)="onCountryChange($event.value)"
-                [placeholder]="('login.select_country'|translate) || 'Select country'"
+                [placeholder]="('login.select_country' | translate) || 'Select country'"
                 appendTo="body"
                 panelStyleClass="login-country-panel"
                 class="country-dropdown-inline"
@@ -49,7 +56,7 @@
                 type="tel"
                 inputmode="numeric"
                 formControlName="phoneNumber"
-                [placeholder]="'login.phone_placeholder'|translate"
+                [placeholder]="'login.phone_placeholder' | translate"
                 [attr.maxlength]="selectedCountry?.phoneLength ?? 15"
                 class="phone-digits-input"
               />
@@ -70,21 +77,15 @@
           <div #recaptchaContainer class="recaptcha-container"></div>
         </div>
 
-        <div class="actions">
-          <button
-            type="submit"
-            class="send-btn"
-            [class.send-btn--not-ready]="!canSubmit"
-            [attr.aria-disabled]="!canSubmit"
-          >
-            {{'login.btn_login'|translate}}
-            <span class="pi pi-arrow-right"></span>
-          </button>
-        </div>
+        <button
+          type="submit"
+          class="warda-btn warda-btn-primary login-submit"
+          [class.login-submit--disabled]="!canSubmit"
+        >
+          {{ 'login.btn_login' | translate }}
+          <span class="pi pi-arrow-right"></span>
+        </button>
       </form>
-    </div>
-    <div class="details-section hide-part">
-      <img width="250" [src]="brandLogoSrc" alt="Warda">
     </div>
   </div>
 </div>

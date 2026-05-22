@@ -1,0 +1,29 @@
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--warda-space-12) var(--warda-space-6);
+  text-align: center;
+
+  &__icon {
+    font-size: 3rem;
+    color: var(--warda-text-muted);
+    margin-bottom: var(--warda-space-4);
+    opacity: 0.6;
+  }
+
+  &__title {
+    margin: 0 0 var(--warda-space-2);
+    font-size: var(--warda-text-lg);
+    font-weight: 600;
+    color: var(--warda-text-primary);
+  }
+
+  &__desc {
+    margin: 0;
+    font-size: var(--warda-text-sm);
+    color: var(--warda-text-secondary);
+    max-width: 360px;
+  }
+}

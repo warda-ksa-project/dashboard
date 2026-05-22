@@ -6,6 +6,7 @@ import { ApiService } from '../../services/api.service';
 import { Router } from '@angular/router';
 import { TooltipModule } from 'primeng/tooltip';
 import { DialogComponent } from '../dialog/dialog.component';
+import { EmptyStateComponent } from '../empty-state/empty-state.component';
 import { CheckBoxComponent } from '../check-box/check-box.component';
 import { environment } from '../../../environments/environment';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -72,7 +73,7 @@ export interface IcolHeader {
 @Component({
   selector: 'app-table',
   standalone: true,
-  imports: [TableModule, CommonModule, TranslatePipe, TooltipModule, DialogComponent, CheckBoxComponent, StripHtmlPipe],
+  imports: [TableModule, CommonModule, TranslatePipe, TooltipModule, DialogComponent, EmptyStateComponent, CheckBoxComponent, StripHtmlPipe],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss'
 })

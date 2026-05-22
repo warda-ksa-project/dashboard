@@ -1,50 +1,67 @@
-div.actions-icon{
-    margin: 0px;
-    span{
-      margin:0px 5px;
+:host ::ng-deep {
+  p-accordion {
+    .p-accordionpanel {
+      margin-bottom: var(--warda-space-3);
+      border: 1px solid var(--warda-border) !important;
+      border-radius: var(--warda-radius-lg) !important;
+      overflow: hidden;
+      box-shadow: var(--warda-shadow-sm);
+    }
+
+    .p-accordionheader {
+      background: var(--warda-card-bg);
+      padding: var(--warda-space-4);
+      font-weight: 600;
+      color: var(--warda-text-primary);
+    }
+
+    .p-accordioncontent-content {
+      padding: var(--warda-space-4);
+      background: var(--warda-surface-muted);
+    }
+  }
+
+  .actions-icon-in-small-table {
+    position: absolute;
+    top: 19px;
+    inset-inline-end: 25px;
+    z-index: 10;
+
+    span {
+      margin: 0 4px;
       cursor: pointer;
+      padding: var(--warda-space-2);
+      border-radius: var(--warda-radius-sm);
+      transition: background 0.15s;
+
+      &:hover {
+        background: var(--warda-surface-muted);
+      }
     }
-    .pi-trash{
-      color:#f76262
+
+    .pi-trash {
+      color: var(--warda-error);
     }
-    .pi-pen-to-square{
-      color:#28a745;
+
+    .pi-pen-to-square {
+      color: var(--warda-success);
     }
-    .pi-eye{
-      color:#6060e7;
+
+    .pi-eye {
+      color: var(--warda-info);
     }
   }
 
-  p-accordion-header{
-    position: relative;
-    .actions-icon-in-small-table{
-       position: absolute;
-       top: 19px;
-       right: 25px;
-       z-index: 99999;
+  .as-card {
+    .card-desc {
+      background-color: var(--warda-surface-muted);
+      border-radius: var(--warda-radius-md);
+      margin: var(--warda-space-2) 0;
+      padding: var(--warda-space-3);
+    }
 
+    .gray {
+      color: var(--warda-text-muted);
     }
   }
-
-
-  //as cards
-
-  .as-card{
-    .info{
-        padding: 0 5px;
-    }
-    .card-desc{
-        background-color: #f9f9f9;
-        border-radius: 4px;
-        margin: 5px 0px;
-        padding: 5px;
-        .desc-content{
-          padding: 5px 10px; 
-          margin-top: 5px;
-        }
-    }
-   .gray{
-    color:gray
-   }
-  }
-  
+}

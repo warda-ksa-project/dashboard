@@ -1,0 +1,19 @@
+.page-header {
+  margin-bottom: var(--warda-space-4);
+
+  &__main {
+    display: flex;
+    flex-direction: column;
+    gap: var(--warda-space-2);
+  }
+
+  &__breadcrumb {
+    padding-inline-start: calc(36px + var(--warda-space-3));
+  }
+}
+
+@media (max-width: 768px) {
+  .page-header__breadcrumb {
+    padding-inline-start: 0;
+  }
+}

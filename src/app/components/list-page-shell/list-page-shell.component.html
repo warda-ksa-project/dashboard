@@ -1,0 +1,39 @@
+<div class="table-container">
+  <div class="content">
+    <app-page-header
+      [title]="pageTitle"
+      [icon]="pageIcon"
+      [breadcrumb]="breadcrumb"
+    ></app-page-header>
+
+    <div class="details-container">
+      <app-page-toolbar
+        [searchValue]="searchValue"
+        [searchPlaceholder]="searchPlaceholder"
+        [showSearch]="showSearch"
+        [showFilters]="showFilters"
+        [filtersExpanded]="filtersExpanded"
+        [activeFilterCount]="activeFilterCount"
+        [addLink]="addLink"
+        [showAdd]="showAdd"
+        (searchChange)="searchChange.emit($event)"
+        (filterToggle)="filterToggle.emit()"
+      ></app-page-toolbar>
+
+      <app-collapsible-filter-panel
+        [expanded]="filtersExpanded"
+        (submit)="filterSubmit.emit()"
+        (reset)="filterReset.emit()"
+      >
+        <ng-content select="[filters]"></ng-content>
+      </app-collapsible-filter-panel>
+
+      <app-filter-chips
+        [chips]="filterChips"
+        (remove)="chipRemove.emit($event)"
+      ></app-filter-chips>
+
+      <ng-content select="[tableContent]"></ng-content>
+    </div>
+  </div>
+</div>

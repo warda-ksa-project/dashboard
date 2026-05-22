@@ -1,4 +1,4 @@
-import { NgFor, NgIf, CurrencyPipe } from '@angular/common';
+import { CurrencyPipe } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { RouterModule } from '@angular/router';
@@ -10,6 +10,9 @@ import { Roles } from '../../conts';
 import { ChartComponent } from '../../components/chart/chart.component';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { CalendarModule } from 'primeng/calendar';
+import { PageHeaderComponent } from '../../components/page-header/page-header.component';
+import { StatCardComponent } from '../../components/stat-card/stat-card.component';
+import { EmptyStateComponent } from '../../components/empty-state/empty-state.component';
 
 const global_pageName = 'products.pageName';
 const global_router_add_url_in_Table = '/product/add';
@@ -20,16 +23,16 @@ const global_router_edit_url = '/product/edit';
   selector: 'app-dashboard-admin',
   standalone: true,
   imports: [
-    NgFor,
     RouterModule,
     ChartComponent,
-    NgIf,
     TranslatePipe,
     ProgressBarModule,
     FormsModule,
-    ChartComponent,
     CalendarModule,
-    CurrencyPipe
+    CurrencyPipe,
+    PageHeaderComponent,
+    StatCardComponent,
+    EmptyStateComponent,
   ],
   providers:[CurrencyPipe],
   templateUrl: './dashboard-admin.component.html',

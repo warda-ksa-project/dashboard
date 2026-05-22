@@ -1,17 +1,14 @@
 import { Component, inject, signal } from '@angular/core';
 import { EAction, EType, IcolHeader, ITableAction, IToggleOptions, TableComponent } from '../../../components/table/table.component';
 import { ApiService } from '../../../services/api.service';
-import { RouterModule } from '@angular/router';
 import { IBreadcrumb } from '../../../components/breadcrump/cerqel-breadcrumb.interface';
-import { BreadcrumpComponent } from '../../../components/breadcrump/breadcrump.component';
-import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { LanguageService } from '../../../services/language.service';
 import { ETableShow, IcolHeaderSmallTable, TableSmallScreenComponent } from '../../../components/table-small-screen/table-small-screen.component';
 import { PaginationComponent } from '../../../components/pagination/pagination.component';
-import { DrawerComponent } from '../../../components/drawer/drawer.component';
-import { TitleCasePipe } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
+import { ListPageShellComponent } from '../../../components/list-page-shell/list-page-shell.component';
+import { ListPageFilterMixin } from '../../../core/list-page.mixin';
 
 const global_pageName = 'currency.pageName';
 const global_router_add_url_in_Table = '/currency/add';
@@ -29,15 +26,11 @@ const global_toggleOptions: IToggleOptions = {
   standalone: true,
   imports: [
     TableComponent,
-    TitleCasePipe,
     TranslatePipe,
     PaginationComponent,
     FormsModule,
-    DrawerComponent,
-    BreadcrumpComponent,
-    RouterModule,
-    InputTextModule,
     TableSmallScreenComponent,
+    ListPageShellComponent,
   ],
   templateUrl: './currencies-table.component.html',
   styleUrl: './currencies-table.component.scss',
@@ -45,7 +38,7 @@ const global_toggleOptions: IToggleOptions = {
 export class CurrenciesTableComponent {
   pageName = signal<string>('currency.pageName');
   global_router_add_url_in_Table = global_router_add_url_in_Table;
-  showFilter = false;
+  filterMixin = new ListPageFilterMixin();
 
   tableActions: ITableAction[] = [
     { name: EAction.delete, apiName_or_route: global_API_delete, autoCall: true },
@@ -119,14 +112,6 @@ export class CurrenciesTableComponent {
     };
   }
 
-  openFilter() {
-    this.showFilter = true;
-  }
-
-  onCloseFilter(event: any) {
-    this.showFilter = false;
-  }
-
   API_getAll() {
     this.ApiService.get(global_API_getAll).subscribe((res: any) => {
       const d = res?.data ?? res;
@@ -142,22 +127,22 @@ export class CurrenciesTableComponent {
     this.API_getAll();
   }
 
-  filterData() {
-    const search = (this.searchValue || '').toLowerCase();
-    if (!search) {
-      this.dataList = this.filteredData;
-      return;
-    }
-    this.dataList = this.filteredData.filter(
-      (item: any) =>
-        (item.enName || '').toLowerCase().includes(search) ||
-        (item.arName || '').toLowerCase().includes(search) ||
-        (item.code || '').toLowerCase().includes(search)
-    );
+  onSearch(value: string) {
+    this.filterMixin.onSearchChange(value, () => this.API_getAll(), this.objectSearch, 'enName');
   }
 
   onSubmitFilter() {
+    this.filterMixin.updateChips([
+      { key: 'enName', label: 'currency.form.name_en', value: this.objectSearch.enName },
+      { key: 'arName', label: 'currency.form.name_ar', value: this.objectSearch.arName },
+    ]);
+    this.objectSearch.pageNumber = 1;
     this.API_getAll();
+    this.filterMixin.filtersExpanded = false;
+  }
+
+  onChipRemove(key: string) {
+    this.filterMixin.removeChip(key, this.objectSearch, () => this.API_getAll());
   }
 
   reset() {
@@ -169,7 +154,9 @@ export class CurrenciesTableComponent {
       enName: '',
       arName: '',
     };
+    this.filterMixin.searchValue = '';
+    this.filterMixin.filterChips = [];
+    this.filterMixin.filtersExpanded = false;
     this.API_getAll();
-    this.showFilter = false;
   }
 }

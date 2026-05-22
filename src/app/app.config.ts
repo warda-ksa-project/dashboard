@@ -3,7 +3,26 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
+import { definePreset } from '@primeng/themes';
 import Aura from '@primeng/themes/aura';
+
+const WardaPreset = definePreset(Aura, {
+  semantic: {
+    primary: {
+      50: '#fdf2f5',
+      100: '#fce7ec',
+      200: '#f9d0db',
+      300: '#f4a8bc',
+      400: '#ec7496',
+      500: '#7a1e3b',
+      600: '#6d1a34',
+      700: '#5c1530',
+      800: '#4a1120',
+      900: '#3d0e1a',
+      950: '#2a0c12',
+    },
+  },
+});
 import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from './core/basic-auth.interceptor';
 import { errorInterceptor } from './core/error.interceptor';
@@ -41,7 +60,7 @@ export const appConfig: ApplicationConfig = {
     providePrimeNG({
       ripple: true,
       theme: {
-        preset: Aura,
+        preset: WardaPreset,
         options: {
           prefix: 'p',
           darkModeSelector: '.never-dark', // لا يُفعّل الدارك أبداً — الثيم أبيض فقط

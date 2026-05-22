@@ -1,20 +1,16 @@
 import { Component, inject, signal } from '@angular/core';
 import { EAction, EType, IcolHeader, ITableAction, TableComponent } from '../../../components/table/table.component';
 import { ApiService } from '../../../services/api.service';
-import { Router, RouterModule } from '@angular/router';
 import { IBreadcrumb } from '../../../components/breadcrump/cerqel-breadcrumb.interface';
-import { BreadcrumpComponent } from '../../../components/breadcrump/breadcrump.component';
-import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { LanguageService } from '../../../services/language.service';
 import { ETableShow, IcolHeaderSmallTable, TableSmallScreenComponent } from '../../../components/table-small-screen/table-small-screen.component';
 import { PaginationComponent } from '../../../components/pagination/pagination.component';
-import { TitleCasePipe } from '@angular/common';
-import { TranslatePipe } from '@ngx-translate/core';
-import { DrawerComponent } from '../../../components/drawer/drawer.component';
+import { ListPageShellComponent } from '../../../components/list-page-shell/list-page-shell.component';
+import { ListPageFilterMixin } from '../../../core/list-page.mixin';
 
 const global_pageName = 'slider.pageName'
-const global_router_add_url_in_Table = "slider/add"
+const global_router_add_url_in_Table = '/slider/add'
 const global_router_view_url = "slider" + '/view'
 const global_router_edit_url = "slider" + '/edit'
 const global_API_getAll = 'Sliders/paginated'
@@ -22,7 +18,7 @@ const global_API_delete = 'Sliders'
 @Component({
   selector: 'app-slider-table',
   standalone: true,
-  imports: [TableComponent, TitleCasePipe, PaginationComponent,DrawerComponent, TranslatePipe, FormsModule, BreadcrumpComponent, RouterModule, InputTextModule, TableSmallScreenComponent],
+  imports: [TableComponent, PaginationComponent, FormsModule, TableSmallScreenComponent, ListPageShellComponent],
   templateUrl: './slider-table.component.html',
   styleUrl: './slider-table.component.scss'
 })
@@ -30,8 +26,8 @@ const global_API_delete = 'Sliders'
 export class SliderTableComponent {
   global_router_add_url_in_Table = global_router_add_url_in_Table
   pageName = signal<string>(global_pageName);
- private router =inject(Router)
-  showFilter: boolean = false
+  filterMixin = new ListPageFilterMixin();
+
   tableActions: ITableAction[] = [
     {
       name: EAction.delete,
@@ -117,13 +113,6 @@ export class SliderTableComponent {
       ]
     }
   }
-  openFilter() {
-    this.showFilter = true
-  }
-
-  onCloseFilter(event: any) {
-    this.showFilter = false
-  }
 
   API_getAll() {
     this.ApiService.get(global_API_getAll, this.objectSearch).subscribe((res: any) => {
@@ -141,20 +130,20 @@ export class SliderTableComponent {
     this.API_getAll();
   }
 
-  filterData() {
-    const search = (this.searchValue || '').toLowerCase();
-    if (!search) { this.dataList = this.filteredData; return; }
-    this.dataList = this.filteredData.filter((item: any) =>
-      (item.url || '').toLowerCase().includes(search)
-    );
-  }
-  onSubmitFilter() {
-    this.API_getAll();
+  onSearch(value: string) {
+    this.filterMixin.onSearchChange(value, () => this.API_getAll(), this.objectSearch, 'searchTerm');
   }
 
-  addPage(){
-    this.router.navigateByUrl(global_router_add_url_in_Table)
+  onSubmitFilter() {
+    this.objectSearch.pageNumber = 1;
+    this.API_getAll();
+    this.filterMixin.filtersExpanded = false;
   }
+
+  onChipRemove(key: string) {
+    this.filterMixin.removeChip(key, this.objectSearch, () => this.API_getAll());
+  }
+
   reset() {
     this.objectSearch = {
       pageNumber: 1,
@@ -163,9 +152,9 @@ export class SliderTableComponent {
       sortingDirection: 0,
       searchTerm: ""
     };
+    this.filterMixin.searchValue = '';
+    this.filterMixin.filterChips = [];
+    this.filterMixin.filtersExpanded = false;
     this.API_getAll();
-    this.showFilter = false
   }
 }
-
-

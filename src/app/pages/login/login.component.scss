@@ -1,270 +1,215 @@
-::ng-deep {
-  .login-container {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--warda-space-6);
+  background: var(--warda-page-bg);
+}
 
-    h2,
+.login-card {
+  display: flex;
+  width: 100%;
+  max-width: 1140px;
+  min-height: auto;
+  background: var(--warda-card-bg);
+  border-radius: var(--warda-radius-xl);
+  border: 1px solid var(--warda-border);
+  box-shadow: var(--warda-shadow-lg);
+  overflow: hidden;
+}
+
+.login-brand {
+  flex: 1;
+  position: relative;
+  background: linear-gradient(145deg, var(--warda-primary) 0%, var(--warda-primary-dark) 60%, #2a0c12 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--warda-space-8);
+  color: white;
+  overflow: hidden;
+
+  &__content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+
+    h1 {
+      font-size: var(--warda-text-2xl);
+      font-weight: 700;
+      margin: var(--warda-space-4) 0 var(--warda-space-2);
+    }
+
     p {
+      font-size: var(--warda-text-sm);
+      opacity: 0.85;
       margin: 0;
     }
+  }
 
-    .content {
-      box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-      height: 500px;
-      flex-basis: 100%;
-      display: flex;
-      border-radius: 8px;
+  &__logo {
+    width: 150px;
+    filter: brightness(0) invert(1);
+  }
 
-      .form-section {
-        flex-basis: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
+  &__pattern {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 40%);
+  }
+}
 
-        form {
-          display: flex;
-          flex-direction: column;
-          gap: 20px;
+.login-form-section {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--warda-space-6) var(--warda-space-8);
+}
 
-          .details {
-            gap: 10px;
-          }
+.login-form {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--warda-space-4);
 
-          .d-flex {
-            display: flex;
-          }
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--warda-space-4);
 
-          .flex-col {
-            flex-direction: column;
-          }
-
-          input {
-            width: 30rem;
-          }
-
-          .phone-input-inline {
-            width: 30rem;
-          }
-
-          .phone-input-inner {
-            display: flex;
-            align-items: stretch;
-            border: 1px solid var(--p-input-border-color, #ced4da);
-            border-radius: var(--p-input-border-radius, 6px);
-            background: var(--p-input-filled-bg, #fff);
-            overflow: hidden;
-            transition: border-color 0.2s, box-shadow 0.2s;
-
-            &:focus-within {
-              border-color: var(--p-primary-color, #3b82f6);
-              box-shadow: 0 0 0 2px rgba(var(--p-primary-500), 0.2);
-            }
-          }
-
-          .country-dropdown-inline {
-            flex-shrink: 0;
-            border: none !important;
-            background: transparent !important;
-            border-inline-end: 1px solid var(--p-input-border-color, #ced4da);
-
-            ::ng-deep .p-select,
-            ::ng-deep .p-select-trigger,
-            ::ng-deep .p-select-label-container {
-              border: none !important;
-              box-shadow: none !important;
-              background: transparent !important;
-              min-width: 90px;
-            }
-
-            ::ng-deep .p-select-trigger {
-              padding: 0.5rem 0.4rem;
-            }
-
-            ::ng-deep .p-select-label {
-              padding-inline: 0.25rem;
-            }
-          }
-
-          .phone-digits-input {
-            flex: 1;
-            min-width: 0;
-            border: none !important;
-            box-shadow: none !important;
-            background: transparent !important;
-            padding-inline: 0.75rem;
-
-            &:focus {
-              outline: none;
-            }
-          }
-
-          .country-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-
-            .country-flag {
-              width: 24px;
-              height: 16px;
-              object-fit: cover;
-            }
-          }
-
-          .checking-msg {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--p-primary-color);
-          }
-
-          .recaptcha-wrap {
-            display: flex;
-            justify-content: center;
-            width: 100%;
-
-            .recaptcha-container {
-              min-height: 78px;
-            }
-          }
-
-          .hint {
-            font-size: 0.85rem;
-            color: #666;
-          }
-
-          .send-btn {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            font-size: 20px;
-            color: #32a464;
-            border: none;
-            background: none;
-            padding: 0px !important;
-
-            &:hover {
-              color: #3bbf75;
-            }
-
-            &.send-btn--not-ready {
-              opacity: 0.65;
-            }
-            &[aria-disabled='true'] {
-              cursor: pointer;
-            }
-          }
-          a {
-            text-decoration: none;
-            font-size: 15px;
-            color: #b9b9b9;
-          }
-
-        }
-      }
-
-      .details-section {
-        flex-basis: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-        background-color: #fff;
-        border-start-end-radius: 8px;
-        border-end-end-radius: 8px;
-      }
+    h2 {
+      margin: 0 0 var(--warda-space-1);
+      font-size: var(--warda-text-xl);
+      font-weight: 700;
+      color: var(--warda-text-primary);
     }
-  }
 
-    // Small devices (portrait phones)
-@media only screen and (max-width:249.98px) {
-  .hide-part {
-    display: none !important;
-  }
-
-  .form-section {
-    flex-basis: 100% !important;
-    form {
-      input {
-        width: 100% !important;
-      }
-      .phone-input-inline {
-        width: 100% !important;
-      }
+    p {
+      margin: 0;
+      font-size: var(--warda-text-sm);
+      color: var(--warda-text-secondary);
     }
   }
 }
 
-  // Small devices (portrait phones)
-@media only screen and (min-width:250.98px) and (max-width: 575.98px) {
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--warda-space-2);
+
+  label {
+    font-size: var(--warda-text-sm);
+    font-weight: 500;
+    color: var(--warda-text-primary);
+  }
+}
+
+.phone-input-inline {
+  width: 100%;
+}
+
+.phone-input-inner {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid var(--warda-border);
+  border-radius: var(--warda-radius-md);
+  background: var(--warda-card-bg);
+  overflow: hidden;
+  transition: border-color 0.15s, box-shadow 0.15s;
+
+  &:focus-within {
+    border-color: var(--warda-primary);
+    box-shadow: 0 0 0 3px rgba(122, 30, 59, 0.12);
+  }
+}
+
+.country-dropdown-inline {
+  flex-shrink: 0;
+  border-inline-end: 1px solid var(--warda-border) !important;
+
+  ::ng-deep .p-select,
+  ::ng-deep .p-select-trigger {
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    min-width: 90px;
+  }
+}
+
+.phone-digits-input {
+  flex: 1;
+  min-width: 0;
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  padding-inline: var(--warda-space-3);
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.country-item {
+  display: flex;
+  align-items: center;
+  gap: var(--warda-space-2);
+
+  .country-flag {
+    width: 24px;
+    height: 16px;
+    object-fit: cover;
+  }
+}
+
+.checking-msg {
+  display: flex;
+  align-items: center;
+  gap: var(--warda-space-2);
+  color: var(--warda-primary);
+  font-size: var(--warda-text-sm);
+}
+
+.hint {
+  font-size: var(--warda-text-xs);
+  color: var(--warda-text-muted);
+}
+
+.recaptcha-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.login-submit {
+  width: 100%;
+  height: 44px;
+  font-size: var(--warda-text-base);
+  margin-top: var(--warda-space-2);
+
+  &--disabled {
+    opacity: 0.55;
+  }
+
+  &:not(.login-submit--disabled) {
+    opacity: 1;
+    cursor: pointer;
+  }
+}
+
+@media (max-width: 768px) {
   .hide-part {
     display: none !important;
   }
 
-  .form-section {
-    flex-basis: 100% !important;
-
-    form {
-      input {
-        width: 20rem !important;
-      }
-      .phone-input-inline {
-        width: 20rem !important;
-      }
-    }
+  .login-card {
+    min-height: auto;
   }
-}
 
-// Medium devices (landscape phones, tablets)
-@media only screen and (min-width: 576px) and (max-width: 767.98px) {
-  .hide-part {
-    display: none !important;
+  .login-form-section {
+    padding: var(--warda-space-8) var(--warda-space-6);
   }
-  .form-section {
-    flex-basis: 100% !important;
-
-    form {
-      input {
-        width: 20rem !important;
-      }
-      .phone-input-inline {
-        width: 20rem !important;
-      }
-    }
-  }
-}
-
-// Large devices (tablets, small desktops)
-@media only screen and (min-width: 768px) and (max-width: 991.98px) {
-  .hide-part {
-    display: none !important;
-  }
-  .form-section {
-    flex-basis: 100% !important;
-  }
-}
-
-// Extra large devices (desktops)
-@media only screen and (min-width: 992px) and (max-width: 1199.98px) {
-  // Styles for extra-large devices
-}
-
-// Extra extra large devices (large desktops, TVs)
-@media only screen and (min-width: 1200px) {
-  // Styles for extra-extra-large devices
-}
-
-
-.lang-btn {
-  padding: 0.5rem 1rem;
-  background: transparent;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
 }

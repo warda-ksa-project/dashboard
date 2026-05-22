@@ -1,143 +1,71 @@
-.fz-20 {
-  font-size: 20px;
+.dashboard-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--warda-space-6);
 }
-.color-gray {
-  color: #b8b2b2;
+
+.dashboard-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--warda-space-4);
 }
-.table-container {
-  h2 {
-    color: #7d7d7d;
-    margin-bottom: 20px;
-  }
-  .page-admin-container {
-    .header {
-      .card-container {
-        .card {
-          width: 17.1875rem;
-          border-radius: 15px;
-          min-height: 100px;
-          border: unset;
-          margin: 10px;
-          padding: 10px;
-          background-color: #fff;
-          transition: transform 0.3s ease, box-shadow 0.3s ease;
-          box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-          .item-header {
-            display: flex;
-            justify-items: center;
-            margin-bottom: 10px;
-            .title {
-              margin: 0px 5px;
-            }
-            .icon {
-              background: var(--warda-primary, #7a1e3b);
-              padding: 8px;
-              color: #fff;
-              border-radius: 50%;
-            }
-          }
-          .item-footer {
-            text-align: end;
-          }
-          &:hover {
-            transform: translateY(-10px);
-          }
-        }
-      }
-      .chart-container {
-        width: 50%;
-        min-width: 274px;
-        .card {
-          border: unset;
-          box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-        }
-        .chart {
-          padding: 10px;
-        }
-      }
-    }
 
-    // .pop-products {
-    //   background-color: #fff;
-    //   padding: 10px;
-    //   border-radius: 8px;
-    //   margin-top: 30px;
-    //   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+.dashboard-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--warda-space-4);
+}
 
-    //   h2.prod{
-    //     span{
-    //       background: #8174a0;
-    //     padding: 10px;
-    //     color: #fff;
-    //     border-radius: 50%;
-    //     }
-    //   }
+.dashboard-revenue {
+  .revenue-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--warda-space-3) 0;
+    border-bottom: 1px solid var(--warda-border-light);
+    font-size: var(--warda-text-sm);
 
-    // }
-  }
-  div {
-    .city-revenue {
-      width: 25%;
-      background-color: #fff;
-      border: unset;
-      margin: 10px;
-      padding: 10px;
-      border-radius: 15px;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-      hr {
-        border: 3px solid var(--warda-primary, #7a1e3b);
-      }
-    }
-    .chart-container {
-      width: 70%;
-      min-width: 274px;
-      height: 405px;
-      .card {
-        border: unset;
-        padding: 10px;
-        border-radius: 15px;
-        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-      }
-      .chart {
-        padding: 10px;
-      }
+    &:last-child {
+      border-bottom: none;
     }
   }
-  .users {
-    background-color: #fff;
-    border: unset;
-    margin: 10px;
-    padding: 20px;
-    border-radius: 15px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-    .header-title {
-      width: 50%;
-      font-weight: bolder;
-      margin-top: 10px;
+
+  .revenue-value {
+    font-weight: 600;
+    color: var(--warda-primary);
+  }
+}
+
+.dashboard-chart-card {
+  min-height: 360px;
+}
+
+.dashboard-users {
+  .user-stat {
+    margin-bottom: var(--warda-space-4);
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    &__header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: var(--warda-space-2);
+      font-size: var(--warda-text-sm);
+      color: var(--warda-text-secondary);
     }
   }
 }
 
-::ng-deep {
-  p-calendar {
-    .p-datepicker-dropdown {
-      border-radius: 50% !important;
-      margin: 0px 5px;
-    }
+@media (max-width: 992px) {
+  .dashboard-row {
+    grid-template-columns: 1fr;
   }
 }
 
-@media only screen and (max-width: 990px) {
-  .card-container {
-    width: auto !important;
-    .card {
-      width: 100% !important;
-    }
-  }
-  .chart-container {
-    width: 100% !important;
-    margin-top: 10px;
+@media (max-width: 576px) {
+  .dashboard-kpi-grid {
+    grid-template-columns: 1fr;
   }
 }

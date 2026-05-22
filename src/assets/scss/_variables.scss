@@ -1,30 +1,32 @@
 :root {
-  --steel: #6e8297;
+  --steel: #64748b;
 }
 
-/* هوية وردة — نفس البورتال */
+/* Warda brand — aligned with portal */
 $primary-color: #7a1e3b;
-$primary-color-50: #215b9550;
-$secondary-blue: #07a8c6;
-$secondary-light-gray: #d2d3d4;
-$secondary-medium-gray: #949599;
-$secondary-dark-gray: #434143;
-$light-black: #455560;
+$primary-color-dark: #5c1530;
+$primary-color-light: #9b3a5a;
+$primary-color-50: rgba(122, 30, 59, 0.08);
+$secondary-blue: #0284c7;
+$secondary-light-gray: #e2e8f0;
+$secondary-medium-gray: #94a3b8;
+$secondary-dark-gray: #475569;
+$light-black: #0f172a;
 
-/* ------------ light colors ------------ */
-$light-color-1: #ebecf2;
-$light-color-2: #e7ebf0;
-$light-color-3: #cccccc;
+/* Light colors */
+$light-color-1: #f8fafc;
+$light-color-2: #f1f5f9;
+$light-color-3: #e2e8f0;
 
-/* ------------ light colors ------------ */
-$dark-color-1: #4c565c;
-$dark-color-2: #454c52;
-$dark-color-3: #696c80;
+/* Dark colors */
+$dark-color-1: #334155;
+$dark-color-2: #1e293b;
+$dark-color-3: #64748b;
 
-/* ------------ shadow colors ------------ */
-$shadow-color-1: #091e420a;
+/* Shadow */
+$shadow-color-1: rgba(15, 23, 42, 0.08);
 
-/* ------------ solid colors ------------ */
+/* Solid */
 $white: #ffffff;
 $black: #000000;
-$red: #ff0000;
+$red: #dc2626;

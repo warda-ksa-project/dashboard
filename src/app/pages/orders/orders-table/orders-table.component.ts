@@ -1,22 +1,18 @@
 import { Component, inject, signal } from '@angular/core';
 import { EAction, EType, IcolHeader, ITableAction, TableComponent } from '../../../components/table/table.component';
 import { ApiService } from '../../../services/api.service';
-import { Router, RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 import { IBreadcrumb } from '../../../components/breadcrump/cerqel-breadcrumb.interface';
-import { BreadcrumpComponent } from '../../../components/breadcrump/breadcrump.component';
-import { InputTextModule } from 'primeng/inputtext';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LanguageService } from '../../../services/language.service';
 import { ETableShow, IcolHeaderSmallTable, TableSmallScreenComponent } from '../../../components/table-small-screen/table-small-screen.component';
 import { PaginationComponent } from '../../../components/pagination/pagination.component';
-import { TitleCasePipe, NgIf } from '@angular/common';
-import { DrawerComponent } from '../../../components/drawer/drawer.component';
 import { order_status, Roles } from '../../../conts';
 import { SelectComponent } from '../../../components/select/select.component';
 import { UploadFileComponent } from '../../../components/upload-file/upload-file.component';
 import { TranslatePipe } from '@ngx-translate/core';
-import { DatePicker } from 'primeng/datepicker';
 import { DialogModule } from 'primeng/dialog';
+import { ListPageShellComponent } from '../../../components/list-page-shell/list-page-shell.component';
 
 const global_pageName = 'order.pageName'
 const global_router_edit_url = '/order/edit'
@@ -26,7 +22,7 @@ const global_API_getAll = 'Orders'
 @Component({
   selector: 'app-orders-table',
   standalone: true,
-  imports: [TableComponent, NgIf, SelectComponent, UploadFileComponent, DialogModule, TitleCasePipe, TranslatePipe, ReactiveFormsModule, PaginationComponent, FormsModule, DrawerComponent, BreadcrumpComponent, RouterModule, InputTextModule, TableSmallScreenComponent, DatePicker],
+  imports: [TableComponent, SelectComponent, UploadFileComponent, DialogModule, TranslatePipe, ReactiveFormsModule, PaginationComponent, FormsModule, TableSmallScreenComponent, ListPageShellComponent],
   templateUrl: './orders-table.component.html',
   styleUrl: './orders-table.component.scss'
 })
@@ -38,7 +34,6 @@ export class OrdersTableComponent {
   orderStatusList:any=[]
   clientList: any[] = []
   packageList: any[] = []
-  showFilter: boolean = false
   openEditDialog:boolean=false
   tableActions: ITableAction[] = [
     {
@@ -77,79 +72,11 @@ export class OrdersTableComponent {
     crumbs: []
   }
 
-  // statuses = [
-  //   {
-  //     id: 0,
-  //     color: '#c1cd6a',
-  //     nameAr: 'قيد الانتظار',
-  //     nameEn: 'Pending'
-  //   },
-  //   {
-  //     id: 1,
-  //     color: '#c1cd6a',
-  //     nameAr: 'مدفوع',
-  //     nameEn: 'Paid'
-  //   },
-  //   {
-  //     id: 2,
-  //     color: '#b16acd',
-  //     nameAr: 'مخصص للمزود',
-  //     nameEn: 'AssignedToProvider'
-  //   },
-  //   {
-  //     id: 3,
-  //     color: '#ccc053',
-  //     nameAr: 'في الطريق',
-  //     nameEn: 'InTheWay'
-  //   },
-  //   {
-  //     id: 4,
-  //     color: '#9b9d9c',
-  //     nameAr: 'محاولة حل المشكلة',
-  //     nameEn: 'TryingSolveProblem'
-  //   },
-  //   {
-  //     id: 5,
-  //     color: '#49e97c',
-  //     nameAr: 'محلول',
-  //     nameEn: 'Solved'
-  //   },
-  //   {
-  //     id: 6,
-  //     color: '#49e97c',
-  //     nameAr: 'تأكيد العميل',
-  //     nameEn: 'ClientConfirmation'
-  //   },
-  //   {
-  //     id: 7,
-  //     color: '#49e97c',
-  //     nameAr: 'مكتمل',
-  //     nameEn: 'Completed'
-  //   },
-  //   {
-  //     id: 8,
-  //     color: '#e94949',
-  //     nameAr: 'ملغي',
-  //     nameEn: 'Canceled'
-  //   }
-  // ];
-
-
   objectSearch = {
     "pageNumber": 1,
     "pageSize": 8,
     "sortingExpression": "",
     "sortingDirection": 1,
-    // "technicalId": null,
-    // "clientId": null,
-    // // "paymentWayId": null,
-    // "orderStatus": null,
-    // "nextVistTime": null,
-    // "packageId": null,
-    // // "coponeId": null,
-    // // "orderSubTotal": null,
-    // // "orderTotal": null,
-    // // "locationId": null
   }
 
   totalCount: number = 0;
@@ -169,8 +96,6 @@ export class OrdersTableComponent {
   ngOnInit() {
     this.pageName.set(global_pageName)
     this.API_getAll();
-    // this.getAllClients()
-    // this.getAllPackages()
     this.selectedLang = this.languageService.translationService.currentLang;
     this.displayTableCols(this.selectedLang);
     this.getBreadCrumb();
@@ -181,8 +106,6 @@ export class OrdersTableComponent {
       this.displayTableCols(this.selectedLang)
       this.API_getStatus()
       this.getRoles();
-      // this.getAllClients();
-      // this.getAllPackages();
       this.getBreadCrumb();
     })
   }
@@ -216,7 +139,6 @@ export class OrdersTableComponent {
       { keyName: 'totalPrice', header: this.languageService.translate('order.form.price'), type: EType.text, show: true },
       { keyName: 'addedDate', header: this.languageService.translate('order.form.date'), type: EType.date, show: true },
       { keyName: currentLang === 'ar' ? 'statusAr' : 'statusEn', header: this.languageService.translate('order.form.status'), type: EType.status,statusId:'statusEn', show: true },
-      // { keyName: 'showOrderStatusButton', header: this.languageService.translate('Status_Action'), type: EType.changeOrderStatus, show: true },
       { keyName: '', header: this.languageService.translate('Action'), type: EType.actions, actions: this.tableActions, show: true },
     ];
 
@@ -226,33 +148,6 @@ export class OrdersTableComponent {
       { keyName: 'totalPrice', header: this.languageService.translate('order.form.price'), type: EType.text, showAs: ETableShow.content }
     ];
   }
-
-
-  // getAllClients() {
-  //   this.ApiService.get('Client/GetAllActive').subscribe((res: any) => {
-  //     this.clientList = []
-  //     if (res.data)
-  //       res.data.map((item: any) => {
-  //         this.clientList.push({
-  //           name: item.firstName,
-  //           code: item.userId
-  //         })
-  //       })
-  //   })
-  // }
-
-  // getAllPackages() {
-  //   this.ApiService.get('Package/GetAllPackage').subscribe((res: any) => {
-  //     this.packageList = []
-  //     if (res.data)
-  //       res.data.map((item: any) => {
-  //         this.packageList.push({
-  //           name: this.selectedLang == 'en' ? item.nameEn : item.nameAr,
-  //           code: item.packageId
-  //         })
-  //       })
-  //   })
-  // }
 
   API_getStatus(){
     this.ApiService.get('OrderStatus').subscribe((res: any) => {
@@ -270,30 +165,7 @@ export class OrdersTableComponent {
   }
 
   onSelectedValue(selectedItem: any, value: string) {
-    // if (value == 'package') {
-    //   this.objectSearch.packageId = selectedItem;
-    // }
-    // else if (value == 'status') {
-    //   this.objectSearch.orderStatus = selectedItem;
-    // }
-    // else if (value == 'clinet') {
-    //   this.objectSearch.clientId = selectedItem
-    // } else {
-    //   this.objectSearch.nextVistTime = selectedItem
-    // }
   }
-
-  openFilter() {
-    this.showFilter = true
-    // this.objectSearch.clientId = null
-    // this.objectSearch.orderStatus = null
-    // this.objectSearch.packageId = null
-  }
-
-  onCloseFilter(event: any) {
-    this.showFilter = false
-  }
-
 
   private static readonly DeliveryTypeLabels: Record<string, { ar: string; en: string }> = {
     'Delivery': { ar: 'توصيل', en: 'Delivery' },
@@ -311,26 +183,6 @@ export class OrdersTableComponent {
           return { ...item, deliveryTypeAr: t.ar, deliveryTypeEn: t.en, addedDate: item.createdDate  };
         });
         this.totalCount = res.data.totalCount;
-
-        // Iterate over each data item
-        // this.dataList.forEach((data: any) => {
-        //   // For example, copying visitNumber from nested package object
-        //   // data.visitNumber = data.package.visitNumber;
-
-        //   // Find the matching status object using the orderStatusEnum property
-        //   const statusObj = this.statuses.find((status: any) => status.id === data.orderStatusEnum);
-        //   if (statusObj) {
-        //     // Create two new properties with Arabic and English values
-        //     data.orderStatusAr = statusObj.nameAr;
-        //     data.orderStatusEn = statusObj.nameEn;
-        //   }
-
-        // if(data.paymentWayId == 1 && data.orderStatusEnum == 0) {
-        //     data.showOrderStatusButton = true
-        // } else {
-        //   data.showOrderStatusButton = false
-        // }
-        // });
 
         this.filteredData = [...this.dataList];
         console.log(this.dataList);
@@ -372,19 +224,8 @@ export class OrdersTableComponent {
       "pageSize": 8,
       "sortingExpression": "",
       "sortingDirection": 0,
-      // // "technicalId": null,
-      // "clientId": null,
-      // nextVistTime: null,
-      // // "paymentWayId": null,
-      // "orderStatus": null,
-      // "packageId": null,
-      // // "coponeId": null,
-      // // "orderSubTotal": null,
-      // // "orderTotal": null,
-      // // "locationId": null
     }
     this.API_getAll();
-    this.showFilter = false
   }
 
   onEditOrder(e: any) {
@@ -431,35 +272,3 @@ export class OrdersTableComponent {
   }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

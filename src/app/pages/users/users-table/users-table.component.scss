@@ -1,0 +1,11 @@
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--warda-space-1);
+
+  label {
+    font-size: var(--warda-text-sm);
+    font-weight: 500;
+    color: var(--warda-text-secondary);
+  }
+}

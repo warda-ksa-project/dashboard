@@ -1,30 +1,26 @@
 import { Component, inject, signal } from '@angular/core';
 import { EAction, EType, IcolHeader, ITableAction, TableComponent } from '../../../components/table/table.component';
 import { ApiService } from '../../../services/api.service';
-import { RouterModule } from '@angular/router';
 import { IBreadcrumb } from '../../../components/breadcrump/cerqel-breadcrumb.interface';
-import { BreadcrumpComponent } from '../../../components/breadcrump/breadcrump.component';
-import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { LanguageService } from '../../../services/language.service';
 import { ETableShow, IcolHeaderSmallTable, TableSmallScreenComponent } from '../../../components/table-small-screen/table-small-screen.component';
-import { DrawerComponent } from '../../../components/drawer/drawer.component';
 import { PaginationComponent } from '../../../components/pagination/pagination.component';
-import { TitleCasePipe } from '@angular/common';
 import { TranslatePipe } from '@ngx-translate/core';
-
+import { ListPageShellComponent } from '../../../components/list-page-shell/list-page-shell.component';
+import { ListPageFilterMixin } from '../../../core/list-page.mixin';
 
 @Component({
   selector: 'app-cancel-reason-table',
   standalone: true,
-  imports: [TableComponent, PaginationComponent,TitleCasePipe,TranslatePipe, FormsModule, DrawerComponent, BreadcrumpComponent, RouterModule, InputTextModule, TableSmallScreenComponent],
+  imports: [TableComponent, PaginationComponent, TranslatePipe, FormsModule, TableSmallScreenComponent, ListPageShellComponent],
   templateUrl: './cancel-reason-table.component.html',
   styleUrl: './cancel-reason-table.component.scss'
 })
 export class CancelReasonTableComponent {
   pageName =signal<string>('');
+  filterMixin = new ListPageFilterMixin();
 
-  showFilter: boolean = false
   tableActions: ITableAction[] = [
     {
       name: EAction.delete,
@@ -121,15 +117,6 @@ export class CancelReasonTableComponent {
     }
   }
 
-
-  openFilter() {
-    this.showFilter = true
-  }
-
-  onCloseFilter(event: any) {
-    this.showFilter = false
-  }
-
   getAllCancelReason() {
     this.ApiService.get('CancelReasons/paginated', this.objectSearch).subscribe((res: any) => {
       const d = res?.data ?? res;
@@ -146,17 +133,22 @@ export class CancelReasonTableComponent {
     this.getAllCancelReason();
   }
 
-  filterData() {
-    const search = (this.searchValue || '').toLowerCase();
-    if (!search) { this.dataList = this.filteredData; return; }
-    this.dataList = this.filteredData.filter((item: any) =>
-      (item.enReason || '').toLowerCase().includes(search) ||
-      (item.arReason || '').toLowerCase().includes(search)
-    );
+  onSearch(value: string) {
+    this.filterMixin.onSearchChange(value, () => this.getAllCancelReason(), this.objectSearch, 'enName');
   }
 
   onSubmitFilter() {
+    this.filterMixin.updateChips([
+      { key: 'enName', label: 'cancel_reason.form.reason_en', value: this.objectSearch.enName },
+      { key: 'arName', label: 'cancel_reason.form.reason_ar', value: this.objectSearch.arName },
+    ]);
+    this.objectSearch.pageNumber = 1;
     this.getAllCancelReason();
+    this.filterMixin.filtersExpanded = false;
+  }
+
+  onChipRemove(key: string) {
+    this.filterMixin.removeChip(key, this.objectSearch, () => this.getAllCancelReason());
   }
 
   reset() {
@@ -168,8 +160,10 @@ export class CancelReasonTableComponent {
       enName: "",
       arName: ""
     }
+    this.filterMixin.searchValue = '';
+    this.filterMixin.filterChips = [];
+    this.filterMixin.filtersExpanded = false;
     this.getAllCancelReason();
-    this.showFilter = false
   }
 
 }

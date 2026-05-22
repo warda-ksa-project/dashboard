@@ -1,0 +1,15 @@
+<div class="page-header">
+  <div class="page-header__main">
+    <div class="page-title">
+      <div class="images">
+        <span [class]="icon"></span>
+      </div>
+      <h2>{{ title | translate | titlecase }}</h2>
+    </div>
+    @if (breadcrumb) {
+      <div class="page-header__breadcrumb">
+        <app-breadcrump [breadcrumbProps]="breadcrumb"></app-breadcrump>
+      </div>
+    }
+  </div>
+</div>

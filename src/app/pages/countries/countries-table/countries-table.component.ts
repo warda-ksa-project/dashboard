@@ -1,17 +1,14 @@
 import { Component, inject, signal } from '@angular/core';
 import { EAction, EType, IcolHeader, ITableAction, IToggleOptions, TableComponent } from '../../../components/table/table.component';
 import { ApiService } from '../../../services/api.service';
-import { Router, RouterModule } from '@angular/router';
 import { IBreadcrumb } from '../../../components/breadcrump/cerqel-breadcrumb.interface';
-import { BreadcrumpComponent } from '../../../components/breadcrump/breadcrump.component';
-import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { LanguageService } from '../../../services/language.service';
 import { ETableShow, IcolHeaderSmallTable, TableSmallScreenComponent } from '../../../components/table-small-screen/table-small-screen.component';
 import { PaginationComponent } from '../../../components/pagination/pagination.component';
-import { TitleCasePipe } from '@angular/common';
-import { DrawerComponent } from '../../../components/drawer/drawer.component';
 import { TranslatePipe } from '@ngx-translate/core';
+import { ListPageShellComponent } from '../../../components/list-page-shell/list-page-shell.component';
+import { ListPageFilterMixin } from '../../../core/list-page.mixin';
 
 const global_pageName='country'
 const global_router_add_url_in_Table ='/'+global_pageName+'/add'
@@ -26,14 +23,14 @@ autoCall:true,
 @Component({
   selector: 'app-countries-table',
   standalone: true,
-  imports: [TableComponent,TitleCasePipe,TranslatePipe, PaginationComponent, FormsModule, DrawerComponent, BreadcrumpComponent, RouterModule, InputTextModule, TableSmallScreenComponent],
+  imports: [TableComponent, TranslatePipe, PaginationComponent, FormsModule, TableSmallScreenComponent, ListPageShellComponent],
   templateUrl: './countries-table.component.html',
   styleUrl: './countries-table.component.scss'
 })
 export class CountriesTableComponent {
-  pageName =signal<string>('country.pageName');
-  global_router_add_url_in_Table =global_router_add_url_in_Table
-  showFilter: boolean = false
+  pageName = signal<string>('country.pageName');
+  filterMixin = new ListPageFilterMixin();
+  global_router_add_url_in_Table = global_router_add_url_in_Table
   tableActions: ITableAction[] = [
     {
       name: EAction.delete,
@@ -137,12 +134,37 @@ export class CountriesTableComponent {
     }
   }
 
-  openFilter() {
-    this.showFilter = true
+  onSearch(value: string) {
+    this.filterMixin.onSearchChange(value, () => this.API_getAll(), this.objectSearch, 'enName');
   }
 
-  onCloseFilter(event: any) {
-    this.showFilter = false
+  onSubmitFilter() {
+    this.filterMixin.updateChips([
+      { key: 'enName', label: 'country.form.name_en', value: this.objectSearch.enName },
+      { key: 'arName', label: 'country.form.name_ar', value: this.objectSearch.arName },
+    ]);
+    this.objectSearch.pageNumber = 1;
+    this.API_getAll();
+    this.filterMixin.filtersExpanded = false;
+  }
+
+  onChipRemove(key: string) {
+    this.filterMixin.removeChip(key, this.objectSearch, () => this.API_getAll());
+  }
+
+  reset() {
+    this.objectSearch = {
+      pageNumber: 1,
+      pageSize: 8,
+      sortingExpression: "",
+      sortingDirection: 0,
+      enName: "",
+      arName: ""
+    };
+    this.filterMixin.searchValue = '';
+    this.filterMixin.filterChips = [];
+    this.filterMixin.filtersExpanded = false;
+    this.API_getAll();
   }
 
   API_getAll() {
@@ -168,22 +190,6 @@ export class CountriesTableComponent {
       (item.arName || '').toLowerCase().includes(search) ||
       (item.phoneCode || '').includes(search)
     );
-  }
-  onSubmitFilter() {
-    this.API_getAll();
-  }
-
-  reset() {
-    this.objectSearch = {
-      pageNumber: 1,
-      pageSize: 8,
-      sortingExpression: "",
-      sortingDirection: 0,
-      enName: "",
-      arName: ""
-    }
-    this.API_getAll();
-    this.showFilter = false
   }
 }
 

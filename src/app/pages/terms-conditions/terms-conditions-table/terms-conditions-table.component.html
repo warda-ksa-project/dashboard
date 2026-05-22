@@ -1,29 +1,38 @@
-<div class="table-container">
-  <div class="content">
-    <div class="title-bredcrumb-section">
-      <div class="title">
-        <h2>{{'termsAndConditions.pageName' |translate|titlecase}} </h2>
-      </div>
-      <!-- <div class="breadcrumb">
-        <app-breadcrump [breadcrumbProps]="bredCrumb"></app-breadcrump>
-      </div> -->
+<app-list-page-shell
+  [pageTitle]="pageName()"
+  pageIcon="pi pi-file"
+  [breadcrumb]="bredCrumb"
+  [searchValue]="filterMixin.searchValue"
+  [filtersExpanded]="filterMixin.filtersExpanded"
+  [activeFilterCount]="filterMixin.activeFilterCount"
+  [filterChips]="filterMixin.filterChips"
+  [addLink]="global_router_add_url_in_Table"
+  [showAdd]="!isTrader"
+  [showFilters]="false"
+  (searchChange)="onSearch($event)"
+  (filterToggle)="filterMixin.toggleFilters()"
+  (filterReset)="reset()"
+  (chipRemove)="onChipRemove($event)"
+>
+  <div tableContent>
+    <div class="table-view">
+      <app-table
+        [colsHeader]="columns"
+        [records]="dataList"
+        [showrecordIndex]="true"
+        [actions]="tableActions"
+      ></app-table>
     </div>
-    <div class="details-container">
-      <div class="action-filter" *ngIf="!isTrader">
-        <a [routerLink]="global_router_add_url_in_Table">  + {{'shared.add_new'|translate}}</a>
-      </div>
-
-     <div class="table-view">
-      <app-table [colsHeader]="columns" [records]="dataList" [showrecordIndex]="true" [actions]="tableActions"></app-table>
-     </div>
-     <div class="responsive-accordions">
-        <app-table-small-screen [colsHeaderSmallTable]="columnsSmallTable" [records]="dataList"  [actions]="tableActions">
-
-        </app-table-small-screen>
+    <div class="responsive-accordions">
+      <app-table-small-screen
+        [colsHeaderSmallTable]="columnsSmallTable"
+        [records]="dataList"
+        [actions]="tableActions"
+      ></app-table-small-screen>
     </div>
-       <app-pagination (onPageChange)="onPageChange($event)" [totalCount]="totalCount"></app-pagination>
-
-    </div>
+    <app-pagination
+      (onPageChange)="onPageChange($event)"
+      [totalCount]="totalCount"
+    ></app-pagination>
   </div>
-</div>
-
+</app-list-page-shell>

@@ -1,0 +1,48 @@
+<div class="page-toolbar">
+  <div class="page-toolbar__left">
+    @if (showSearch) {
+      <p-iconfield class="page-toolbar__search">
+        <p-inputicon styleClass="pi pi-search" />
+        <input
+          pInputText
+          type="text"
+          class="warda-input"
+          [ngModel]="searchValue"
+          (ngModelChange)="onSearchInput($event)"
+          [placeholder]="searchPlaceholder | translate"
+        />
+      </p-iconfield>
+    }
+    @if (showFilters) {
+      <button
+        type="button"
+        class="warda-btn warda-btn-secondary page-toolbar__filter-btn"
+        [class.page-toolbar__filter-btn--active]="filtersExpanded"
+        (click)="onFilterClick()"
+      >
+        <span class="pi pi-filter"></span>
+        {{ 'shared.filter' | translate }}
+        @if (activeFilterCount > 0) {
+          <span class="page-toolbar__badge">{{ activeFilterCount }}</span>
+        }
+        <span class="pi" [class.pi-chevron-up]="filtersExpanded" [class.pi-chevron-down]="!filtersExpanded"></span>
+      </button>
+    }
+  </div>
+  <div class="page-toolbar__right">
+    <ng-content select="[toolbarActions]"></ng-content>
+    @if (showAdd) {
+      @if (addLink) {
+        <a [routerLink]="addLink" class="warda-btn warda-btn-primary" (click)="onAddClick($event)">
+          <span class="pi pi-plus"></span>
+          {{ addLabel | translate }}
+        </a>
+      } @else {
+        <button type="button" class="warda-btn warda-btn-primary" (click)="addClick.emit()">
+          <span class="pi pi-plus"></span>
+          {{ addLabel | translate }}
+        </button>
+      }
+    }
+  </div>
+</div>

@@ -1,0 +1,17 @@
+@if (expanded) {
+  <div class="filter-panel">
+    <div class="filter-panel__fields">
+      <ng-content></ng-content>
+    </div>
+    <div class="filter-panel__actions">
+      <button type="button" class="warda-btn warda-btn-primary" (click)="submit.emit()">
+        <span class="pi pi-check"></span>
+        {{ 'actions.submit' | translate }}
+      </button>
+      <button type="button" class="warda-btn warda-btn-secondary" (click)="reset.emit()">
+        <span class="pi pi-refresh"></span>
+        {{ 'actions.reset' | translate }}
+      </button>
+    </div>
+  </div>
+}

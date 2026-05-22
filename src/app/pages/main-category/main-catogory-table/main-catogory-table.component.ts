@@ -1,19 +1,14 @@
-import { TitleCasePipe, NgFor } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { InputTextModule } from 'primeng/inputtext';
-import { BreadcrumpComponent } from '../../../components/breadcrump/breadcrump.component';
-import { DrawerComponent } from '../../../components/drawer/drawer.component';
 import { PaginationComponent } from '../../../components/pagination/pagination.component';
 import { ETableShow, IcolHeaderSmallTable, TableSmallScreenComponent } from '../../../components/table-small-screen/table-small-screen.component';
 import { EAction, EType, IcolHeader, ITableAction, TableComponent } from '../../../components/table/table.component';
 import { IBreadcrumb } from '../../../components/breadcrump/cerqel-breadcrumb.interface';
 import { ApiService } from '../../../services/api.service';
 import { LanguageService } from '../../../services/language.service';
-
-
+import { ListPageShellComponent } from '../../../components/list-page-shell/list-page-shell.component';
+import { ListPageFilterMixin } from '../../../core/list-page.mixin';
 
 const global_pageName = 'category.pageName';
 const global_router_add_url_in_Table = '/main_category/add';
@@ -24,17 +19,14 @@ const global_API_getAll = 'Categories/paginated';
 @Component({
   selector: 'app-main-catogory-table',
   standalone: true,
-  imports: [TableComponent,
-    TitleCasePipe,
+  imports: [
+    TableComponent,
     TranslatePipe,
     PaginationComponent,
     FormsModule,
-    DrawerComponent,
-    BreadcrumpComponent,
-    RouterModule,
-    InputTextModule,
     TableSmallScreenComponent,
-    NgFor,],
+    ListPageShellComponent,
+  ],
   templateUrl: './main-catogory-table.component.html',
   styleUrl: './main-catogory-table.component.scss'
 })
@@ -42,8 +34,8 @@ export class MainCatogoryTableComponent {
 
   global_router_add_url_in_Table = global_router_add_url_in_Table
   pageName = signal<string>(global_pageName);
+  filterMixin = new ListPageFilterMixin();
 
-  showFilter: boolean = false
   tableActions: ITableAction[] = [
     {
       name: EAction.delete,
@@ -137,15 +129,6 @@ export class MainCatogoryTableComponent {
     ];
   }
 
-  openFilter() {
-    this.showFilter = true;
-  }
-
-  onCloseFilter(event: any) {
-    this.showFilter = false;
-  }
-
-
   API_getAll() {
     this.ApiService.get(global_API_getAll, this.objectSearch).subscribe((res: any) => {
       if (res) {
@@ -162,8 +145,22 @@ export class MainCatogoryTableComponent {
     this.API_getAll();
   }
 
+  onSearch(value: string) {
+    this.filterMixin.onSearchChange(value, () => this.API_getAll(), this.objectSearch, 'enName');
+  }
+
   onSubmitFilter() {
+    this.filterMixin.updateChips([
+      { key: 'enName', label: 'category.form.enName', value: this.objectSearch.enName },
+      { key: 'arName', label: 'category.form.arName', value: this.objectSearch.arName },
+    ]);
+    this.objectSearch.pageNumber = 1;
     this.API_getAll();
+    this.filterMixin.filtersExpanded = false;
+  }
+
+  onChipRemove(key: string) {
+    this.filterMixin.removeChip(key, this.objectSearch, () => this.API_getAll());
   }
 
   reset() {
@@ -175,8 +172,10 @@ export class MainCatogoryTableComponent {
       "enName": "",
       "arName": ""
     };
+    this.filterMixin.searchValue = '';
+    this.filterMixin.filterChips = [];
+    this.filterMixin.filtersExpanded = false;
     this.API_getAll();
-    this.showFilter = false;
   }
 
   reloadGetAllApi(e: any) {
@@ -186,4 +185,3 @@ export class MainCatogoryTableComponent {
   }
 
 }
-

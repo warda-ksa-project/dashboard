@@ -1,20 +1,14 @@
 import { Component, inject, signal } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
-import { NgFor, TitleCasePipe } from '@angular/common';
 import { EAction, EType, IcolHeader, ITableAction, TableComponent } from '../../../components/table/table.component';
 import { PaginationComponent } from '../../../components/pagination/pagination.component';
-import { DrawerComponent } from '../../../components/drawer/drawer.component';
-import { BreadcrumpComponent } from '../../../components/breadcrump/breadcrump.component';
 import { ETableShow, IcolHeaderSmallTable, TableSmallScreenComponent } from '../../../components/table-small-screen/table-small-screen.component';
 import { ApiService } from '../../../services/api.service';
 import { IBreadcrumb } from '../../../components/breadcrump/cerqel-breadcrumb.interface';
 import { LanguageService } from '../../../services/language.service';
 import { TranslatePipe } from '@ngx-translate/core';
-import { DialogComponent } from "../../../components/dialog/dialog.component";
-import { CategoryDetailsComponent } from '../category-details/category-details.component';
-import { PageDialogComponent } from '../../../components/page-dialog/page-dialog.component';
+import { ListPageShellComponent } from '../../../components/list-page-shell/list-page-shell.component';
+import { ListPageFilterMixin } from '../../../core/list-page.mixin';
 
 const global_pageName = 'category.pageName';
 const global_router_add_url_in_Table = '/category/add';
@@ -26,25 +20,20 @@ const global_API_getAll = 'Categories/paginated';
   standalone: true,
   imports: [
     TableComponent,
-    TitleCasePipe,
     TranslatePipe,
     PaginationComponent,
     FormsModule,
-    DrawerComponent,
-    BreadcrumpComponent,
-    RouterModule,
-    InputTextModule,
     TableSmallScreenComponent,
-    NgFor,
-],
+    ListPageShellComponent,
+  ],
   templateUrl: './category-table.component.html',
   styleUrl: './category-table.component.scss'
 })
 export class CategoryTableComponent {
   global_router_add_url_in_Table = global_router_add_url_in_Table
   pageName = signal<string>(global_pageName);
+  filterMixin = new ListPageFilterMixin();
 
-  showFilter: boolean = false
   tableActions: ITableAction[] = [
     {
       name: EAction.delete,
@@ -132,15 +121,6 @@ export class CategoryTableComponent {
     ];
   }
 
-  openFilter() {
-    this.showFilter = true;
-  }
-
-  onCloseFilter(event: any) {
-    this.showFilter = false;
-  }
-
-
   API_getAll() {
     this.ApiService.get(global_API_getAll, this.objectSearch).subscribe((res: any) => {
       const d = res?.data;
@@ -158,14 +138,30 @@ export class CategoryTableComponent {
     this.API_getAll();
   }
 
+  onSearch(value: string) {
+    this.filterMixin.onSearchChange(value, () => this.API_getAll(), this.objectSearch, 'enName');
+  }
+
   onSubmitFilter() {
+    this.filterMixin.updateChips([
+      { key: 'enName', label: 'category.form.name_en', value: this.objectSearch.enName },
+      { key: 'arName', label: 'category.form.name_ar', value: this.objectSearch.arName },
+    ]);
+    this.objectSearch.pageNumber = 1;
     this.API_getAll();
+    this.filterMixin.filtersExpanded = false;
+  }
+
+  onChipRemove(key: string) {
+    this.filterMixin.removeChip(key, this.objectSearch, () => this.API_getAll());
   }
 
   reset() {
     this.objectSearch = { pageNumber: 1, pageSize: 8, sortingExpression: '', sortingDirection: 0, enName: '', arName: '' };
+    this.filterMixin.searchValue = '';
+    this.filterMixin.filterChips = [];
+    this.filterMixin.filtersExpanded = false;
     this.API_getAll();
-    this.showFilter = false;
   }
 
   reloadGetAllApi(e: any) {

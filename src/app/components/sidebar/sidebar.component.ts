@@ -1,5 +1,5 @@
-import { NgFor, NgIf, UpperCasePipe } from '@angular/common';
-import { Component, inject, Input} from '@angular/core';
+import { NgClass, NgFor, NgIf, UpperCasePipe } from '@angular/common';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { Tooltip } from 'primeng/tooltip';
 import { LanguageService } from '../../services/language.service';
 import { TranslateModule } from '@ngx-translate/core';
@@ -16,12 +16,14 @@ import { wardaLogoPath } from '../../core/brand-assets';
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [NgFor , Tooltip ,UpperCasePipe, TranslateModule, NgIf, RouterModule,InputTextComponent , RouterLinkActive, SelectComponent],
+  imports: [NgClass, NgFor , Tooltip ,UpperCasePipe, TranslateModule, NgIf, RouterModule,InputTextComponent , RouterLinkActive, SelectComponent],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss'
 })
 export class SidebarComponent  {
-  @Input()activeRoute=''
+  @Input() activeRoute = '';
+  @Input() collapsed = false;
+  @Output() toggleSidebar = new EventEmitter<void>();
   isTrader: boolean = false;
   isAdmin: boolean = false;
   selectedLang: any;
@@ -36,6 +38,14 @@ export class SidebarComponent  {
 
   get brandLogoSrc(): string {
     return wardaLogoPath(this.languageService.getCurrentLang());
+  }
+
+  get toggleIconClass(): string {
+    const isRtl = this.selectedLang === 'ar';
+    if (this.collapsed) {
+      return isRtl ? 'pi-angle-left' : 'pi-angle-right';
+    }
+    return isRtl ? 'pi-angle-right' : 'pi-angle-left';
   }
   
   // Country dropdown
@@ -99,5 +109,9 @@ export class SidebarComponent  {
 
   logOut(){
     this.router.navigate(['/auth/login']).then(() => localStorage.clear());
+  }
+
+  onToggleSidebar(): void {
+    this.toggleSidebar.emit();
   }
 }

@@ -1,20 +1,19 @@
-import { NgFor, NgIf, TitleCasePipe } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { RouterModule } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { Knob } from 'primeng/knob';
 import { FormsModule } from '@angular/forms';
 import { EAction, EType, IcolHeader, ITableAction, TableComponent } from '../../components/table/table.component';
-import { DrawerComponent } from '../../components/drawer/drawer.component';
 import { ETableShow, IcolHeaderSmallTable, TableSmallScreenComponent } from '../../components/table-small-screen/table-small-screen.component';
-import { PaginationComponent } from '../../components/pagination/pagination.component';
 import { LanguageService } from '../../services/language.service';
 import { IBreadcrumb } from '../../components/breadcrump/cerqel-breadcrumb.interface';
-import { BreadcrumpComponent } from '../../components/breadcrump/breadcrump.component';
 import { Roles } from '../../conts';
-import { ChartComponent } from "../../components/chart/chart.component";
+import { ChartComponent } from '../../components/chart/chart.component';
 import { SelectComponent } from '../../components/select/select.component';
+import { PageHeaderComponent } from '../../components/page-header/page-header.component';
+import { StatCardComponent } from '../../components/stat-card/stat-card.component';
+import { EmptyStateComponent } from '../../components/empty-state/empty-state.component';
 
 const global_pageName = 'products.pageName';
 const global_router_add_url_in_Table = '/product/add';
@@ -24,7 +23,18 @@ const global_router_edit_url = '/product/edit';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [NgFor, RouterModule, SelectComponent,PaginationComponent,ChartComponent, NgIf, TableSmallScreenComponent, TranslatePipe, TableComponent, DrawerComponent, Knob, FormsModule, ChartComponent],
+  imports: [
+    RouterModule,
+    SelectComponent,
+    ChartComponent,
+    TableSmallScreenComponent,
+    TranslatePipe,
+    TableComponent,
+    FormsModule,
+    PageHeaderComponent,
+    StatCardComponent,
+    EmptyStateComponent,
+  ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
