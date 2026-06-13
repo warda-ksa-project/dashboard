@@ -26,7 +26,10 @@ export class SignalRService implements OnDestroy {
       return;
     }
 
-    if (this.connection?.state === signalR.HubConnectionState.Connected) {
+    if (
+      this.connection?.state === signalR.HubConnectionState.Connected ||
+      this.connection?.state === signalR.HubConnectionState.Connecting
+    ) {
       return;
     }
 

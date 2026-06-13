@@ -61,7 +61,9 @@ export class ApiService {
   }
 
   /** PUT with ID in URL (e.g. Traders/approve/123) */
-  putWithId<T>(apiName: string, id: string | number, body?: any): Observable<T> {
-    return this.http.put<T>(`${baseUrl}${apiName}/${id}`, body ?? null);
+  putWithId<T>(apiName: string, id: string | number, body: Record<string, unknown> = {}): Observable<T> {
+    return this.http.put<T>(`${baseUrl}${apiName}/${id}`, body, {
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 }

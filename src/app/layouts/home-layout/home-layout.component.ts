@@ -1,6 +1,5 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
-import { Toast } from 'primeng/toast';
 import { LanguageService } from '../../services/language.service';
 import { ToasterService } from '../../services/toaster.service';
 import { SignalRService } from '../../services/signalr.service';
@@ -16,7 +15,6 @@ import { filter, Subscription } from 'rxjs';
   standalone: true,
   imports: [
     RouterOutlet,
-    Toast,
     SideNavComponent,
     SidebarComponent,
     NavbarComponent,

@@ -547,7 +547,9 @@ header=''
   }
 
   reject() {
-    this.ApiService.putWithId('Traders/reject', this.getID, this.reasonForRejectionValue || null).subscribe((res: any) => {
+    this.ApiService.putWithId('Traders/reject', this.getID, {
+      reason: this.reasonForRejectionValue || null,
+    }).subscribe((res: any) => {
       if (res?.isSuccess !== false)
         this.navigateToPageTable();
     });
