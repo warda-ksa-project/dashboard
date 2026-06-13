@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { EAction, EType, IcolHeader, ITableAction, TableComponent } from '../../../components/table/table.component';
 import { ApiService } from '../../../services/api.service';
 import { Router } from '@angular/router';
@@ -13,6 +13,8 @@ import { UploadFileComponent } from '../../../components/upload-file/upload-file
 import { TranslatePipe } from '@ngx-translate/core';
 import { DialogModule } from 'primeng/dialog';
 import { ListPageShellComponent } from '../../../components/list-page-shell/list-page-shell.component';
+import { SignalRService } from '../../../services/signalr.service';
+import { Subscription } from 'rxjs';
 
 const global_pageName = 'order.pageName'
 const global_router_edit_url = '/order/edit'
@@ -26,7 +28,7 @@ const global_API_getAll = 'Orders'
   templateUrl: './orders-table.component.html',
   styleUrl: './orders-table.component.scss'
 })
-export class OrdersTableComponent {
+export class OrdersTableComponent implements OnInit, OnDestroy {
 
   pageName = signal<string>(global_pageName);
   router=inject(Router)
@@ -92,6 +94,8 @@ export class OrdersTableComponent {
 
   selectedLang: any;
   languageService = inject(LanguageService);
+  private signalR = inject(SignalRService);
+  private signalRSub?: Subscription;
 
   ngOnInit() {
     this.pageName.set(global_pageName)
@@ -108,6 +112,15 @@ export class OrdersTableComponent {
       this.getRoles();
       this.getBreadCrumb();
     })
+    this.signalRSub = this.signalR.dashboardUpdate$.subscribe((update) => {
+      if (this.signalR.isOrderUpdate(update)) {
+        this.API_getAll();
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.signalRSub?.unsubscribe();
   }
   getRoles(){
     this.ApiService.get('Auth/roles').subscribe((res:any)=>{

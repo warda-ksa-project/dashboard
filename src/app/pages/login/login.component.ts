@@ -34,6 +34,7 @@ import { Subject, EMPTY, combineLatest } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, switchMap, takeUntil, tap, catchError, startWith } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { buildEncryptedDeviceId } from '../../core/device-id-crypto';
+import { SignalRService } from '../../services/signalr.service';
 
 declare global {
   interface Window {
@@ -82,6 +83,7 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
   countries: { name: string; code: number; phoneCode: string; phoneLength: number; imageUrl?: string }[] = [];
   countriesData: any[] = [];
   languageService = inject(LanguageService);
+  private signalR = inject(SignalRService);
   currentLang = 'en';
   selectedLang = localStorage.getItem('lang') || 'en';
   selectedCountry: { phoneLength: number; phoneCode: string } | null = null;
@@ -426,6 +428,8 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
           } else {
             localStorage.removeItem('countryId');
           }
+
+          this.signalR.connect();
 
           if (user.role === Roles.admin)
             this.router.navigate(['/dashboard-admin']);

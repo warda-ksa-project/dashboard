@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import {
   EAction,
   EType,
@@ -19,6 +19,8 @@ import { PaginationComponent } from '../../../components/pagination/pagination.c
 import { TranslatePipe } from '@ngx-translate/core';
 import { ListPageShellComponent } from '../../../components/list-page-shell/list-page-shell.component';
 import { ListPageFilterMixin } from '../../../core/list-page.mixin';
+import { SignalRService } from '../../../services/signalr.service';
+import { Subscription } from 'rxjs';
 
 const global_pageName = 'trader_request.pageName';
 const global_router_add_url_in_Table = '/traderRequest/add';
@@ -38,7 +40,7 @@ const global_API_getAll = 'Traders/requests';
   templateUrl: './trader-requests-table.component.html',
   styleUrl: './trader-requests-table.component.scss',
 })
-export class TraderRequestsTableComponent {
+export class TraderRequestsTableComponent implements OnInit, OnDestroy {
   global_router_add_url_in_Table = global_router_add_url_in_Table;
   pageName = signal<string>(global_pageName);
   filterMixin = new ListPageFilterMixin();
@@ -80,6 +82,8 @@ export class TraderRequestsTableComponent {
 
   selectedLang: any;
   languageService = inject(LanguageService);
+  private signalR = inject(SignalRService);
+  private signalRSub?: Subscription;
 
   ngOnInit() {
     this.pageName.set(global_pageName);
@@ -92,6 +96,15 @@ export class TraderRequestsTableComponent {
       this.displayTableCols(this.selectedLang);
       this.getBreadCrumb();
     });
+    this.signalRSub = this.signalR.dashboardUpdate$.subscribe((update) => {
+      if (this.signalR.isTraderRequestUpdate(update)) {
+        this.API_getAll();
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.signalRSub?.unsubscribe();
   }
 
   displayTableCols(currentLang: string) {

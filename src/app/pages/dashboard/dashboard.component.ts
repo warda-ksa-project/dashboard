@@ -1,6 +1,8 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { ApiService } from '../../services/api.service';
+import { SignalRService } from '../../services/signalr.service';
+import { Subscription } from 'rxjs';
 import { RouterModule } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
@@ -38,7 +40,7 @@ const global_router_edit_url = '/product/edit';
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit, OnDestroy {
  global_router_add_url_in_Table = global_router_add_url_in_Table;
   pageName = signal<string>(global_pageName);
   private ApiService = inject(ApiService);
@@ -61,6 +63,8 @@ export class DashboardComponent {
     };
     selectedLang: any;
     languageService = inject(LanguageService);
+    private signalR = inject(SignalRService);
+    private signalRSub?: Subscription;
     objectSearch = {
       pageNumber: 1,
       pageSize: 8,
@@ -203,7 +207,19 @@ pageinationList:any[]=[
       // this.getAllSalesPerMonth()
 
     });
+
+    this.signalRSub = this.signalR.dashboardUpdate$.subscribe((update) => {
+      if (this.signalR.isOrderUpdate(update)) {
+        this.getAllSalesOrderDashboardStatistics();
+        this.getAllSalesPerMonth();
+        this.getStaticData();
+      }
+    });
     // this.getDashboardDetails();
+  }
+
+  ngOnDestroy(): void {
+    this.signalRSub?.unsubscribe();
   }
 
   getAllSalesPerMonth() {

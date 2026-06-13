@@ -1,6 +1,8 @@
 import { CurrencyPipe } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { ApiService } from '../../services/api.service';
+import { SignalRService } from '../../services/signalr.service';
+import { Subscription } from 'rxjs';
 import { RouterModule } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { FormsModule } from '@angular/forms';
@@ -38,7 +40,7 @@ const global_router_edit_url = '/product/edit';
   templateUrl: './dashboard-admin.component.html',
   styleUrl: './dashboard-admin.component.scss',
 })
-export class DashboardAdminComponent {
+export class DashboardAdminComponent implements OnInit, OnDestroy {
   global_router_add_url_in_Table = global_router_add_url_in_Table;
   pageName = signal<string>(global_pageName);
   private ApiService = inject(ApiService);
@@ -62,6 +64,8 @@ export class DashboardAdminComponent {
   };
   selectedLang: any;
   languageService = inject(LanguageService);
+  private signalR = inject(SignalRService);
+  private signalRSub?: Subscription;
   objectSearch = {
     pageNumber: 1,
     pageSize: 8,
@@ -174,6 +178,31 @@ export class DashboardAdminComponent {
     this.languageService.translationService.onLangChange.subscribe(() => {
       this.selectedLang = this.languageService.translationService.currentLang;
     });
+
+    this.signalRSub = this.signalR.dashboardUpdate$.subscribe((update) => {
+      if (
+        this.signalR.isOrderUpdate(update) ||
+        this.signalR.isTraderRequestUpdate(update) ||
+        this.signalR.isTraderUpdate(update)
+      ) {
+        this.refreshDashboardData();
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.signalRSub?.unsubscribe();
+  }
+
+  private refreshDashboardData(): void {
+    this.getStaticData();
+    this.getAllRevenueForEveryCity();
+    this.getAllSalesPerWeek();
+    const formattedRange = {
+      fromDate: this.formatDate(this.dateRange[0]),
+      toDate: this.formatDate(this.dateRange[1]),
+    };
+    this.getAllUsers(formattedRange);
   }
 
   // getAllSalesPerMonth() {

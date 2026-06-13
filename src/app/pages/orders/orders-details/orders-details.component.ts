@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { ApiService } from '../../../services/api.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -14,6 +14,8 @@ import { SelectComponent } from '../../../components/select/select.component';
 import { UploadFileComponent } from '../../../components/upload-file/upload-file.component';
 import { Roles } from '../../../conts';
 import { parseApiDateTime } from '../../../utils/api-datetime-parse';
+import { SignalRService } from '../../../services/signalr.service';
+import { Subscription } from 'rxjs';
 
 const global_PageName = 'order.pageName';
 const global_routeUrl = 'orders';
@@ -26,7 +28,7 @@ const global_API_details = 'Orders';
   templateUrl: './orders-details.component.html',
   styleUrl: './orders-details.component.scss'
 })
-export class OrdersDetailsComponent {
+export class OrdersDetailsComponent implements OnInit, OnDestroy {
 
   pageName = signal<string>(global_PageName);
   private ApiService = inject(ApiService);
@@ -83,6 +85,8 @@ export class OrdersDetailsComponent {
 
   selectedLang: any;
   languageService = inject(LanguageService);
+  private signalR = inject(SignalRService);
+  private signalRSub?: Subscription;
 
   ngOnInit() {
     this.pageName.set(global_PageName);
@@ -108,6 +112,19 @@ export class OrdersDetailsComponent {
       this.API_getItemDetails();
       this.API_getStatus();
     }
+
+    this.signalRSub = this.signalR.dashboardUpdate$.subscribe((update) => {
+      if (
+        this.signalR.isOrderUpdate(update) &&
+        update.entityId === String(this.getID)
+      ) {
+        this.API_getItemDetails();
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.signalRSub?.unsubscribe();
   }
 
   API_getStatus() {
