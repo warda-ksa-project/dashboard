@@ -57,11 +57,15 @@
                   alt="image">
                 <span> {{ rowData[col.keyName][col.nested.text]?rowData[col.keyName][col.nested.text]:'-'}}</span>
               </span>
-              <span *ngIf="col.type=='status'" class="status-clickable-wrapper">
-                <button [class]="rowData[col.keyName]" [class.clickable]="statusClickable" (click)="statusClickable && onStatusCellClick.emit(rowData)"> {{ rowData[col.keyName]}}</button>
+              <span *ngIf="col.type=='status'"
+                class="status-badge"
+                [ngClass]="getStatusBadgeClass(rowData, col)"
+                [class.clickable]="statusClickable"
+                (click)="statusClickable && onStatusCellClick.emit(rowData)">
+                {{ rowData[col.keyName] ? rowData[col.keyName] : '-' }}
               </span>
-              <span *ngIf="col.type=='status_id'">
-                <button [class]="rowData[col.statusId]"> {{ rowData[col.keyName]}}</button>
+              <span *ngIf="col.type=='status_id'" class="status-badge" [ngClass]="getStatusBadgeClass(rowData, col)">
+                {{ rowData[col.keyName] ? rowData[col.keyName] : '-' }}
               </span>
               <span *ngIf="col.type ==='toggle'">
                 <app-check-box [initValue]="rowData[col.keyName]" (toggleValue)="onToggleChange($event,rowData,col)"

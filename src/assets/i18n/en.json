@@ -159,9 +159,21 @@
     "faqs": "FAQs",
     "target":"Target",
     "notifications": "Notifications",
+    "otp_metrics": "OTP Security",
     "termsAndConditions": "Terms & Conditions",
     "privacyPolicy": "Privacy Policy",
     "socialMedia": "Social Media"
+  },
+  "otp_metrics": {
+    "pageName": "OTP Security Report",
+    "subtitle": "Summary for the last 24 hours from OtpSmsSendLog and blocked devices.",
+    "refresh": "Refresh",
+    "loading": "Loading…",
+    "sent_24h": "SMS sent (24h)",
+    "rejected_24h": "Rejected (24h)",
+    "blocked_devices": "Blocked devices",
+    "high_risk_24h": "High risk attempts (24h)",
+    "note": "For full audit rows, query OtpSmsSendLog in SQL or see docs/OTP_SECURITY_RUNBOOK.md on the backend."
   },
   "users":{
     "pageName": "Users",

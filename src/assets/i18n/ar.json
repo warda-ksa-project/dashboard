@@ -155,9 +155,21 @@
     "faqs": "الأسئلة الشائعة",
     "target":"الهدف",
     "notifications": "الإشعارات",
+    "otp_metrics": "أمان OTP",
     "termsAndConditions": "الشروط والأحكام",
     "privacyPolicy": "سياسة الخصوصية",
     "socialMedia": "وسائل التواصل الاجتماعي"
+  },
+  "otp_metrics": {
+    "pageName": "تقرير أمان OTP",
+    "subtitle": "ملخص آخر 24 ساعة من سجل OtpSmsSendLog والأجهزة المحظورة.",
+    "refresh": "تحديث",
+    "loading": "جاري التحميل…",
+    "sent_24h": "رسائل ناجحة (24 س)",
+    "rejected_24h": "مرفوض (24 س)",
+    "blocked_devices": "أجهزة محظورة",
+    "high_risk_24h": "محاولات عالية الخطورة (24 س)",
+    "note": "للتفاصيل الكاملة راجع جدول OtpSmsSendLog في قاعدة البيانات."
   },
   "users": {
     "pageName": "المستخدمون",

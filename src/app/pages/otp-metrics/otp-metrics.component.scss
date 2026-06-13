@@ -1,0 +1,41 @@
+.otp-metrics-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--warda-space-6);
+}
+
+.otp-metrics-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--warda-space-3);
+}
+
+.otp-metrics-hint {
+  margin: 0;
+  color: var(--warda-text-muted, #6b7280);
+  font-size: var(--warda-text-sm);
+}
+
+.otp-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--warda-space-4);
+}
+
+.otp-metrics-note {
+  padding: var(--warda-space-4);
+  font-size: var(--warda-text-sm);
+  color: var(--warda-text-muted, #6b7280);
+
+  p {
+    margin: 0;
+  }
+}
+
+.otp-metrics-error {
+  padding: var(--warda-space-4);
+  color: #b42318;
+  font-size: var(--warda-text-sm);
+}

@@ -1,0 +1,52 @@
+<div class="otp-metrics-page">
+  <app-page-header
+    [title]="'otp_metrics.pageName'"
+    icon="pi pi-shield"
+  ></app-page-header>
+
+  <div class="otp-metrics-toolbar">
+    <p class="otp-metrics-hint">{{ 'otp_metrics.subtitle' | translate }}</p>
+    <button
+      pButton
+      type="button"
+      icon="pi pi-refresh"
+      [label]="'otp_metrics.refresh' | translate"
+      class="p-button-outlined"
+      (click)="loadMetrics()"
+      [disabled]="loading()"
+    ></button>
+  </div>
+
+  @if (loading()) {
+    <app-empty-state icon="pi pi-spin pi-spinner" title="otp_metrics.loading"></app-empty-state>
+  } @else if (error()) {
+    <div class="warda-card otp-metrics-error">{{ error() }}</div>
+  } @else if (metrics(); as m) {
+    <div class="otp-metrics-grid">
+      <app-stat-card
+        icon="pi pi-check-circle"
+        [label]="'otp_metrics.sent_24h' | translate"
+        [value]="m.sentLast24Hours"
+      ></app-stat-card>
+      <app-stat-card
+        icon="pi pi-times-circle"
+        [label]="'otp_metrics.rejected_24h' | translate"
+        [value]="m.rejectedLast24Hours"
+      ></app-stat-card>
+      <app-stat-card
+        icon="pi pi-ban"
+        [label]="'otp_metrics.blocked_devices' | translate"
+        [value]="m.blockedDevices"
+      ></app-stat-card>
+      <app-stat-card
+        icon="pi pi-exclamation-triangle"
+        [label]="'otp_metrics.high_risk_24h' | translate"
+        [value]="m.highRiskLast24Hours"
+      ></app-stat-card>
+    </div>
+
+    <div class="warda-card otp-metrics-note">
+      <p>{{ 'otp_metrics.note' | translate }}</p>
+    </div>
+  }
+</div>

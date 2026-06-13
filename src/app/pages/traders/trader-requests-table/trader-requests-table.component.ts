@@ -97,7 +97,7 @@ export class TraderRequestsTableComponent {
   displayTableCols(currentLang: string) {
     this.columns = [
       {
-        keyName: 'userId',
+        keyName: 'id',
         header: this.languageService.translate('Id'),
         type: EType.id,
         show: true,
@@ -124,7 +124,7 @@ export class TraderRequestsTableComponent {
     ];
     this.columnsSmallTable = [
       {
-        keyName: 'userId',
+        keyName: 'id',
         header: this.languageService.translate('Id'),
         type: EType.id,
         show: false,

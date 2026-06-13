@@ -39,6 +39,7 @@ export const menuItems  : MenuItem[] =
     { icon: 'pi pi-clock', id:'working_hours',label: 'side_bar.working_hours', route: '/store-working-hours',type:[Roles.admin,Roles.trader]  },
     { icon: 'pi pi-users', id:'users',label: 'side_bar.users', route: '/users',type:[Roles.admin]  },
     { icon: 'pi pi-bell', id:'notifications',label: 'side_bar.notifications', route: '/settings/add_notification',type:[Roles.admin] },
+    { icon: 'pi pi-shield', id:'otp_metrics',label: 'side_bar.otp_metrics', route: '/otp-metrics',type:[Roles.admin] },
     { icon: 'pi pi-database', id:'aboutus',label: 'side_bar.about', route: '/about-us',type:[Roles.admin,Roles.trader] },
     { icon: 'pi pi-file-edit', id:'termsandconditions',label: 'side_bar.termsAndConditions', route: '/settings/terms_conditions' ,type:[Roles.admin] },
     { icon: 'pi pi-shield', id:'privacypolicy',label: 'side_bar.privacyPolicy', route: '/settings/privacy_policy' ,type:[Roles.admin] },

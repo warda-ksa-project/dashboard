@@ -44,6 +44,12 @@ export const routes: Routes = [
         data: { roles: [Roles.admin] }
       },
       { 
+        path: 'otp-metrics', 
+        loadComponent: () => import('./pages/otp-metrics/otp-metrics.component').then(m => m.OtpMetricsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
         path: 'dashboard-trader', 
         loadComponent: () => import('./pages/dashboard/dashboard.component').then(m => m.DashboardComponent),
         canActivate: [roleGuard],

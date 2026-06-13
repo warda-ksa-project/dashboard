@@ -336,4 +336,35 @@ export class TableComponent implements OnInit, OnChanges {
     const status = statuses.find(status => status.id === id);
     return status ? status.color : null;
   }
+
+  getStatusBadgeClass(rowData: any, col: IcolHeader): string {
+    const raw = col.statusId ? rowData?.[col.statusId] : rowData?.[col.keyName];
+    if (raw === true) return 'active';
+    if (raw === false) return 'not-active';
+    return this.resolveStatusClass(raw);
+  }
+
+  private resolveStatusClass(status?: string | null): string {
+    if (!status) return 'status-default';
+
+    const normalized = status.replace(/\s+/g, '').toLowerCase();
+    const map: Record<string, string> = {
+      pending: 'Pending',
+      inprogress: 'inProgress',
+      preparing: 'Preparing',
+      delivering: 'Delivering',
+      shipped: 'Shipped',
+      completed: 'Completed',
+      complete: 'complete',
+      canceled: 'Canceled',
+      cancelled: 'Canceled',
+      cancel: 'cancel',
+      returned: 'Returned',
+      paid: 'Completed',
+      active: 'active',
+      inactive: 'not-active',
+    };
+
+    return map[normalized] ?? status.replace(/\s+/g, '');
+  }
 }
