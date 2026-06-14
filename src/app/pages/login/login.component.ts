@@ -31,7 +31,17 @@ import { Roles } from '../../conts';
 import { ValidationHandlerPipePipe } from '../../pipes/validation-handler-pipe.pipe';
 import { SelectComponent } from '../../components/select/select.component';
 import { Subject, EMPTY, combineLatest } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, map, switchMap, takeUntil, tap, catchError, startWith } from 'rxjs/operators';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  map,
+  switchMap,
+  takeUntil,
+  tap,
+  catchError,
+  startWith,
+} from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { buildEncryptedDeviceId } from '../../core/device-id-crypto';
 import { SignalRService } from '../../services/signalr.service';
@@ -66,7 +76,8 @@ declare global {
   providers: [ApiService],
 })
 export class LoginComponent implements OnDestroy, AfterViewInit {
-  @ViewChild('recaptchaContainer') recaptchaContainer?: ElementRef<HTMLDivElement>;
+  @ViewChild('recaptchaContainer')
+  recaptchaContainer?: ElementRef<HTMLDivElement>;
 
   loginForm: FormGroup;
   toaster = inject(ToasterService);
@@ -80,7 +91,13 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
   otpValue = '';
   mobileNumber = '';
   openOtpModal = false;
-  countries: { name: string; code: number; phoneCode: string; phoneLength: number; imageUrl?: string }[] = [];
+  countries: {
+    name: string;
+    code: number;
+    phoneCode: string;
+    phoneLength: number;
+    imageUrl?: string;
+  }[] = [];
   countriesData: any[] = [];
   languageService = inject(LanguageService);
   private signalR = inject(SignalRService);
@@ -108,7 +125,10 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
   onCountryChange(countryId: number) {
     const c = this.countriesData.find((x: any) => x.id === countryId);
     this.selectedCountry = c
-      ? { phoneLength: this.getPhoneLength(c), phoneCode: c.phoneCode || '+966' }
+      ? {
+          phoneLength: this.getPhoneLength(c),
+          phoneCode: c.phoneCode || '+966',
+        }
       : null;
     this.updatePhoneValidators();
     this.isAdmin = null;
@@ -139,7 +159,7 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
     @Inject(DOCUMENT) private document: Document,
     private api: ApiService,
     private translate: TranslateService,
-    private router: Router
+    private router: Router,
   ) {
     this.loginForm = this.fb.group({
       country: [null, [Validators.required]],
@@ -238,7 +258,9 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
 
   private updateCanSubmit() {
     const len = this.selectedCountry?.phoneLength ?? 0;
-    const phone = (this.loginForm.get('phoneNumber')?.value ?? '').toString().replace(/\D/g, '');
+    const phone = (this.loginForm.get('phoneNumber')?.value ?? '')
+      .toString()
+      .replace(/\D/g, '');
     const countryOk = !!this.loginForm.get('country')?.value;
     const phoneOk = len > 0 && phone.length === len && /^\d+$/.test(phone);
     const captchaOk = !this.recaptchaSiteKey || !!this.captchaToken;
@@ -246,7 +268,9 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
   }
 
   private getPhoneDigits(): string {
-    return (this.loginForm.get('phoneNumber')?.value ?? '').toString().replace(/\D/g, '');
+    return (this.loginForm.get('phoneNumber')?.value ?? '')
+      .toString()
+      .replace(/\D/g, '');
   }
 
   private isPhoneValid(): boolean {
@@ -274,7 +298,9 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
           const digits = (phone ?? '').toString().replace(/\D/g, '');
           return { countryId, digits, requiredLen: len };
         }),
-        distinctUntilChanged((a, b) => a.digits === b.digits && a.requiredLen === b.requiredLen),
+        distinctUntilChanged(
+          (a, b) => a.digits === b.digits && a.requiredLen === b.requiredLen,
+        ),
         tap(({ requiredLen, digits }) => {
           if (digits.length < requiredLen) {
             this.isAdmin = null;
@@ -282,7 +308,10 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
             this.updateCanSubmit();
           }
         }),
-        filter(({ requiredLen, digits }) => requiredLen > 0 && digits.length >= requiredLen),
+        filter(
+          ({ requiredLen, digits }) =>
+            requiredLen > 0 && digits.length >= requiredLen,
+        ),
         tap(() => {
           this.isCheckingAdmin = true;
           this.updateCanSubmit();
@@ -294,13 +323,16 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
               this.isCheckingAdmin = false;
               this.isAdmin = null;
               this.updateCanSubmit();
-              const msg = err?.error?.error?.message || err?.error?.message || err?.message;
+              const msg =
+                err?.error?.error?.message ||
+                err?.error?.message ||
+                err?.message;
               if (msg) this.toaster.errorToaster(msg);
               return EMPTY;
-            })
+            }),
           );
         }),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe((isAdmin: boolean) => {
         this.isCheckingAdmin = false;
@@ -322,21 +354,29 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
     phoneCtrl?.markAsTouched();
 
     if (!this.selectedCountry) {
-      this.toaster.errorToaster(this.translate.instant('login.select_country_first'));
+      this.toaster.errorToaster(
+        this.translate.instant('login.select_country_first'),
+      );
       return;
     }
     if (!this.isPhoneValid()) {
       this.toaster.errorToaster(
-        this.translate.instant('login.phone_length_invalid', { count: requiredLen })
+        this.translate.instant('login.phone_length_invalid', {
+          count: requiredLen,
+        }),
       );
       return;
     }
     if (this.recaptchaSiteKey && !this.captchaToken) {
-      this.toaster.errorToaster(this.translate.instant('login.captcha_required'));
+      this.toaster.errorToaster(
+        this.translate.instant('login.captcha_required'),
+      );
       return;
     }
     if (this.isCheckingAdmin) {
-      this.toaster.errorToaster(this.translate.instant('login.wait_verification'));
+      this.toaster.errorToaster(
+        this.translate.instant('login.wait_verification'),
+      );
       return;
     }
 
@@ -363,7 +403,8 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
         this.isAdmin = false;
         this.loginForm.get('roleId')?.setValue(2);
         this.updateCanSubmit();
-        const msg = err?.error?.error?.message || err?.error?.message || err?.message;
+        const msg =
+          err?.error?.error?.message || err?.error?.message || err?.message;
         if (msg) this.toaster.errorToaster(msg);
         else this.onLogin(this.loginForm.value);
       },
@@ -374,15 +415,26 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
     this.api.get('Countries').subscribe((res: any) => {
       if (res.data) {
         this.countries = [];
-        this.countriesData = res.data;
+        this.countriesData = res.data.filter((c: any) => c.status === true);
         const base = environment.baseUrl.replace('/api/', '');
-        res.data.forEach((country: any) => {
+        this.countriesData.forEach((country: any) => {
           this.countries.push({
-            name: (this.selectedLang === 'en' ? country.enName : country.arName) + ' (' + (country.phoneCode || '') + ')',
+            name:
+              (this.selectedLang === 'en' ? country.enName : country.arName) +
+              ' (' +
+              (country.phoneCode || '') +
+              ')',
             code: country.id,
             phoneCode: country.phoneCode || '+966',
             phoneLength: this.getPhoneLength(country),
-            imageUrl: country.image ? (country.image.startsWith('http') ? country.image : base + (country.image.startsWith('/') ? country.image : '/' + country.image)) : undefined,
+            imageUrl: country.image
+              ? country.image.startsWith('http')
+                ? country.image
+                : base +
+                  (country.image.startsWith('/')
+                    ? country.image
+                    : '/' + country.image)
+              : undefined,
           });
         });
         if (this.countries.length && !this.loginForm.get('country')?.value) {
@@ -395,48 +447,53 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
   }
   getOtpValue(e: any) {
     const secret = environment.deviceIdSecret ?? 'WardaDeviceIdSecretKey_v1';
-    buildEncryptedDeviceId(secret).then((deviceId) => {
-      const otpObject = {
-        phone: this.mobileNumber,
-        otpCode: e.otpValue,
-        deviceId,
-      };
-      this.api.post('Auth/verify-otp', otpObject).subscribe((data: any) => {
-        if (data.isFailure) {
-          this.toaster.errorToaster(data.error?.message || 'Invalid OTP');
-        } else {
-          const user = data.data;
-          localStorage.setItem('token', user.accessToken);
-          localStorage.setItem('userId', user.userId);
-          localStorage.setItem('name', user.userName);
-          if (user.role === Roles.admin) {
-            localStorage.setItem('role', Roles.admin.toString());
+    buildEncryptedDeviceId(secret)
+      .then((deviceId) => {
+        const otpObject = {
+          phone: this.mobileNumber,
+          otpCode: e.otpValue,
+          deviceId,
+        };
+        this.api.post('Auth/verify-otp', otpObject).subscribe((data: any) => {
+          if (data.isFailure) {
+            this.toaster.errorToaster(data.error?.message || 'Invalid OTP');
           } else {
-            localStorage.setItem('role', Roles.trader.toString());
-          }
-          if (user.role === Roles.admin) {
-            const countryIdFromInput = this.loginForm.get('country')?.value;
-            if (countryIdFromInput) {
-              localStorage.setItem('countryId', countryIdFromInput.toString());
+            const user = data.data;
+            localStorage.setItem('token', user.accessToken);
+            localStorage.setItem('userId', user.userId);
+            localStorage.setItem('name', user.userName);
+            if (user.role === Roles.admin) {
+              localStorage.setItem('role', Roles.admin.toString());
+            } else {
+              localStorage.setItem('role', Roles.trader.toString());
+            }
+            if (user.role === Roles.admin) {
+              const countryIdFromInput = this.loginForm.get('country')?.value;
+              if (countryIdFromInput) {
+                localStorage.setItem(
+                  'countryId',
+                  countryIdFromInput.toString(),
+                );
+              } else if (user.countryId != null) {
+                localStorage.setItem('countryId', String(user.countryId));
+              } else {
+                localStorage.removeItem('countryId');
+              }
             } else if (user.countryId != null) {
               localStorage.setItem('countryId', String(user.countryId));
             } else {
               localStorage.removeItem('countryId');
             }
-          } else if (user.countryId != null) {
-            localStorage.setItem('countryId', String(user.countryId));
-          } else {
-            localStorage.removeItem('countryId');
+
+            this.signalR.connect();
+
+            if (user.role === Roles.admin)
+              this.router.navigate(['/dashboard-admin']);
+            else this.router.navigate(['/dashboard-trader']);
           }
-
-          this.signalR.connect();
-
-          if (user.role === Roles.admin)
-            this.router.navigate(['/dashboard-admin']);
-          else this.router.navigate(['/dashboard-trader']);
-        }
-      });
-    }).catch(() => this.toaster.errorToaster('Device security init failed'));
+        });
+      })
+      .catch(() => this.toaster.errorToaster('Device security init failed'));
   }
 
   toggleLanguage() {
@@ -448,7 +505,7 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
     document.documentElement.setAttribute('lang', this.selectedLang);
     document.documentElement.setAttribute(
       'dir',
-      this.selectedLang === 'ar' ? 'rtl' : 'ltr'
+      this.selectedLang === 'ar' ? 'rtl' : 'ltr',
     );
   }
 
@@ -461,36 +518,47 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
     this.openOtpModal = false;
     const digits = (loginData.phoneNumber ?? '').toString().replace(/\D/g, '');
     const secret = environment.deviceIdSecret ?? 'WardaDeviceIdSecretKey_v1';
-    buildEncryptedDeviceId(secret).then((deviceId) => {
-      const body: { phone: string; deviceId: string; captchaToken?: string } = { phone: digits, deviceId };
-      if (this.recaptchaSiteKey && this.captchaToken) {
-        body.captchaToken = this.captchaToken;
-      }
-      this.api.post('Auth/send-otp', body).subscribe({
-        next: (res: any) => {
-          if (res?.isFailure) {
-            const errMsg = res?.error?.message || res?.message || 'Login failed';
-            this.toaster.errorToaster(errMsg);
-          } else {
-            this.mobileNumber = digits;
-            if (this.isAdmin) {
-              const countryId = loginData.country;
-              if (countryId) localStorage.setItem('countryId', String(countryId));
+    buildEncryptedDeviceId(secret)
+      .then((deviceId) => {
+        const body: { phone: string; deviceId: string; captchaToken?: string } =
+          { phone: digits, deviceId };
+        if (this.recaptchaSiteKey && this.captchaToken) {
+          body.captchaToken = this.captchaToken;
+        }
+        this.api.post('Auth/send-otp', body).subscribe({
+          next: (res: any) => {
+            if (res?.isFailure) {
+              const errMsg =
+                res?.error?.message || res?.message || 'Login failed';
+              this.toaster.errorToaster(errMsg);
+            } else {
+              this.mobileNumber = digits;
+              if (this.isAdmin) {
+                const countryId = loginData.country;
+                if (countryId)
+                  localStorage.setItem('countryId', String(countryId));
+              }
+              this.openOtpModal = true;
             }
-            this.openOtpModal = true;
-          }
-        },
-        error: (err) => {
-          const msg = err?.error?.error?.message || err?.error?.message || err?.message || 'Login failed';
-          this.toaster.errorToaster(msg);
-        },
-      });
-    }).catch(() => this.toaster.errorToaster('Device security init failed'));
+          },
+          error: (err) => {
+            const msg =
+              err?.error?.error?.message ||
+              err?.error?.message ||
+              err?.message ||
+              'Login failed';
+            this.toaster.errorToaster(msg);
+          },
+        });
+      })
+      .catch(() => this.toaster.errorToaster('Device security init failed'));
   }
   resendOtp(e: any) {
     if (!e) return;
     this.openOtpModal = false;
     this.resetRecaptcha();
-    this.toaster.successToaster(this.translate.instant('login.resend_complete_captcha'));
+    this.toaster.successToaster(
+      this.translate.instant('login.resend_complete_captcha'),
+    );
   }
 }

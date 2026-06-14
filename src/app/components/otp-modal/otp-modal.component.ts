@@ -1,46 +1,78 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, inject, Input, Output, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  inject,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { ModalComponent } from '../modal/modal.component';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputOtp } from 'primeng/inputotp';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
-import { NgIf } from '@angular/common';
+import { NgIf, NgClass } from '@angular/common';
 import { ToasterService } from '../../services/toaster.service';
 import { IDialog } from '../modal/modal.interface';
 import { TranslatePipe } from '@ngx-translate/core';
+import { LanguageService } from '../../services/language.service';
 
 @Component({
   selector: 'app-otp-modal',
   standalone: true,
-  imports: [ModalComponent,TranslatePipe, FormsModule, InputTextModule, PasswordModule, ButtonModule, InputOtp, NgIf],
+  imports: [
+    ModalComponent,
+    TranslatePipe,
+    FormsModule,
+    InputTextModule,
+    PasswordModule,
+    ButtonModule,
+    InputOtp,
+    NgIf,
+    NgClass,
+  ],
   templateUrl: './otp-modal.component.html',
-  styleUrls: ['./otp-modal.component.scss']
+  styleUrls: ['./otp-modal.component.scss'],
 })
 export class OtpModalComponent implements AfterViewInit {
   toaster = inject(ToasterService);
+  private languageService = inject(LanguageService);
   otp: any;
   timer: number = 60;
+  lang: string = 'ar';
   @Input() mobileNumber: string = '';
   @Output() otpValue = new EventEmitter();
-  @Output() resendOtp = new EventEmitter()
+  @Output() resendOtp = new EventEmitter();
 
   dialogProps: IDialog = {
     props: {
       visible: true,
-      focusOnShow: false
+      focusOnShow: false,
     },
-    onHide: (e?: Event) => { },
-    onShow: (e?: Event) => { this.focusFirstOtpInput(); }
+    onHide: (e?: Event) => {},
+    onShow: (e?: Event) => {
+      this.focusFirstOtpInput();
+    },
   };
 
   interval: any;
 
-  constructor() { }
+  constructor() {}
+
+  private getLang() {
+    this.lang = this.languageService.translationService.currentLang;
+    this.languageService.translationService.onLangChange.subscribe((change) => {
+      this.lang = change.lang;
+    });
+  }
 
   ngOnInit(): void {
     this.mobileNumber = this.addStarsIntoMobileNumber(this.mobileNumber);
     this.startTimer();
+    this.getLang();
   }
 
   ngAfterViewInit(): void {
@@ -95,7 +127,9 @@ export class OtpModalComponent implements AfterViewInit {
       const maxAttempts = 12;
       const delay = 200 + attempt * 150;
       setTimeout(() => {
-        const firstInput = document.getElementById('otp-input-0') || document.querySelector<HTMLInputElement>('.custom-otp-input');
+        const firstInput =
+          document.getElementById('otp-input-0') ||
+          document.querySelector<HTMLInputElement>('.custom-otp-input');
         if (firstInput) {
           firstInput.focus();
         } else if (attempt < maxAttempts) {
@@ -108,8 +142,8 @@ export class OtpModalComponent implements AfterViewInit {
 
   checkOtpValue(e: any) {
     console.log(e.value);
-    if(e.value.length ==4) {
-      this.otpValue.emit({ otpValue: e.value })
+    if (e.value.length == 4) {
+      this.otpValue.emit({ otpValue: e.value });
     }
   }
 }

@@ -1,13 +1,25 @@
 <app-modal [dialogProps]="dialogProps">
   <div class="otp-content">
     <div class="title">
-      <p>{{'otp.verify_mobile_no'|translate}}</p>
+      <p>{{ "otp.verify_mobile_no" | translate }}</p>
     </div>
     <div class="desc">
-      <p>{{'otp.enter_degits'|translate}} <span>{{ mobileNumber }}</span> </p>
+      <p>
+        {{ "otp.enter_degits" | translate }} <span>{{ mobileNumber }}</span>
+      </p>
     </div>
     <div class="otp">
-      <p-inputotp #otpInputRef [autofocus]="true" (onChange)="checkOtpValue($event)" [(ngModel)]="otp" [length]="4">
+      <p-inputotp
+        [ngClass]="{
+          'flex-row': lang === 'en',
+          'flex-row-reverse': lang === 'ar',
+        }"
+        #otpInputRef
+        [autofocus]="true"
+        (onChange)="checkOtpValue($event)"
+        [(ngModel)]="otp"
+        [length]="4"
+      >
         <ng-template #input let-token let-events="events" let-index="index">
           <input
             #firstInput
@@ -28,7 +40,9 @@
     </div>
     <div class="timer">
       {{ getFormattedTimer() }}
-      <span *ngIf="timer === 0" (click)="resend()" class="resend-link">{{'otp.resend'|translate}}</span>
+      <span *ngIf="timer === 0" (click)="resend()" class="resend-link">{{
+        "otp.resend" | translate
+      }}</span>
     </div>
   </div>
 </app-modal>
