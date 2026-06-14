@@ -1,75 +1,90 @@
 import { Component, inject, signal } from '@angular/core';
-import { EAction, EType, IcolHeader, ITableAction, TableComponent } from '../../../components/table/table.component';
+import {
+  EAction,
+  EType,
+  IcolHeader,
+  ITableAction,
+  TableComponent,
+} from '../../../components/table/table.component';
 import { ApiService } from '../../../services/api.service';
 import { IBreadcrumb } from '../../../components/breadcrump/cerqel-breadcrumb.interface';
 import { FormsModule } from '@angular/forms';
 import { LanguageService } from '../../../services/language.service';
-import { ETableShow, IcolHeaderSmallTable, TableSmallScreenComponent } from '../../../components/table-small-screen/table-small-screen.component';
+import {
+  ETableShow,
+  IcolHeaderSmallTable,
+  TableSmallScreenComponent,
+} from '../../../components/table-small-screen/table-small-screen.component';
 import { PaginationComponent } from '../../../components/pagination/pagination.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ListPageShellComponent } from '../../../components/list-page-shell/list-page-shell.component';
 import { ListPageFilterMixin } from '../../../core/list-page.mixin';
 
-const global_pageName='contact_us.pageName'
-const global_router_add_url_in_Table ='/contact-us/add'
-const global_router_view_url ='contact-us/view'
-const global_router_edit_url ='contact-us/edit'
-const global_API_getAll ='Content/contact/paginated'
-const global_API_delete='Content/contact'
+const global_pageName = 'contact_us.pageName';
+const global_router_add_url_in_Table = '/contact-us/add';
+const global_router_view_url = 'contact-us/view';
+const global_router_edit_url = 'contact-us/edit';
+const global_API_getAll = 'Content/contact/paginated';
+const global_API_delete = 'Content/contact';
 
 @Component({
   selector: 'app-contact-us-table',
   standalone: true,
-  imports: [TableComponent, PaginationComponent, TranslatePipe, FormsModule, TableSmallScreenComponent, ListPageShellComponent],
+  imports: [
+    TableComponent,
+    PaginationComponent,
+    TranslatePipe,
+    FormsModule,
+    TableSmallScreenComponent,
+    ListPageShellComponent,
+  ],
   templateUrl: './contact-us-table.component.html',
-  styleUrl: './contact-us-table.component.scss'
+  styleUrl: './contact-us-table.component.scss',
 })
 export class ContactUsTableComponent {
-  global_router_add_url_in_Table =global_router_add_url_in_Table
-  pageName =signal<string>(global_pageName);
+  global_router_add_url_in_Table = global_router_add_url_in_Table;
+  pageName = signal<string>(global_pageName);
   filterMixin = new ListPageFilterMixin();
 
   tableActions: ITableAction[] = [
     {
       name: EAction.delete,
       apiName_or_route: global_API_delete,
-      autoCall: true
+      autoCall: true,
     },
     {
       name: EAction.view,
-      apiName_or_route:  global_router_view_url,
-      autoCall: true
+      apiName_or_route: global_router_view_url,
+      autoCall: true,
     },
-  ]
-  private ApiService = inject(ApiService)
-
+  ];
+  private ApiService = inject(ApiService);
 
   bredCrumb: IBreadcrumb = {
-    crumbs: [
-    ]
-  }
+    crumbs: [],
+  };
 
   objectSearch = {
     pageNumber: 1,
     pageSize: 8,
-    sortingExpression: "",
+    sortingExpression: '',
     sortingDirection: 0,
-    name: ""
-  }
+    name: '',
+  };
 
   totalCount: number = 0;
 
   searchValue: any = '';
   filteredData: any;
-  dataList: any = []
+  dataList: any = [];
   columns: IcolHeader[] = [];
-  columnsSmallTable: IcolHeaderSmallTable[] = []
+  columnsSmallTable: IcolHeaderSmallTable[] = [];
 
   selectedLang: any;
   languageService = inject(LanguageService);
 
   ngOnInit() {
-    this.pageName.set(global_pageName)
+    this.pageName.set(global_pageName);
     this.API_getAll();
     this.selectedLang = this.languageService.translationService.currentLang;
     this.displayTableCols(this.selectedLang);
@@ -78,51 +93,103 @@ export class ContactUsTableComponent {
       this.selectedLang = this.languageService.translationService.currentLang;
       this.displayTableCols(this.selectedLang);
       this.getBreadCrumb();
-    })
+    });
   }
 
   displayTableCols(currentLang: string) {
     this.columns = [
-      { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: true },
-      { keyName: 'name', header: this.languageService.translate('contact_us.form.name'), type: EType.text, show: true },
-      { keyName: 'email', header: this.languageService.translate('contact_us.form.email'), type: EType.text, show: true },
-      { keyName: 'mobile', header: this.languageService.translate('contact_us.form.mobile'), type: EType.text, show: true },
-      { keyName: '', header: this.languageService.translate('Actions'), type: EType.actions, actions: this.tableActions, show: true },
+      {
+        keyName: 'id',
+        header: this.languageService.translate('Id'),
+        type: EType.id,
+        show: true,
+      },
+      {
+        keyName: 'name',
+        header: this.languageService.translate('contact_us.form.name'),
+        type: EType.text,
+        show: true,
+      },
+      {
+        keyName: 'email',
+        header: this.languageService.translate('contact_us.form.email'),
+        type: EType.text,
+        show: true,
+      },
+      {
+        keyName: 'phone',
+        header: this.languageService.translate('contact_us.form.mobile'),
+        type: EType.text,
+        show: true,
+      },
+      {
+        keyName: '',
+        header: this.languageService.translate('Actions'),
+        type: EType.actions,
+        actions: this.tableActions,
+        show: true,
+      },
     ];
 
     this.columnsSmallTable = [
-      { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: false },
-      { keyName: 'name', header: this.languageService.translate('contact_us.form.name'), type: EType.text, showAs: ETableShow.header },
-      { keyName: 'email', header: this.languageService.translate('contact_us.form.email'), type: EType.text, showAs: ETableShow.content },
-      { keyName: 'mobile', header: this.languageService.translate('contact_us.form.mobile'), type: EType.text, showAs: ETableShow.content },
-      { keyName: 'message', header: this.languageService.translate('contact_us.form.message'), type: EType.editor, showAs: ETableShow.content,show: false  },
+      {
+        keyName: 'id',
+        header: this.languageService.translate('Id'),
+        type: EType.id,
+        show: false,
+      },
+      {
+        keyName: 'name',
+        header: this.languageService.translate('contact_us.form.name'),
+        type: EType.text,
+        showAs: ETableShow.header,
+      },
+      {
+        keyName: 'email',
+        header: this.languageService.translate('contact_us.form.email'),
+        type: EType.text,
+        showAs: ETableShow.content,
+      },
+      {
+        keyName: 'phone',
+        header: this.languageService.translate('contact_us.form.mobile'),
+        type: EType.text,
+        showAs: ETableShow.content,
+      },
+      {
+        keyName: 'message',
+        header: this.languageService.translate('contact_us.form.message'),
+        type: EType.editor,
+        showAs: ETableShow.content,
+        show: false,
+      },
     ];
   }
-
 
   getBreadCrumb() {
     this.bredCrumb = {
       crumbs: [
         {
-          label:  this.languageService.translate('Home'),
+          label: this.languageService.translate('Home'),
           routerLink: '/dashboard',
         },
         {
           label: this.languageService.translate('contact_us.pageName'),
         },
-      ]
-    }
+      ],
+    };
   }
 
   API_getAll() {
-    this.ApiService.get(global_API_getAll, this.objectSearch).subscribe((res: any) => {
-      if (res) {
-        this.dataList = res.data.items;
-        this.totalCount = res.data.totalCount;
-        this.filteredData = [...this.dataList];
-      }
-
-    })
+    this.ApiService.get(global_API_getAll, this.objectSearch).subscribe(
+      (res: any) => {
+        if (res) {
+          this.dataList = res.data.items;
+          this.totalCount = res.data.totalCount;
+          this.filteredData = [...this.dataList];
+        }
+      },
+    );
   }
 
   onPageChange(event: any) {
@@ -132,12 +199,21 @@ export class ContactUsTableComponent {
   }
 
   onSearch(value: string) {
-    this.filterMixin.onSearchChange(value, () => this.API_getAll(), this.objectSearch, 'name');
+    this.filterMixin.onSearchChange(
+      value,
+      () => this.API_getAll(),
+      this.objectSearch,
+      'name',
+    );
   }
 
   onSubmitFilter() {
     this.filterMixin.updateChips([
-      { key: 'name', label: 'contact_us.form.name', value: this.objectSearch.name },
+      {
+        key: 'name',
+        label: 'contact_us.form.name',
+        value: this.objectSearch.name,
+      },
     ]);
     this.objectSearch.pageNumber = 1;
     this.API_getAll();
@@ -145,17 +221,19 @@ export class ContactUsTableComponent {
   }
 
   onChipRemove(key: string) {
-    this.filterMixin.removeChip(key, this.objectSearch, () => this.API_getAll());
+    this.filterMixin.removeChip(key, this.objectSearch, () =>
+      this.API_getAll(),
+    );
   }
 
   reset() {
     this.objectSearch = {
       pageNumber: 1,
       pageSize: 8,
-      sortingExpression: "",
+      sortingExpression: '',
       sortingDirection: 0,
-      name:''
-    }
+      name: '',
+    };
     this.filterMixin.searchValue = '';
     this.filterMixin.filterChips = [];
     this.filterMixin.filtersExpanded = false;
