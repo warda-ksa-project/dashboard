@@ -5,7 +5,6 @@ import { ApiService } from '../../../services/api.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { NgIf, TitleCasePipe } from '@angular/common';
 import { EditorComponent } from '../../../components/editor/editor.component';
-import { BreadcrumpComponent } from "../../../components/breadcrump/breadcrump.component";
 import { IBreadcrumb } from '../../../components/breadcrump/cerqel-breadcrumb.interface';
 import { ConfirmMsgService } from '../../../services/confirm-msg.service';
 import { DialogComponent } from '../../../components/dialog/dialog.component';
@@ -25,7 +24,7 @@ const global_routeUrl ='/settings/terms_conditions'
 @Component({
   selector: 'app-terms-conditions-details',
   standalone: true,
-  imports: [ReactiveFormsModule, TranslatePipe, TitleCasePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, EditorComponent, RouterModule, BreadcrumpComponent, SelectComponent],
+  imports: [ReactiveFormsModule, TranslatePipe, TitleCasePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, EditorComponent, RouterModule, SelectComponent],
   templateUrl: './terms-conditions-details.component.html',
   styleUrl: './terms-conditions-details.component.scss'
 })

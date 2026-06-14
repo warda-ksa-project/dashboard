@@ -44,6 +44,7 @@ import {
 } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { buildEncryptedDeviceId } from '../../core/device-id-crypto';
+import { authErrorMessageKey } from '../../core/auth-error.util';
 import { SignalRService } from '../../services/signalr.service';
 
 declare global {
@@ -447,53 +448,51 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
   }
   getOtpValue(e: any) {
     const secret = environment.deviceIdSecret ?? 'WardaDeviceIdSecretKey_v1';
-    buildEncryptedDeviceId(secret)
-      .then((deviceId) => {
-        const otpObject = {
-          phone: this.mobileNumber,
-          otpCode: e.otpValue,
-          deviceId,
-        };
-        this.api.post('Auth/verify-otp', otpObject).subscribe((data: any) => {
+    buildEncryptedDeviceId(secret).then((deviceId) => {
+      const otpObject = {
+        phone: this.mobileNumber,
+        otpCode: e.otpValue,
+        deviceId,
+      };
+      this.api.post('Auth/verify-otp', otpObject).subscribe({
+        next: (data: any) => {
           if (data.isFailure) {
-            this.toaster.errorToaster(data.error?.message || 'Invalid OTP');
+            this.toaster.errorToaster(authErrorMessageKey(data));
+            return;
+          }
+          const user = data.data;
+          localStorage.setItem('token', user.accessToken);
+          localStorage.setItem('userId', user.userId);
+          localStorage.setItem('name', user.userName);
+          if (user.role === Roles.admin) {
+            localStorage.setItem('role', Roles.admin.toString());
           } else {
-            const user = data.data;
-            localStorage.setItem('token', user.accessToken);
-            localStorage.setItem('userId', user.userId);
-            localStorage.setItem('name', user.userName);
-            if (user.role === Roles.admin) {
-              localStorage.setItem('role', Roles.admin.toString());
-            } else {
-              localStorage.setItem('role', Roles.trader.toString());
-            }
-            if (user.role === Roles.admin) {
-              const countryIdFromInput = this.loginForm.get('country')?.value;
-              if (countryIdFromInput) {
-                localStorage.setItem(
-                  'countryId',
-                  countryIdFromInput.toString(),
-                );
-              } else if (user.countryId != null) {
-                localStorage.setItem('countryId', String(user.countryId));
-              } else {
-                localStorage.removeItem('countryId');
-              }
+            localStorage.setItem('role', Roles.trader.toString());
+          }
+          if (user.role === Roles.admin) {
+            const countryIdFromInput = this.loginForm.get('country')?.value;
+            if (countryIdFromInput) {
+              localStorage.setItem('countryId', countryIdFromInput.toString());
             } else if (user.countryId != null) {
               localStorage.setItem('countryId', String(user.countryId));
             } else {
               localStorage.removeItem('countryId');
             }
+          } else if (user.countryId != null) {
+            localStorage.setItem('countryId', String(user.countryId));
+          } else {
+            localStorage.removeItem('countryId');
+          }
 
             this.signalR.connect();
 
-            if (user.role === Roles.admin)
-              this.router.navigate(['/dashboard-admin']);
-            else this.router.navigate(['/dashboard-trader']);
-          }
-        });
-      })
-      .catch(() => this.toaster.errorToaster('Device security init failed'));
+          if (user.role === Roles.admin)
+            this.router.navigate(['/dashboard-admin']);
+          else this.router.navigate(['/dashboard-trader']);
+        },
+        error: (err) => this.toaster.errorToaster(authErrorMessageKey(err?.error ?? err)),
+      });
+    }).catch(() => this.toaster.errorToaster('Device security init failed'));
   }
 
   toggleLanguage() {
@@ -518,40 +517,29 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
     this.openOtpModal = false;
     const digits = (loginData.phoneNumber ?? '').toString().replace(/\D/g, '');
     const secret = environment.deviceIdSecret ?? 'WardaDeviceIdSecretKey_v1';
-    buildEncryptedDeviceId(secret)
-      .then((deviceId) => {
-        const body: { phone: string; deviceId: string; captchaToken?: string } =
-          { phone: digits, deviceId };
-        if (this.recaptchaSiteKey && this.captchaToken) {
-          body.captchaToken = this.captchaToken;
-        }
-        this.api.post('Auth/send-otp', body).subscribe({
-          next: (res: any) => {
-            if (res?.isFailure) {
-              const errMsg =
-                res?.error?.message || res?.message || 'Login failed';
-              this.toaster.errorToaster(errMsg);
-            } else {
-              this.mobileNumber = digits;
-              if (this.isAdmin) {
-                const countryId = loginData.country;
-                if (countryId)
-                  localStorage.setItem('countryId', String(countryId));
-              }
-              this.openOtpModal = true;
+    buildEncryptedDeviceId(secret).then((deviceId) => {
+      const body: { phone: string; deviceId: string; captchaToken?: string } = { phone: digits, deviceId };
+      if (this.recaptchaSiteKey && this.captchaToken) {
+        body.captchaToken = this.captchaToken;
+      }
+      this.api.post('Auth/send-otp', body).subscribe({
+        next: (res: any) => {
+          if (res?.isFailure) {
+            this.toaster.errorToaster(authErrorMessageKey(res));
+          } else {
+            this.mobileNumber = digits;
+            if (this.isAdmin) {
+              const countryId = loginData.country;
+              if (countryId) localStorage.setItem('countryId', String(countryId));
             }
-          },
-          error: (err) => {
-            const msg =
-              err?.error?.error?.message ||
-              err?.error?.message ||
-              err?.message ||
-              'Login failed';
-            this.toaster.errorToaster(msg);
-          },
-        });
-      })
-      .catch(() => this.toaster.errorToaster('Device security init failed'));
+            this.openOtpModal = true;
+          }
+        },
+        error: (err) => {
+          this.toaster.errorToaster(authErrorMessageKey(err?.error ?? err));
+        },
+      });
+    }).catch(() => this.toaster.errorToaster('Device security init failed'));
   }
   resendOtp(e: any) {
     if (!e) return;
