@@ -34,6 +34,7 @@ import { Subject, EMPTY, combineLatest } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, switchMap, takeUntil, tap, catchError, startWith } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { buildEncryptedDeviceId } from '../../core/device-id-crypto';
+import { authErrorMessageKey } from '../../core/auth-error.util';
 import { SignalRService } from '../../services/signalr.service';
 
 declare global {
@@ -401,10 +402,12 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
         otpCode: e.otpValue,
         deviceId,
       };
-      this.api.post('Auth/verify-otp', otpObject).subscribe((data: any) => {
-        if (data.isFailure) {
-          this.toaster.errorToaster(data.error?.message || 'Invalid OTP');
-        } else {
+      this.api.post('Auth/verify-otp', otpObject).subscribe({
+        next: (data: any) => {
+          if (data.isFailure) {
+            this.toaster.errorToaster(authErrorMessageKey(data));
+            return;
+          }
           const user = data.data;
           localStorage.setItem('token', user.accessToken);
           localStorage.setItem('userId', user.userId);
@@ -434,7 +437,8 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
           if (user.role === Roles.admin)
             this.router.navigate(['/dashboard-admin']);
           else this.router.navigate(['/dashboard-trader']);
-        }
+        },
+        error: (err) => this.toaster.errorToaster(authErrorMessageKey(err?.error ?? err)),
       });
     }).catch(() => this.toaster.errorToaster('Device security init failed'));
   }
@@ -469,8 +473,7 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
       this.api.post('Auth/send-otp', body).subscribe({
         next: (res: any) => {
           if (res?.isFailure) {
-            const errMsg = res?.error?.message || res?.message || 'Login failed';
-            this.toaster.errorToaster(errMsg);
+            this.toaster.errorToaster(authErrorMessageKey(res));
           } else {
             this.mobileNumber = digits;
             if (this.isAdmin) {
@@ -481,8 +484,7 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
           }
         },
         error: (err) => {
-          const msg = err?.error?.error?.message || err?.error?.message || err?.message || 'Login failed';
-          this.toaster.errorToaster(msg);
+          this.toaster.errorToaster(authErrorMessageKey(err?.error ?? err));
         },
       });
     }).catch(() => this.toaster.errorToaster('Device security init failed'));

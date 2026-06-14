@@ -6,12 +6,9 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { NgIf, TitleCasePipe } from '@angular/common';
 import { Validations } from '../../../validations';
 import { InputTextComponent } from '../../../components/input-text/input-text.component';
-import { EditorComponent } from '../../../components/editor/editor.component';
-import { BreadcrumpComponent } from "../../../components/breadcrump/breadcrump.component";
 import { IBreadcrumb } from '../../../components/breadcrump/cerqel-breadcrumb.interface';
 import { ConfirmMsgService } from '../../../services/confirm-msg.service';
 import { DialogComponent } from '../../../components/dialog/dialog.component';
-import { UploadFileComponent } from "../../../components/upload-file/upload-file.component";
 import { TranslatePipe } from '@ngx-translate/core';
 import { LanguageService } from '../../../services/language.service';
 import { CheckBoxComponent } from '../../../components/check-box/check-box.component';
@@ -29,7 +26,7 @@ const global_routeUrl ="/users"
 @Component({
   selector: 'app-users-details',
   standalone: true,
-  imports: [ReactiveFormsModule,NgIf,TranslatePipe,CheckBoxComponent,TitleCasePipe,DialogComponent, ButtonModule, InputTextComponent, EditorComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
+  imports: [ReactiveFormsModule,NgIf,TranslatePipe,CheckBoxComponent,TitleCasePipe,DialogComponent, ButtonModule, InputTextComponent, RouterModule],
   templateUrl: './users-details.component.html',
   styleUrl: './users-details.component.scss'
 })

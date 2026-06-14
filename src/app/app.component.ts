@@ -19,11 +19,18 @@ export class AppComponent implements OnInit {
   private languageService = inject(LanguageService);
 
   loaderLogoSrc = wardaLogoPath(localStorage.getItem('lang'));
+  toastPosition: 'top-left' | 'top-right' = 'top-right';
 
   ngOnInit(): void {
+    this.syncToastPosition(this.languageService.getCurrentLang());
     this.loaderLogoSrc = wardaLogoPath(this.languageService.getCurrentLang());
-    this.languageService.onLangChange.subscribe(() => {
-      this.loaderLogoSrc = wardaLogoPath(this.languageService.getCurrentLang());
+    this.languageService.onLangChange.subscribe((event) => {
+      this.syncToastPosition(event.lang);
+      this.loaderLogoSrc = wardaLogoPath(event.lang);
     });
+  }
+
+  private syncToastPosition(lang: string | null | undefined): void {
+    this.toastPosition = lang === 'ar' ? 'top-left' : 'top-right';
   }
 }

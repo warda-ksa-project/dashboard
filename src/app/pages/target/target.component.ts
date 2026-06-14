@@ -1,6 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { BreadcrumpComponent } from '../../components/breadcrump/breadcrump.component';
 import { InputTextComponent } from '../../components/input-text/input-text.component';
 import { NgFor, NgIf, TitleCasePipe } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -22,7 +21,7 @@ const global_API_update = 'YearTargets';
 @Component({
   selector: 'app-target',
   standalone: true,
-  imports: [BreadcrumpComponent,NgFor,DialogComponent,TranslatePipe,TitleCasePipe, ReactiveFormsModule,ToastModule, ButtonModule ,NgIf,InputTextComponent],
+  imports: [NgFor,DialogComponent,TranslatePipe,TitleCasePipe, ReactiveFormsModule,ToastModule, ButtonModule ,NgIf,InputTextComponent],
   templateUrl: './target.component.html',
   styleUrl: './target.component.scss'
 })

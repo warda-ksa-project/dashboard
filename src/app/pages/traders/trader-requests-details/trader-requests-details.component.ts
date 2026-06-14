@@ -5,10 +5,8 @@ import { ApiService } from '../../../services/api.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { NgIf, TitleCasePipe } from '@angular/common';
 import { InputTextComponent } from '../../../components/input-text/input-text.component';
-import { BreadcrumpComponent } from "../../../components/breadcrump/breadcrump.component";
 import { IBreadcrumb } from '../../../components/breadcrump/cerqel-breadcrumb.interface';
 import { ConfirmMsgService } from '../../../services/confirm-msg.service';
-import { DialogComponent } from '../../../components/dialog/dialog.component';
 import { UploadFileComponent } from "../../../components/upload-file/upload-file.component";
 import { TranslatePipe } from '@ngx-translate/core';
 import { LanguageService } from '../../../services/language.service';
@@ -29,7 +27,7 @@ const global_API_update = 'Traders';
 @Component({
   selector: 'app-trader-requests-details',
   standalone: true,
-  imports: [ReactiveFormsModule,MapComponent,SelectComponent, FormsModule,Dialog,DialogModule,ButtonModule, StepperModule, EditModeImageComponent, TitleCasePipe, TranslatePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, RouterModule, BreadcrumpComponent, UploadFileComponent],
+  imports: [ReactiveFormsModule,MapComponent,SelectComponent, FormsModule,Dialog,DialogModule,ButtonModule, StepperModule, EditModeImageComponent, TitleCasePipe, TranslatePipe, NgIf, InputTextComponent, RouterModule, UploadFileComponent],
   templateUrl: './trader-requests-details.component.html',
   styleUrl: './trader-requests-details.component.scss'
 })

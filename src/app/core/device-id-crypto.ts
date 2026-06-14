@@ -14,7 +14,17 @@ export async function buildEncryptedDeviceId(secret: string): Promise<string> {
   const combined = new Uint8Array(iv.length + cipher.byteLength);
   combined.set(iv, 0);
   combined.set(new Uint8Array(cipher), iv.length);
-  return btoa(String.fromCharCode(...combined));
+  return uint8ArrayToBase64(combined);
+}
+
+function uint8ArrayToBase64(bytes: Uint8Array): string {
+  let binary = '';
+  const chunkSize = 0x8000;
+  for (let i = 0; i < bytes.length; i += chunkSize) {
+    const slice = bytes.subarray(i, i + chunkSize);
+    binary += String.fromCharCode(...slice);
+  }
+  return btoa(binary);
 }
 
 async function getBrowserFingerprint(): Promise<string> {
