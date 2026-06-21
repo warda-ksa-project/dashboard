@@ -88,12 +88,16 @@
   @include status(#9333ea, #faf5ff, #e9d5ff);
 }
 
-.Delivering {
+.Delivered {
   @include status(#0891b2, #ecfeff, #a5f3fc);
 }
 
 .inProgress {
   @include status(#2563eb, #eff6ff, #bfdbfe);
+}
+
+.OrderReceived {
+  @include status(#494732, #ecfeff, #fcd6a5);
 }
 
 .cancel,
