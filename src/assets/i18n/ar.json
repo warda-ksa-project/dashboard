@@ -1,25 +1,27 @@
-{"LOADER":{"PLEASE_WAIT":"جاري التحميل…"},"GENERAL": "عام",
-"success":"نجاح",
-"error":"خطأ",
+{
+  "LOADER": { "PLEASE_WAIT": "جاري التحميل…" },
+  "GENERAL": "عام",
+  "success": "نجاح",
+  "error": "خطأ",
   "Add": "إضافة",
   "Edit": "تعديل",
   "View": "عرض",
   "Home": "الرئيسية",
   "Id": "المعرف",
   "Action": "إجراء",
-  "rsa":"ر.س",
-  "sales":"المبيعات",
-  "totalPrice":"اجمالي السعر",
+  "rsa": "ر.س",
+  "sales": "المبيعات",
+  "totalPrice": "اجمالي السعر",
   "Actions": "الإجراءات",
-  "no_image":"لا يوجد صور",
-  "welcome":"مرحبًا بعودتك!",
-  "home":"الرئيسية",
-  "select":"اختر",
-  "search":"بحث",
-  "rate":"تقييم",
+  "no_image": "لا يوجد صور",
+  "welcome": "مرحبًا بعودتك!",
+  "home": "الرئيسية",
+  "select": "اختر",
+  "search": "بحث",
+  "rate": "تقييم",
   "table_delete_msg": "هل أنت متأكد من حذف هذا العنصر؟",
-"table_delete_blk": "هل أنت متأكد من حظر هذا العنصر؟",
-"table_delete_active": "هل أنت متأكد من تفعيل هذا العنصر؟",
+  "table_delete_blk": "هل أنت متأكد من حظر هذا العنصر؟",
+  "table_delete_active": "هل أنت متأكد من تفعيل هذا العنصر؟",
   "validation_message": {
     "minlength_validation": "يجب أن يكون الطول أكثر من",
     "maxlength_validation": "يجب أن يكون الطول أقل من",
@@ -49,16 +51,16 @@
     "update": "تحديث",
     "next": "التالي",
     "back": "السابق",
-     "approve":"قبول",
-    "reject":"رفض",
-    "delete":"مسح",
-    "active":"نشط",
-    "no":"لا",
-    "view":"تفاصيل"
+    "approve": "قبول",
+    "reject": "رفض",
+    "delete": "مسح",
+    "active": "نشط",
+    "no": "لا",
+    "view": "تفاصيل"
   },
   "shared": {
-    "log_out":"تسجيل خروج",
-    "download":"تحميل",
+    "log_out": "تسجيل خروج",
+    "download": "تحميل",
     "errors": {
       "login": "فشل تسجيل الدخول",
       "post_request": "فشل تنفيذ عملية POST",
@@ -132,12 +134,12 @@
   },
   "side_bar": {
     "dashboard": "لوحة التحكم",
-    "users":"المستخدمون",
-    "orderStatus":" حالة الطلب",
+    "users": "المستخدمون",
+    "orderStatus": " حالة الطلب",
     "trader": "التجار",
-    "article":"المقالات",
-    "slider":"السلايدر",
-    "trader_request":"طلبات التجار",
+    "article": "المقالات",
+    "slider": "السلايدر",
+    "trader_request": "طلبات التجار",
     "clients": "العملاء",
     "category": "الفئات الفرعية",
     "sub_category": "الفئات الفرعية",
@@ -162,7 +164,7 @@
     "about": "معلومات عنا",
     "setting": "الإعدادات",
     "faqs": "الأسئلة الشائعة",
-    "target":"الهدف",
+    "target": "الهدف",
     "notifications": "الإشعارات",
     "otp_metrics": "أمان OTP",
     "termsAndConditions": "الشروط والأحكام",
@@ -190,15 +192,14 @@
     "pageName_View_crumb": "عرض المستخدم",
     "form": {
       "name": "الاسم",
-      "role":"الدور",
+      "role": "الدور",
       "email": "البريد الإلكتروني",
       "phone": "رقم الهاتف",
       "password": "كلمة المرور",
       "status": "نشط"
     }
-  }
-,
-  "target":{
+  },
+  "target": {
     "pageName": "الهدف",
     "pageName_Edit_crumb": "تعديل الهدف"
   },
@@ -210,7 +211,7 @@
     "open_time": "وقت الفتح",
     "close_time": "وقت الإغلاق"
   },
- "client": {
+  "client": {
     "pageName": "العملاء",
     "pageTitle": "العميل",
     "list": "قائمة العملاء",
@@ -298,22 +299,22 @@
       "hasDiscount": "يحتوي على خصم",
       "discountType": "نوع الخصم",
       "amount": "القيمة",
-      "price":"السعر",
-      "priceAfterDiscount":"السعر بعد الخصم",
-      "start":"تاريخ البدء",
-      "end":"تاريخ الانتهاء",
-      "reviews":"التعليقات"
+      "price": "السعر",
+      "priceAfterDiscount": "السعر بعد الخصم",
+      "start": "تاريخ البدء",
+      "end": "تاريخ الانتهاء",
+      "reviews": "التعليقات"
     },
     "best": {
-      "title":"المنتجات الاكثر مبيعاَ",
-  "name": "اسم المنتج",
-  "catg": "اسم الفئة",
-  "revenue": "إجمالي الإيرادات",
-  "totalSold": "إجمالي المبيعات",
-  "isAvaliable": "متاح",
-  "lastOrderDate": "تاريخ آخر طلب",
-  "image": "صورة"
-}
+      "title": "المنتجات الاكثر مبيعاَ",
+      "name": "اسم المنتج",
+      "catg": "اسم الفئة",
+      "revenue": "إجمالي الإيرادات",
+      "totalSold": "إجمالي المبيعات",
+      "isAvaliable": "متاح",
+      "lastOrderDate": "تاريخ آخر طلب",
+      "image": "صورة"
+    }
   },
   "piece_products": {
     "pageName": "المنتجات القطعية",
@@ -373,7 +374,7 @@
       "iban": "رقم الآيبان",
       "license": "الرخصة",
       "cr": "السجل التجاري",
-      "city":"المدينة"
+      "city": "المدينة"
     }
   },
   "trader_request": {
@@ -387,34 +388,33 @@
     "notActive": "غير نشط",
     "imgs": "صور طلبات التجار",
     "form": {
-       "traderName":"اسم التاجر",
-      "addedDate":"تاريخ الاضافة",
-      "reasonForRejection":"سبب الرفض"
-
+      "traderName": "اسم التاجر",
+      "addedDate": "تاريخ الاضافة",
+      "reasonForRejection": "سبب الرفض"
     }
   },
 
-    "faqs": {
-      "validation_english_title": "العنوان يجب أن يكون باللغة الإنجليزية فقط",
-      "pageName": "الأسئلة الشائعة",
-      "list": "الأسئلة الشائعة",
-      "pageName_View_crumb": "عرض الأسئلة الشائعة",
-      "pageName_filter": "تصفية الأسئلة الشائعة",
-      "pageName_Add_crumb": "إضافة سؤال شائع",
-      "pageName_Edit_crumb": "تعديل سؤال شائع",
-      "form": {
-        "question_en": "السؤال (بالإنجليزية)",
-        "question_ar": "السؤال (بالعربية)",
-        "answer_en": "الإجابة (بالإنجليزية)",
-        "answer_ar": "الإجابة (بالعربية)",
-        "title_en": "العنوان (بالإنجليزية)",
-        "title_ar": "العنوان (بالعربية)",
-        "desc_ar": "الوصف (بالعربية)",
-        "desc_en": "الوصف (بالإنجليزية)",
-        "userType": "نوع المستخدم"
-      }
-    },
-    "orderStatus": {
+  "faqs": {
+    "validation_english_title": "العنوان يجب أن يكون باللغة الإنجليزية فقط",
+    "pageName": "الأسئلة الشائعة",
+    "list": "الأسئلة الشائعة",
+    "pageName_View_crumb": "عرض الأسئلة الشائعة",
+    "pageName_filter": "تصفية الأسئلة الشائعة",
+    "pageName_Add_crumb": "إضافة سؤال شائع",
+    "pageName_Edit_crumb": "تعديل سؤال شائع",
+    "form": {
+      "question_en": "السؤال (بالإنجليزية)",
+      "question_ar": "السؤال (بالعربية)",
+      "answer_en": "الإجابة (بالإنجليزية)",
+      "answer_ar": "الإجابة (بالعربية)",
+      "title_en": "العنوان (بالإنجليزية)",
+      "title_ar": "العنوان (بالعربية)",
+      "desc_ar": "الوصف (بالعربية)",
+      "desc_en": "الوصف (بالإنجليزية)",
+      "userType": "نوع المستخدم"
+    }
+  },
+  "orderStatus": {
     "pageName": "حالة الطلب",
     "list": "حالة الطلب",
     "pageName_View_crumb": "عرض حالة الطلب",
@@ -425,220 +425,218 @@
       "name_en": "الاسم (بالإنجليزية)",
       "name_ar": "الاسم (بالعربية)"
     }
-  }
-,
-    "pkg": {
-      "pageName": "الباقات",
-      "pageName_View_crumb": "عرض الباقة",
-      "pageName_filter": "تصفية الباقات",
-      "pageName_Add_crumb": "إضافة باقة",
-      "pageName_Edit_crumb": "تعديل الباقة",
-      "list": "قائمة الباقات",
-      "visit_number_isMax": "يجب أن يكون عدد الزيارات أقل من أو يساوي",
-      "form": {
-        "nameEn": "الاسم (بالإنجليزية)",
-        "nameAr": "الاسم (بالعربية)",
-        "provider_no": "رقم المزود",
-        "visit_hr": "عدد ساعات الزيارة",
-        "type_pkg": "نوع الباقة",
-        "visit_no": "عدد الزيارات",
-        "contract_typ": "نوع العقد",
-        "price": "السعر",
-        "working_time": "وقت العمل",
-        "isActive": "نشط",
-        "desc_en": "الوصف (بالإنجليزية)",
-        "desc_ar": "الوصف (بالعربية)",
-        "instr_en": "التعليمات (بالإنجليزية)",
-        "instr_ar": "التعليمات (بالعربية)",
-        "service_type": "الخدمات"
-      }
-    },
-    "dashboard_admin": {
+  },
+  "pkg": {
+    "pageName": "الباقات",
+    "pageName_View_crumb": "عرض الباقة",
+    "pageName_filter": "تصفية الباقات",
+    "pageName_Add_crumb": "إضافة باقة",
+    "pageName_Edit_crumb": "تعديل الباقة",
+    "list": "قائمة الباقات",
+    "visit_number_isMax": "يجب أن يكون عدد الزيارات أقل من أو يساوي",
+    "form": {
+      "nameEn": "الاسم (بالإنجليزية)",
+      "nameAr": "الاسم (بالعربية)",
+      "provider_no": "رقم المزود",
+      "visit_hr": "عدد ساعات الزيارة",
+      "type_pkg": "نوع الباقة",
+      "visit_no": "عدد الزيارات",
+      "contract_typ": "نوع العقد",
+      "price": "السعر",
+      "working_time": "وقت العمل",
+      "isActive": "نشط",
+      "desc_en": "الوصف (بالإنجليزية)",
+      "desc_ar": "الوصف (بالعربية)",
+      "instr_en": "التعليمات (بالإنجليزية)",
+      "instr_ar": "التعليمات (بالعربية)",
+      "service_type": "الخدمات"
+    }
+  },
+  "dashboard_admin": {
     "revenue": "إجمالي الإيرادات حسب المدن",
     "weekly_sales": "مبيعات الأسبوع",
     "users": "المستخدمون",
-  "total_users": "إجمالي المستخدمين",
-  "active_users": "المستخدمون النشطون",
-  "new_users": "المستخدمون الجدد",
-  "chart": {
-    "firstDataName": "الهدف للأسبوع الحالي",
-    "secondDataName": "الهدف للأسبوع الماضي"
-  }
-},
-    "dashboard": {
-      "pageName": "لوحة التحكم",
-      "client": "عدد العملاء",
-      "technical": "عدد الفنيين",
-      "order": "عدد الطلبات",
-      "contractType": "عدد أنواع العقود",
-      "package": "عدد الباقات",
-      "paymentWay": "عدد طرق الدفع",
-      "service": "عدد الخدمات",
-      "workingTime": "عدد أوقات العمل",
-      "termsAndConditions": "عدد الشروط والأحكام",
-      "technicalSpecialist": "عدد المتخصصين الفنيين",
-      "orderAdditionalItems": "عدد العناصر الإضافية للطلبات",
-      "FAQs": "عدد الأسئلة الشائعة",
-      "country": "عدد الدول",
-      "coupon": "عدد القسائم",
-      "complaint": "عدد الشكاوى",
-      "city": "عدد المدن",
-      "cancelReason": "عدد أسباب الإلغاء",
-      "admin": "عدد المشرفين",
-      "driver": "عدد السائقين",
-      "specialOrder": "عدد الطلبات الخاصة",
-      "ORDERS_DETAILS": "تفاصيل الطلبات",
-      "TOTAL_ORDERS_AMOUNT": "إجمالي قيمة الطلبات",
-      "TOTAL_ORDERS_PER_DAY_AMOUNT": "إجمالي قيمة الطلبات اليومية",
-      "TOTAL_ORDERS_PER_WEEK_AMOUNT": "إجمالي قيمة الطلبات الأسبوعية",
-      "TOTAL_ORDERS_PER_MONTH_AMOUNT": "إجمالي قيمة الطلبات الشهرية",
-      "chart":{
-        "title":"المبيعات الشهرية",
-        "firstDataName":"هدف السنة الحالية",
-        "secondDataName":"هدف السنة الماضية"
-      }
-   
-    },
-    "cancel_reason": {
-      "pageName": "سبب الإلغاء",
-      "list": "قائمة أسباب الإلغاء",
-      "pageName_filter": "تصفية أسباب الإلغاء",
-      "pageName_Add_crumb": "إضافة سبب إلغاء",
-      "pageName_Edit_crumb": "تعديل سبب الإلغاء",
-      "pageName_View_crumb": "عرض سبب الإلغاء",
-      "form": {
-        "reason_en": "السبب (بالإنجليزية)",
-        "reason_ar": "السبب (بالعربية)",
-        "userType": "نوع المستخدم",
-        "desc_en": "الوصف (بالإنجليزية)",
-        "desc_ar": "الوصف (بالعربية)"
-      }
-    },
-    "admin": {
-      "pageName": "المشرف",
-      "list": "قائمة المشرفين",
-      "pageName_filter": "تصفية المشرفين",
-      "pageName_Add_crumb": "إضافة مشرف",
-      "pageName_Edit_crumb": "تعديل المشرف",
-      "pageName_View_crumb": "عرض المشرف",
-      "form": {
-        "fullName": "الاسم الكامل",
-        "firstName": "الاسم الأول",
-        "lastName": "الاسم الأخير",
-        "userName": "اسم المستخدم",
-        "email": "البريد الإلكتروني",
-        "mobileNumber": "رقم الهاتف المحمول",
-        "role": "الدور",
-        "gender": "الجنس",
-        "password": "كلمة المرور",
-        "confirmPassword": "تأكيد كلمة المرور",
-        "status": "نشط"
-      }
-    },
-    "district": {
-      "pageName": "الحي",
-      "list": "قائمة الأحياء",
-      "pageName_filter": "تصفية الأحياء",
-      "pageName_Add_crumb": "إضافة حي",
-      "pageName_Edit_crumb": "تعديل الحي",
-      "pageName_View_crumb": "عرض الحي",
-      "form": {
-        "name_en": "الاسم (بالإنجليزية)",
-        "name_ar": "الاسم (بالعربية)",
-        "city": "المدينة",
-        "desc_en": "الوصف (بالإنجليزية)",
-        "desc_ar": "الوصف (بالعربية)"
-      }
-    },
-    "city": {
-      "pageName": "المدينة",
-      "list": "قائمة المدن",
-      "pageName_filter": "تصفية المدن",
-      "pageName_Add_crumb": "إضافة مدينة",
-      "pageName_Edit_crumb": "تعديل المدينة",
-      "pageName_View_crumb": "عرض المدينة",
-      "form": {
-        "name_en": "الاسم (بالإنجليزية)",
-        "name_ar": "الاسم (بالعربية)",
-        "country": "الدولة",
-        "postalCode": "الرمز البريدي",
-        "shortName": "الاسم المختصر",
-        "latitude": "خط العرض",
-        "longitude": "خط الطول",
-        "status": "الحالة"
-      }
-    },
-    "currency": {
-      "pageName": "العملة",
-      "list": "قائمة العملات",
-      "pageName_filter": "تصفية العملات",
-      "pageName_Add_crumb": "إضافة عملة",
-      "pageName_Edit_crumb": "تعديل العملة",
-      "pageName_View_crumb": "عرض العملة",
-      "form": {
-        "name_en": "الاسم (بالإنجليزية)",
-        "name_ar": "الاسم (بالعربية)",
-        "code": "الرمز",
-        "symbol": "الرمز",
-        "icon": "الأيقونة",
-        "image": "الصورة",
-        "status": "الحالة"
-      }
-    },
-    "country": {
-      "pageName": "الدولة",
-      "list": "قائمة الدول",
-      "pageName_filter": "تصفية الدول",
-      "pageName_Add_crumb": "إضافة دولة",
-      "pageName_Edit_crumb": "تعديل الدولة",
-      "pageName_View_crumb": "عرض الدولة",
-      "form": {
-        "name_en": "الاسم (بالإنجليزية)",
-        "name_ar": "الاسم (بالعربية)",
-        "currency": "العملة",
-        "timeZone": "المنطقة الزمنية",
-        "shortName": "الاسم المختصر",
-        "nationality": "الجنسية",
-        "phoneLength": "طول رقم الهاتف",
-        "status": "الحالة",
-        "phoneCode": "رمز الهاتف",
-        "paymentUrl": "رابط الدفع",
-        "smsBearerToken": "رمز SMS",
-        "smsSenderName": "اسم مرسل SMS",
-        "content": "المحتوى",
-        "image": "الصورة"
-      }
-    },
-    "contact_us": {
-      "pageName": "اتصل بنا",
-      "list": "قائمة الاتصالات",
-      "pageName_filter": "تصفية الاتصالات",
-      "pageName_Add_crumb": "إضافة اتصال",
-      "pageName_Edit_crumb": "تعديل الاتصال",
-      "pageName_View_crumb": "عرض الاتصال",
-      "form": {
-        "name": "الاسم",
-        "email": "البريد الإلكتروني",
-        "mobile": "رقم الهاتف",
-        "message": "الرسالة"
-      }
-    },
-    "about_us": {
-      "pageName": "من نحن",
-      "list": "قائمة من نحن",
-      "pageName_filter": "تصفية من نحن",
-      "pageName_Add_crumb": "إضافة من نحن",
-      "pageName_Edit_crumb": "تعديل من نحن",
-      "pageName_View_crumb": "عرض من نحن",
-      "form": {
-        "name_en": "الاسم (بالإنجليزية)",
-        "name_ar": "الاسم (بالعربية)",
-        "desc_en": "الوصف (بالإنجليزية)",
-        "desc_ar": "الوصف (بالعربية)",
-        "userType": "نوع المستخدم"
-      }
-    },
-    "special_order": {
+    "total_users": "إجمالي المستخدمين",
+    "active_users": "المستخدمون النشطون",
+    "new_users": "المستخدمون الجدد",
+    "chart": {
+      "firstDataName": "الهدف للأسبوع الحالي",
+      "secondDataName": "الهدف للأسبوع الماضي"
+    }
+  },
+  "dashboard": {
+    "pageName": "لوحة التحكم",
+    "client": "عدد العملاء",
+    "technical": "عدد الفنيين",
+    "order": "عدد الطلبات",
+    "contractType": "عدد أنواع العقود",
+    "package": "عدد الباقات",
+    "paymentWay": "عدد طرق الدفع",
+    "service": "عدد الخدمات",
+    "workingTime": "عدد أوقات العمل",
+    "termsAndConditions": "عدد الشروط والأحكام",
+    "technicalSpecialist": "عدد المتخصصين الفنيين",
+    "orderAdditionalItems": "عدد العناصر الإضافية للطلبات",
+    "FAQs": "عدد الأسئلة الشائعة",
+    "country": "عدد الدول",
+    "coupon": "عدد القسائم",
+    "complaint": "عدد الشكاوى",
+    "city": "عدد المدن",
+    "cancelReason": "عدد أسباب الإلغاء",
+    "admin": "عدد المشرفين",
+    "driver": "عدد السائقين",
+    "specialOrder": "عدد الطلبات الخاصة",
+    "ORDERS_DETAILS": "تفاصيل الطلبات",
+    "TOTAL_ORDERS_AMOUNT": "إجمالي قيمة الطلبات",
+    "TOTAL_ORDERS_PER_DAY_AMOUNT": "إجمالي قيمة الطلبات اليومية",
+    "TOTAL_ORDERS_PER_WEEK_AMOUNT": "إجمالي قيمة الطلبات الأسبوعية",
+    "TOTAL_ORDERS_PER_MONTH_AMOUNT": "إجمالي قيمة الطلبات الشهرية",
+    "chart": {
+      "title": "المبيعات الشهرية",
+      "firstDataName": "هدف السنة الحالية",
+      "secondDataName": "هدف السنة الماضية"
+    }
+  },
+  "cancel_reason": {
+    "pageName": "سبب الإلغاء",
+    "list": "قائمة أسباب الإلغاء",
+    "pageName_filter": "تصفية أسباب الإلغاء",
+    "pageName_Add_crumb": "إضافة سبب إلغاء",
+    "pageName_Edit_crumb": "تعديل سبب الإلغاء",
+    "pageName_View_crumb": "عرض سبب الإلغاء",
+    "form": {
+      "reason_en": "السبب (بالإنجليزية)",
+      "reason_ar": "السبب (بالعربية)",
+      "userType": "نوع المستخدم",
+      "desc_en": "الوصف (بالإنجليزية)",
+      "desc_ar": "الوصف (بالعربية)"
+    }
+  },
+  "admin": {
+    "pageName": "المشرف",
+    "list": "قائمة المشرفين",
+    "pageName_filter": "تصفية المشرفين",
+    "pageName_Add_crumb": "إضافة مشرف",
+    "pageName_Edit_crumb": "تعديل المشرف",
+    "pageName_View_crumb": "عرض المشرف",
+    "form": {
+      "fullName": "الاسم الكامل",
+      "firstName": "الاسم الأول",
+      "lastName": "الاسم الأخير",
+      "userName": "اسم المستخدم",
+      "email": "البريد الإلكتروني",
+      "mobileNumber": "رقم الهاتف المحمول",
+      "role": "الدور",
+      "gender": "الجنس",
+      "password": "كلمة المرور",
+      "confirmPassword": "تأكيد كلمة المرور",
+      "status": "نشط"
+    }
+  },
+  "district": {
+    "pageName": "الحي",
+    "list": "قائمة الأحياء",
+    "pageName_filter": "تصفية الأحياء",
+    "pageName_Add_crumb": "إضافة حي",
+    "pageName_Edit_crumb": "تعديل الحي",
+    "pageName_View_crumb": "عرض الحي",
+    "form": {
+      "name_en": "الاسم (بالإنجليزية)",
+      "name_ar": "الاسم (بالعربية)",
+      "city": "المدينة",
+      "desc_en": "الوصف (بالإنجليزية)",
+      "desc_ar": "الوصف (بالعربية)"
+    }
+  },
+  "city": {
+    "pageName": "المدينة",
+    "list": "قائمة المدن",
+    "pageName_filter": "تصفية المدن",
+    "pageName_Add_crumb": "إضافة مدينة",
+    "pageName_Edit_crumb": "تعديل المدينة",
+    "pageName_View_crumb": "عرض المدينة",
+    "form": {
+      "name_en": "الاسم (بالإنجليزية)",
+      "name_ar": "الاسم (بالعربية)",
+      "country": "الدولة",
+      "postalCode": "الرمز البريدي",
+      "shortName": "الاسم المختصر",
+      "latitude": "خط العرض",
+      "longitude": "خط الطول",
+      "status": "الحالة"
+    }
+  },
+  "currency": {
+    "pageName": "العملة",
+    "list": "قائمة العملات",
+    "pageName_filter": "تصفية العملات",
+    "pageName_Add_crumb": "إضافة عملة",
+    "pageName_Edit_crumb": "تعديل العملة",
+    "pageName_View_crumb": "عرض العملة",
+    "form": {
+      "name_en": "الاسم (بالإنجليزية)",
+      "name_ar": "الاسم (بالعربية)",
+      "code": "الرمز",
+      "symbol": "الرمز",
+      "icon": "الأيقونة",
+      "image": "الصورة",
+      "status": "الحالة"
+    }
+  },
+  "country": {
+    "pageName": "الدولة",
+    "list": "قائمة الدول",
+    "pageName_filter": "تصفية الدول",
+    "pageName_Add_crumb": "إضافة دولة",
+    "pageName_Edit_crumb": "تعديل الدولة",
+    "pageName_View_crumb": "عرض الدولة",
+    "form": {
+      "name_en": "الاسم (بالإنجليزية)",
+      "name_ar": "الاسم (بالعربية)",
+      "currency": "العملة",
+      "timeZone": "المنطقة الزمنية",
+      "shortName": "الاسم المختصر",
+      "nationality": "الجنسية",
+      "phoneLength": "طول رقم الهاتف",
+      "status": "الحالة",
+      "phoneCode": "رمز الهاتف",
+      "paymentUrl": "رابط الدفع",
+      "smsBearerToken": "رمز SMS",
+      "smsSenderName": "اسم مرسل SMS",
+      "content": "المحتوى",
+      "image": "الصورة"
+    }
+  },
+  "contact_us": {
+    "pageName": "اتصل بنا",
+    "list": "قائمة الاتصالات",
+    "pageName_filter": "تصفية الاتصالات",
+    "pageName_Add_crumb": "إضافة اتصال",
+    "pageName_Edit_crumb": "تعديل الاتصال",
+    "pageName_View_crumb": "عرض الاتصال",
+    "form": {
+      "name": "الاسم",
+      "email": "البريد الإلكتروني",
+      "mobile": "رقم الهاتف",
+      "message": "الرسالة"
+    }
+  },
+  "about_us": {
+    "pageName": "من نحن",
+    "list": "قائمة من نحن",
+    "pageName_filter": "تصفية من نحن",
+    "pageName_Add_crumb": "إضافة من نحن",
+    "pageName_Edit_crumb": "تعديل من نحن",
+    "pageName_View_crumb": "عرض من نحن",
+    "form": {
+      "name_en": "الاسم (بالإنجليزية)",
+      "name_ar": "الاسم (بالعربية)",
+      "desc_en": "الوصف (بالإنجليزية)",
+      "desc_ar": "الوصف (بالعربية)",
+      "userType": "نوع المستخدم"
+    }
+  },
+  "special_order": {
     "pageName": "الطلبات الخاصة",
     "list": "قائمة الطلبات الخاصة",
     "title": "طلب خاص",
@@ -659,82 +657,83 @@
       "specialOrderStatusEnum": "الحالة"
     }
   },
- "order": {
-  "pageName": "الطلبات",
-  "list": "قائمة الطلبات",
-  "pageTitle": "الطلب",
-  "pageName_filter": "تصفية الطلب",
-  "pageName_Add_crumb": "إضافة طلب",
-  "pageName_Edit_crumb": "تعديل الطلب",
-  "pageName_View_crumb": "عرض الطلب",
-  "form": {
-    "id": "الكود",
-    "orderInfo": "معلومات الطلب",
-    "customerInfo": "معلومات العميل",
-    "customerLocation": "موقع العميل",
-    "openInGoogleMaps": "فتح في خرائط جوجل",
-    "clientName": "اسم العميل",
-    "customerEmail": "بريد العميل",
-    "traderInfo": "معلومات التاجر",
-    "traderName": "اسم التاجر",
-    "traderStoreName": "اسم المتجر",
-    "traderPhone": "هاتف التاجر",
-    "traderEmail": "بريد التاجر",
-    "phoneNumber": "رقم الهاتف",
-    "discountType": "نوع الخصم",
-    "address": "العنوان",
-    "status": "حالة الطلب",
-    "price": "السعر",
-    "paymentWay": "طريقة الدفع",
-    "deliveryType": "نوع الاستلام",
-    "date": "تاريخ الإنشاء",
-    "itemsCount": "عدد المنتجات",
-    "productDetails": "المنتجات",
-    "code": "الكود",
-    "ProductName": "اسم المنتج",
-    "quantity": "الكمية",
-    "discount": "الخصم",
-    "pricePiece": "السعر/للقطعة",
-    "totalPrice": "السعر الإجمالي",
-    "select_order_status": "اختر حالة الطلب",
-    "statusImage": "صورة الحالة",
-    "updateStatus": "تحديث الحالة"
-  }
-},
-"payment": {
-  "pageName": "طريقة الدفع",
-  "list": "قائمة طرق الدفع",
-  "title": "طريقة الدفع",
-  "pageName_filter": "تصفية طرق الدفع",
-  "pageName_Add_crumb": "إضافة طريقة دفع",
-  "pageName_Edit_crumb": "تعديل طريقة الدفع",
-  "pageName_View_crumb": "عرض طريقة الدفع",
-  "form": {
-    "name_ar": "الاسم (عربي)",
-    "name_en": "الاسم (إنجليزي)",
-    "desc_ar": "الوصف (عربي)",
-    "desc_en": "الوصف (إنجليزي)",
-    "isEnabled": "مُفعّل"
-  }
-},
-"article": {
-  "pageName": "مقال",
-  "list": "قائمة المقالات",
-  "title": "مقال",
-  "pageName_filter": "تصفية المقالات",
-  "pageName_Add_crumb": "إضافة مقال",
-  "pageName_Edit_crumb": "تعديل مقال",
-  "pageName_View_crumb": "عرض المقال",
-  "form": {
-    "enTitle": "العنوان (إنجليزي)",
-    "arTitle": "العنوان (عربي)",
-    "desc_ar": "الوصف (عربي)",
-    "desc_en": "الوصف (إنجليزي)",
-    "displayOrder": "ترتيب العرض",
-    "imgs": "صورة"
-  }
-},
-"slider": {
+  "order": {
+    "pageName": "الطلبات",
+    "list": "قائمة الطلبات",
+    "pageTitle": "الطلب",
+    "pageName_filter": "تصفية الطلب",
+    "pageName_Add_crumb": "إضافة طلب",
+    "pageName_Edit_crumb": "تعديل الطلب",
+    "pageName_View_crumb": "عرض الطلب",
+    "form": {
+      "id": "الكود",
+      "orderInfo": "معلومات الطلب",
+      "customerInfo": "معلومات العميل",
+      "customerLocation": "موقع العميل",
+      "openInGoogleMaps": "فتح في خرائط جوجل",
+      "clientName": "اسم العميل",
+      "customerEmail": "بريد العميل",
+      "traderInfo": "معلومات التاجر",
+      "traderName": "اسم التاجر",
+      "traderStoreName": "اسم المتجر",
+      "traderPhone": "هاتف التاجر",
+      "traderEmail": "بريد التاجر",
+      "phoneNumber": "رقم الهاتف",
+      "discountType": "نوع الخصم",
+      "address": "العنوان",
+      "status": "حالة الطلب",
+      "price": "السعر",
+      "paymentWay": "طريقة الدفع",
+      "paymentStatus": "حالة الدفع",
+      "deliveryType": "نوع الاستلام",
+      "date": "تاريخ الإنشاء",
+      "itemsCount": "عدد المنتجات",
+      "productDetails": "المنتجات",
+      "code": "الكود",
+      "ProductName": "اسم المنتج",
+      "quantity": "الكمية",
+      "discount": "الخصم",
+      "pricePiece": "السعر/للقطعة",
+      "totalPrice": "السعر الإجمالي",
+      "select_order_status": "اختر حالة الطلب",
+      "statusImage": "صورة الحالة",
+      "updateStatus": "تحديث الحالة"
+    }
+  },
+  "payment": {
+    "pageName": "طريقة الدفع",
+    "list": "قائمة طرق الدفع",
+    "title": "طريقة الدفع",
+    "pageName_filter": "تصفية طرق الدفع",
+    "pageName_Add_crumb": "إضافة طريقة دفع",
+    "pageName_Edit_crumb": "تعديل طريقة الدفع",
+    "pageName_View_crumb": "عرض طريقة الدفع",
+    "form": {
+      "name_ar": "الاسم (عربي)",
+      "name_en": "الاسم (إنجليزي)",
+      "desc_ar": "الوصف (عربي)",
+      "desc_en": "الوصف (إنجليزي)",
+      "isEnabled": "مُفعّل"
+    }
+  },
+  "article": {
+    "pageName": "مقال",
+    "list": "قائمة المقالات",
+    "title": "مقال",
+    "pageName_filter": "تصفية المقالات",
+    "pageName_Add_crumb": "إضافة مقال",
+    "pageName_Edit_crumb": "تعديل مقال",
+    "pageName_View_crumb": "عرض المقال",
+    "form": {
+      "enTitle": "العنوان (إنجليزي)",
+      "arTitle": "العنوان (عربي)",
+      "desc_ar": "الوصف (عربي)",
+      "desc_en": "الوصف (إنجليزي)",
+      "displayOrder": "ترتيب العرض",
+      "imgs": "صورة"
+    }
+  },
+  "slider": {
     "pageName": "السلايدر",
     "list": "قائمة السلايدر",
     "pageName_filter": "تصفية السلايدر",
@@ -754,8 +753,7 @@
       "displayOrder": "ترتيب العرض",
       "view_type": "نوع العرض"
     }
-  }
-,
+  },
   "profile": {
     "pageName": "الملف الشخصي",
     "pageName_Edit_crumb": "تعديل الملف الشخصي",
@@ -880,4 +878,3 @@
     }
   }
 }
- 

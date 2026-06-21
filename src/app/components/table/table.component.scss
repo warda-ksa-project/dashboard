@@ -74,7 +74,9 @@
   display: inline-block;
 }
 
-.complete, .Completed {
+.complete,
+.Completed,
+.Paid {
   @include status(#16a34a, #f0fdf4, #bbf7d0);
 }
 
@@ -94,7 +96,9 @@
   @include status(#2563eb, #eff6ff, #bfdbfe);
 }
 
-.cancel, .Canceled {
+.cancel,
+.Canceled,
+.Unpaid {
   @include status(#dc2626, #fef2f2, #fecaca);
 }
 
@@ -107,7 +111,11 @@
 }
 
 .status-default {
-  @include status(var(--warda-text-secondary), var(--warda-surface-muted), var(--warda-border));
+  @include status(
+    var(--warda-text-secondary),
+    var(--warda-surface-muted),
+    var(--warda-border)
+  );
 }
 
 .status-badge {
