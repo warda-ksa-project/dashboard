@@ -1,6 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { StripHtmlPipe } from '../../pipes/strip-html.pipe';
-import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { ApiService } from '../../services/api.service';
 import { Router } from '@angular/router';
@@ -15,70 +23,78 @@ import { LanguageService } from '../../services/language.service';
 import { parseApiDateTime } from '../../utils/api-datetime-parse';
 
 export interface IToggleOptions {
-  autoCall: boolean,
-  apiName: string
+  autoCall: boolean;
+  apiName: string;
 }
 
 export enum EAction {
-  delete = "delete",
-  view = "view",
-  edit = "edit",
-  updateStatus = "updateStatus",
-  block = "block",
-  active = "active"
+  delete = 'delete',
+  view = 'view',
+  edit = 'edit',
+  updateStatus = 'updateStatus',
+  block = 'block',
+  active = 'active',
 }
 
 export interface ITableAction {
-  name: EAction,
-  apiName_or_route: string,
-  autoCall: boolean
+  name: EAction;
+  apiName_or_route: string;
+  autoCall: boolean;
 }
 
 export enum EType {
-  id = "id",
-  text = "text",
-  image = "image",
-  imageWithText = "image_text",
-  object = "object",
-  date = "date",
-  time = "time",
-  status = "status",
-  status_id="status_id",
-  index = "index",
-  actions = "actions",
+  id = 'id',
+  text = 'text',
+  image = 'image',
+  imageWithText = 'image_text',
+  object = 'object',
+  date = 'date',
+  time = 'time',
+  status = 'status',
+  status_id = 'status_id',
+  index = 'index',
+  actions = 'actions',
   editor = 'editor',
   boolean = 'boolean',
   toggle = 'toggle',
   orderStatus = 'orderStatus',
   specialOrderStatus = 'specialOrderStatus',
-  changeOrderStatus = 'changeOrderStatus'
+  changeOrderStatus = 'changeOrderStatus',
 }
 
 interface INested {
-  img: string,
-  text: string
+  img: string;
+  text: string;
 }
 
 export interface IcolHeader {
-  header: string,
-  keyName: string,
-  type: EType,
-  nested?: INested,
-  actions?: any[],
-  show?: boolean,
-  toggleOptions?: IToggleOptions,
-  statusId?:any
+  header: string;
+  keyName: string;
+  type: EType;
+  nested?: INested;
+  actions?: any[];
+  show?: boolean;
+  toggleOptions?: IToggleOptions;
+  statusId?: any;
 }
 
 @Component({
   selector: 'app-table',
   standalone: true,
-  imports: [TableModule, CommonModule, TranslatePipe, TooltipModule, DialogComponent, EmptyStateComponent, CheckBoxComponent, StripHtmlPipe],
+  imports: [
+    TableModule,
+    CommonModule,
+    TranslatePipe,
+    TooltipModule,
+    DialogComponent,
+    EmptyStateComponent,
+    CheckBoxComponent,
+    StripHtmlPipe,
+  ],
   templateUrl: './table.component.html',
-  styleUrl: './table.component.scss'
+  styleUrl: './table.component.scss',
 })
 export class TableComponent implements OnInit, OnChanges {
-
   @Input() showrecordIndex = false;
   @Input({ required: true }) records: any = [];
   @Input() hasPaginator: boolean = true;
@@ -104,12 +120,11 @@ export class TableComponent implements OnInit, OnChanges {
   // Inject LanguageService to access the current language.
   private languageService = inject(LanguageService);
 
-  eventEmitValue: any = { action: {}, record: {} }
-  defaultImg='assets/images/empty-state.png'
+  eventEmitValue: any = { action: {}, record: {} };
+  defaultImg = 'assets/images/empty-state.png';
   ngOnInit() {
     this.filterdRecords = this.records;
     this.selectedLang = this.languageService.translationService.currentLang;
-
   }
 
   ngOnChanges() {
@@ -126,7 +141,7 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   getNameOfIDHeader() {
-    let idName = this.colsHeader.filter(item => item.type == EType.id);
+    let idName = this.colsHeader.filter((item) => item.type == EType.id);
     return idName[0].keyName;
   }
 
@@ -134,7 +149,10 @@ export class TableComponent implements OnInit, OnChanges {
     let recordId = record[this.getNameOfIDHeader()];
     if (action.name == EAction.delete && action.autoCall) {
       this.showConfirmMessage = !this.showConfirmMessage;
-    } else if ((action.name == EAction.edit || action.name == EAction.view) && action.autoCall) {
+    } else if (
+      (action.name == EAction.edit || action.name == EAction.view) &&
+      action.autoCall
+    ) {
       this.router.navigateByUrl(action.apiName_or_route + '/' + recordId);
     } else if (action.name == EAction.block && action.autoCall) {
       this.showBlockConfirmationMessage = !this.showBlockConfirmationMessage;
@@ -152,14 +170,19 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   callDeleteAction(action: ITableAction, id: any) {
-    this.ApiService.delete(action.apiName_or_route, id).subscribe((res: any) => {
-      if (res) {
-        this.filterdRecords = this.filterdRecords.filter((item: any) => item[this.getNameOfIDHeader()] != id)
-        this.reloadGetAllApi.emit(true);
-      }
-    }, err => {
-      // this.toaster.errorToaster(err.error.message)
-    })
+    this.ApiService.delete(action.apiName_or_route, id).subscribe(
+      (res: any) => {
+        if (res) {
+          this.filterdRecords = this.filterdRecords.filter(
+            (item: any) => item[this.getNameOfIDHeader()] != id,
+          );
+          this.reloadGetAllApi.emit(true);
+        }
+      },
+      (err) => {
+        // this.toaster.errorToaster(err.error.message)
+      },
+    );
   }
 
   onActiveConfirmMessage() {
@@ -170,18 +193,23 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   callActiveApi(action: ITableAction, id: any) {
-    this.ApiService.put(action.apiName_or_route, { id: id }).subscribe(res => {
-      if (res) {
-        this.reloadGetAllApi.emit(true);
-      }
-    }, err => {
-      this.toaster.errorToaster(err.error.message)
-    })
+    this.ApiService.put(action.apiName_or_route, { id: id }).subscribe(
+      (res) => {
+        if (res) {
+          this.reloadGetAllApi.emit(true);
+        }
+      },
+      (err) => {
+        this.toaster.errorToaster(err.error.message);
+      },
+    );
   }
 
   convertDate(originalDate: string | number | null | undefined) {
-    if (originalDate == null || originalDate === '' || originalDate === '-') return '-';
-    if (typeof originalDate !== 'string' && typeof originalDate !== 'number') return '-';
+    if (originalDate == null || originalDate === '' || originalDate === '-')
+      return '-';
+    if (typeof originalDate !== 'string' && typeof originalDate !== 'number')
+      return '-';
     const date = parseApiDateTime(originalDate);
     if (!date) return '-';
     const day = date.getDate().toString().padStart(2, '0');
@@ -192,7 +220,8 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   getCurrentTime(originalDate: string): string {
-    if (originalDate == null || originalDate === '' || originalDate === '-') return '-';
+    if (originalDate == null || originalDate === '' || originalDate === '-')
+      return '-';
     const now = parseApiDateTime(originalDate);
     if (!now) return '-';
     let hours = now.getHours();
@@ -206,13 +235,13 @@ export class TableComponent implements OnInit, OnChanges {
 
   onToggleChange(checked: boolean, record: any, col: any) {
     if (col.toggleOptions.autoCall) {
-      this.api_update(checked, record, col)
+      this.api_update(checked, record, col);
     } else {
       this.onstatusChanged.emit({
         status: checked,
         record: record,
-        col: col
-      })
+        col: col,
+      });
     }
   }
 
@@ -220,90 +249,122 @@ export class TableComponent implements OnInit, OnChanges {
     let payload = record;
     payload[col.keyName] = checkedValue;
 
-    this.ApiService.put(col.toggleOptions.apiName, payload).subscribe(res => {
-      if (res) {
-        // Optionally add any success handling here
-      }
-    }, err => {
-      this.toaster.errorToaster(err.error.message)
-    })
+    this.ApiService.put(col.toggleOptions.apiName, payload).subscribe(
+      (res) => {
+        if (res) {
+          // Optionally add any success handling here
+        }
+      },
+      (err) => {
+        this.toaster.errorToaster(err.error.message);
+      },
+    );
   }
 
   onStatusChange(orderId: any, newStatusId: number = 1) {
-    this.ApiService.put('Orders/status', { orderId, newStatusId }).subscribe(() => {
-      this.reloadGetAllApi.emit(true);
-    });
+    this.ApiService.put('Orders/status', { orderId, newStatusId }).subscribe(
+      () => {
+        this.reloadGetAllApi.emit(true);
+      },
+    );
   }
 
   // Updated: Order Status array with dynamic language fields.
   getOrderStatusColorById(id: number): string | null {
     const statuses = [
       {
-        name: this.languageService.translationService.currentLang === 'ar' ? 'قيد الانتظار' : 'Pending',
+        name:
+          this.languageService.translationService.currentLang === 'ar'
+            ? 'قيد الانتظار'
+            : 'Pending',
         id: 0,
         color: '#c1cd6a',
         nameAr: 'قيد الانتظار',
-        nameEn: 'Pending'
+        nameEn: 'Pending',
       },
       {
-        name: this.languageService.translationService.currentLang === 'ar' ? 'مدفوع' : 'Paid',
+        name:
+          this.languageService.translationService.currentLang === 'ar'
+            ? 'مدفوع'
+            : 'Paid',
         id: 1,
         color: '#c1cd6a',
         nameAr: 'مدفوع',
-        nameEn: 'Paid'
+        nameEn: 'Paid',
       },
       {
-        name: this.languageService.translationService.currentLang === 'ar' ? 'مخصص للمزود' : 'AssignedToProvider',
+        name:
+          this.languageService.translationService.currentLang === 'ar'
+            ? 'مخصص للمزود'
+            : 'AssignedToProvider',
         id: 2,
         color: '#b16acd',
         nameAr: 'مخصص للمزود',
-        nameEn: 'AssignedToProvider'
+        nameEn: 'AssignedToProvider',
       },
       {
-        name: this.languageService.translationService.currentLang === 'ar' ? 'في الطريق' : 'InTheWay',
+        name:
+          this.languageService.translationService.currentLang === 'ar'
+            ? 'في الطريق'
+            : 'InTheWay',
         id: 3,
         color: '#ccc053',
         nameAr: 'في الطريق',
-        nameEn: 'InTheWay'
+        nameEn: 'InTheWay',
       },
       {
-        name: this.languageService.translationService.currentLang === 'ar' ? 'محاولة حل المشكلة' : 'TryingSolveProblem',
+        name:
+          this.languageService.translationService.currentLang === 'ar'
+            ? 'محاولة حل المشكلة'
+            : 'TryingSolveProblem',
         id: 4,
         color: '#9b9d9c',
         nameAr: 'محاولة حل المشكلة',
-        nameEn: 'TryingSolveProblem'
+        nameEn: 'TryingSolveProblem',
       },
       {
-        name: this.languageService.translationService.currentLang === 'ar' ? 'محلول' : 'Solved',
+        name:
+          this.languageService.translationService.currentLang === 'ar'
+            ? 'محلول'
+            : 'Solved',
         id: 5,
         color: '#49e97c',
         nameAr: 'محلول',
-        nameEn: 'Solved'
+        nameEn: 'Solved',
       },
       {
-        name: this.languageService.translationService.currentLang === 'ar' ? 'تأكيد العميل' : 'ClientConfirmation',
+        name:
+          this.languageService.translationService.currentLang === 'ar'
+            ? 'تأكيد العميل'
+            : 'ClientConfirmation',
         id: 6,
         color: '#49e97c',
         nameAr: 'تأكيد العميل',
-        nameEn: 'ClientConfirmation'
+        nameEn: 'ClientConfirmation',
       },
       {
-        name: this.languageService.translationService.currentLang === 'ar' ? 'مكتمل' : 'Completed',
+        name:
+          this.languageService.translationService.currentLang === 'ar'
+            ? 'مكتمل'
+            : 'Completed',
         id: 7,
         color: '#49e97c',
         nameAr: 'مكتمل',
-        nameEn: 'Completed'
+        nameEn: 'Completed',
       },
       {
-        name: this.languageService.translationService.currentLang === 'ar' ? 'ملغي' : 'Canceled',
+        name:
+          this.languageService.translationService.currentLang === 'ar'
+            ? 'ملغي'
+            : 'Canceled',
         id: 8,
         color: '#e94949',
         nameAr: 'ملغي',
-        nameEn: 'Canceled'
-      }
+        nameEn: 'Canceled',
+      },
     ];
 
-    const status = statuses.find(status => status.id === id);
+    const status = statuses.find((status) => status.id === id);
     return status ? status.color : null;
   }
 
@@ -311,37 +372,51 @@ export class TableComponent implements OnInit, OnChanges {
   getSpecialOrderStatusColorById(id: number): string | null {
     const statuses = [
       {
-        name: this.languageService.translationService.currentLang === 'ar' ? 'قيد الانتظار' : 'Pending',
+        name:
+          this.languageService.translationService.currentLang === 'ar'
+            ? 'قيد الانتظار'
+            : 'Pending',
         id: 1,
         color: '#c1cd6a',
         nameAr: 'قيد الانتظار',
-        nameEn: 'Pending'
+        nameEn: 'Pending',
       },
       {
-        name: this.languageService.translationService.currentLang === 'ar' ? 'مكتمل' : 'Completed',
+        name:
+          this.languageService.translationService.currentLang === 'ar'
+            ? 'مكتمل'
+            : 'Completed',
         id: 2,
         color: '#3fac4e',
         nameAr: 'مكتمل',
-        nameEn: 'Completed'
+        nameEn: 'Completed',
       },
       {
-        name: this.languageService.translationService.currentLang === 'ar' ? 'ملغي' : 'Canceled',
+        name:
+          this.languageService.translationService.currentLang === 'ar'
+            ? 'ملغي'
+            : 'Canceled',
         id: 3,
         color: '#c32722',
         nameAr: 'ملغي',
-        nameEn: 'Canceled'
-      }
+        nameEn: 'Canceled',
+      },
     ];
 
-    const status = statuses.find(status => status.id === id);
+    const status = statuses.find((status) => status.id === id);
     return status ? status.color : null;
   }
 
   getStatusBadgeClass(rowData: any, col: IcolHeader): string {
     const raw = col.statusId ? rowData?.[col.statusId] : rowData?.[col.keyName];
-    if (raw === true) return 'active';
-    if (raw === false) return 'not-active';
-    return this.resolveStatusClass(raw);
+    if (col.statusId) {
+      if (raw === true) return 'active';
+      if (raw === false) return 'not-active';
+      return this.resolveStatusClass(raw);
+    }
+
+    const colorKey = rowData?.['paymentStatusEn'] ?? rowData?.[col.keyName];
+    return this.resolveStatusClass(colorKey);
   }
 
   private resolveStatusClass(status?: string | null): string {
@@ -352,7 +427,8 @@ export class TableComponent implements OnInit, OnChanges {
       pending: 'Pending',
       inprogress: 'inProgress',
       preparing: 'Preparing',
-      delivering: 'Delivering',
+      delivering: 'Delivered',
+      received: 'OrderReceived',
       shipped: 'Shipped',
       completed: 'Completed',
       complete: 'complete',
@@ -363,6 +439,8 @@ export class TableComponent implements OnInit, OnChanges {
       paid: 'Completed',
       active: 'active',
       inactive: 'not-active',
+      paymentPaid: 'Paid',
+      paymentUnpaid: 'Unpaid',
     };
 
     return map[normalized] ?? status.replace(/\s+/g, '');

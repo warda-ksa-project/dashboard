@@ -2,7 +2,13 @@ import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { ApiService } from '../../../services/api.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { LanguageService } from '../../../services/language.service';
 import { ConfirmMsgService } from '../../../services/confirm-msg.service';
@@ -24,12 +30,23 @@ const global_API_details = 'Orders';
 @Component({
   selector: 'app-orders-details',
   standalone: true,
-  imports: [TableModule, InputTextComponent, DialogComponent, SelectComponent, UploadFileComponent, ReactiveFormsModule, TranslatePipe, RouterModule, CommonModule, FormsModule, MapComponent],
+  imports: [
+    TableModule,
+    InputTextComponent,
+    DialogComponent,
+    SelectComponent,
+    UploadFileComponent,
+    ReactiveFormsModule,
+    TranslatePipe,
+    RouterModule,
+    CommonModule,
+    FormsModule,
+    MapComponent,
+  ],
   templateUrl: './orders-details.component.html',
-  styleUrl: './orders-details.component.scss'
+  styleUrl: './orders-details.component.scss',
 })
 export class OrdersDetailsComponent implements OnInit, OnDestroy {
-
   pageName = signal<string>(global_PageName);
   private ApiService = inject(ApiService);
   private router = inject(Router);
@@ -44,10 +61,14 @@ export class OrdersDetailsComponent implements OnInit, OnDestroy {
   private defaultLng = 46.6753;
 
   get mapLat(): number {
-    return (this.customerLat && this.customerLng) ? this.customerLat : this.defaultLat;
+    return this.customerLat && this.customerLng
+      ? this.customerLat
+      : this.defaultLat;
   }
   get mapLng(): number {
-    return (this.customerLat && this.customerLng) ? this.customerLng : this.defaultLng;
+    return this.customerLat && this.customerLng
+      ? this.customerLng
+      : this.defaultLng;
   }
   get hasValidCoords(): boolean {
     return !!(this.customerLat && this.customerLng);
@@ -62,6 +83,8 @@ export class OrdersDetailsComponent implements OnInit, OnDestroy {
     statusId: new FormControl<number | null>(null),
     statusImage: new FormControl<string | null>(null),
     paymentWay: new FormControl(''),
+    paymentStatusAr: new FormControl(''),
+    paymentStatusEn: new FormControl(''),
     deliveryType: new FormControl(''),
     totalPrice: new FormControl(''),
     addedDate: new FormControl(''),
@@ -97,13 +120,16 @@ export class OrdersDetailsComponent implements OnInit, OnDestroy {
       this.getRoles();
       if (this.data?.id) {
         const labels: Record<string, { ar: string; en: string }> = {
-          'Delivery': { ar: 'توصيل', en: 'Delivery' },
-          'StorePickup': { ar: 'استلام', en: 'Store Pickup' },
+          Delivery: { ar: 'توصيل', en: 'Delivery' },
+          StorePickup: { ar: 'استلام', en: 'Store Pickup' },
         };
-        const dKey = this.data.deliveryTypeName ?? (this.data.deliveryType === 2 ? 'StorePickup' : 'Delivery');
+        const dKey =
+          this.data.deliveryTypeName ??
+          (this.data.deliveryType === 2 ? 'StorePickup' : 'Delivery');
         const dLabel = labels[dKey] ?? { ar: dKey, en: dKey };
         this.form.patchValue({
-          status: this.selectedLang == 'ar' ? this.data.statusAr : this.data.statusEn,
+          status:
+            this.selectedLang == 'ar' ? this.data.statusAr : this.data.statusEn,
           deliveryType: this.selectedLang == 'ar' ? dLabel.ar : dLabel.en,
         });
       }
@@ -134,8 +160,11 @@ export class OrdersDetailsComponent implements OnInit, OnDestroy {
         this.orderStatusList = [];
         (Array.isArray(list) ? list : [list]).forEach((item: any) => {
           this.orderStatusList.push({
-            name: this.selectedLang === 'ar' ? (item.arName ?? item.titleAr) : (item.enName ?? item.titleEn),
-            code: item.id
+            name:
+              this.selectedLang === 'ar'
+                ? (item.arName ?? item.titleAr)
+                : (item.enName ?? item.titleEn),
+            code: item.id,
           });
         });
       }
@@ -168,34 +197,44 @@ export class OrdersDetailsComponent implements OnInit, OnDestroy {
   }
 
   API_getItemDetails() {
-    this.ApiService.get(`${global_API_details}/${this.getID}`).subscribe((res: any) => {
-      if (res.data) {
-        this.data = res.data;
-        this.products = res.data.orderItemResponseDtos || [];
+    this.ApiService.get(`${global_API_details}/${this.getID}`).subscribe(
+      (res: any) => {
+        if (res.data) {
+          this.data = res.data;
+          this.products = res.data.orderItemResponseDtos || [];
 
-        // Set customer location from address
-        if (res.data.address) {
-          this.customerLat = Number(res.data.address.latitude) || 0;
-          this.customerLng = Number(res.data.address.logitude ?? res.data.address.longitude) || 0;
+          // Set customer location from address
+          if (res.data.address) {
+            this.customerLat = Number(res.data.address.latitude) || 0;
+            this.customerLng =
+              Number(res.data.address.logitude ?? res.data.address.longitude) ||
+              0;
+          }
+
+          const labels: Record<string, { ar: string; en: string }> = {
+            Delivery: { ar: 'توصيل', en: 'Delivery' },
+            StorePickup: { ar: 'استلام', en: 'Store Pickup' },
+          };
+          const dKey =
+            res.data.deliveryTypeName ??
+            (res.data.deliveryType === 2 ? 'StorePickup' : 'Delivery');
+          const dLabel = labels[dKey] ?? { ar: dKey, en: dKey };
+          this.form.patchValue({
+            ...res.data,
+            address:
+              res.data.address?.expalinedAddress ??
+              res.data.address?.street ??
+              '-',
+            status:
+              this.selectedLang == 'ar' ? res.data.statusAr : res.data.statusEn,
+            statusId: res.data.statusId ?? res.data.orderStatusId,
+            deliveryType: this.selectedLang == 'ar' ? dLabel.ar : dLabel.en,
+            totalPrice: res.data.totalPrice,
+            addedDate: this.convertDate(res.data.createdDate),
+          });
         }
-
-        const labels: Record<string, { ar: string; en: string }> = {
-          'Delivery': { ar: 'توصيل', en: 'Delivery' },
-          'StorePickup': { ar: 'استلام', en: 'Store Pickup' },
-        };
-        const dKey = res.data.deliveryTypeName ?? (res.data.deliveryType === 2 ? 'StorePickup' : 'Delivery');
-        const dLabel = labels[dKey] ?? { ar: dKey, en: dKey };
-        this.form.patchValue({
-          ...res.data,
-          address: res.data.address?.expalinedAddress ?? res.data.address?.street ?? '-',
-          status: this.selectedLang == 'ar' ? res.data.statusAr : res.data.statusEn,
-          statusId: res.data.statusId ?? res.data.orderStatusId,
-          deliveryType: this.selectedLang == 'ar' ? dLabel.ar : dLabel.en,
-          totalPrice: res.data.totalPrice,
-          addedDate: this.convertDate(res.data.createdDate),
-        });
-      }
-    });
+      },
+    );
   }
 
   navigateToPageTable() {
@@ -232,7 +271,8 @@ export class OrdersDetailsComponent implements OnInit, OnDestroy {
 
   getStatusClass(): string {
     const statusId = this.data?.statusId;
-    if (statusId === 7 || statusId === 5 || statusId === 6) return 'status-completed';
+    if (statusId === 7 || statusId === 5 || statusId === 6)
+      return 'status-completed';
     if (statusId === 8) return 'status-canceled';
     return 'status-pending';
   }

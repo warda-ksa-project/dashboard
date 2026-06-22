@@ -3,27 +3,27 @@
     "PLEASE_WAIT": "Loading…"
   },
   "GENERAL": "General",
-  "success":"Success",
-  "error":"Error",
+  "success": "Success",
+  "error": "Error",
   "Add": "Add",
   "Edit": "Edit",
   "View": "View",
   "Home": "Home",
   "Id": "Id",
-  "rsa":"SAR",
-  "sales":"Sales",
-  "totalPrice":"Total Price",
+  "rsa": "SAR",
+  "sales": "Sales",
+  "totalPrice": "Total Price",
   "Action": "Action",
   "Actions": "Actions",
-  "no_image":"No Image Found",
-  "welcome":"Welcome Back!",
-  "home":"Home",
-  "select":"Select",
-  "search":"Search",
-  "rate":"Rate",
-  "table_delete_msg":"Are you sure to delete this item ?",
-  "table_delete_blk":"Are you sure to block this item ?",
-  "table_delete_active":"Are you sure to active this item ?",
+  "no_image": "No Image Found",
+  "welcome": "Welcome Back!",
+  "home": "Home",
+  "select": "Select",
+  "search": "Search",
+  "rate": "Rate",
+  "table_delete_msg": "Are you sure to delete this item ?",
+  "table_delete_blk": "Are you sure to block this item ?",
+  "table_delete_active": "Are you sure to active this item ?",
   "validation_message": {
     "minlength_validation": "length should be more than",
     "maxlength_validation": "length should be more less than",
@@ -53,16 +53,16 @@
     "update": "Update",
     "next": "Next",
     "back": "Back",
-    "approve":"Approve",
-    "reject":"Reject",
-    "delete":"Delete",
-    "active":"Active",
-    "no":"No",
-    "view":"View"
+    "approve": "Approve",
+    "reject": "Reject",
+    "delete": "Delete",
+    "active": "Active",
+    "no": "No",
+    "view": "View"
   },
   "shared": {
-    "log_out":"Logout",
-    "download":"download",
+    "log_out": "Logout",
+    "download": "download",
     "errors": {
       "login": "Login failed",
       "post_request": "Failed to perform POST operation",
@@ -137,12 +137,12 @@
   },
   "side_bar": {
     "dashboard": "Dashboard",
-    "users":"Users",
-    "orderStatus":"Order Status",
+    "users": "Users",
+    "orderStatus": "Order Status",
     "trader": "Traders",
-    "article":"Articles",
-    "slider":"Slider",
-    "trader_request":"Requests",
+    "article": "Articles",
+    "slider": "Slider",
+    "trader_request": "Requests",
     "clients": "Clients",
     "category": "SUBCATEGORIES",
     "sub_category": "Sub Categories",
@@ -167,7 +167,7 @@
     "about": "ABOUT US",
     "setting": "Settings",
     "faqs": "FAQs",
-    "target":"Target",
+    "target": "Target",
     "notifications": "Notifications",
     "otp_metrics": "OTP Security",
     "termsAndConditions": "Terms & Conditions",
@@ -185,7 +185,7 @@
     "high_risk_24h": "High risk attempts (24h)",
     "note": "For full audit rows, query OtpSmsSendLog in SQL or see docs/OTP_SECURITY_RUNBOOK.md on the backend."
   },
-  "users":{
+  "users": {
     "pageName": "Users",
     "pageTitle": "user",
     "list": "user List",
@@ -194,15 +194,15 @@
     "pageName_Edit_crumb": "Edit user",
     "pageName_View_crumb": "View user",
     "form": {
-      "name":"Name",
-      "role":"Role",
+      "name": "Name",
+      "role": "Role",
       "email": "Email",
       "phone": "Phone Number",
       "password": "Password",
-      "status":"Active"
+      "status": "Active"
     }
   },
-  "target":{
+  "target": {
     "pageName": "Target",
     "pageName_Edit_crumb": "Edit Target"
   },
@@ -302,22 +302,21 @@
       "hasDiscount": "Has Discount",
       "discountType": "Discount Type",
       "amount": "Amount",
-      "price":"Price",
-      "priceAfterDiscount":"Price After Discount",
-      "start":"Start Date",
-      "end":"End Date",
-      "reviews":"Reviews"
+      "price": "Price",
+      "priceAfterDiscount": "Price After Discount",
+      "start": "Start Date",
+      "end": "End Date",
+      "reviews": "Reviews"
     },
-    "best":{
-      "title":"Best Selling Products",
-      "name":"Product Name",
-      "catg":"Category Name",
-      "revenue":"Total Revenue",
-      "totalSold":"Total Solid",
-      "isAvaliable":"Is Available",
-      "lastOrderDate":"LasTOrder Date",
-      "image":"Image"
-
+    "best": {
+      "title": "Best Selling Products",
+      "name": "Product Name",
+      "catg": "Category Name",
+      "revenue": "Total Revenue",
+      "totalSold": "Total Solid",
+      "isAvaliable": "Is Available",
+      "lastOrderDate": "LasTOrder Date",
+      "image": "Image"
     }
   },
   "piece_products": {
@@ -378,7 +377,7 @@
       "iban": "IBan",
       "license": "License",
       "cr": "CR",
-      "city":"City"
+      "city": "City"
     }
   },
   "trader_request": {
@@ -391,12 +390,12 @@
     "pageName_View_crumb": "View Trader Request",
     "notActive": "Not Active",
     "imgs": "Trader Requests Images",
-    "q_approve":"Are you sure to approve this request ?",
-    "q_reject":"Are you sure to reject this request ?",
+    "q_approve": "Are you sure to approve this request ?",
+    "q_reject": "Are you sure to reject this request ?",
     "form": {
-        "traderName":"Trader Name",
-      "addedDate":"Added Date",
-      "reasonForRejection":"Reason For Rejection"
+      "traderName": "Trader Name",
+      "addedDate": "Added Date",
+      "reasonForRejection": "Reason For Rejection"
     }
   },
   "faqs": {
@@ -457,16 +456,16 @@
       "service_type": "Services"
     }
   },
-  "dashboard_admin":{
-    "revenue":"Total Revenue By Cities",
-    "weekly_sales":"Weekly Sales",
-    "users":"Users",
-    "total_users":"Total Users",
-    "active_users":"Active Users",
-    "new_users":"New Users",
-    "chart":{
-      "firstDataName":"Target current Week",
-      "secondDataName":"Target past week"
+  "dashboard_admin": {
+    "revenue": "Total Revenue By Cities",
+    "weekly_sales": "Weekly Sales",
+    "users": "Users",
+    "total_users": "Total Users",
+    "active_users": "Active Users",
+    "new_users": "New Users",
+    "chart": {
+      "firstDataName": "Target current Week",
+      "secondDataName": "Target past week"
     }
   },
   "dashboard": {
@@ -496,10 +495,10 @@
     "TOTAL_ORDERS_PER_DAY_AMOUNT": "Total Orders per Day Amount",
     "TOTAL_ORDERS_PER_WEEK_AMOUNT": "Total Orders per Week Amount",
     "TOTAL_ORDERS_PER_MONTH_AMOUNT": "Total Orders per Month Amount",
-    "chart":{
-      "title":"Monthly Sales",
-      "firstDataName":"Target current year",
-      "secondDataName":"Target past year"
+    "chart": {
+      "title": "Monthly Sales",
+      "firstDataName": "Target current year",
+      "secondDataName": "Target past year"
     }
   },
   "cancel_reason": {
@@ -686,11 +685,11 @@
     "pageName_Edit_crumb": "Edit Order",
     "pageName_View_crumb": "View Order",
     "form": {
-      "id":"Code",
-      "orderInfo":"Order Information",
-      "customerInfo":"Customer Information",
-      "customerLocation":"Customer Location",
-      "openInGoogleMaps":"Open in Google Maps",
+      "id": "Code",
+      "orderInfo": "Order Information",
+      "customerInfo": "Customer Information",
+      "customerLocation": "Customer Location",
+      "openInGoogleMaps": "Open in Google Maps",
       "clientName": "Client Name",
       "customerEmail": "Customer Email",
       "traderInfo": "Trader Information",
@@ -698,29 +697,29 @@
       "traderStoreName": "Store Name",
       "traderPhone": "Trader Phone",
       "traderEmail": "Trader Email",
-      "discountType":"Discount Type",
+      "discountType": "Discount Type",
       "phoneNumber": "Phone Number",
-      "address":"Address",
+      "address": "Address",
       "status": "Order Status",
       "price": "Price",
       "paymentWay": "Payment Way",
+      "paymentStatus": "Payment Status",
       "deliveryType": "Delivery Type",
       "date": "Creation Date",
       "itemsCount": "Items Count",
-      "productDetails":"Products",
-       "code":"Code",
-       "ProductName":"Product Name",
-       "quantity":"Quantity",
-       "discount":"Discount",
-       "pricePiece":"Price/Piece",
-       "totalPrice":"Total Price",
-       "select_order_status": "Select order status",
-       "statusImage": "Status Image",
-       "updateStatus": "Update Status"
-
+      "productDetails": "Products",
+      "code": "Code",
+      "ProductName": "Product Name",
+      "quantity": "Quantity",
+      "discount": "Discount",
+      "pricePiece": "Price/Piece",
+      "totalPrice": "Total Price",
+      "select_order_status": "Select order status",
+      "statusImage": "Status Image",
+      "updateStatus": "Update Status"
     }
-   },
-   "payment": {
+  },
+  "payment": {
     "pageName": "Payment Way",
     "list": "Payment Way List",
     "title": "Payment Way",
@@ -733,7 +732,7 @@
       "name_en": "Name (en)",
       "desc_ar": "Description (ar)",
       "desc_en": "Description (en)",
-      "isEnabled":"Enabled"
+      "isEnabled": "Enabled"
     }
   },
   "article": {
@@ -749,8 +748,8 @@
       "arTitle": "Title (ar)",
       "desc_ar": "Description (ar)",
       "desc_en": "Description (en)",
-      "displayOrder":"displayOrder",
-       "imgs":"image"
+      "displayOrder": "displayOrder",
+      "imgs": "image"
     }
   },
   "slider": {
