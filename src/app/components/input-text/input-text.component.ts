@@ -7,6 +7,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { Password } from 'primeng/password';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { DatePickerModule } from 'primeng/datepicker';
+import { Textarea } from 'primeng/textarea';
 
 @Component({
   selector: 'app-input-text',
@@ -19,30 +20,29 @@ import { DatePickerModule } from 'primeng/datepicker';
     TranslatePipe,
     Password,
     FloatLabelModule,
-    DatePickerModule
+    DatePickerModule,
+    Textarea,
   ],
   templateUrl: './input-text.component.html',
-  styleUrl: './input-text.component.scss'
+  styleUrl: './input-text.component.scss',
 })
 export class InputTextComponent {
-  @Input() minDate:any='';
-  @Input() maxDate:any='';
-  @Input() type: string='text';
+  @Input() minDate: any = '';
+  @Input() maxDate: any = '';
+  @Input() type: string = 'text';
   @Input() label!: string;
   @Input() readOnly: boolean = false;
   @Input() disabled: boolean = false;
   @Input() placeholder: string = '';
   @Input() control: any = new FormControl();
-  @Input()showPasswordWeakness:boolean=false
-@Output()  onValueChange =new EventEmitter()
+  @Input() showPasswordWeakness: boolean = false;
+  @Output() onValueChange = new EventEmitter();
 
-  OnInit(){
-    console.log("InputTextComponent  control:", this.control)
-
+  OnInit() {
+    console.log('InputTextComponent  control:', this.control);
   }
 
-  onInputChange(value:any){
-    this.onValueChange.emit(value)
-
+  onInputChange(value: any) {
+    this.onValueChange.emit(value);
   }
 }

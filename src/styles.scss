@@ -570,6 +570,10 @@ p-dialog.order-status {
     background: #5c1530;
     color: white;
   }
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
 }
 .b-raduis-16 {
   border-radius: 16px;
