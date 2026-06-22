@@ -1,136 +1,64 @@
-import { Component, inject, signal } from '@angular/core';
+import {
+  Component,
+  inject,
+  input,
+  OnDestroy,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ApiService } from '../../services/api.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { NgFor, TitleCasePipe } from '@angular/common';
+import { TitleCasePipe, NgClass } from '@angular/common';
 import { Validations } from '../../validations';
-import { BreadcrumpComponent } from '../../components/breadcrump/breadcrump.component';
 import { IBreadcrumb } from '../../components/breadcrump/cerqel-breadcrumb.interface';
-import { ConfirmMsgService } from '../../services/confirm-msg.service';
 import { TranslatePipe } from '@ngx-translate/core';
 import { LanguageService } from '../../services/language.service';
-import { gender } from '../../conts';
 import { IEditImage } from '../../components/edit-mode-image/editImage.interface';
 import { TraderService } from '../../services/trader/trader.service';
-
-const global_PageName = 'profile.pageName';
-const global_API_deialis = 'Users';
-const global_routeUrl = '/profile/edit/';
+import { Subscription } from 'rxjs';
+import { TraderProfile } from '../../services/trader/trader.model';
+import { Spinner } from '../../components/spinner/spinner';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [TranslatePipe, TitleCasePipe, BreadcrumpComponent, NgFor],
+  imports: [TranslatePipe, TitleCasePipe, Spinner, NgClass],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
   providers: [TraderService],
 })
-export class ProfileComponent {
-  pageName = signal<string>(global_PageName);
-  userDataInfo: any[] = [];
-  defaultImage = 'assets/images/arabian-man.png';
-  userId = +(localStorage.getItem('userId') as string);
-  imgUrl: any = null;
-  private ApiService = inject(ApiService);
-  private router = inject(Router);
+export class ProfileComponent implements OnInit, OnDestroy {
+  //DEPS
   private traderService = inject(TraderService);
-  roleList: any[] = [];
-  genderList = gender;
-  minEndDate: Date = new Date();
-  selectedLang: any;
-  languageService = inject(LanguageService);
-  editMode: boolean = false;
-  showUserImage: boolean = true;
-  form = new FormGroup({
-    firstName: new FormControl('', {
-      validators: [Validators.required],
-    }),
-    lastName: new FormControl<any>('', {
-      validators: [Validators.required],
-    }),
-    email: new FormControl<any>('', {
-      validators: [Validators.required, Validations.emailValidator()],
-    }),
-    userName: new FormControl<any>('', {
-      validators: [Validators.required],
-    }),
-    mobileNumber: new FormControl<any>('', {
-      validators: [Validators.required, Validations.onlyNumberValidator()],
-    }),
-    roleId: new FormControl<any>('', {
-      validators: [Validators.required],
-    }),
-    password: new FormControl<any>('', {
-      validators: [Validators.required],
-    }),
-    confirmPassword: new FormControl<any>('', {
-      validators: [Validators.required],
-    }),
-    genderId: new FormControl<any>('', {
-      validators: [Validators.required],
-    }),
-    imgSrc: new FormControl(''),
-    isActive: new FormControl<boolean>(true),
-    userId: new FormControl(this.userId | 0),
-  });
-  bredCrumb: IBreadcrumb = {
-    crumbs: [],
-  };
-  // get isRequiredError(): boolean {
-  //   const control = this.form.get('imgSrc');
-  //   return control?.touched && control?.hasError('required') || false;
-  // }
+
+  //Hooks
   ngOnInit() {
-    this.pageName.set(global_PageName);
-    this.getAllRoles();
-    this.getBreadCrumb();
+    this.pageName.set(`profile.pageName`);
+    this.getLang();
+    this.getProfileInfo();
+  }
+
+  ngOnDestroy(): void {
+    this.subs.unsubscribe();
+  }
+
+  //Priv Props
+  private userId = +(localStorage.getItem('userId') as string);
+  private subs = new Subscription();
+  private languageService = inject(LanguageService);
+
+  //Priv Methods
+  private getLang() {
     this.selectedLang = this.languageService.translationService.currentLang;
-    this.languageService.translationService.onLangChange.subscribe(() => {
-      this.selectedLang = this.languageService.translationService.currentLang;
-      this.getAllRoles();
-      this.getBreadCrumb();
-    });
-    this.API_getItemDetails();
-    this.removePasswordValidation();
+    this.getBreadCrumb();
+    this.subs.add(
+      this.languageService.translationService.onLangChange.subscribe(() => {
+        this.selectedLang = this.languageService.translationService.currentLang;
+        this.getBreadCrumb();
+      }),
+    );
   }
-  // onPasswordChanged(value:any){
-  //       this.form.get('confirmPassword')?.reset()
-  // }
-  // onConfirmPasswordChanged(value:string){
-  //       const ctrlConfirm =this.form.controls.confirmPassword
-  //       ctrlConfirm.setValidators(Validations.confirmValue(this.form.value.password))
-  //       ctrlConfirm.updateValueAndValidity()
-  // }
-  editImageProps: IEditImage = {
-    props: {
-      visible: true,
-      imgSrc: '',
-    },
-    onEditBtn: (e?: Event) => {
-      this.editImageProps.props.visible = false;
-      this.editMode = false;
-    },
-  };
-  getAllRoles() {
-    this.ApiService.get('Auth/roles').subscribe((res: any) => {
-      if (res.data) {
-        res.data.map((item: any) => {
-          this.roleList.push({
-            name: this.selectedLang == 'ar' ? item.arName : item.enName,
-            code: item.roleId,
-          });
-        });
-      }
-    });
-  }
-  onStartDateChange(date: Date) {
-    this.minEndDate = date;
-  }
-  tyepMode() {
-    let result = 'View';
-    return result;
-  }
-  getBreadCrumb() {
+
+  private getBreadCrumb() {
     this.bredCrumb = {
       crumbs: [
         {
@@ -139,80 +67,60 @@ export class ProfileComponent {
         },
         {
           label: this.languageService.translate(
-            this.pageName() + '_' + this.tyepMode() + '_crumb',
+            this.pageName() + '_' + 'View' + '_crumb',
           ),
         },
       ],
     };
   }
-  removePasswordValidation() {
-    const ctrlform = this.form.controls;
-    ctrlform.password.removeValidators(Validators.required);
-    ctrlform.confirmPassword.removeValidators(Validators.required);
-    ctrlform.password.updateValueAndValidity();
-    ctrlform.confirmPassword.updateValueAndValidity();
-  }
-  API_getItemDetails() {
+
+  private getProfileInfo() {
     this.traderService.getProfile(this.userId).subscribe({
       next: (res) => {
-        console.log(res.data);
+        this.profile = res.data;
+        this.loadingProfile = false;
       },
     });
-    this.ApiService.get(`${global_API_deialis}/${this.userId}`).subscribe(
-      (res: any) => {
-        if (res) {
-          this.form.patchValue(res.data);
-          this.imgUrl = res.data.imgSrc ? res.data.imgSrc : this.defaultImage;
-          this.userDataInfo = [
-            {
-              icon: 'pi pi-address-book',
-              title: 'profile.name',
-              value: res.data.fullName,
-            },
-            {
-              icon: 'pi pi-user',
-              title: 'profile.gender',
-              value: res.data.genderId == 1 ? 'Male' : 'Female',
-            },
-            {
-              icon: 'pi pi-at',
-              title: 'profile.email',
-              value: res.data.email,
-            },
-            {
-              icon: 'pi pi-phone',
-              title: 'profile.mobile',
-              value: res.data.mobileNumber,
-            },
-            {
-              icon: 'pi pi-unlock',
-              title: 'profile.role',
-              value: res.data.roleId,
-            },
-            {
-              icon: 'pi  pi-circle-on',
-              title: 'profile.status',
-              value: res.data.isActive ? 'active' : 'deactive',
-            },
-            {
-              icon: 'pi pi-address-book',
-              title: 'profile.userName',
-              value: res.data.userName,
-            },
-          ];
-        }
-      },
-    );
   }
-  // onSubmit() {
-  //     delete this.form.value.password
-  //     delete this.form.value.confirmPassword
-  //     this.API_forEditItem(this.form.value)
-  // }
-  navigateToPageTable() {
-    this.router.navigateByUrl(global_routeUrl);
+
+  //PROPS
+  loadingProfile = true;
+  profile!: TraderProfile;
+  pageName = signal<string>(`profile.pageName`);
+  readonly defaultImage = 'assets/images/arabian-man.png';
+  updating = false;
+  selectedLang = 'ar';
+  bredCrumb: IBreadcrumb = {
+    crumbs: [],
+  };
+  selectedImage: null | string = null;
+
+  //METHODS
+  imageError(event: Event) {
+    const imgElement = event.target as HTMLImageElement;
+    if (imgElement.src.includes(this.defaultImage)) {
+      imgElement.style.display = 'none';
+      return;
+    }
+    imgElement.src = this.defaultImage;
   }
-  onEditProfile() {
-    this.router.navigateByUrl(global_routeUrl + this.userId);
+
+  removeImage() {
+    this.selectedImage = null;
+  }
+
+  imageSelected(event: Event) {
+    const inputEle = event.target as HTMLInputElement;
+
+    if (inputEle.files && inputEle.files.length > 0) {
+      const file = inputEle.files[0];
+      const fr = new FileReader();
+
+      fr.onload = () => {
+        this.selectedImage = fr.result as string;
+      };
+
+      fr.readAsDataURL(file);
+    }
   }
 }

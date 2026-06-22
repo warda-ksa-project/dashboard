@@ -3,35 +3,58 @@
     <div class="page-details mb-3">
       <div class="title mb-4">
         <h2>
-          {{ tyepMode() | translate | titlecase }}
+          {{ "View" | translate | titlecase }}
           {{ pageName() | translate | titlecase }}
         </h2>
       </div>
     </div>
   </div>
-  <div class="page">
-    <div class="d-flex justify-content-end">
-      <span class="pointer pi pi-pencil" (click)="onEditProfile()"></span>
+  @if (loadingProfile) {
+    <div class="spinner-container">
+      <app-spinner></app-spinner>
     </div>
-    <div class="d-flex justify-content-between flex-wrap">
-      <div class="img-border">
-        <img [src]="imgUrl ?? defaultImage" alt="img" />
+  } @else {
+    <div class="page d-flex align-items-start">
+      <div class="image">
+        <img
+          [src]="selectedImage || profile.image || defaultImage"
+          (error)="imageError($event)"
+        />
+        @if (selectedImage) {
+          <button
+            class="image-btn remove-image"
+            [ngClass]="{
+              'position-right': selectedLang === 'en',
+              'position-left': selectedLang === 'ar',
+            }"
+            type="button"
+            (click)="removeImage()"
+          >
+            <i class="pi pi-trash"></i>
+          </button>
+        } @else {
+          <button
+            class="image-btn update-image"
+            [ngClass]="{
+              'position-right': selectedLang === 'en',
+              'position-left': selectedLang === 'ar',
+            }"
+            type="button"
+            (click)="profileImage.click()"
+          >
+            <i class="pi pi-pencil"></i>
+          </button>
+        }
       </div>
-      <div class="content-info">
-        <div
-          class="info d-flex justify-content-between flex-wrap"
-          *ngFor="let item of userDataInfo"
-        >
-          <div>
-            <span [class]="item.icon"></span>
-            <span class="bold black"> {{ item.title | translate }}</span>
-          </div>
-
-          <div class="text-start value">
-            <span class=""> {{ item.value }}</span>
-          </div>
-        </div>
-      </div>
+      <input
+        #profileImage
+        class="d-none"
+        type="file"
+        accept="image/*"
+        (change)="imageSelected($event)"
+        [multiple]="false"
+      />
+      <form class="info"></form>
     </div>
-  </div>
+  }
 </div>
