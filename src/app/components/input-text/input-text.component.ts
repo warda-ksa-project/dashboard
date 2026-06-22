@@ -36,6 +36,7 @@ export class InputTextComponent {
   @Input() placeholder: string = '';
   @Input() control: any = new FormControl();
   @Input() showPasswordWeakness: boolean = false;
+  @Input() length = 9;
   @Output() onValueChange = new EventEmitter();
 
   OnInit() {

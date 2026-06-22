@@ -23,6 +23,22 @@
         [disabled]="disabled"
       ></textarea>
     }
+    @if (type === "tel") {
+      <input
+        autocomplete="off"
+        autocomplete="off"
+        (ngModelChange)="onInputChange($event)"
+        class="w-100"
+        pInputText
+        type="tel"
+        [attr.maxLength]="length"
+        [attr.minLength]="length"
+        id="enTitle"
+        [formControl]="control"
+        [readOnly]="readOnly"
+        [disabled]="disabled"
+      />
+    }
     <input
       autocomplete="off"
       autocomplete="off"
