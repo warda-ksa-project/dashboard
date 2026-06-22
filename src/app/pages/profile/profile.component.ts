@@ -158,6 +158,16 @@ export class ProfileComponent implements OnInit, OnDestroy {
   selectedImage: null | string = null;
 
   //METHODS
+  profileChanged() {
+    return (
+      this.profileForm.value.arDescription !== this.profile.descriptionAr ||
+      this.profileForm.value.enDescription !== this.profile.descriptionEn ||
+      this.profileForm.value.email !== this.profile.email ||
+      this.profileForm.value.phone !== this.profile.phone.replace('0', '') ||
+      this.profileForm.value.storeName !== this.profile.storeName ||
+      this.profileForm.value.userName !== this.profile.userName
+    );
+  }
   imageError(event: Event) {
     const imgElement = event.target as HTMLImageElement;
     if (imgElement.src.includes(this.defaultImage)) {
@@ -224,7 +234,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       license: this.profile.license,
       name: this.profileForm.value.userName,
       numberOfBranches: this.profile.numberOfBranches,
-      phone: this.profileForm.value.phone,
+      phone: this.profileForm.value.phone.replace('0', ''),
       phoneCountryCode: this.country.phoneCode,
       storeName: this.profileForm.value.storeName,
       supportsPickup: this.profile.supportsPickup,

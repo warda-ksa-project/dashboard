@@ -105,7 +105,7 @@
           <button
             type="submit"
             class="submit-button btn-primary-bk"
-            [disabled]="profileForm.invalid || updating"
+            [disabled]="profileForm.invalid || updating || !profileChanged()"
           >
             @if (updating) {
               {{ "profile.form.updating" | translate }}
