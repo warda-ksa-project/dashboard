@@ -58,7 +58,7 @@
                       [length]="10"
                     ></app-input-text>
                     <small
-                      *ngIf="!form.get('phone')?.errors?.['phoneInvalid']"
+                      *ngIf="!form.get('phone')?.value"
                       class="hint"
                       >{{ phoneHintKey | translate }}</small
                     >

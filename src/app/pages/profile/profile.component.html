@@ -86,7 +86,7 @@
               [length]="phoneMaxLength"
             ></app-input-text>
             <small
-              *ngIf="!profileForm.get('phone')?.errors?.['phoneInvalid']"
+              *ngIf="!profileForm.get('phone')?.value"
               class="hint"
               >{{ phoneHintKey | translate }}</small
             >

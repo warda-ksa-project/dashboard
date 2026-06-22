@@ -94,7 +94,7 @@
           <small
             *ngIf="
               selectedCountry &&
-              !loginForm.get('phoneNumber')?.errors?.['phoneInvalid']
+              !loginForm.get('phoneNumber')?.value
             "
             class="hint"
           >

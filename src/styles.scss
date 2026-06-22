@@ -193,6 +193,10 @@ small {
   font-size: 12px;
 }
 
+small.hint {
+  color: var(--warda-text-muted, #6b7280);
+}
+
 .block {
   display: block;
 }
