@@ -139,10 +139,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
       validators: [Validators.required],
     }),
     arDescription: new FormControl('', {
-      validators: [Validators.required],
+      validators: [Validators.required, Validations.onlyArabicValidators()],
     }),
     enDescription: new FormControl('', {
-      validators: [Validators.required],
+      validators: [Validators.required, Validations.onlyEnglishValidators()],
     }),
   });
   loadingProfile = true;
