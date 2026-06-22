@@ -1,7 +1,12 @@
 <div class="navbar-container">
   <div class="content">
     <div class="navbar-left">
-      <button type="button" class="navbar-icon-btn navbar-mobile-menu" (click)="menuToggle.emit()" aria-label="Menu">
+      <button
+        type="button"
+        class="navbar-icon-btn navbar-mobile-menu"
+        (click)="menuToggle.emit()"
+        aria-label="Menu"
+      >
         <span class="pi pi-bars"></span>
       </button>
       <button
@@ -10,12 +15,16 @@
         (click)="sidebarToggle.emit()"
         aria-label="Toggle sidebar"
       >
-        <span class="pi" [class.pi-angle-left]="!sidebarCollapsed" [class.pi-angle-right]="sidebarCollapsed"></span>
+        <span
+          class="pi"
+          [class.pi-angle-left]="!sidebarCollapsed"
+          [class.pi-angle-right]="sidebarCollapsed"
+        ></span>
       </button>
       <div class="welcome">
-        <h4>{{ 'home' | translate }}</h4>
+        <h4>{{ "home" | translate }}</h4>
         <div class="welcome-sub">
-          <span>{{ 'welcome' | translate }},</span>
+          <span>{{ "welcome" | translate }},</span>
           <span class="welcome-name">{{ userName | titlecase }}</span>
         </div>
       </div>
@@ -25,25 +34,54 @@
       <div class="notifications-section">
         <app-notifications></app-notifications>
       </div>
-
-      <div class="profile">
-        <img
-          width="36"
-          height="36"
-          [src]="userImage ? userImage : 'assets/images/arabian-man.png'"
-          alt=""
-        />
-        <div class="info">
-          <span class="name">{{ userName | titlecase }}</span>
-          <span class="mail">{{ email }}</span>
+      @if (userType === "Trader") {
+        <div
+          class="profile"
+          role="button"
+          (click)="goToProfile()"
+          [pTooltip]="selectedLang === 'ar' ? 'حسابي' : 'Profile'"
+          [tooltipPosition]="'bottom'"
+        >
+          <img
+            width="36"
+            height="36"
+            [src]="userImage ? userImage : 'assets/images/arabian-man.png'"
+            alt=""
+          />
+          <div class="info">
+            <span class="name">{{ userName | titlecase }}</span>
+            <span class="mail">{{ email }}</span>
+          </div>
         </div>
-      </div>
+      } @else {
+        <div class="profile">
+          <img
+            width="36"
+            height="36"
+            [src]="userImage ? userImage : 'assets/images/arabian-man.png'"
+            alt=""
+          />
+          <div class="info">
+            <span class="name">{{ userName | titlecase }}</span>
+            <span class="mail">{{ email }}</span>
+          </div>
+        </div>
+      }
 
-      <button type="button" class="warda-btn warda-btn-ghost warda-btn-sm lang-btn" (click)="toggleLanguage()">
-        {{ selectedLang.toUpperCase() == 'AR' ? 'EN' : 'AR' }}
+      <button
+        type="button"
+        class="warda-btn warda-btn-ghost warda-btn-sm lang-btn"
+        (click)="toggleLanguage()"
+      >
+        {{ selectedLang.toUpperCase() == "AR" ? "EN" : "AR" }}
       </button>
 
-      <button type="button" class="navbar-icon-btn logout-btn" (click)="logout()" aria-label="Logout">
+      <button
+        type="button"
+        class="navbar-icon-btn logout-btn"
+        (click)="logout()"
+        aria-label="Logout"
+      >
         <span class="pi pi-sign-out"></span>
       </button>
     </div>
