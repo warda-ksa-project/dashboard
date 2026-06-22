@@ -1,5 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-@use 'bootstrap/dist/css/bootstrap.min.css';
+@use "bootstrap/dist/css/bootstrap.min.css";
 @use "primeicons/primeicons.css";
 @use "./assets/scss/fonts";
 @use "./assets/scss/tokens";
@@ -11,18 +11,17 @@ html {
 }
 
 @font-face {
-    font-family: 'tajawal';
-    src: url('assets/fonts/tajawal/Tajawal-Regular.ttf') format('ttf'),
-       
+  font-family: "tajawal";
+  src: url("assets/fonts/tajawal/Tajawal-Regular.ttf") format("ttf");
 }
 .toast-success {
   width: 400px !important;
-  background-color: #F1FDF5 !important;
-  color: #43B66D !important;
+  background-color: #f1fdf5 !important;
+  color: #43b66d !important;
 
   .toast-message,
   .toast-close-button {
-    color: #414D60 !important;
+    color: #414d60 !important;
   }
 
   .toast-icon {
@@ -30,7 +29,6 @@ html {
     color: #4caf50 !important;
     font-size: 30px !important;
   }
-
 }
 
 // .toast-success .toast-icon {
@@ -44,18 +42,15 @@ html {
 //   font-size: 30px !important;
 // }
 .toast-error {
-  background-color: #FDF2F2 !important;
-  color: #DE3232 !important;
+  background-color: #fdf2f2 !important;
+  color: #de3232 !important;
 
   .toast-message,
   .toast-close-button,
   .toast-icon {
-    color: #414D60 !important;
+    color: #414d60 !important;
   }
-
 }
-
-
 
 .toast-warning {
   background-color: #ffc369 !important;
@@ -73,13 +68,12 @@ html {
 // }
 
 body {
-
-  font-family: 'Bahij', sans-serif;
+  font-family: "Bahij", sans-serif;
   background: var(--warda-page-bg);
   color: var(--warda-text-primary);
 
   &:lang(ar) {
-    font-family: 'tajawal', sans-serif;
+    font-family: "tajawal", sans-serif;
   }
 
   p,
@@ -93,7 +87,7 @@ body {
   }
 
   // background-color: #F5F5F5;
-  &[dir='rtl'] {
+  &[dir="rtl"] {
     .rtl-drawer {
       direction: ltr;
     }
@@ -107,10 +101,8 @@ body {
     }
 
     img.menu-grid-icon {
-
       left: auto !important;
       right: 40px;
-
     }
 
     .actions-icon-in-small-table {
@@ -125,19 +117,17 @@ body {
     .filter-panel__actions {
       flex-direction: row-reverse;
     }
-
   }
 }
 
 .drawer-submit-btn {
-  background-color: #7A1E3B;
+  background-color: #7a1e3b;
   color: #fff;
 
   &:hover {
-    background-color: #9B3A5A;
+    background-color: #9b3a5a;
     color: #fff;
   }
-
 }
 
 a.g-map-location {
@@ -166,7 +156,7 @@ a.g-map-location {
 
 p-password.password-w-100 {
   .p-inputtext {
-    width: 100% !important
+    width: 100% !important;
   }
 }
 
@@ -216,7 +206,6 @@ small {
     padding: 0px 35px;
   }
 }
-
 
 // Table Scss code for all modules
 .table-container {
@@ -274,10 +263,8 @@ small {
     }
   }
 
-
-
   // Small devices (portrait phones)
-  @media only screen and (max-width:249.98px) {
+  @media only screen and (max-width: 249.98px) {
     .responsive-accordions {
       display: block !important;
 
@@ -300,9 +287,8 @@ small {
     }
   }
 
-
   // Small devices (portrait phones)
-  @media only screen and (min-width:250.98px) and (max-width: 575.98px) {
+  @media only screen and (min-width: 250.98px) and (max-width: 575.98px) {
     .responsive-accordions {
       display: block !important;
 
@@ -374,12 +360,9 @@ small {
       display: none !important;
     }
   }
-
 }
 
 // End of table code
-
-
 
 // Scss code for any form (Add , Edit and View Details)
 .form-container {
@@ -431,7 +414,7 @@ small {
       }
     }
 
-    @media only screen and (min-width:250.98px) and (max-width: 575.98px) {
+    @media only screen and (min-width: 250.98px) and (max-width: 575.98px) {
       .actions {
         justify-content: center !important;
         flex-wrap: wrap;
@@ -453,13 +436,11 @@ small {
   display: grid !important;
 }
 
-
 .error-message {
   color: red;
   font-size: 0.9rem;
   margin-top: 0.5rem;
 }
-
 
 .search-form {
   flex-direction: column;
@@ -479,7 +460,6 @@ small {
     }
   }
 }
-
 
 // scss code for edit image case component
 
@@ -513,22 +493,19 @@ small {
   }
 }
 
-
 // Small devices (portrait phones)
-@media only screen and (max-width:249.98px) {
+@media only screen and (max-width: 249.98px) {
   .edit-image-container {
     width: 100% !important;
   }
 }
 
-
 // Small devices (portrait phones)
-@media only screen and (min-width:250.98px) and (max-width: 575.98px) {
+@media only screen and (min-width: 250.98px) and (max-width: 575.98px) {
   .edit-image-container {
     width: 100% !important;
   }
 }
-
 
 @media only screen and (min-width: 576px) and (max-width: 664.98px) {
   .edit-image-container {
@@ -538,11 +515,9 @@ small {
 
 /// end of the code of edit image
 
-
 .arabic body {
-  font-family: 'Bahij', sans-serif !important;
+  font-family: "Bahij", sans-serif !important;
 }
-
 
 .page-title {
   display: flex;
@@ -573,32 +548,38 @@ small {
     font-weight: 600;
   }
 }
-p-dialog.order-status{
+p-dialog.order-status {
   position: relative;
-  .p-dialog-content{
-    min-height: 288px!important;
+  .p-dialog-content {
+    min-height: 288px !important;
   }
-  div.footer{
+  div.footer {
     position: absolute;
     bottom: 30px;
     left: 10px;
     right: 20px;
-   }
+  }
 }
 
-.btn-primary-bk{
-  background: #7A1E3B;
+.btn-primary-bk {
+  background: #7a1e3b;
   color: white;
   border-radius: 16px;
   padding: 8px 35px;
-  &:hover{
-    background: #5C1530;
+  &:hover {
+    background: #5c1530;
     color: white;
   }
 }
-.b-raduis-16{
+.b-raduis-16 {
   border-radius: 16px;
-
+}
+.spinner-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
 }
 .action-filter {
   a {
@@ -642,9 +623,7 @@ p-dialog.order-status{
   }
 }
 
-
 .p-floatlabel label {
-
   &:lang(ar) {
     left: unset !important;
     right: 0.75rem !important;
@@ -657,31 +636,31 @@ input:-internal-autofill-selected {
   background-color: transparent !important;
   color: fieldtext !important;
 }
-.p-inputtext, .p-select {
+.p-inputtext,
+.p-select {
   border-radius: var(--warda-radius-md) !important;
   border-color: var(--warda-border) !important;
 }
 
-p-table.order{
-  th{
-    color:#1C1C1C66!important;
-    font-weight: 100!important;
-
+p-table.order {
+  th {
+    color: #1c1c1c66 !important;
+    font-weight: 100 !important;
   }
 }
-.gray-text{
-  color:gray!important
+.gray-text {
+  color: gray !important;
 }
-.black{
-  color:#000!important
+.black {
+  color: #000 !important;
 }
 .rounded-icon {
-  background-color: #9B3A5A;
-  color:#fff;
+  background-color: #9b3a5a;
+  color: #fff;
   border-radius: 50%;
   padding: 8px;
 }
-.div-dot{
+.div-dot {
   border: 1px dotted;
   border-radius: 16px;
 }
@@ -689,35 +668,35 @@ p-table.order{
 //   background-color:#7A1E3B !important;
 // }
 .p-toggleswitch.p-toggleswitch-checked .p-toggleswitch-slider {
-  background-color:#7A1E3B !important;
+  background-color: #7a1e3b !important;
 }
 
-.p-step-active .p-step-title  {
-  color: #5C1530!important;
+.p-step-active .p-step-title {
+  color: #5c1530 !important;
   font-weight: bolder;
 }
 .p-step:has(~ .p-step-active) .p-stepper-separator {
-  background-color:#7A1E3B !important;
+  background-color: #7a1e3b !important;
 }
 .p-step-active .p-step-number {
-  color: #fff!important;
-  background-color: #5C1530!important;
+  color: #fff !important;
+  background-color: #5c1530 !important;
 }
 .p-datepicker-day-selected {
-  background-color: #5C1530!important;
+  background-color: #5c1530 !important;
 }
-.p-button-text.p-button-secondary{
-  color: #fff!important;
+.p-button-text.p-button-secondary {
+  color: #fff !important;
 }
-.p-inputtext:enabled:focus{
-border-color: #5C1530!important;
+.p-inputtext:enabled:focus {
+  border-color: #5c1530 !important;
 }
 
-.text-white{
-  color:#fff
+.text-white {
+  color: #fff;
 }
 .p-progressbar-value {
-  background-color: #7A1E3B !important; /* Change color when progress is 50% */
+  background-color: #7a1e3b !important; /* Change color when progress is 50% */
 }
 
 // Dropdown that opens upward (for sidebar country selector)
@@ -747,13 +726,12 @@ border-color: #5C1530!important;
 /* ngx-spinner — خلفية هوية وردة */
 .ngx-spinner-overlay {
   background: radial-gradient(
-      ellipse 130% 100% at 50% 15%,
-      #8b2d48 0%,
-      #7a1e3b 38%,
-      #5c1530 72%,
-      #2a0c12 100%
-    )
-    !important;
+    ellipse 130% 100% at 50% 15%,
+    #8b2d48 0%,
+    #7a1e3b 38%,
+    #5c1530 72%,
+    #2a0c12 100%
+  ) !important;
   background-color: #5c1530 !important;
 }
 
