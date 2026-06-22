@@ -598,7 +598,11 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
           }
         },
         error: (err: unknown) => {
-          this.toaster.errorToaster(authErrorMessageKey(err?.error ?? err));
+          this.toaster.errorToaster(
+            authErrorMessageKey(
+              (err as { error?: unknown })?.error ?? err,
+            ),
+          );
         },
       });
     }).catch(() => this.toaster.errorToaster('Device security init failed'));
