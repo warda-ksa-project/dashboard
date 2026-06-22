@@ -45,6 +45,13 @@ import {
 import { environment } from '../../../environments/environment';
 import { buildEncryptedDeviceId } from '../../core/device-id-crypto';
 import { authErrorMessageKey } from '../../core/auth-error.util';
+import {
+  getDomesticPhoneHintKey,
+  getDomesticPhoneMaxLength,
+  isValidDomesticPhone,
+  normalizePhoneForApi,
+} from '../../core/phone.util';
+import { Validations } from '../../validations';
 import { SignalRService } from '../../services/signalr.service';
 
 declare global {
@@ -148,14 +155,21 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
 
   private updatePhoneValidators() {
     const ctrl = this.loginForm.get('phoneNumber');
-    const len = this.selectedCountry?.phoneLength ?? 9;
+    const countryCode = this.selectedCountry?.phoneCode ?? '+966';
     ctrl?.setValidators([
       Validators.required,
       Validators.pattern(/^\d+$/),
-      Validators.minLength(len),
-      Validators.maxLength(len),
+      Validations.domesticPhoneValidator(() => countryCode),
     ]);
     ctrl?.updateValueAndValidity();
+  }
+
+  get phoneHintKey(): string {
+    return getDomesticPhoneHintKey(this.selectedCountry?.phoneCode ?? '+966');
+  }
+
+  get phoneMaxLength(): number {
+    return getDomesticPhoneMaxLength(this.selectedCountry?.phoneCode ?? '+966');
   }
 
   constructor(
@@ -261,12 +275,8 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
   }
 
   private updateCanSubmit() {
-    const len = this.selectedCountry?.phoneLength ?? 0;
-    const phone = (this.loginForm.get('phoneNumber')?.value ?? '')
-      .toString()
-      .replace(/\D/g, '');
     const countryOk = !!this.loginForm.get('country')?.value;
-    const phoneOk = len > 0 && phone.length === len && /^\d+$/.test(phone);
+    const phoneOk = this.isPhoneValid();
     const captchaOk = !this.recaptchaSiteKey || !!this.captchaToken;
     this.canSubmit = countryOk && phoneOk && captchaOk;
   }
@@ -278,9 +288,16 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
   }
 
   private isPhoneValid(): boolean {
-    const len = this.selectedCountry?.phoneLength ?? 0;
-    const phone = this.getPhoneDigits();
-    return len > 0 && phone.length === len && /^\d+$/.test(phone);
+    const raw = this.getPhoneDigits();
+    if (!raw || !/^\d+$/.test(raw)) return false;
+    return isValidDomesticPhone(raw, this.selectedCountry?.phoneCode ?? '+966');
+  }
+
+  private getApiPhoneDigits(): string {
+    return normalizePhoneForApi(
+      this.getPhoneDigits(),
+      this.selectedCountry?.phoneCode ?? '+966',
+    );
   }
 
   private parseDashboardAccess(res: any): {
@@ -323,14 +340,17 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
         map(([countryId, phone]: [unknown, unknown]) => {
           const c = this.countriesData.find((x: any) => x.id === countryId);
           const len = c ? this.getPhoneLength(c) : 0;
-          const digits = (phone ?? '').toString().replace(/\D/g, '');
-          return { countryId, digits, requiredLen: len };
+          const raw = (phone ?? '').toString().replace(/\D/g, '');
+          const digits = raw
+            ? normalizePhoneForApi(raw, c?.phoneCode ?? '+966')
+            : raw;
+          return { countryId, digits, requiredLen: len, rawLen: raw.length };
         }),
         distinctUntilChanged(
           (a, b) => a.digits === b.digits && a.requiredLen === b.requiredLen,
         ),
-        tap(({ requiredLen, digits }) => {
-          if (digits.length < requiredLen) {
+        tap(({ requiredLen, rawLen }) => {
+          if (rawLen < requiredLen) {
             this.isAdmin = null;
             this.hasDashboardAccess = null;
             this.isCheckingAdmin = false;
@@ -338,8 +358,10 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
           }
         }),
         filter(
-          ({ requiredLen, digits }) =>
-            requiredLen > 0 && digits.length >= requiredLen,
+          ({ requiredLen, rawLen, digits }) =>
+            requiredLen > 0 &&
+            rawLen >= requiredLen &&
+            isValidDomesticPhone(digits, this.selectedCountry?.phoneCode ?? '+966'),
         ),
         tap(() => {
           this.isCheckingAdmin = true;
@@ -374,8 +396,7 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
 
   onSubmit() {
     const phoneCtrl = this.loginForm.get('phoneNumber');
-    const digits = this.getPhoneDigits();
-    const requiredLen = this.selectedCountry?.phoneLength ?? 0;
+    const digits = this.getApiPhoneDigits();
 
     phoneCtrl?.markAsTouched();
 
@@ -386,11 +407,7 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
       return;
     }
     if (!this.isPhoneValid()) {
-      this.toaster.errorToaster(
-        this.translate.instant('login.phone_length_invalid', {
-          count: requiredLen,
-        }),
-      );
+      this.toaster.errorToaster(this.translate.instant(this.phoneHintKey));
       return;
     }
     if (this.recaptchaSiteKey && !this.captchaToken) {
@@ -573,6 +590,10 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
   onLogin(loginData: any) {
     this.openOtpModal = false;
     const digits = (loginData.phoneNumber ?? '').toString().replace(/\D/g, '');
+    const apiPhone = normalizePhoneForApi(
+      digits,
+      this.selectedCountry?.phoneCode ?? '+966',
+    );
     const secret = environment.deviceIdSecret ?? 'WardaDeviceIdSecretKey_v1';
     buildEncryptedDeviceId(secret).then((deviceId) => {
       const body: {
@@ -580,7 +601,7 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
         deviceId: string;
         captchaToken?: string;
         forDashboard: boolean;
-      } = { phone: digits, deviceId, forDashboard: true };
+      } = { phone: apiPhone, deviceId, forDashboard: true };
       if (this.recaptchaSiteKey && this.captchaToken) {
         body.captchaToken = this.captchaToken;
       }
@@ -589,7 +610,7 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
           if (res?.isFailure) {
             this.toaster.errorToaster(authErrorMessageKey(res));
           } else {
-            this.mobileNumber = digits;
+            this.mobileNumber = apiPhone;
             if (this.isAdmin) {
               const countryId = loginData.country;
               if (countryId) localStorage.setItem('countryId', String(countryId));

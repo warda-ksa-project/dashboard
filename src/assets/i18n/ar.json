@@ -37,7 +37,11 @@
     "mobileNumber_5_validation": "يجب أن يكون رقم الهاتف 9 أرقام ويبدأ بـ 5",
     "confirm_password_validation": "كلمة المرور غير متطابقة",
     "min_validation": "يجب أن تكون القيمة على الأقل 1",
-    "phoneInvalid_validation": "رقم الهاتف غير صحيح"
+    "phoneInvalid_validation": "أدخل رقم جوال صحيح: 9 أرقام (500000003) أو 10 أرقام (0500000003) للسعودية",
+    "phoneHint_sa": "9 أرقام تبدأ بـ 5 أو 7 أو 9 (500000003)، أو 10 أرقام بصفر في البداية (0500000003)",
+    "phoneHint_om": "8 أرقام تبدأ بـ 7 أو 9 (مثال: 91234567)",
+    "phoneHint_default": "أدخل رقم جوال صحيح",
+    "pattern_validation": "أرقام فقط"
   },
   "actions": {
     "submit": "إرسال",

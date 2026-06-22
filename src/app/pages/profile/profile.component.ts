@@ -5,7 +5,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { TitleCasePipe, NgClass } from '@angular/common';
+import { TitleCasePipe, NgClass, NgIf } from '@angular/common';
 import { Validations } from '../../validations';
 import { IBreadcrumb } from '../../components/breadcrump/cerqel-breadcrumb.interface';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -22,6 +22,12 @@ import { ToasterService } from '../../services/toaster.service';
 import { CountryService } from '../../services/country.service';
 import { CountriesService } from '../../services/countries/countries.service';
 import { Country } from '../../services/countries/countries.model';
+import {
+  formatPhoneForInput,
+  getDomesticPhoneHintKey,
+  getDomesticPhoneMaxLength,
+  normalizePhoneForApi,
+} from '../../core/phone.util';
 
 @Component({
   selector: 'app-profile',
@@ -31,6 +37,7 @@ import { Country } from '../../services/countries/countries.model';
     TitleCasePipe,
     Spinner,
     NgClass,
+    NgIf,
     ReactiveFormsModule,
     InputTextComponent,
   ],
@@ -88,23 +95,45 @@ export class ProfileComponent implements OnInit, OnDestroy {
     };
   }
 
-  private assignProfile(profile: TraderProfile) {
+  private assignProfile(profile: TraderProfile, countryCode: string) {
     this.profile = profile;
-    this.profileForm.get('userName')?.patchValue(profile.userName);
-    this.profileForm.get('storeName')?.patchValue(profile.storeName);
-    this.profileForm.get('email')?.patchValue(profile.email);
-    this.profileForm.get('phone')?.patchValue(profile.phone.replace('0', ''));
-    this.profileForm.get('arDescription')?.patchValue(profile.descriptionAr);
-    this.profileForm.get('enDescription')?.patchValue(profile.descriptionEn);
+    this.profileForm.patchValue({
+      userName: profile.userName,
+      storeName: profile.storeName,
+      email: profile.email,
+      phone: formatPhoneForInput(
+        profile.phone,
+        profile.phoneCountryCode ?? countryCode,
+      ),
+      arDescription: profile.descriptionAr,
+      enDescription: profile.descriptionEn,
+    });
   }
 
   private assignCountry(country: Country) {
     this.country = country;
-    this.profileForm
-      .get('phone')
-      ?.addValidators(
-        Validations.phoneValidatorForSelectedCountry(this.country),
-      );
+    this.phoneHintKey = getDomesticPhoneHintKey(country.phoneCode);
+    this.phoneMaxLength = getDomesticPhoneMaxLength(country.phoneCode);
+    this.profileForm.get('phone')?.setValidators([
+      Validators.required,
+      Validators.pattern(/^\d+$/),
+      Validations.domesticPhoneValidator(() => country.phoneCode),
+    ]);
+    this.profileForm.get('phone')?.updateValueAndValidity({ emitEvent: false });
+  }
+
+  private normalizedFormPhone(): string {
+    return normalizePhoneForApi(
+      this.profileForm.value.phone ?? '',
+      this.country?.phoneCode ?? '+966',
+    );
+  }
+
+  private normalizedProfilePhone(): string {
+    return normalizePhoneForApi(
+      this.profile.phone,
+      this.profile.phoneCountryCode ?? this.country?.phoneCode ?? '+966',
+    );
   }
 
   private getProfileInfo() {
@@ -115,8 +144,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.subs.add(
       obs.subscribe({
         next: (res) => {
-          this.assignProfile(res.profile.data);
           this.assignCountry(res.country.data);
+          this.assignProfile(res.profile.data, res.country.data.phoneCode);
           this.loadingProfile = false;
         },
       }),
@@ -125,6 +154,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   //PROPS
   country!: Country;
+  phoneHintKey = getDomesticPhoneHintKey('+966');
+  phoneMaxLength = 10;
   profileForm = new FormGroup({
     userName: new FormControl('', {
       validators: [Validators.required],
@@ -163,7 +194,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.profileForm.value.arDescription !== this.profile.descriptionAr ||
       this.profileForm.value.enDescription !== this.profile.descriptionEn ||
       this.profileForm.value.email !== this.profile.email ||
-      this.profileForm.value.phone !== this.profile.phone.replace('0', '') ||
+      this.normalizedFormPhone() !== this.normalizedProfilePhone() ||
       this.profileForm.value.storeName !== this.profile.storeName ||
       this.profileForm.value.userName !== this.profile.userName
     );
@@ -198,6 +229,18 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   updateProfile() {
     this.updating = true;
+
+    if (this.profileForm.invalid) {
+      this.profileForm.markAllAsTouched();
+      this.toast.errorToaster(
+        this.languageService.translate(
+          'validation_message.phoneInvalid_validation',
+        ),
+      );
+      this.updating = false;
+      return;
+    }
+
     if (
       !this.profileForm.value.arDescription ||
       !this.profileForm.value.enDescription ||
@@ -234,18 +277,33 @@ export class ProfileComponent implements OnInit, OnDestroy {
       license: this.profile.license,
       name: this.profileForm.value.userName,
       numberOfBranches: this.profile.numberOfBranches,
-      phone: this.profileForm.value.phone.replace('0', ''),
+      phone: this.normalizedFormPhone(),
       phoneCountryCode: this.country.phoneCode,
       storeName: this.profileForm.value.storeName,
       supportsPickup: this.profile.supportsPickup,
     };
     this.subs.add(
       this.traderService.updateProfile(body).subscribe({
-        next: (res) => {
+        next: () => {
           this.toast.successToaster(
             this.selectedLang === 'ar'
               ? 'تم التحديث بنجاح!'
               : 'Updated Successfully!',
+          );
+          this.profile = {
+            ...this.profile,
+            ...this.profileForm.value,
+            phone: body.phone,
+            descriptionAr: body.arDescription,
+            descriptionEn: body.enDescription,
+          } as TraderProfile;
+          this.updating = false;
+        },
+        error: () => {
+          this.toast.errorToaster(
+            this.selectedLang === 'ar'
+              ? 'تعذر تحديث الملف الشخصي'
+              : 'Could not update profile',
           );
           this.updating = false;
         },

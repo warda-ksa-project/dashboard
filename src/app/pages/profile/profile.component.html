@@ -83,8 +83,13 @@
               [label]="'profile.form.phone'"
               [control]="profileForm.get('phone')"
               [type]="'tel'"
-              [length]="+country.phoneLength"
+              [length]="phoneMaxLength"
             ></app-input-text>
+            <small
+              *ngIf="!profileForm.get('phone')?.errors?.['phoneInvalid']"
+              class="hint"
+              >{{ phoneHintKey | translate }}</small
+            >
           </div>
           <div class="col-12 col-lg-6 p-1">
             <app-input-text

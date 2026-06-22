@@ -1,4 +1,8 @@
 import { AbstractControl, ValidatorFn } from '@angular/forms';
+import {
+  isValidDomesticPhone,
+  normalizeCountryCode,
+} from './core/phone.util';
 
 const arabicCharsRegex = /^[ء-ي0-9!@#\$%\^\& *\)\(+=._-]+]*$/;
 const englishCharsRegex = /^[A-Za-z0-9!@#<>\$%\^\& *\)\(+=._-]+]*$/;
@@ -162,74 +166,35 @@ export class Validations {
     };
   }
 
-  static phoneValidatorForSelectedCountry(
-    country: any | null,
+  static domesticPhoneValidator(
+    countryCode: string | (() => string | null | undefined) = '+966',
     errorMessage?: string,
   ): ValidatorFn {
     return (control: AbstractControl<string>) => {
       const phoneValue = control.value?.toString().trim();
+      if (!phoneValue) return null;
 
-      if (!phoneValue) {
-        return null;
-      }
+      const code =
+        typeof countryCode === 'function'
+          ? normalizeCountryCode(countryCode() ?? '+966')
+          : normalizeCountryCode(countryCode);
 
-      if (!country) {
-        return {
-          phoneInvalid: errorMessage || 'Country not selected',
-        };
-      }
-
-      if (!onlyNumbersRegex.test(phoneValue)) {
-        return {
-          phoneInvalid: errorMessage || 'Phone number must contain only digits',
-        };
-      }
-
-      const expectedLength = parseInt(country.phoneLength) || 9;
-      const code = (country.phoneCode || '').replace(/^\+/, '');
-
-      // Saudi: backend has length 9 (5XXXXXXXX), but users often enter 05XXXXXXXX (10)
-      const isValidLength =
-        code === '966'
-          ? phoneValue.length === expectedLength ||
-            (expectedLength === 9 &&
-              phoneValue.length === 10 &&
-              phoneValue.startsWith('05'))
-          : phoneValue.length === expectedLength;
-
-      if (!isValidLength) {
-        return {
-          phoneInvalid:
-            errorMessage ||
-            (code === '966'
-              ? `Phone must be 9 digits (5XXXXXXXX) or 10 digits (05XXXXXXXX)`
-              : `Phone number must be ${expectedLength} digits`),
-        };
-      }
-
-      if (code === '966') {
-        if (!phoneValue.startsWith('05') && !phoneValue.startsWith('5')) {
-          return {
-            phoneInvalid:
-              errorMessage || 'Saudi phone number must start with 05 or 5',
-          };
-        }
-      }
-
-      if (code === '968') {
-        const firstTwoDigits = phoneValue.substring(0, 2);
-        const validPrefixes = ['09', '07', '02'];
-
-        if (!validPrefixes.includes(firstTwoDigits)) {
-          return {
-            phoneInvalid:
-              errorMessage || 'Oman phone number must start with 09, 07, or 02',
-          };
-        }
+      if (!isValidDomesticPhone(phoneValue, code)) {
+        return { phoneInvalid: true };
       }
 
       return null;
     };
+  }
+
+  static phoneValidatorForSelectedCountry(
+    country: any | null,
+    errorMessage?: string,
+  ): ValidatorFn {
+    return Validations.domesticPhoneValidator(
+      () => country?.phoneCode ?? '+966',
+      errorMessage,
+    );
   }
 }
 
