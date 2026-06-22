@@ -21,15 +21,13 @@ export interface UpdateProfileReqBody {
   image: string;
   arDescription: string;
   enDescription: string;
-  addresses: [
-    {
-      id: number;
-      expalinedAddress: string;
-      cityId: number;
-      latitude: number;
-      logitude: number;
-    },
-  ];
+  addresses: {
+    id: number;
+    expalinedAddress: string;
+    cityId: number;
+    latitude: number;
+    logitude: number;
+  }[];
   supportsPickup: boolean;
 }
 
@@ -46,7 +44,7 @@ export interface TraderProfile {
   isActive: boolean;
   reviewAverage: number;
   totalReviewCount: number;
-  image: number;
+  image: string;
   descriptionAr: string;
   descriptionEn: string;
   supportsPickup: boolean;

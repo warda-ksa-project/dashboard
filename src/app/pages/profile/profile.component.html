@@ -14,8 +14,8 @@
       <app-spinner></app-spinner>
     </div>
   } @else {
-    <div class="page d-flex align-items-start">
-      <div class="image">
+    <div class="page d-flex flex-column flex-lg-row align-items-start">
+      <div class="image align-self-center">
         <img
           [src]="selectedImage || profile.image || defaultImage"
           (error)="imageError($event)"
@@ -54,7 +54,67 @@
         (change)="imageSelected($event)"
         [multiple]="false"
       />
-      <form class="info"></form>
+      <form
+        class="info container-fluid"
+        [formGroup]="profileForm"
+        (ngSubmit)="updateProfile()"
+      >
+        <div class="row row-cols-1 row-cols-lg-2">
+          <div class="col-12 col-lg-6 p-1">
+            <app-input-text
+              [label]="'profile.form.userName'"
+              [control]="profileForm.get('userName')"
+            ></app-input-text>
+          </div>
+          <div class="col-12 col-lg-6 p-1">
+            <app-input-text
+              [label]="'profile.form.storeName'"
+              [control]="profileForm.get('storeName')"
+            ></app-input-text>
+          </div>
+          <div class="col-12 col-lg-6 p-1">
+            <app-input-text
+              [label]="'profile.form.email'"
+              [control]="profileForm.get('email')"
+            ></app-input-text>
+          </div>
+          <div class="col-12 col-lg-6 p-1">
+            <app-input-text
+              [label]="'profile.form.phone'"
+              [control]="profileForm.get('phone')"
+              [type]="'tel'"
+              [length]="+country.phoneLength"
+            ></app-input-text>
+          </div>
+          <div class="col-12 col-lg-6 p-1">
+            <app-input-text
+              [label]="'profile.form.arDescription'"
+              [control]="profileForm.get('arDescription')"
+              type="textarea"
+            ></app-input-text>
+          </div>
+          <div class="col-12 col-lg-6 p-1">
+            <app-input-text
+              [label]="'profile.form.enDescription'"
+              [control]="profileForm.get('enDescription')"
+              type="textarea"
+            ></app-input-text>
+          </div>
+        </div>
+        <div class="d-flex justify-content-end">
+          <button
+            type="submit"
+            class="submit-button btn-primary-bk"
+            [disabled]="profileForm.invalid || updating"
+          >
+            @if (updating) {
+              {{ "profile.form.updating" | translate }}
+            } @else {
+              {{ "profile.form.save_changes" | translate }}
+            }
+          </button>
+        </div>
+      </form>
     </div>
   }
 </div>
