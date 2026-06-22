@@ -121,7 +121,8 @@
       "otp_locked": "Too many attempts. Please try again later.",
       "otp_cooldown": "Please wait before requesting a new code.",
       "captcha_failed": "Security verification failed. Please try again.",
-      "otp_risk_denied": "Unable to send a verification code right now. Please try later."
+      "otp_risk_denied": "Unable to send a verification code right now. Please try later.",
+      "dashboard_access_denied": "This phone number is not registered as an admin or trader account."
     }
   },
   "otp": {
