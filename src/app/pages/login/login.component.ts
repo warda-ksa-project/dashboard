@@ -525,18 +525,28 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
             } else {
               localStorage.removeItem('countryId');
             }
+          } else if (user.countryId != null) {
+            localStorage.setItem('countryId', String(user.countryId));
+          } else {
+            localStorage.removeItem('countryId');
+          }
 
-            this.signalR.connect();
+          this.signalR.connect();
 
-            if (user.role === Roles.admin)
-              this.router.navigate(['/dashboard-admin']);
-            else this.router.navigate(['/dashboard-trader']);
-          },
-          error: (err) =>
-            this.toaster.errorToaster(authErrorMessageKey(err?.error ?? err)),
-        });
-      })
-      .catch(() => this.toaster.errorToaster('Device security init failed'));
+          if (user.role === Roles.admin) {
+            this.router.navigate(['/dashboard-admin']);
+          } else {
+            this.router.navigate(['/dashboard-trader']);
+          }
+        },
+        error: (err: unknown) =>
+          this.toaster.errorToaster(
+            authErrorMessageKey(
+              (err as { error?: unknown })?.error ?? err,
+            ),
+          ),
+      });
+    }).catch(() => this.toaster.errorToaster('Device security init failed'));
   }
 
   toggleLanguage() {
@@ -584,13 +594,14 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
               const countryId = loginData.country;
               if (countryId) localStorage.setItem('countryId', String(countryId));
             }
-          },
-          error: (err) => {
-            this.toaster.errorToaster(authErrorMessageKey(err?.error ?? err));
-          },
-        });
-      })
-      .catch(() => this.toaster.errorToaster('Device security init failed'));
+            this.openOtpModal = true;
+          }
+        },
+        error: (err: unknown) => {
+          this.toaster.errorToaster(authErrorMessageKey(err?.error ?? err));
+        },
+      });
+    }).catch(() => this.toaster.errorToaster('Device security init failed'));
   }
   resendOtp(e: any) {
     if (!e) return;
