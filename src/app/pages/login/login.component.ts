@@ -106,6 +106,7 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
   selectedLang = localStorage.getItem('lang') || 'en';
   selectedCountry: { phoneLength: number; phoneCode: string } | null = null;
   isAdmin: boolean | null = null;
+  hasDashboardAccess: boolean | null = null;
   isCheckingAdmin = false;
   canSubmit = false;
   private destroy$ = new Subject<void>();
@@ -134,6 +135,7 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
       : null;
     this.updatePhoneValidators();
     this.isAdmin = null;
+    this.hasDashboardAccess = null;
     this.updateCanSubmit();
   }
 
@@ -281,6 +283,30 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
     return len > 0 && phone.length === len && /^\d+$/.test(phone);
   }
 
+  private parseDashboardAccess(res: any): {
+    hasAccess: boolean;
+    isAdmin: boolean;
+    isTrader: boolean;
+  } {
+    const data = res?.data ?? res?.result ?? res ?? {};
+    return {
+      hasAccess: !!(data.hasAccess ?? data.HasAccess),
+      isAdmin: !!(data.isAdmin ?? data.IsAdmin),
+      isTrader: !!(data.isTrader ?? data.IsTrader),
+    };
+  }
+
+  private applyDashboardAccess(access: {
+    hasAccess: boolean;
+    isAdmin: boolean;
+    isTrader: boolean;
+  }) {
+    this.isAdmin = access.isAdmin;
+    this.hasDashboardAccess = access.hasAccess;
+    this.loginForm.get('roleId')?.setValue(access.isAdmin ? 1 : 2);
+    this.updateCanSubmit();
+  }
+
   private watchPhoneAndCheckAdmin() {
     const phoneControl = this.loginForm.get('phoneNumber');
     const roleIdControl = this.loginForm.get('roleId');
@@ -306,6 +332,7 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
         tap(({ requiredLen, digits }) => {
           if (digits.length < requiredLen) {
             this.isAdmin = null;
+            this.hasDashboardAccess = null;
             this.isCheckingAdmin = false;
             this.updateCanSubmit();
           }
@@ -319,11 +346,14 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
           this.updateCanSubmit();
         }),
         switchMap(({ digits }) => {
-          return this.api.get<any>('Auth/check-admin', { Phone: digits }).pipe(
-            map((res: any) => !!(res?.data ?? res?.result ?? res)),
+          return this.api
+            .get<any>('Auth/check-dashboard-access', { Phone: digits })
+            .pipe(
+            map((res: any) => this.parseDashboardAccess(res)),
             catchError((err) => {
               this.isCheckingAdmin = false;
               this.isAdmin = null;
+              this.hasDashboardAccess = null;
               this.updateCanSubmit();
               const msg =
                 err?.error?.error?.message ||
@@ -336,15 +366,9 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
         }),
         takeUntil(this.destroy$),
       )
-      .subscribe((isAdmin: boolean) => {
+      .subscribe((access) => {
         this.isCheckingAdmin = false;
-        this.isAdmin = isAdmin;
-        if (isAdmin) {
-          roleIdControl?.setValue(1);
-        } else {
-          roleIdControl?.setValue(2);
-        }
-        this.updateCanSubmit();
+        this.applyDashboardAccess(access);
       });
   }
 
@@ -382,8 +406,15 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
       return;
     }
 
-    if (this.isAdmin === null) {
+    if (this.isAdmin === null || this.hasDashboardAccess === null) {
       this.resolveAdminAndLogin(digits);
+      return;
+    }
+
+    if (!this.hasDashboardAccess) {
+      this.toaster.errorToaster(
+        this.translate.instant('login.errors.dashboard_access_denied'),
+      );
       return;
     }
 
@@ -392,23 +423,32 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
 
   private resolveAdminAndLogin(digits: string) {
     this.isCheckingAdmin = true;
-    this.api.get<any>('Auth/check-admin', { Phone: digits }).subscribe({
+    this.api.get<any>('Auth/check-dashboard-access', { Phone: digits }).subscribe({
       next: (res: any) => {
         this.isCheckingAdmin = false;
-        this.isAdmin = !!(res?.data ?? res?.result ?? res);
-        this.loginForm.get('roleId')?.setValue(this.isAdmin ? 1 : 2);
-        this.updateCanSubmit();
+        const access = this.parseDashboardAccess(res);
+        this.applyDashboardAccess(access);
+        if (!access.hasAccess) {
+          this.toaster.errorToaster(
+            this.translate.instant('login.errors.dashboard_access_denied'),
+          );
+          return;
+        }
         this.onLogin(this.loginForm.value);
       },
       error: (err) => {
         this.isCheckingAdmin = false;
-        this.isAdmin = false;
-        this.loginForm.get('roleId')?.setValue(2);
+        this.isAdmin = null;
+        this.hasDashboardAccess = null;
         this.updateCanSubmit();
         const msg =
           err?.error?.error?.message || err?.error?.message || err?.message;
         if (msg) this.toaster.errorToaster(msg);
-        else this.onLogin(this.loginForm.value);
+        else {
+          this.toaster.errorToaster(
+            this.translate.instant('login.errors.dashboard_access_denied'),
+          );
+        }
       },
     });
   }
@@ -452,40 +492,34 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
   }
   getOtpValue(e: any) {
     const secret = environment.deviceIdSecret ?? 'WardaDeviceIdSecretKey_v1';
-    buildEncryptedDeviceId(secret)
-      .then((deviceId) => {
-        const otpObject = {
-          phone: this.mobileNumber,
-          otpCode: e.otpValue,
-          deviceId,
-        };
-        this.api.post('Auth/verify-otp', otpObject).subscribe({
-          next: (data: any) => {
-            if (data.isFailure) {
-              this.toaster.errorToaster(authErrorMessageKey(data));
-              return;
-            }
-            const user = data.data;
-            localStorage.setItem('token', user.accessToken);
-            localStorage.setItem('userId', user.userId);
-            localStorage.setItem('name', user.userName);
-            if (user.role === Roles.admin) {
-              localStorage.setItem('role', Roles.admin.toString());
-            } else {
-              localStorage.setItem('role', Roles.trader.toString());
-            }
-            if (user.role === Roles.admin) {
-              const countryIdFromInput = this.loginForm.get('country')?.value;
-              if (countryIdFromInput) {
-                localStorage.setItem(
-                  'countryId',
-                  countryIdFromInput.toString(),
-                );
-              } else if (user.countryId != null) {
-                localStorage.setItem('countryId', String(user.countryId));
-              } else {
-                localStorage.removeItem('countryId');
-              }
+    buildEncryptedDeviceId(secret).then((deviceId) => {
+      const otpObject = {
+        phone: this.mobileNumber,
+        otpCode: e.otpValue,
+        deviceId,
+        forDashboard: true,
+      };
+      this.api.post('Auth/verify-otp', otpObject).subscribe({
+        next: (data: any) => {
+          if (data.isFailure) {
+            this.toaster.errorToaster(authErrorMessageKey(data));
+            return;
+          }
+          const user = data.data;
+          if (user.role !== Roles.admin && user.role !== Roles.trader) {
+            this.toaster.errorToaster(
+              this.translate.instant('login.errors.dashboard_access_denied'),
+            );
+            return;
+          }
+          localStorage.setItem('token', user.accessToken);
+          localStorage.setItem('userId', user.userId);
+          localStorage.setItem('name', user.userName);
+          localStorage.setItem('role', user.role);
+          if (user.role === Roles.admin) {
+            const countryIdFromInput = this.loginForm.get('country')?.value;
+            if (countryIdFromInput) {
+              localStorage.setItem('countryId', countryIdFromInput.toString());
             } else if (user.countryId != null) {
               localStorage.setItem('countryId', String(user.countryId));
             } else {
@@ -530,25 +564,25 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
     this.openOtpModal = false;
     const digits = (loginData.phoneNumber ?? '').toString().replace(/\D/g, '');
     const secret = environment.deviceIdSecret ?? 'WardaDeviceIdSecretKey_v1';
-    buildEncryptedDeviceId(secret)
-      .then((deviceId) => {
-        const body: { phone: string; deviceId: string; captchaToken?: string } =
-          { phone: digits, deviceId };
-        if (this.recaptchaSiteKey && this.captchaToken) {
-          body.captchaToken = this.captchaToken;
-        }
-        this.api.post('Auth/send-otp', body).subscribe({
-          next: (res: any) => {
-            if (res?.isFailure) {
-              this.toaster.errorToaster(authErrorMessageKey(res));
-            } else {
-              this.mobileNumber = digits;
-              if (this.isAdmin) {
-                const countryId = loginData.country;
-                if (countryId)
-                  localStorage.setItem('countryId', String(countryId));
-              }
-              this.openOtpModal = true;
+    buildEncryptedDeviceId(secret).then((deviceId) => {
+      const body: {
+        phone: string;
+        deviceId: string;
+        captchaToken?: string;
+        forDashboard: boolean;
+      } = { phone: digits, deviceId, forDashboard: true };
+      if (this.recaptchaSiteKey && this.captchaToken) {
+        body.captchaToken = this.captchaToken;
+      }
+      this.api.post('Auth/send-otp', body).subscribe({
+        next: (res: any) => {
+          if (res?.isFailure) {
+            this.toaster.errorToaster(authErrorMessageKey(res));
+          } else {
+            this.mobileNumber = digits;
+            if (this.isAdmin) {
+              const countryId = loginData.country;
+              if (countryId) localStorage.setItem('countryId', String(countryId));
             }
           },
           error: (err) => {

@@ -1,11 +1,27 @@
 import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
-import { EAction, EType, IcolHeader, ITableAction, TableComponent } from '../../../components/table/table.component';
+import {
+  EAction,
+  EType,
+  IcolHeader,
+  ITableAction,
+  TableComponent,
+} from '../../../components/table/table.component';
 import { ApiService } from '../../../services/api.service';
 import { Router } from '@angular/router';
 import { IBreadcrumb } from '../../../components/breadcrump/cerqel-breadcrumb.interface';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { LanguageService } from '../../../services/language.service';
-import { ETableShow, IcolHeaderSmallTable, TableSmallScreenComponent } from '../../../components/table-small-screen/table-small-screen.component';
+import {
+  ETableShow,
+  IcolHeaderSmallTable,
+  TableSmallScreenComponent,
+} from '../../../components/table-small-screen/table-small-screen.component';
 import { PaginationComponent } from '../../../components/pagination/pagination.component';
 import { order_status, Roles } from '../../../conts';
 import { SelectComponent } from '../../../components/select/select.component';
@@ -16,81 +32,86 @@ import { ListPageShellComponent } from '../../../components/list-page-shell/list
 import { SignalRService } from '../../../services/signalr.service';
 import { Subscription } from 'rxjs';
 
-const global_pageName = 'order.pageName'
-const global_router_edit_url = '/order/edit'
-const global_router_view_url = '/order/view'
-const global_API_getAll = 'Orders'
+const global_pageName = 'order.pageName';
+const global_router_edit_url = '/order/edit';
+const global_router_view_url = '/order/view';
+const global_API_getAll = 'Orders';
 
 @Component({
   selector: 'app-orders-table',
   standalone: true,
-  imports: [TableComponent, SelectComponent, UploadFileComponent, DialogModule, TranslatePipe, ReactiveFormsModule, PaginationComponent, FormsModule, TableSmallScreenComponent, ListPageShellComponent],
+  imports: [
+    TableComponent,
+    SelectComponent,
+    UploadFileComponent,
+    DialogModule,
+    TranslatePipe,
+    ReactiveFormsModule,
+    PaginationComponent,
+    FormsModule,
+    TableSmallScreenComponent,
+    ListPageShellComponent,
+  ],
   templateUrl: './orders-table.component.html',
-  styleUrl: './orders-table.component.scss'
+  styleUrl: './orders-table.component.scss',
 })
 export class OrdersTableComponent implements OnInit, OnDestroy {
-
   pageName = signal<string>(global_pageName);
-  router=inject(Router)
+  router = inject(Router);
   // orderStatus = order_status
-  orderStatusList:any=[]
-  clientList: any[] = []
-  packageList: any[] = []
-  openEditDialog:boolean=false
+  orderStatusList: any = [];
+  clientList: any[] = [];
+  packageList: any[] = [];
+  openEditDialog: boolean = false;
   tableActions: ITableAction[] = [
     {
       name: EAction.delete,
       apiName_or_route: 'Orders',
-      autoCall: true
+      autoCall: true,
     },
     {
       name: EAction.edit,
       apiName_or_route: global_router_edit_url,
-      autoCall: false
+      autoCall: false,
     },
     {
       name: EAction.view,
-      apiName_or_route:  global_router_view_url,
-      autoCall: true
+      apiName_or_route: global_router_view_url,
+      autoCall: true,
     },
-  ]
-  private ApiService = inject(ApiService)
- form = new FormGroup({
-  orderId: new FormControl('',{
-      validators: [
-        Validators.required,
-      ],
+  ];
+  private ApiService = inject(ApiService);
+  form = new FormGroup({
+    orderId: new FormControl('', {
+      validators: [Validators.required],
     }),
-    orderStatusId: new FormControl('',{
-      validators: [
-        Validators.required,
-      ],
+    orderStatusId: new FormControl('', {
+      validators: [Validators.required],
     }),
     statusImage: new FormControl<string | null>(null),
-  })
-
+  });
 
   bredCrumb: IBreadcrumb = {
-    crumbs: []
-  }
+    crumbs: [],
+  };
 
   objectSearch = {
-    "pageNumber": 1,
-    "pageSize": 8,
-    "sortingExpression": "",
-    "sortingDirection": 1,
-  }
+    pageNumber: 1,
+    pageSize: 8,
+    sortingExpression: '',
+    sortingDirection: 1,
+  };
 
   totalCount: number = 0;
 
   searchValue: any = '';
   filteredData: any;
-  dataList: any = []
+  dataList: any = [];
   columns: IcolHeader[] = [];
   maxDate = new Date();
-  role=''
+  role = '';
 
-  columnsSmallTable: IcolHeaderSmallTable[] = []
+  columnsSmallTable: IcolHeaderSmallTable[] = [];
 
   selectedLang: any;
   languageService = inject(LanguageService);
@@ -98,20 +119,20 @@ export class OrdersTableComponent implements OnInit, OnDestroy {
   private signalRSub?: Subscription;
 
   ngOnInit() {
-    this.pageName.set(global_pageName)
+    this.pageName.set(global_pageName);
     this.API_getAll();
     this.selectedLang = this.languageService.translationService.currentLang;
     this.displayTableCols(this.selectedLang);
     this.getBreadCrumb();
-    this.API_getStatus()
+    this.API_getStatus();
     this.getRoles();
     this.languageService.translationService.onLangChange.subscribe(() => {
       this.selectedLang = this.languageService.translationService.currentLang;
-      this.displayTableCols(this.selectedLang)
-      this.API_getStatus()
+      this.displayTableCols(this.selectedLang);
+      this.API_getStatus();
       this.getRoles();
       this.getBreadCrumb();
-    })
+    });
     this.signalRSub = this.signalR.dashboardUpdate$.subscribe((update) => {
       if (this.signalR.isOrderUpdate(update)) {
         this.API_getAll();
@@ -122,87 +143,168 @@ export class OrdersTableComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.signalRSub?.unsubscribe();
   }
-  getRoles(){
-    this.ApiService.get('Auth/roles').subscribe((res:any)=>{
-      this.role=res.data
-    })
+  getRoles() {
+    this.ApiService.get('Auth/roles').subscribe((res: any) => {
+      this.role = res.data;
+    });
   }
   getBreadCrumb() {
     this.bredCrumb = {
       crumbs: [
         {
           label: this.languageService.translate('Home'),
-          routerLink:  this.role==Roles.admin?'/dashboard-admin':'/dashboard-trader',
+          routerLink:
+            this.role == Roles.admin ? '/dashboard-admin' : '/dashboard-trader',
         },
         {
           label: this.languageService.translate(this.pageName()),
         },
-      ]
-    }
+      ],
+    };
   }
-
 
   displayTableCols(currentLang: string) {
     this.columns = [
-      { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: true },
-      { keyName: 'customerName', header: this.languageService.translate('order.form.clientName'), type: EType.text, show: true },
-      { keyName: 'traderName', header: this.languageService.translate('order.form.traderName'), type: EType.text, show: true },
-      { keyName: 'paymentWay', header: this.languageService.translate('order.form.paymentWay'), type: EType.text, show: true },
-      { keyName: currentLang === 'ar' ? 'deliveryTypeAr' : 'deliveryTypeEn', header: this.languageService.translate('order.form.deliveryType'), type: EType.text, show: true },
-      { keyName: 'totalPrice', header: this.languageService.translate('order.form.price'), type: EType.text, show: true },
-      { keyName: 'addedDate', header: this.languageService.translate('order.form.date'), type: EType.date, show: true },
-      { keyName: currentLang === 'ar' ? 'statusAr' : 'statusEn', header: this.languageService.translate('order.form.status'), type: EType.status,statusId:'statusEn', show: true },
-      { keyName: '', header: this.languageService.translate('Action'), type: EType.actions, actions: this.tableActions, show: true },
+      {
+        keyName: 'id',
+        header: this.languageService.translate('Id'),
+        type: EType.id,
+        show: true,
+      },
+      {
+        keyName: 'customerName',
+        header: this.languageService.translate('order.form.clientName'),
+        type: EType.text,
+        show: true,
+      },
+      {
+        keyName: 'traderName',
+        header: this.languageService.translate('order.form.traderName'),
+        type: EType.text,
+        show: true,
+      },
+      {
+        keyName: 'paymentWay',
+        header: this.languageService.translate('order.form.paymentWay'),
+        type: EType.text,
+        show: true,
+      },
+      {
+        keyName: currentLang === 'ar' ? 'deliveryTypeAr' : 'deliveryTypeEn',
+        header: this.languageService.translate('order.form.deliveryType'),
+        type: EType.text,
+        show: true,
+      },
+      {
+        keyName: 'totalPrice',
+        header: this.languageService.translate('order.form.price'),
+        type: EType.text,
+        show: true,
+      },
+      {
+        keyName: 'addedDate',
+        header: this.languageService.translate('order.form.date'),
+        type: EType.date,
+        show: true,
+      },
+      {
+        keyName: currentLang === 'ar' ? 'paymentStatusAr' : 'paymentStatusEn',
+        header: this.languageService.translate('order.form.paymentStatus'),
+        type: EType.status,
+        show: true,
+      },
+      {
+        keyName: currentLang === 'ar' ? 'statusAr' : 'statusEn',
+        header: this.languageService.translate('order.form.status'),
+        type: EType.status,
+        statusId: 'statusEn',
+        show: true,
+      },
+      {
+        keyName: '',
+        header: this.languageService.translate('Action'),
+        type: EType.actions,
+        actions: this.tableActions,
+        show: true,
+      },
     ];
 
     this.columnsSmallTable = [
-      { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: false },
-      { keyName: 'customerName', header: this.languageService.translate('order.form.clientName'), type: EType.text, showAs: ETableShow.content },
-      { keyName: 'totalPrice', header: this.languageService.translate('order.form.price'), type: EType.text, showAs: ETableShow.content }
+      {
+        keyName: 'id',
+        header: this.languageService.translate('Id'),
+        type: EType.id,
+        show: false,
+      },
+      {
+        keyName: 'customerName',
+        header: this.languageService.translate('order.form.clientName'),
+        type: EType.text,
+        showAs: ETableShow.content,
+      },
+      {
+        keyName: 'totalPrice',
+        header: this.languageService.translate('order.form.price'),
+        type: EType.text,
+        showAs: ETableShow.content,
+      },
     ];
   }
 
-  API_getStatus(){
+  API_getStatus() {
     this.ApiService.get('OrderStatus').subscribe((res: any) => {
       const list = res?.data ?? res;
       if (list) {
         this.orderStatusList = [];
         (Array.isArray(list) ? list : [list]).forEach((item: any) => {
           this.orderStatusList.push({
-            name: this.selectedLang === 'ar' ? (item.arName ?? item.titleAr) : (item.enName ?? item.titleEn),
-            code: item.id
+            name:
+              this.selectedLang === 'ar'
+                ? (item.arName ?? item.titleAr)
+                : (item.enName ?? item.titleEn),
+            code: item.id,
           });
         });
-      }
-    })
-  }
-
-  onSelectedValue(selectedItem: any, value: string) {
-  }
-
-  private static readonly DeliveryTypeLabels: Record<string, { ar: string; en: string }> = {
-    'Delivery': { ar: 'توصيل', en: 'Delivery' },
-    'StorePickup': { ar: 'استلام', en: 'Store Pickup' },
-  };
-
-  API_getAll() {
-    this.ApiService.get(global_API_getAll, this.objectSearch).subscribe((res: any) => {
-      if (res) {
-        const items = res.data.items ?? [];
-        const labels = OrdersTableComponent.DeliveryTypeLabels;
-        this.dataList = items.map((item: any) => {
-          const key = item.deliveryTypeName ?? (item.deliveryType === 2 ? 'StorePickup' : 'Delivery');
-          const t = labels[key] ?? { ar: key, en: key };
-          return { ...item, deliveryTypeAr: t.ar, deliveryTypeEn: t.en, addedDate: item.createdDate  };
-        });
-        this.totalCount = res.data.totalCount;
-
-        this.filteredData = [...this.dataList];
-        console.log(this.dataList);
       }
     });
   }
 
+  onSelectedValue(selectedItem: any, value: string) {}
+
+  private static readonly DeliveryTypeLabels: Record<
+    string,
+    { ar: string; en: string }
+  > = {
+    Delivery: { ar: 'توصيل', en: 'Delivery' },
+    StorePickup: { ar: 'استلام', en: 'Store Pickup' },
+  };
+
+  API_getAll() {
+    this.ApiService.get(global_API_getAll, this.objectSearch).subscribe(
+      (res: any) => {
+        if (res) {
+          const items = res.data.items ?? [];
+          const labels = OrdersTableComponent.DeliveryTypeLabels;
+          this.dataList = items.map((item: any) => {
+            const key =
+              item.deliveryTypeName ??
+              (item.deliveryType === 2 ? 'StorePickup' : 'Delivery');
+            const t = labels[key] ?? { ar: key, en: key };
+            return {
+              ...item,
+              deliveryTypeAr: t.ar,
+              deliveryTypeEn: t.en,
+              addedDate: item.createdDate,
+            };
+          });
+          this.totalCount = res.data.totalCount;
+
+          this.filteredData = [...this.dataList];
+          console.log(this.dataList);
+        }
+      },
+    );
+  }
 
   onPageChange(event: any) {
     console.log(event);
@@ -219,11 +321,12 @@ export class OrdersTableComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.dataList = this.dataList.filter((item: any) =>
-      item.enTitle.toLowerCase().includes(search) ||
-      item.arTitle.toLowerCase().includes(search) ||
-      item.enDescription.toLowerCase().includes(search) ||
-      item.arDescription.toLowerCase().includes(search)
+    this.dataList = this.dataList.filter(
+      (item: any) =>
+        item.enTitle.toLowerCase().includes(search) ||
+        item.arTitle.toLowerCase().includes(search) ||
+        item.enDescription.toLowerCase().includes(search) ||
+        item.arDescription.toLowerCase().includes(search),
     );
   }
 
@@ -233,11 +336,11 @@ export class OrdersTableComponent implements OnInit, OnDestroy {
 
   reset() {
     this.objectSearch = {
-      "pageNumber": 1,
-      "pageSize": 8,
-      "sortingExpression": "",
-      "sortingDirection": 0,
-    }
+      pageNumber: 1,
+      pageSize: 8,
+      sortingExpression: '',
+      sortingDirection: 0,
+    };
     this.API_getAll();
   }
 
@@ -283,5 +386,4 @@ export class OrdersTableComponent implements OnInit, OnDestroy {
       this.API_getAll();
     }
   }
-
 }

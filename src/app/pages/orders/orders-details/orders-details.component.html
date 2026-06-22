@@ -2,7 +2,10 @@
   <div class="row">
     <div class="page-details mb-3">
       <div class="title mb-4">
-        <h2>{{tyepMode()|translate|titlecase}} {{'order.pageTitle'|translate|titlecase}}</h2>
+        <h2>
+          {{ tyepMode() | translate | titlecase }}
+          {{ "order.pageTitle" | translate | titlecase }}
+        </h2>
       </div>
     </div>
   </div>
@@ -11,55 +14,106 @@
     <div class="reactive-form">
       <form [formGroup]="form" class="w-70">
         <div class="row">
-
           <!-- Left Column: Order + Customer + Trader Info -->
           <div class="col-lg-7 col-md-12">
             <!-- Order Info -->
             <div class="mb-4">
               <h3>
                 <span class="rounded-icon pi pi-shopping-cart"></span>
-                <span class="bold"> {{'order.form.orderInfo'|translate}}</span>
+                <span class="bold">
+                  {{ "order.form.orderInfo" | translate }}</span
+                >
               </h3>
             </div>
             <div class="row">
               <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
-                <app-input-text [readOnly]="true" [disabled]="true"
-                  [label]="'order.form.id'" [control]="form.get('id')"></app-input-text>
+                <app-input-text
+                  [readOnly]="true"
+                  [disabled]="true"
+                  [label]="'order.form.id'"
+                  [control]="form.get('id')"
+                ></app-input-text>
               </div>
               <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
-                <app-input-text [readOnly]="true" [disabled]="true"
-                  [label]="'order.form.status'" [control]="form.get('status')"></app-input-text>
+                <app-input-text
+                  [readOnly]="true"
+                  [disabled]="true"
+                  [label]="'order.form.status'"
+                  [control]="form.get('status')"
+                ></app-input-text>
               </div>
               <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
-                <app-select [list]="orderStatusList" [label]="'Status_Action'|translate"
-                  [control]="form.get('statusId')" [placeholder]="'order.form.select_order_status'|translate"></app-select>
+                <app-input-text
+                  [readOnly]="true"
+                  [disabled]="true"
+                  [label]="'order.form.paymentStatus'"
+                  [control]="
+                    selectedLang == 'ar'
+                      ? form.get('paymentStatusAr')
+                      : form.get('paymentStatusEn')
+                  "
+                ></app-input-text>
               </div>
               <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
-                <label class="mb-2">{{'order.form.statusImage'|translate}}</label>
+                <app-select
+                  [list]="orderStatusList"
+                  [label]="'Status_Action' | translate"
+                  [control]="form.get('statusId')"
+                  [placeholder]="'order.form.select_order_status' | translate"
+                ></app-select>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
+                <label class="mb-2">{{
+                  "order.form.statusImage" | translate
+                }}</label>
                 <div class="upload-image-section">
-                  <app-upload-file accept="image/*" formControlName="statusImage"></app-upload-file>
+                  <app-upload-file
+                    accept="image/*"
+                    formControlName="statusImage"
+                  ></app-upload-file>
                 </div>
               </div>
               <div class="col-lg-12 mt-3">
-                <button type="button" class="btn btn-primary-bk" (click)="API_UpdateStatus()" [disabled]="!form.get('statusId')?.value">
-                  {{'order.form.updateStatus'|translate}}
+                <button
+                  type="button"
+                  class="btn btn-primary-bk"
+                  (click)="API_UpdateStatus()"
+                  [disabled]="!form.get('statusId')?.value"
+                >
+                  {{ "order.form.updateStatus" | translate }}
                 </button>
               </div>
               <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
-                <app-input-text [readOnly]="true" [disabled]="true"
-                  [label]="'order.form.date'" [control]="form.get('addedDate')"></app-input-text>
+                <app-input-text
+                  [readOnly]="true"
+                  [disabled]="true"
+                  [label]="'order.form.date'"
+                  [control]="form.get('addedDate')"
+                ></app-input-text>
               </div>
               <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
-                <app-input-text [readOnly]="true" [disabled]="true"
-                  [label]="'order.form.paymentWay'" [control]="form.get('paymentWay')"></app-input-text>
+                <app-input-text
+                  [readOnly]="true"
+                  [disabled]="true"
+                  [label]="'order.form.paymentWay'"
+                  [control]="form.get('paymentWay')"
+                ></app-input-text>
               </div>
               <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
-                <app-input-text [readOnly]="true" [disabled]="true"
-                  [label]="'order.form.deliveryType'" [control]="form.get('deliveryType')"></app-input-text>
+                <app-input-text
+                  [readOnly]="true"
+                  [disabled]="true"
+                  [label]="'order.form.deliveryType'"
+                  [control]="form.get('deliveryType')"
+                ></app-input-text>
               </div>
               <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
-                <app-input-text [readOnly]="true" [disabled]="true"
-                  [label]="'order.form.totalPrice'" [control]="form.get('totalPrice')"></app-input-text>
+                <app-input-text
+                  [readOnly]="true"
+                  [disabled]="true"
+                  [label]="'order.form.totalPrice'"
+                  [control]="form.get('totalPrice')"
+                ></app-input-text>
               </div>
             </div>
 
@@ -67,25 +121,43 @@
             <div class="mb-4 mt-5">
               <h3>
                 <span class="rounded-icon pi pi-user"></span>
-                <span class="bold"> {{'order.form.customerInfo'|translate}}</span>
+                <span class="bold">
+                  {{ "order.form.customerInfo" | translate }}</span
+                >
               </h3>
             </div>
             <div class="row">
               <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
-                <app-input-text [readOnly]="true" [disabled]="true"
-                  [label]="'order.form.clientName'" [control]="form.get('customerName')"></app-input-text>
+                <app-input-text
+                  [readOnly]="true"
+                  [disabled]="true"
+                  [label]="'order.form.clientName'"
+                  [control]="form.get('customerName')"
+                ></app-input-text>
               </div>
               <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
-                <app-input-text [readOnly]="true" [disabled]="true"
-                  [label]="'order.form.phoneNumber'" [control]="form.get('phoneNumber')"></app-input-text>
+                <app-input-text
+                  [readOnly]="true"
+                  [disabled]="true"
+                  [label]="'order.form.phoneNumber'"
+                  [control]="form.get('phoneNumber')"
+                ></app-input-text>
               </div>
               <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
-                <app-input-text [readOnly]="true" [disabled]="true"
-                  [label]="'order.form.customerEmail'" [control]="form.get('customerEmail')"></app-input-text>
+                <app-input-text
+                  [readOnly]="true"
+                  [disabled]="true"
+                  [label]="'order.form.customerEmail'"
+                  [control]="form.get('customerEmail')"
+                ></app-input-text>
               </div>
               <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
-                <app-input-text [readOnly]="true" [disabled]="true"
-                  [label]="'order.form.address'" [control]="form.get('address')"></app-input-text>
+                <app-input-text
+                  [readOnly]="true"
+                  [disabled]="true"
+                  [label]="'order.form.address'"
+                  [control]="form.get('address')"
+                ></app-input-text>
               </div>
             </div>
 
@@ -93,25 +165,43 @@
             <div class="mb-4 mt-5">
               <h3>
                 <span class="rounded-icon pi pi-shop"></span>
-                <span class="bold"> {{'order.form.traderInfo'|translate}}</span>
+                <span class="bold">
+                  {{ "order.form.traderInfo" | translate }}</span
+                >
               </h3>
             </div>
             <div class="row">
               <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
-                <app-input-text [readOnly]="true" [disabled]="true"
-                  [label]="'order.form.traderName'" [control]="form.get('traderName')"></app-input-text>
+                <app-input-text
+                  [readOnly]="true"
+                  [disabled]="true"
+                  [label]="'order.form.traderName'"
+                  [control]="form.get('traderName')"
+                ></app-input-text>
               </div>
               <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
-                <app-input-text [readOnly]="true" [disabled]="true"
-                  [label]="'order.form.traderStoreName'" [control]="form.get('traderStoreName')"></app-input-text>
+                <app-input-text
+                  [readOnly]="true"
+                  [disabled]="true"
+                  [label]="'order.form.traderStoreName'"
+                  [control]="form.get('traderStoreName')"
+                ></app-input-text>
               </div>
               <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
-                <app-input-text [readOnly]="true" [disabled]="true"
-                  [label]="'order.form.traderPhone'" [control]="form.get('traderPhone')"></app-input-text>
+                <app-input-text
+                  [readOnly]="true"
+                  [disabled]="true"
+                  [label]="'order.form.traderPhone'"
+                  [control]="form.get('traderPhone')"
+                ></app-input-text>
               </div>
               <div class="col-lg-6 col-md-6 col-sm-6 mt-4">
-                <app-input-text [readOnly]="true" [disabled]="true"
-                  [label]="'order.form.traderEmail'" [control]="form.get('traderEmail')"></app-input-text>
+                <app-input-text
+                  [readOnly]="true"
+                  [disabled]="true"
+                  [label]="'order.form.traderEmail'"
+                  [control]="form.get('traderEmail')"
+                ></app-input-text>
               </div>
             </div>
           </div>
@@ -121,18 +211,31 @@
             <div class="mb-4">
               <h3>
                 <span class="rounded-icon pi pi-map-marker"></span>
-                <span class="bold"> {{'order.form.customerLocation'|translate}}</span>
+                <span class="bold">
+                  {{ "order.form.customerLocation" | translate }}</span
+                >
               </h3>
             </div>
             <div class="map-section">
-              <app-map [lat]="mapLat" [lng]="mapLng" [readonly]="true" [autoLocate]="false"></app-map>
-              <a class="google-maps-link mt-3" *ngIf="hasValidCoords" [href]="'https://www.google.com/maps?q=' + mapLat + ',' + mapLng" target="_blank">
+              <app-map
+                [lat]="mapLat"
+                [lng]="mapLng"
+                [readonly]="true"
+                [autoLocate]="false"
+              ></app-map>
+              <a
+                class="google-maps-link mt-3"
+                *ngIf="hasValidCoords"
+                [href]="
+                  'https://www.google.com/maps?q=' + mapLat + ',' + mapLng
+                "
+                target="_blank"
+              >
                 <i class="pi pi-external-link"></i>
-                {{'order.form.openInGoogleMaps' | translate}}
+                {{ "order.form.openInGoogleMaps" | translate }}
               </a>
             </div>
           </div>
-
         </div>
 
         <!-- Products Table -->
@@ -140,45 +243,66 @@
           <div class="mb-4">
             <h3>
               <span class="rounded-icon pi pi-box"></span>
-              <span class="bold"> {{'order.form.productDetails'|translate}}</span>
+              <span class="bold">
+                {{ "order.form.productDetails" | translate }}</span
+              >
             </h3>
           </div>
-          <p-table class="order" [value]="products" [tableStyle]="{ 'min-width': '50rem' }">
+          <p-table
+            class="order"
+            [value]="products"
+            [tableStyle]="{ 'min-width': '50rem' }"
+          >
             <ng-template #header>
               <tr class="gray-text">
-                <th>{{'order.form.code'|translate}}</th>
-                <th>{{'order.form.ProductName'|translate}}</th>
-                <th>{{'order.form.quantity'|translate}}</th>
-                <th>{{'order.form.pricePiece'|translate}}</th>
-                <th>{{'order.form.discount'|translate}}</th>
-                <th>{{'order.form.totalPrice'|translate}}</th>
+                <th>{{ "order.form.code" | translate }}</th>
+                <th>{{ "order.form.ProductName" | translate }}</th>
+                <th>{{ "order.form.quantity" | translate }}</th>
+                <th>{{ "order.form.pricePiece" | translate }}</th>
+                <th>{{ "order.form.discount" | translate }}</th>
+                <th>{{ "order.form.totalPrice" | translate }}</th>
               </tr>
             </ng-template>
             <ng-template #body let-item>
               <tr>
                 <td>{{ item.product?.id }}</td>
-                <td>{{ selectedLang == 'ar' ? item.product?.arName : item.product?.enName }}</td>
+                <td>
+                  {{
+                    selectedLang == "ar"
+                      ? item.product?.arName
+                      : item.product?.enName
+                  }}
+                </td>
                 <td>{{ item.quantity }}</td>
-                <td>{{ item.price }} {{'rsa'|translate}}</td>
+                <td>{{ item.price }} {{ "rsa" | translate }}</td>
                 <td>
                   <span *ngIf="item.product?.hasDiscount">
-                    {{ item.product?.discountValue }} {{ item.product?.discountType == 1 ? '%' : ('rsa' | translate) }}
+                    {{ item.product?.discountValue }}
+                    {{
+                      item.product?.discountType == 1
+                        ? "%"
+                        : ("rsa" | translate)
+                    }}
                   </span>
                   <span *ngIf="!item.product?.hasDiscount">-</span>
                 </td>
-                <td class="bold">{{ item.quantity * item.price }} {{'rsa'|translate}}</td>
+                <td class="bold">
+                  {{ item.quantity * item.price }} {{ "rsa" | translate }}
+                </td>
               </tr>
             </ng-template>
           </p-table>
           <div class="mt-4 pr-3 pl-3 gray-text">
-            {{'totalPrice'|translate}} : <span class="bold black">{{data.totalPrice}}</span> {{'rsa'|translate}}
+            {{ "totalPrice" | translate }} :
+            <span class="bold black">{{ data.totalPrice }}</span>
+            {{ "rsa" | translate }}
           </div>
         </div>
 
         <!-- Actions -->
         <div class="actions mt-5 text-center">
           <button type="button" class="cancel-btn" (click)="cancel()">
-            {{'actions.cancel'|translate}}
+            {{ "actions.cancel" | translate }}
           </button>
         </div>
       </form>
@@ -187,6 +311,13 @@
 </div>
 
 <app-dialog [visible]="showConfirmMessage">
-  <button class="dialog-close-btn btn btn-default" (click)="showConfirmMessage = false">{{'actions.close'|translate}}</button>
-  <button class="dialog-close-btn btn btn-danger" (click)="onConfirmMessage()">{{'actions.confirm'|translate}}</button>
+  <button
+    class="dialog-close-btn btn btn-default"
+    (click)="showConfirmMessage = false"
+  >
+    {{ "actions.close" | translate }}
+  </button>
+  <button class="dialog-close-btn btn btn-danger" (click)="onConfirmMessage()">
+    {{ "actions.confirm" | translate }}
+  </button>
 </app-dialog>
