@@ -783,7 +783,17 @@
     "mobile": "Mobile",
     "email": "Email",
     "gender": "Gender",
-    "name": "Name"
+    "name": "Name",
+    "form": {
+      "userName": "Username",
+      "storeName": "Store Name",
+      "email": "Email",
+      "phone": "Phone Number",
+      "arDescription": "Description (ar)",
+      "enDescription": "Description (en)",
+      "save_changes": "Save Changes",
+      "updating": "Updating..."
+    }
   },
   "working_hours": {
     "pageName": "Working Hours",

@@ -125,6 +125,7 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
   }
 
   onCountryChange(countryId: number) {
+    localStorage.setItem('countryId', countryId.toString());
     const c = this.countriesData.find((x: any) => x.id === countryId);
     this.selectedCountry = c
       ? {
@@ -478,6 +479,9 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
               : undefined,
           });
         });
+        if (!localStorage.getItem('countryId')) {
+          localStorage.setItem('countryId', this.countries[0].code.toString());
+        }
         if (this.countries.length && !this.loginForm.get('country')?.value) {
           this.loginForm.patchValue({ country: this.countries[0].code });
           this.onCountryChange(this.countries[0].code);
@@ -521,21 +525,18 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
             } else {
               localStorage.removeItem('countryId');
             }
-          } else if (user.countryId != null) {
-            localStorage.setItem('countryId', String(user.countryId));
-          } else {
-            localStorage.removeItem('countryId');
-          }
 
             this.signalR.connect();
 
-          if (user.role === Roles.admin)
-            this.router.navigate(['/dashboard-admin']);
-          else this.router.navigate(['/dashboard-trader']);
-        },
-        error: (err) => this.toaster.errorToaster(authErrorMessageKey(err?.error ?? err)),
-      });
-    }).catch(() => this.toaster.errorToaster('Device security init failed'));
+            if (user.role === Roles.admin)
+              this.router.navigate(['/dashboard-admin']);
+            else this.router.navigate(['/dashboard-trader']);
+          },
+          error: (err) =>
+            this.toaster.errorToaster(authErrorMessageKey(err?.error ?? err)),
+        });
+      })
+      .catch(() => this.toaster.errorToaster('Device security init failed'));
   }
 
   toggleLanguage() {
@@ -555,6 +556,9 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
     this.languageService.changeAppDirection(this.selectedLang);
     this.languageService.changeHtmlLang(this.selectedLang);
     this.languageService.use(this.selectedLang);
+    if (!localStorage.getItem('lang')) {
+      localStorage.setItem('lang', this.selectedLang);
+    }
   }
   onLogin(loginData: any) {
     this.openOtpModal = false;
@@ -580,14 +584,13 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
               const countryId = loginData.country;
               if (countryId) localStorage.setItem('countryId', String(countryId));
             }
-            this.openOtpModal = true;
-          }
-        },
-        error: (err) => {
-          this.toaster.errorToaster(authErrorMessageKey(err?.error ?? err));
-        },
-      });
-    }).catch(() => this.toaster.errorToaster('Device security init failed'));
+          },
+          error: (err) => {
+            this.toaster.errorToaster(authErrorMessageKey(err?.error ?? err));
+          },
+        });
+      })
+      .catch(() => this.toaster.errorToaster('Device security init failed'));
   }
   resendOtp(e: any) {
     if (!e) return;

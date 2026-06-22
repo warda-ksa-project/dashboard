@@ -1,13 +1,77 @@
 <div class="">
   <p-floatlabel variant="on">
-    <p-datepicker *ngIf="type=='date'" [class.noAction]="readOnly" [minDate]="minDate" [maxDate]="maxDate"  [formControl]="control"  [readonlyInput]="true"   [disabled]="true" dateFormat="dd-mm-yy" />
-    <input autocomplete="off" autocomplete="off" (ngModelChange)="onInputChange($event)"   *ngIf="type=='text'" class="w-100" pInputText id="enTitle" [formControl]="control" [readOnly]="readOnly"  [disabled]="disabled" />
-    <p-password autocomplete="off" [style]="{ width: '100%' }" (ngModelChange)="onInputChange($event)" autocomplete="off"  class="password-w-100 w-100" *ngIf="type=='password'" [disabled]="disabled"
-    [formControl]="control" [feedback]="showPasswordWeakness" [toggleMask]="true" />
-    <label class="block mb-1" for="enTitle">{{label|translate}}</label>
+    <p-datepicker
+      *ngIf="type == 'date'"
+      [class.noAction]="readOnly"
+      [minDate]="minDate"
+      [maxDate]="maxDate"
+      [formControl]="control"
+      [readonlyInput]="true"
+      [disabled]="true"
+      dateFormat="dd-mm-yy"
+    />
+    @if (type === "textarea") {
+      <textarea
+        autocomplete="off"
+        autocomplete="off"
+        (ngModelChange)="onInputChange($event)"
+        class="w-100"
+        pTextarea
+        id="enTitle"
+        [formControl]="control"
+        [readOnly]="readOnly"
+        [disabled]="disabled"
+      ></textarea>
+    }
+    @if (type === "tel") {
+      <input
+        autocomplete="off"
+        autocomplete="off"
+        (ngModelChange)="onInputChange($event)"
+        class="w-100"
+        pInputText
+        type="tel"
+        [attr.maxLength]="length"
+        [attr.minLength]="length"
+        id="enTitle"
+        [formControl]="control"
+        [readOnly]="readOnly"
+        [disabled]="disabled"
+      />
+    }
+    <input
+      autocomplete="off"
+      autocomplete="off"
+      (ngModelChange)="onInputChange($event)"
+      *ngIf="type == 'text'"
+      class="w-100"
+      pInputText
+      id="enTitle"
+      [formControl]="control"
+      [readOnly]="readOnly"
+      [disabled]="disabled"
+    />
+    <p-password
+      autocomplete="off"
+      [style]="{ width: '100%' }"
+      (ngModelChange)="onInputChange($event)"
+      autocomplete="off"
+      class="password-w-100 w-100"
+      *ngIf="type == 'password'"
+      [disabled]="disabled"
+      [formControl]="control"
+      [feedback]="showPasswordWeakness"
+      [toggleMask]="true"
+    />
+    <label class="block mb-1" for="enTitle">{{ label | translate }}</label>
   </p-floatlabel>
-   <div  *ngIf="control.errors && control.touched || (control.value && control.errors)">
-
-       <span class="text-danger"> {{control.errors|validationHandlerPipe}}</span>
-    </div>
+  <div
+    *ngIf="
+      (control.errors && control.touched) || (control.value && control.errors)
+    "
+  >
+    <span class="text-danger">
+      {{ control.errors | validationHandlerPipe }}</span
+    >
+  </div>
 </div>

@@ -765,7 +765,17 @@
     "mobile": "الجوال",
     "email": "البريد الإلكتروني",
     "gender": "الجنس",
-    "name": "الاسم"
+    "name": "الاسم",
+    "form": {
+      "userName": "اسم المستخدم",
+      "storeName": "اسم المتجر",
+      "email": "البريد الإلكتروني",
+      "phone": "رقم الهاتف",
+      "arDescription": "الوصف (عربي)",
+      "enDescription": "الوصف (إنجليزي)",
+      "save_changes": "حفظ التغييرات",
+      "updating": "جاري التحديث..."
+    }
   },
   "working_hours": {
     "pageName": "ساعات العمل",
