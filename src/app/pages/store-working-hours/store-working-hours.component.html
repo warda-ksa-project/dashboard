@@ -15,27 +15,36 @@
               [label]="'storeWorkingHours.select_trader' | translate"
               [placeholder]="'shared.select' | translate"
               [list]="tradersList"
-              [control]="form.get('traderId')">
+              [control]="form.get('traderId')"
+            >
             </app-select>
           </div>
 
-          <div class="col-12">
+          <div class="col-12 overflow-auto">
             <table class="table table-bordered">
               <thead>
                 <tr>
-                  <th>{{ 'storeWorkingHours.day' | translate }}</th>
-                  <th>{{ 'storeWorkingHours.is_open' | translate }}</th>
-                  <th>{{ 'storeWorkingHours.open_time' | translate }}</th>
-                  <th>{{ 'storeWorkingHours.close_time' | translate }}</th>
+                  <th>{{ "storeWorkingHours.day" | translate }}</th>
+                  <th>{{ "storeWorkingHours.is_open" | translate }}</th>
+                  <th>{{ "storeWorkingHours.open_time" | translate }}</th>
+                  <th>{{ "storeWorkingHours.close_time" | translate }}</th>
                 </tr>
               </thead>
               <tbody formArrayName="days">
-                <tr *ngFor="let dayCtrl of daysArray.controls; let i = index; trackBy: trackByDayIndex" [formGroupName]="i">
+                <tr
+                  *ngFor="
+                    let dayCtrl of daysArray.controls;
+                    let i = index;
+                    trackBy: trackByDayIndex
+                  "
+                  [formGroupName]="i"
+                >
                   <td>{{ getDayName(daysConfig[i]) }}</td>
                   <td>
                     <app-check-box
                       [control]="dayCtrl.get('isOpen')"
-                      [initValue]="dayCtrl.get('isOpen')?.value">
+                      [initValue]="dayCtrl.get('isOpen')?.value"
+                    >
                     </app-check-box>
                   </td>
                   <td>
@@ -44,7 +53,8 @@
                       class="form-control"
                       formControlName="openTime"
                       [disabled]="!dayCtrl.get('isOpen')?.value"
-                      step="3600" />
+                      step="3600"
+                    />
                   </td>
                   <td>
                     <input
@@ -52,7 +62,8 @@
                       class="form-control"
                       formControlName="closeTime"
                       [disabled]="!dayCtrl.get('isOpen')?.value"
-                      step="3600" />
+                      step="3600"
+                    />
                   </td>
                 </tr>
               </tbody>
@@ -61,10 +72,10 @@
 
           <div class="actions mt-4 text-center col-12">
             <button type="submit" class="submit-btn" [disabled]="!form.valid">
-              {{ 'actions.edit' | translate }}
+              {{ "actions.edit" | translate }}
             </button>
             <button type="button" class="cancel-btn" (click)="cancel()">
-              {{ 'actions.cancel' | translate }}
+              {{ "actions.cancel" | translate }}
             </button>
           </div>
         </div>
@@ -73,10 +84,13 @@
   </div>
 </div>
 <app-dialog [visible]="showConfirmMessage">
-  <button class="dialog-close-btn btn btn-default" (click)="showConfirmMessage = false">
-    {{ 'actions.close' | translate }}
+  <button
+    class="dialog-close-btn btn btn-default"
+    (click)="showConfirmMessage = false"
+  >
+    {{ "actions.close" | translate }}
   </button>
   <button class="dialog-close-btn btn btn-danger" (click)="onConfirmMessage()">
-    {{ 'actions.confirm' | translate }}
+    {{ "actions.confirm" | translate }}
   </button>
 </app-dialog>
