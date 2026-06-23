@@ -366,17 +366,20 @@ export class TraderDetailsComponent {
   //   })
   // }
   getAllCity() {
-    this.ApiService.get('Cities').subscribe((res: any) => {
-      if (res.data) {
-        this.cities = [];
-        res.data.map((city: any) => {
-          this.cities.push({
-            name: this.selectedLang == 'en' ? city.enName : city.arName,
-            code: city.id,
+    const country = localStorage.getItem('countryId') || 1;
+    this.ApiService.get(`Cities/by-country/${country}`).subscribe(
+      (res: any) => {
+        if (res.data) {
+          this.cities = [];
+          res.data.map((city: any) => {
+            this.cities.push({
+              name: this.selectedLang == 'en' ? city.enName : city.arName,
+              code: city.id,
+            });
           });
-        });
-      }
-    });
+        }
+      },
+    );
   }
   API_getItemDetails() {
     this.ApiService.get(`Traders/${this.getID}`).subscribe((res: any) => {
