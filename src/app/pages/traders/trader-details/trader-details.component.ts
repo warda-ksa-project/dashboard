@@ -29,6 +29,8 @@ import { environment } from '../../../../environments/environment';
 import { MapComponent } from '../../../components/map/map.component';
 import { SelectComponent } from '../../../components/select/select.component';
 import { CountryService } from '../../../services/country.service';
+import { DialogModule } from 'primeng/dialog';
+import { SafePipe } from '../../../pipes/safe-pipe';
 
 const global_PageName = 'trader.pageName';
 const global_routeUrl = 'traders';
@@ -41,6 +43,7 @@ const global_API_update = 'Traders';
   imports: [
     ReactiveFormsModule,
     SelectComponent,
+    SafePipe,
     StepperModule,
     MapComponent,
     EditModeImageComponent,
@@ -52,12 +55,16 @@ const global_API_update = 'Traders';
     InputTextComponent,
     RouterModule,
     UploadFileComponent,
+    DialogModule,
   ],
   templateUrl: './trader-details.component.html',
   styleUrl: './trader-details.component.scss',
 })
 export class TraderDetailsComponent {
   pageName = signal<string>(global_PageName);
+  showPdfDialog = false;
+  pdfTitle = '';
+  pdfUrl = '';
   private ApiService = inject(ApiService);
   private router = inject(Router);
   lat: number = 24.7136;
@@ -160,6 +167,12 @@ export class TraderDetailsComponent {
   editCRMode: boolean = false;
   editLicenseMode: boolean = false;
   editIBanMode: boolean = false;
+
+  openPdf(title: string, url: string) {
+    this.pdfTitle = title;
+    this.pdfUrl = url;
+    this.showPdfDialog = true;
+  }
 
   editImageProps: IEditImage = {
     props: {

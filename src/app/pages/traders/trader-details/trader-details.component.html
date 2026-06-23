@@ -236,6 +236,7 @@
                         [accept]="'application/pdf'"
                         (onFileRemoved)="onFileEdit('cr')"
                       ></app-upload-file>
+
                       <!-- <div *ngIf="isRequiredError" class="error-message mt-2">
                               {{'shared.img_required'|translate}}
                             </div> -->
@@ -248,7 +249,18 @@
                         [type]="'pdf'"
                         (onFileRemoved)="onFileEdit('cr')"
                         [editImageProps]="editImageCRProps"
-                      ></app-edit-mode-image>
+                      >
+                        <!-- Allow to view content of pdf -->
+                        <i
+                          class="pi pi-eye eye-btn mt-2"
+                          (click)="
+                            openPdf(
+                              'CR Document',
+                              editImageCRProps.props.imgSrc
+                            )
+                          "
+                        ></i>
+                      </app-edit-mode-image>
                     </div>
                   </div>
                   <div class="col-lg-6 col-md-6 col-sm-6">
@@ -277,7 +289,18 @@
                         [type]="'pdf'"
                         (onFileRemoved)="onFileEdit('license')"
                         [editImageProps]="editImageLicenseProps"
-                      ></app-edit-mode-image>
+                      >
+                        <!-- Allow to view content of pdf -->
+                        <i
+                          class="pi pi-eye eye-btn mt-2"
+                          (click)="
+                            openPdf(
+                              'License Document',
+                              editImageLicenseProps.props.imgSrc
+                            )
+                          "
+                        ></i>
+                      </app-edit-mode-image>
                     </div>
                   </div>
                   <div class="col-lg-6 col-md-6 col-sm-6">
@@ -306,7 +329,18 @@
                         [type]="'pdf'"
                         (onFileRemoved)="onFileEdit('iban')"
                         [editImageProps]="editImageIBanProps"
-                      ></app-edit-mode-image>
+                      >
+                        <!-- Allow to view content of pdf -->
+                        <i
+                          class="pi pi-eye eye-btn mt-2"
+                          (click)="
+                            openPdf(
+                              'IBAN Document',
+                              editImageIBanProps.props.imgSrc
+                            )
+                          "
+                        ></i>
+                      </app-edit-mode-image>
                     </div>
                   </div>
                   <div class="col-lg-6 col-md-6 col-sm-6">
@@ -385,3 +419,22 @@
     {{ "actions.confirm" | translate }}
   </button>
 </app-dialog>
+
+<p-dialog
+  [(visible)]="showPdfDialog"
+  [modal]="true"
+  [draggable]="false"
+  [style]="{ width: '50vw', height: '80vh' }"
+  [header]="pdfTitle"
+>
+  <iframe
+    *ngIf="showPdfDialog"
+    [src]="
+      'https://docs.google.com/gview?url=' + pdfUrl + '&embedded=true' | safe
+    "
+    width="100%"
+    height="100%"
+    style="border: none; min-height: 70vh"
+  >
+  </iframe>
+</p-dialog>
