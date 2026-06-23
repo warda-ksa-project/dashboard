@@ -717,25 +717,26 @@ p-table.order {
 }
 
 /* ngx-spinner — خلفية هوية وردة */
-.ngx-spinner-overlay {
-  background: radial-gradient(
-    ellipse 130% 100% at 50% 15%,
-    #8b2d48 0%,
-    #7a1e3b 38%,
-    #5c1530 72%,
-    #2a0c12 100%
-  ) !important;
-  background-color: #5c1530 !important;
-}
+// .ngx-spinner-overlay {
+//   background: radial-gradient(
+//     ellipse 130% 100% at 50% 15%,
+//     #8b2d48 0%,
+//     #7a1e3b 38%,
+//     #5c1530 72%,
+//     #2a0c12 100%
+//   ) !important;
+//   background-color: #5c1530 !important;
+// }
 
-.ngx-spinner-overlay > div:not(.loading-text) {
-  display: none !important;
-}
+// .ngx-spinner-overlay > div:not(.loading-text) {
+//   display: none !important;
+// }
 
-.ngx-spinner-overlay .loading-text {
-  top: 50% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%) !important;
-  width: 100%;
-  max-width: 400px;
-}
+// .ngx-spinner-overlay .loading-text {
+//   top: 50% !important;
+//   left: 50% !important;
+//   transform: translate(-50%, -50%) !important;
+//   width: 100%;
+//   max-width: 400px;
+
+// }

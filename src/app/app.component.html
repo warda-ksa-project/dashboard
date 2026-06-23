@@ -1,6 +1,5 @@
 <router-outlet />
 <ngx-spinner
-  bdColor="rgba(92, 21, 48, 0.97)"
   size="large"
   color="#f5d0dc"
   type="ball-clip-rotate"
@@ -8,7 +7,7 @@
 >
   <div class="warda-loader">
     <img [src]="loaderLogoSrc" alt="Warda" class="warda-loader__logo" />
-    <p class="warda-loader__text">{{ 'LOADER.PLEASE_WAIT' | translate }}</p>
+    <p class="warda-loader__text">{{ "LOADER.PLEASE_WAIT" | translate }}</p>
   </div>
 </ngx-spinner>
 <p-toast [position]="toastPosition"></p-toast>
