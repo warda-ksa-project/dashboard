@@ -2,35 +2,124 @@
   <div class="row">
     <div class="page-details mb-3">
       <div class="title mb-4">
-        <h2>{{tyepMode()|translate|titlecase}} {{pageName()|translate|titlecase}}</h2>
+        <h2>
+          {{ "View" | translate | titlecase }}
+          {{ pageName() | translate | titlecase }}
+        </h2>
       </div>
-      <!-- <div class="breadcrumb">
-        <app-breadcrump [breadcrumbProps]="bredCrumb"></app-breadcrump>
-      </div> -->
     </div>
   </div>
-    <div class="page">
-      <div class="d-flex justify-content-end">
-        <span class="pointer pi pi-pencil" (click)="onEditProfile()"></span>
+  @if (loadingProfile) {
+    <div class="spinner-container">
+      <app-spinner></app-spinner>
+    </div>
+  } @else {
+    <div class="page d-flex flex-column flex-lg-row align-items-start">
+      <div class="image align-self-center">
+        <img
+          [src]="selectedImage || profile.image || defaultImage"
+          (error)="imageError($event)"
+        />
+        @if (selectedImage) {
+          <button
+            class="image-btn remove-image"
+            [ngClass]="{
+              'position-right': selectedLang === 'en',
+              'position-left': selectedLang === 'ar',
+            }"
+            type="button"
+            (click)="removeImage()"
+          >
+            <i class="pi pi-trash"></i>
+          </button>
+        } @else {
+          <button
+            class="image-btn update-image"
+            [ngClass]="{
+              'position-right': selectedLang === 'en',
+              'position-left': selectedLang === 'ar',
+            }"
+            type="button"
+            (click)="profileImage.click()"
+          >
+            <i class="pi pi-pencil"></i>
+          </button>
+        }
       </div>
-      <div class="d-flex justify-content-between flex-wrap">
-        <div class="img-border">
-          <img [src]="imgUrl??defaultImage" alt="img">
-        </div>
-        <div class="content-info">
-          <div class="info d-flex justify-content-between flex-wrap" *ngFor="let item of userDataInfo">
-              <div>
-                <span [class]="item.icon"></span>
-                <span class="bold black"> {{item.title|translate}}</span>
-              </div>
-
-              <div class="text-start value">
-                <span class=""> {{item.value}}</span>
-              </div>
-
+      <input
+        #profileImage
+        class="d-none"
+        type="file"
+        accept="image/*"
+        (change)="imageSelected($event)"
+        [multiple]="false"
+      />
+      <form
+        class="info container-fluid"
+        [formGroup]="profileForm"
+        (ngSubmit)="updateProfile()"
+      >
+        <div class="row row-cols-1 row-cols-lg-2">
+          <div class="col-12 col-lg-6 p-1">
+            <app-input-text
+              [label]="'profile.form.userName'"
+              [control]="profileForm.get('userName')"
+            ></app-input-text>
+          </div>
+          <div class="col-12 col-lg-6 p-1">
+            <app-input-text
+              [label]="'profile.form.storeName'"
+              [control]="profileForm.get('storeName')"
+            ></app-input-text>
+          </div>
+          <div class="col-12 col-lg-6 p-1">
+            <app-input-text
+              [label]="'profile.form.email'"
+              [control]="profileForm.get('email')"
+            ></app-input-text>
+          </div>
+          <div class="col-12 col-lg-6 p-1">
+            <app-input-text
+              [label]="'profile.form.phone'"
+              [control]="profileForm.get('phone')"
+              [type]="'tel'"
+              [length]="phoneMaxLength"
+            ></app-input-text>
+            <small
+              *ngIf="!profileForm.get('phone')?.value"
+              class="hint"
+              >{{ phoneHintKey | translate }}</small
+            >
+          </div>
+          <div class="col-12 col-lg-6 p-1">
+            <app-input-text
+              [label]="'profile.form.arDescription'"
+              [control]="profileForm.get('arDescription')"
+              type="textarea"
+            ></app-input-text>
+          </div>
+          <div class="col-12 col-lg-6 p-1">
+            <app-input-text
+              [label]="'profile.form.enDescription'"
+              [control]="profileForm.get('enDescription')"
+              type="textarea"
+            ></app-input-text>
           </div>
         </div>
-      </div>
+        <div class="d-flex justify-content-end">
+          <button
+            type="submit"
+            class="submit-button btn-primary-bk"
+            [disabled]="profileForm.invalid || updating || !profileChanged()"
+          >
+            @if (updating) {
+              {{ "profile.form.updating" | translate }}
+            } @else {
+              {{ "profile.form.save_changes" | translate }}
+            }
+          </button>
+        </div>
+      </form>
     </div>
+  }
 </div>
-

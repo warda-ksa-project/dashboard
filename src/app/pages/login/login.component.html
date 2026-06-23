@@ -78,7 +78,7 @@
                 inputmode="numeric"
                 formControlName="phoneNumber"
                 [placeholder]="'login.phone_placeholder' | translate"
-                [attr.maxlength]="selectedCountry?.phoneLength ?? 15"
+                [attr.maxlength]="phoneMaxLength"
                 class="phone-digits-input"
               />
             </div>
@@ -94,15 +94,11 @@
           <small
             *ngIf="
               selectedCountry &&
-              !loginForm.get('phoneNumber')?.errors?.['minlength'] &&
-              !loginForm.get('phoneNumber')?.errors?.['maxlength']
+              !loginForm.get('phoneNumber')?.value
             "
             class="hint"
           >
-            {{
-              "login.phone_hint"
-                | translate: { count: selectedCountry.phoneLength }
-            }}
+            {{ phoneHintKey | translate }}
           </small>
           <div *ngIf="isCheckingAdmin" class="checking-msg">
             <span class="pi pi-spin pi-spinner"></span>

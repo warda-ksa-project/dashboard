@@ -15,6 +15,11 @@ import { IEditImage } from '../../../components/edit-mode-image/editImage.interf
 import { EditModeImageComponent } from '../../../components/edit-mode-image/edit-mode-image.component';
 import { StepperModule } from 'primeng/stepper';
 import { Validations, removePtags } from '../../../validations';
+import {
+  formatPhoneForInput,
+  getDomesticPhoneHintKey,
+  normalizePhoneForApi,
+} from '../../../core/phone.util';
 import { environment } from '../../../../environments/environment';
 import { MapComponent } from '../../../components/map/map.component';
 import { SelectComponent } from '../../../components/select/select.component';
@@ -74,8 +79,11 @@ export class TraderDetailsComponent  {
     phone: new FormControl('', {
       validators: [
         Validators.required,
-        //Validations.phoneValidator(this.countryService.getCountries())
-      ]
+        Validators.pattern(/^\d+$/),
+        Validations.domesticPhoneValidator(
+          () => this.countryService.getSelectedCountry()?.phoneCode ?? '+966',
+        ),
+      ],
     }),
 
     storeName: new FormControl('', {
@@ -224,11 +232,13 @@ export class TraderDetailsComponent  {
 
   selectedLang: any;
   languageService = inject(LanguageService);
+  phoneHintKey = getDomesticPhoneHintKey('+966');
 
   ngOnInit() {
 
     this.pageName.set(global_PageName)
     this.getAllCity()
+    this.setupPhoneValidator()
     this.languageService.translationService.onLangChange.subscribe(() => {
       this.selectedLang = this.languageService.translationService.currentLang;
       this.getAllCity()
@@ -401,7 +411,10 @@ export class TraderDetailsComponent  {
         this.form.patchValue({
           ...d,
           name: d.userName ?? d.name,
-          phone: d.phone?.toString().trim(),
+          phone: formatPhoneForInput(
+            d.phone?.toString(),
+            d.phoneCountryCode ?? this.countryService.getSelectedCountry()?.phoneCode ?? '+966',
+          ),
           expalinedAddress: addr?.expalinedAddress ?? addr?.street,
           cityId: addr?.cityId,
           latitude: addr?.latitude != null ? String(addr.latitude) : '',
@@ -517,16 +530,24 @@ export class TraderDetailsComponent  {
 
   onSubmit() {
     const raw = this.form.value;
+    if (this.form.get('phone')?.invalid) {
+      this.form.get('phone')?.markAsTouched();
+      return;
+    }
+
     const crVal = Array.isArray(raw.cr) ? raw.cr[0]?.image ?? raw.cr[0] : raw.cr;
     const licenseVal = Array.isArray(raw.license) ? raw.license[0]?.image ?? raw.license[0] : raw.license;
     const ibanVal = Array.isArray(raw.iban) ? raw.iban[0]?.image ?? raw.iban[0] : raw.iban;
     const imageVal = Array.isArray(raw.image) ? raw.image[0]?.image ?? raw.image[0] : raw.image;
 
+    const phoneCountryCode =
+      this.countryService.getSelectedCountry()?.phoneCode ?? '+966';
+
     const payload: any = {
       name: raw.name,
       email: raw.email,
-      phone: raw.phone,
-      phoneCountryCode: this.countryService.getSelectedCountry()?.phoneCode ?? '+966',
+      phone: normalizePhoneForApi(raw.phone, phoneCountryCode),
+      phoneCountryCode,
       storeName: raw.storeName,
       numberOfBranches: +raw.numberOfBranches || 0,
       cr: crVal,
@@ -664,6 +685,18 @@ export class TraderDetailsComponent  {
     const cityIdValid = this.form.get('cityId')?.valid ?? false;
     
     return longitudeValid && latitudeValid && explainedAddressValid && cityIdValid;
+  }
+
+  private setupPhoneValidator() {
+    const countryCode =
+      this.countryService.getSelectedCountry()?.phoneCode ?? '+966';
+    this.phoneHintKey = getDomesticPhoneHintKey(countryCode);
+    this.form.get('phone')?.setValidators([
+      Validators.required,
+      Validators.pattern(/^\d+$/),
+      Validations.domesticPhoneValidator(() => countryCode),
+    ]);
+    this.form.get('phone')?.updateValueAndValidity({ emitEvent: false });
   }
 
  

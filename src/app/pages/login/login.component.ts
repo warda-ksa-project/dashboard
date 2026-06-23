@@ -45,6 +45,13 @@ import {
 import { environment } from '../../../environments/environment';
 import { buildEncryptedDeviceId } from '../../core/device-id-crypto';
 import { authErrorMessageKey } from '../../core/auth-error.util';
+import {
+  getDomesticPhoneHintKey,
+  getDomesticPhoneMaxLength,
+  isValidDomesticPhone,
+  normalizePhoneForApi,
+} from '../../core/phone.util';
+import { Validations } from '../../validations';
 import { SignalRService } from '../../services/signalr.service';
 
 declare global {
@@ -106,6 +113,7 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
   selectedLang = localStorage.getItem('lang') || 'en';
   selectedCountry: { phoneLength: number; phoneCode: string } | null = null;
   isAdmin: boolean | null = null;
+  hasDashboardAccess: boolean | null = null;
   isCheckingAdmin = false;
   canSubmit = false;
   private destroy$ = new Subject<void>();
@@ -124,6 +132,7 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
   }
 
   onCountryChange(countryId: number) {
+    localStorage.setItem('countryId', countryId.toString());
     const c = this.countriesData.find((x: any) => x.id === countryId);
     this.selectedCountry = c
       ? {
@@ -133,6 +142,7 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
       : null;
     this.updatePhoneValidators();
     this.isAdmin = null;
+    this.hasDashboardAccess = null;
     this.updateCanSubmit();
   }
 
@@ -145,14 +155,21 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
 
   private updatePhoneValidators() {
     const ctrl = this.loginForm.get('phoneNumber');
-    const len = this.selectedCountry?.phoneLength ?? 9;
+    const countryCode = this.selectedCountry?.phoneCode ?? '+966';
     ctrl?.setValidators([
       Validators.required,
       Validators.pattern(/^\d+$/),
-      Validators.minLength(len),
-      Validators.maxLength(len),
+      Validations.domesticPhoneValidator(() => countryCode),
     ]);
     ctrl?.updateValueAndValidity();
+  }
+
+  get phoneHintKey(): string {
+    return getDomesticPhoneHintKey(this.selectedCountry?.phoneCode ?? '+966');
+  }
+
+  get phoneMaxLength(): number {
+    return getDomesticPhoneMaxLength(this.selectedCountry?.phoneCode ?? '+966');
   }
 
   constructor(
@@ -258,12 +275,8 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
   }
 
   private updateCanSubmit() {
-    const len = this.selectedCountry?.phoneLength ?? 0;
-    const phone = (this.loginForm.get('phoneNumber')?.value ?? '')
-      .toString()
-      .replace(/\D/g, '');
     const countryOk = !!this.loginForm.get('country')?.value;
-    const phoneOk = len > 0 && phone.length === len && /^\d+$/.test(phone);
+    const phoneOk = this.isPhoneValid();
     const captchaOk = !this.recaptchaSiteKey || !!this.captchaToken;
     this.canSubmit = countryOk && phoneOk && captchaOk;
   }
@@ -275,9 +288,40 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
   }
 
   private isPhoneValid(): boolean {
-    const len = this.selectedCountry?.phoneLength ?? 0;
-    const phone = this.getPhoneDigits();
-    return len > 0 && phone.length === len && /^\d+$/.test(phone);
+    const raw = this.getPhoneDigits();
+    if (!raw || !/^\d+$/.test(raw)) return false;
+    return isValidDomesticPhone(raw, this.selectedCountry?.phoneCode ?? '+966');
+  }
+
+  private getApiPhoneDigits(): string {
+    return normalizePhoneForApi(
+      this.getPhoneDigits(),
+      this.selectedCountry?.phoneCode ?? '+966',
+    );
+  }
+
+  private parseDashboardAccess(res: any): {
+    hasAccess: boolean;
+    isAdmin: boolean;
+    isTrader: boolean;
+  } {
+    const data = res?.data ?? res?.result ?? res ?? {};
+    return {
+      hasAccess: !!(data.hasAccess ?? data.HasAccess),
+      isAdmin: !!(data.isAdmin ?? data.IsAdmin),
+      isTrader: !!(data.isTrader ?? data.IsTrader),
+    };
+  }
+
+  private applyDashboardAccess(access: {
+    hasAccess: boolean;
+    isAdmin: boolean;
+    isTrader: boolean;
+  }) {
+    this.isAdmin = access.isAdmin;
+    this.hasDashboardAccess = access.hasAccess;
+    this.loginForm.get('roleId')?.setValue(access.isAdmin ? 1 : 2);
+    this.updateCanSubmit();
   }
 
   private watchPhoneAndCheckAdmin() {
@@ -296,33 +340,42 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
         map(([countryId, phone]: [unknown, unknown]) => {
           const c = this.countriesData.find((x: any) => x.id === countryId);
           const len = c ? this.getPhoneLength(c) : 0;
-          const digits = (phone ?? '').toString().replace(/\D/g, '');
-          return { countryId, digits, requiredLen: len };
+          const raw = (phone ?? '').toString().replace(/\D/g, '');
+          const digits = raw
+            ? normalizePhoneForApi(raw, c?.phoneCode ?? '+966')
+            : raw;
+          return { countryId, digits, requiredLen: len, rawLen: raw.length };
         }),
         distinctUntilChanged(
           (a, b) => a.digits === b.digits && a.requiredLen === b.requiredLen,
         ),
-        tap(({ requiredLen, digits }) => {
-          if (digits.length < requiredLen) {
+        tap(({ requiredLen, rawLen }) => {
+          if (rawLen < requiredLen) {
             this.isAdmin = null;
+            this.hasDashboardAccess = null;
             this.isCheckingAdmin = false;
             this.updateCanSubmit();
           }
         }),
         filter(
-          ({ requiredLen, digits }) =>
-            requiredLen > 0 && digits.length >= requiredLen,
+          ({ requiredLen, rawLen, digits }) =>
+            requiredLen > 0 &&
+            rawLen >= requiredLen &&
+            isValidDomesticPhone(digits, this.selectedCountry?.phoneCode ?? '+966'),
         ),
         tap(() => {
           this.isCheckingAdmin = true;
           this.updateCanSubmit();
         }),
         switchMap(({ digits }) => {
-          return this.api.get<any>('Auth/check-admin', { Phone: digits }).pipe(
-            map((res: any) => !!(res?.data ?? res?.result ?? res)),
+          return this.api
+            .get<any>('Auth/check-dashboard-access', { Phone: digits })
+            .pipe(
+            map((res: any) => this.parseDashboardAccess(res)),
             catchError((err) => {
               this.isCheckingAdmin = false;
               this.isAdmin = null;
+              this.hasDashboardAccess = null;
               this.updateCanSubmit();
               const msg =
                 err?.error?.error?.message ||
@@ -335,22 +388,15 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
         }),
         takeUntil(this.destroy$),
       )
-      .subscribe((isAdmin: boolean) => {
+      .subscribe((access) => {
         this.isCheckingAdmin = false;
-        this.isAdmin = isAdmin;
-        if (isAdmin) {
-          roleIdControl?.setValue(1);
-        } else {
-          roleIdControl?.setValue(2);
-        }
-        this.updateCanSubmit();
+        this.applyDashboardAccess(access);
       });
   }
 
   onSubmit() {
     const phoneCtrl = this.loginForm.get('phoneNumber');
-    const digits = this.getPhoneDigits();
-    const requiredLen = this.selectedCountry?.phoneLength ?? 0;
+    const digits = this.getApiPhoneDigits();
 
     phoneCtrl?.markAsTouched();
 
@@ -361,11 +407,7 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
       return;
     }
     if (!this.isPhoneValid()) {
-      this.toaster.errorToaster(
-        this.translate.instant('login.phone_length_invalid', {
-          count: requiredLen,
-        }),
-      );
+      this.toaster.errorToaster(this.translate.instant(this.phoneHintKey));
       return;
     }
     if (this.recaptchaSiteKey && !this.captchaToken) {
@@ -381,8 +423,15 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
       return;
     }
 
-    if (this.isAdmin === null) {
+    if (this.isAdmin === null || this.hasDashboardAccess === null) {
       this.resolveAdminAndLogin(digits);
+      return;
+    }
+
+    if (!this.hasDashboardAccess) {
+      this.toaster.errorToaster(
+        this.translate.instant('login.errors.dashboard_access_denied'),
+      );
       return;
     }
 
@@ -391,23 +440,32 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
 
   private resolveAdminAndLogin(digits: string) {
     this.isCheckingAdmin = true;
-    this.api.get<any>('Auth/check-admin', { Phone: digits }).subscribe({
+    this.api.get<any>('Auth/check-dashboard-access', { Phone: digits }).subscribe({
       next: (res: any) => {
         this.isCheckingAdmin = false;
-        this.isAdmin = !!(res?.data ?? res?.result ?? res);
-        this.loginForm.get('roleId')?.setValue(this.isAdmin ? 1 : 2);
-        this.updateCanSubmit();
+        const access = this.parseDashboardAccess(res);
+        this.applyDashboardAccess(access);
+        if (!access.hasAccess) {
+          this.toaster.errorToaster(
+            this.translate.instant('login.errors.dashboard_access_denied'),
+          );
+          return;
+        }
         this.onLogin(this.loginForm.value);
       },
       error: (err) => {
         this.isCheckingAdmin = false;
-        this.isAdmin = false;
-        this.loginForm.get('roleId')?.setValue(2);
+        this.isAdmin = null;
+        this.hasDashboardAccess = null;
         this.updateCanSubmit();
         const msg =
           err?.error?.error?.message || err?.error?.message || err?.message;
         if (msg) this.toaster.errorToaster(msg);
-        else this.onLogin(this.loginForm.value);
+        else {
+          this.toaster.errorToaster(
+            this.translate.instant('login.errors.dashboard_access_denied'),
+          );
+        }
       },
     });
   }
@@ -438,6 +496,9 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
               : undefined,
           });
         });
+        if (!localStorage.getItem('countryId')) {
+          localStorage.setItem('countryId', this.countries[0].code.toString());
+        }
         if (this.countries.length && !this.loginForm.get('country')?.value) {
           this.loginForm.patchValue({ country: this.countries[0].code });
           this.onCountryChange(this.countries[0].code);
@@ -453,6 +514,7 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
         phone: this.mobileNumber,
         otpCode: e.otpValue,
         deviceId,
+        forDashboard: true,
       };
       this.api.post('Auth/verify-otp', otpObject).subscribe({
         next: (data: any) => {
@@ -461,14 +523,16 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
             return;
           }
           const user = data.data;
+          if (user.role !== Roles.admin && user.role !== Roles.trader) {
+            this.toaster.errorToaster(
+              this.translate.instant('login.errors.dashboard_access_denied'),
+            );
+            return;
+          }
           localStorage.setItem('token', user.accessToken);
           localStorage.setItem('userId', user.userId);
           localStorage.setItem('name', user.userName);
-          if (user.role === Roles.admin) {
-            localStorage.setItem('role', Roles.admin.toString());
-          } else {
-            localStorage.setItem('role', Roles.trader.toString());
-          }
+          localStorage.setItem('role', user.role);
           if (user.role === Roles.admin) {
             const countryIdFromInput = this.loginForm.get('country')?.value;
             if (countryIdFromInput) {
@@ -484,13 +548,20 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
             localStorage.removeItem('countryId');
           }
 
-            this.signalR.connect();
+          this.signalR.connect();
 
-          if (user.role === Roles.admin)
+          if (user.role === Roles.admin) {
             this.router.navigate(['/dashboard-admin']);
-          else this.router.navigate(['/dashboard-trader']);
+          } else {
+            this.router.navigate(['/dashboard-trader']);
+          }
         },
-        error: (err) => this.toaster.errorToaster(authErrorMessageKey(err?.error ?? err)),
+        error: (err: unknown) =>
+          this.toaster.errorToaster(
+            authErrorMessageKey(
+              (err as { error?: unknown })?.error ?? err,
+            ),
+          ),
       });
     }).catch(() => this.toaster.errorToaster('Device security init failed'));
   }
@@ -512,13 +583,25 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
     this.languageService.changeAppDirection(this.selectedLang);
     this.languageService.changeHtmlLang(this.selectedLang);
     this.languageService.use(this.selectedLang);
+    if (!localStorage.getItem('lang')) {
+      localStorage.setItem('lang', this.selectedLang);
+    }
   }
   onLogin(loginData: any) {
     this.openOtpModal = false;
     const digits = (loginData.phoneNumber ?? '').toString().replace(/\D/g, '');
+    const apiPhone = normalizePhoneForApi(
+      digits,
+      this.selectedCountry?.phoneCode ?? '+966',
+    );
     const secret = environment.deviceIdSecret ?? 'WardaDeviceIdSecretKey_v1';
     buildEncryptedDeviceId(secret).then((deviceId) => {
-      const body: { phone: string; deviceId: string; captchaToken?: string } = { phone: digits, deviceId };
+      const body: {
+        phone: string;
+        deviceId: string;
+        captchaToken?: string;
+        forDashboard: boolean;
+      } = { phone: apiPhone, deviceId, forDashboard: true };
       if (this.recaptchaSiteKey && this.captchaToken) {
         body.captchaToken = this.captchaToken;
       }
@@ -527,7 +610,7 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
           if (res?.isFailure) {
             this.toaster.errorToaster(authErrorMessageKey(res));
           } else {
-            this.mobileNumber = digits;
+            this.mobileNumber = apiPhone;
             if (this.isAdmin) {
               const countryId = loginData.country;
               if (countryId) localStorage.setItem('countryId', String(countryId));
@@ -535,8 +618,12 @@ export class LoginComponent implements OnDestroy, AfterViewInit {
             this.openOtpModal = true;
           }
         },
-        error: (err) => {
-          this.toaster.errorToaster(authErrorMessageKey(err?.error ?? err));
+        error: (err: unknown) => {
+          this.toaster.errorToaster(
+            authErrorMessageKey(
+              (err as { error?: unknown })?.error ?? err,
+            ),
+          );
         },
       });
     }).catch(() => this.toaster.errorToaster('Device security init failed'));

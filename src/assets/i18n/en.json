@@ -39,7 +39,11 @@
     "mobileNumber_5_validation": "Mobile number should be 9 numbers start with 5 ",
     "confirm_password_validation": "Password doesn't match",
     "min_validation": "The value must be at least 1",
-    "phoneInvalid_validation": "Invalid phone number"
+    "phoneInvalid_validation": "Enter a valid mobile: Saudi 9 digits (500000003) or 10 digits (0500000003)",
+    "phoneHint_sa": "9 digits starting with 5, 7, or 9 (500000003), or 10 with leading 0 (0500000003)",
+    "phoneHint_om": "8 digits starting with 7 or 9 (example: 91234567)",
+    "phoneHint_default": "Enter a valid mobile number",
+    "pattern_validation": "Digits only"
   },
   "actions": {
     "submit": "Submit",
@@ -121,7 +125,8 @@
       "otp_locked": "Too many attempts. Please try again later.",
       "otp_cooldown": "Please wait before requesting a new code.",
       "captcha_failed": "Security verification failed. Please try again.",
-      "otp_risk_denied": "Unable to send a verification code right now. Please try later."
+      "otp_risk_denied": "Unable to send a verification code right now. Please try later.",
+      "dashboard_access_denied": "This phone number is not registered as an admin or trader account."
     }
   },
   "otp": {
@@ -782,7 +787,17 @@
     "mobile": "Mobile",
     "email": "Email",
     "gender": "Gender",
-    "name": "Name"
+    "name": "Name",
+    "form": {
+      "userName": "Username",
+      "storeName": "Store Name",
+      "email": "Email",
+      "phone": "Phone Number",
+      "arDescription": "Description (ar)",
+      "enDescription": "Description (en)",
+      "save_changes": "Save Changes",
+      "updating": "Updating..."
+    }
   },
   "working_hours": {
     "pageName": "Working Hours",

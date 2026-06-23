@@ -1,5 +1,10 @@
 import { Component, inject, signal } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { ApiService } from '../../../services/api.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -20,144 +25,122 @@ import { IEditImage } from '../../../components/edit-mode-image/editImage.interf
 import { BreadcrumpComponent } from '../../../components/breadcrump/breadcrump.component';
 
 const global_PageName = 'profile.pageName';
-const global_API_deialis =  'Users';
-const global_API_update =  'Users';
-const global_routeUrl = '/profile'
+const global_API_deialis = 'Users';
+const global_API_update = 'Users';
+const global_routeUrl = '/profile';
 @Component({
   selector: 'app-edit-profile',
   standalone: true,
   imports: [
-            ReactiveFormsModule,
-            TranslatePipe,
-            SelectComponent, 
-            ButtonModule, 
-            NgIf, 
-            DialogComponent, 
-            TitleCasePipe, 
-            InputTextComponent, 
-            RouterModule, 
-            CheckBoxComponent,
-            EditModeImageComponent,
-            UploadFileComponent,
+    ReactiveFormsModule,
+    TranslatePipe,
+    SelectComponent,
+    ButtonModule,
+    NgIf,
+    DialogComponent,
+    TitleCasePipe,
+    InputTextComponent,
+    RouterModule,
+    CheckBoxComponent,
+    EditModeImageComponent,
+    UploadFileComponent,
   ],
   templateUrl: './edit-profile.component.html',
-  styleUrl: './edit-profile.component.scss'
+  styleUrl: './edit-profile.component.scss',
 })
 export class EditProfileComponent {
+  pageName = signal<string>(global_PageName);
 
-pageName = signal<string>(global_PageName);
-
-  userDate=JSON.parse(localStorage.getItem('userData')as any);
-  defaultImage=this.userDate.gender==1?'assets/images/arabian-man.png':'assets/images/arabian-woman.png'
-  userId=this.userDate.id
-  imgUrl:any=null
-  private ApiService = inject(ApiService)
-  private router = inject(Router)
-  showConfirmMessage: boolean = false
-  private confirm = inject(ConfirmMsgService)
-  roleList:any[]=[]
-  genderList=gender
-  minEndDate:Date =new Date()
+  defaultImage = 'assets/images/arabian-man.png';
+  userId = +(localStorage.getItem('userId') as string);
+  imgUrl: any = null;
+  private ApiService = inject(ApiService);
+  private router = inject(Router);
+  showConfirmMessage: boolean = false;
+  private confirm = inject(ConfirmMsgService);
+  roleList: any[] = [];
+  genderList = gender;
+  minEndDate: Date = new Date();
   selectedLang: any;
   languageService = inject(LanguageService);
   editMode: boolean = false;
-  showUserImage:boolean=true
+  showUserImage: boolean = true;
 
   form = new FormGroup({
     firstName: new FormControl('', {
-      validators: [
-        Validators.required,
-      ],
+      validators: [Validators.required],
     }),
-    lastName: new FormControl <any>('', {
-      validators: [
-        Validators.required,
-      ]
+    lastName: new FormControl<any>('', {
+      validators: [Validators.required],
     }),
-    email: new FormControl <any>('', {
-      validators: [
-        Validators.required,
-        Validations.emailValidator()
-      ]
+    email: new FormControl<any>('', {
+      validators: [Validators.required, Validations.emailValidator()],
     }),
     userName: new FormControl<any>('', {
-      validators: [
-        Validators.required
-      ]
+      validators: [Validators.required],
     }),
     mobileNumber: new FormControl<any>('', {
-      validators: [
-        Validators.required,
-        Validations.onlyNumberValidator()
-      ]
+      validators: [Validators.required, Validations.onlyNumberValidator()],
     }),
     roleId: new FormControl<any>('', {
-      validators: [
-        Validators.required,
-      ]
+      validators: [Validators.required],
     }),
     password: new FormControl<any>('', {
-      validators: [
-        Validators.required,
-      ]
+      validators: [Validators.required],
     }),
     confirmPassword: new FormControl<any>('', {
-      validators: [
-        Validators.required,
-      ]
+      validators: [Validators.required],
     }),
     genderId: new FormControl<any>('', {
-      validators: [
-        Validators.required,
-      ]
+      validators: [Validators.required],
     }),
-    imgSrc:new FormControl(''),
+    imgSrc: new FormControl(''),
     isActive: new FormControl<boolean>(true),
-    userId: new FormControl( this.userId| 0),
-  })
+    userId: new FormControl(this.userId | 0),
+  });
 
   bredCrumb: IBreadcrumb = {
-    crumbs: []
-  }
-
+    crumbs: [],
+  };
 
   // get isRequiredError(): boolean {
   //   const control = this.form.get('imgSrc');
   //   return control?.touched && control?.hasError('required') || false;
   // }
 
-
   ngOnInit() {
-    this.pageName.set(global_PageName)
-    this.getAllRoles()
-    this.getBreadCrumb()
+    this.pageName.set(global_PageName);
+    this.getAllRoles();
+    this.getBreadCrumb();
     this.selectedLang = this.languageService.translationService.currentLang;
     this.languageService.translationService.onLangChange.subscribe(() => {
       this.selectedLang = this.languageService.translationService.currentLang;
-      this.getAllRoles()
-      this.getBreadCrumb()
-    })
-      this.API_getItemDetails()
-      this.removePasswordValidation()
+      this.getAllRoles();
+      this.getBreadCrumb();
+    });
+    this.API_getItemDetails();
+    this.removePasswordValidation();
   }
 
   tyepMode() {
-    let result = 'Edit'
-    return result
+    let result = 'Edit';
+    return result;
   }
 
   getBreadCrumb() {
     this.bredCrumb = {
       crumbs: [
         {
-          label:  this.languageService.translate('Home'),
+          label: this.languageService.translate('Home'),
           routerLink: '/dashboard',
         },
         {
-          label: this.languageService.translate(this.pageName()+ '_'+this.tyepMode()+'_crumb'),
+          label: this.languageService.translate(
+            this.pageName() + '_' + this.tyepMode() + '_crumb',
+          ),
         },
-      ]
-    }
+      ],
+    };
   }
   // onPasswordChanged(value:any){
   //       this.form.get('confirmPassword')?.reset()
@@ -167,93 +150,85 @@ pageName = signal<string>(global_PageName);
   //       ctrlConfirm.setValidators(Validations.confirmValue(this.form.value.password))
   //       ctrlConfirm.updateValueAndValidity()
   // }
-    editImageProps: IEditImage = {
-      props: {
-        visible: true,
-        imgSrc: ''
-      },
-      onEditBtn: (e?: Event) => {
-        this.editImageProps.props.visible = false;
-        this.editMode = false;
+  editImageProps: IEditImage = {
+    props: {
+      visible: true,
+      imgSrc: '',
+    },
+    onEditBtn: (e?: Event) => {
+      this.editImageProps.props.visible = false;
+      this.editMode = false;
+    },
+  };
+  getAllRoles() {
+    this.ApiService.get('Auth/roles').subscribe((res: any) => {
+      if (res.data) {
+        res.data.map((item: any) => {
+          this.roleList.push({
+            name: this.selectedLang == 'ar' ? item.arName : item.enName,
+            code: item.roleId,
+          });
+        });
       }
-    };
-  getAllRoles(){
-    this.ApiService.get('Auth/roles').subscribe((res:any)=>{
-       if(res.data){
-          res.data.map((item:any) => {
-             this.roleList.push({
-              name:this.selectedLang=='ar'?item.arName :item.enName,
-              code:item.roleId
-             })
-          })
-       }
-    })
-  }
-   
-  onStartDateChange(date:Date){
-    this.minEndDate=date
+    });
   }
 
- 
-  removePasswordValidation(){
-    const ctrlform =this.form.controls
+  onStartDateChange(date: Date) {
+    this.minEndDate = date;
+  }
 
-    ctrlform.password.removeValidators(Validators.required)
-    ctrlform.confirmPassword.removeValidators(Validators.required)
+  removePasswordValidation() {
+    const ctrlform = this.form.controls;
 
-    ctrlform.password.updateValueAndValidity()
-    ctrlform.confirmPassword.updateValueAndValidity()
+    ctrlform.password.removeValidators(Validators.required);
+    ctrlform.confirmPassword.removeValidators(Validators.required);
+
+    ctrlform.password.updateValueAndValidity();
+    ctrlform.confirmPassword.updateValueAndValidity();
   }
 
   API_getItemDetails() {
-    this.ApiService.get(`${global_API_deialis}/${this.userId}`).subscribe((res: any) => {
-      if (res){
-        this.form.patchValue(res.data)
-        this.imgUrl=res.data.imgSrc?res.data.imgSrc:this.defaultImage
-      }
-    })
+    this.ApiService.get(`${global_API_deialis}/${this.userId}`).subscribe(
+      (res: any) => {
+        if (res) {
+          this.form.patchValue(res.data);
+          this.imgUrl = res.data.imgSrc ? res.data.imgSrc : this.defaultImage;
+        }
+      },
+    );
   }
 
-  onSubmit() {   
-      delete this.form.value.password
-      delete this.form.value.confirmPassword
-      this.API_forEditItem(this.form.value)
-    
+  onSubmit() {
+    delete this.form.value.password;
+    delete this.form.value.confirmPassword;
+    this.API_forEditItem(this.form.value);
   }
 
   navigateToPageTable() {
-  this.router.navigateByUrl(global_routeUrl)
+    this.router.navigateByUrl(global_routeUrl);
   }
 
   cancel() {
-    const hasValue = this.confirm.formHasValue(this.form)
+    const hasValue = this.confirm.formHasValue(this.form);
     if (hasValue && this.tyepMode() == 'Edit')
-      this.showConfirmMessage = !this.showConfirmMessage
-    else
-      this.navigateToPageTable()
-
+      this.showConfirmMessage = !this.showConfirmMessage;
+    else this.navigateToPageTable();
   }
 
   onConfirmMessage() {
-    this.navigateToPageTable()
-
+    this.navigateToPageTable();
   }
-// onEditProfile(){
-//   this.mode='Edit'
-//   this.bredCrumb
-//   console.log("ProfileComponent  onEditProfile   this.bredCrumb:",  this.bredCrumb)
-// }
+  // onEditProfile(){
+  //   this.mode='Edit'
+  //   this.bredCrumb
+  //   console.log("ProfileComponent  onEditProfile   this.bredCrumb:",  this.bredCrumb)
+  // }
 
   API_forEditItem(payload: any) {
-    this.ApiService.put(global_API_update, payload).subscribe(res => {
-      if (res){
-        this.navigateToPageTable()
+    this.ApiService.put(global_API_update, payload).subscribe((res) => {
+      if (res) {
+        this.navigateToPageTable();
       }
-       
-
-    })
+    });
   }
-
-
 }
-

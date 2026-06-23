@@ -26,6 +26,9 @@ export function authErrorMessageKey(payload: unknown): string {
         return 'validation_message.phoneInvalid_validation';
       case 'Auth.OtpRiskDenied':
         return 'login.errors.otp_risk_denied';
+      case 'Auth.DashboardAccessDenied':
+      case 'Auth.PhoneNotRegisteredForDashboard':
+        return 'login.errors.dashboard_access_denied';
       default:
         break;
     }
