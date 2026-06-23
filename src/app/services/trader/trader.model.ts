@@ -8,27 +8,14 @@ export interface TraderAddress {
 }
 
 export interface UpdateProfileReqBody {
-  id: number;
   name: string;
   email: string;
-  phone: string;
-  phoneCountryCode: string;
   storeName: string;
-  cr: string;
-  license: string;
-  iban: string;
-  numberOfBranches: number;
-  image: string;
   arDescription: string;
   enDescription: string;
-  addresses: {
-    id: number;
-    expalinedAddress: string;
-    cityId: number;
-    latitude: number;
-    logitude: number;
-  }[];
-  supportsPickup: boolean;
+  image: string;
+  numberOfBranches: number;
+  addresses: TraderAddress[];
 }
 
 export interface TraderProfile {
@@ -51,8 +38,7 @@ export interface TraderProfile {
   isAvailable: boolean;
   addresses: TraderAddress[];
   socialMedia: [];
-
-  phoneCountryCode: 'string';
-  arDescription: 'string';
-  enDescription: 'string';
+  phoneCountryCode: string;
+  arDescription: string;
+  enDescription: string;
 }

@@ -56,6 +56,7 @@
                       [label]="'trader.form.phone'"
                       [control]="form.get('phone')"
                       [length]="10"
+                      [hint]="phoneHintKey"
                     ></app-input-text>
                     <small *ngIf="!form.get('phone')?.value" class="hint">{{
                       phoneHintKey | translate
