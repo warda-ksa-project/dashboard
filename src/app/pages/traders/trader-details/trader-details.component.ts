@@ -1,5 +1,10 @@
 import { Component, inject, signal } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { ApiService } from '../../../services/api.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -8,7 +13,7 @@ import { InputTextComponent } from '../../../components/input-text/input-text.co
 import { IBreadcrumb } from '../../../components/breadcrump/cerqel-breadcrumb.interface';
 import { ConfirmMsgService } from '../../../services/confirm-msg.service';
 import { DialogComponent } from '../../../components/dialog/dialog.component';
-import { UploadFileComponent } from "../../../components/upload-file/upload-file.component";
+import { UploadFileComponent } from '../../../components/upload-file/upload-file.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { LanguageService } from '../../../services/language.service';
 import { IEditImage } from '../../../components/edit-mode-image/editImage.interface';
@@ -24,57 +29,74 @@ import { environment } from '../../../../environments/environment';
 import { MapComponent } from '../../../components/map/map.component';
 import { SelectComponent } from '../../../components/select/select.component';
 import { CountryService } from '../../../services/country.service';
+import { DialogModule } from 'primeng/dialog';
+import { SafePipe } from '../../../pipes/safe-pipe';
 
 const global_PageName = 'trader.pageName';
-const global_routeUrl = 'traders'
+const global_routeUrl = 'traders';
 const global_API_create = 'Traders';
 const global_API_update = 'Traders';
 
 @Component({
   selector: 'app-trader-details',
   standalone: true,
-  imports: [ReactiveFormsModule,SelectComponent, StepperModule,MapComponent, EditModeImageComponent, TitleCasePipe, TranslatePipe, ButtonModule, NgIf, DialogComponent, InputTextComponent, RouterModule, UploadFileComponent],
+  imports: [
+    ReactiveFormsModule,
+    SelectComponent,
+    SafePipe,
+    StepperModule,
+    MapComponent,
+    EditModeImageComponent,
+    TitleCasePipe,
+    TranslatePipe,
+    ButtonModule,
+    NgIf,
+    DialogComponent,
+    InputTextComponent,
+    RouterModule,
+    UploadFileComponent,
+    DialogModule,
+  ],
   templateUrl: './trader-details.component.html',
-  styleUrl: './trader-details.component.scss'
+  styleUrl: './trader-details.component.scss',
 })
-export class TraderDetailsComponent  {
-
+export class TraderDetailsComponent {
   pageName = signal<string>(global_PageName);
-  private ApiService = inject(ApiService)
-  private router = inject(Router)
-  lat: number = 24.7136
-  lng: number = 46.6753
-  private route = inject(ActivatedRoute)
-  showConfirmMessage: boolean = false
-  private confirm = inject(ConfirmMsgService)
-  private countryService = inject(CountryService)
-  cities:any[]=[]
-  adress: any[] = [{
-    expalinedAddress: '',
-    latitude: '',
-    logitude: '',
-    cityId:'',
-    userId: Number(localStorage.getItem('userId')) || 0
-  }]
-  files:any[]=[
+  showPdfDialog = false;
+  pdfTitle = '';
+  pdfUrl = '';
+  private ApiService = inject(ApiService);
+  private router = inject(Router);
+  lat: number = 24.7136;
+  lng: number = 46.6753;
+  private route = inject(ActivatedRoute);
+  showConfirmMessage: boolean = false;
+  private confirm = inject(ConfirmMsgService);
+  private countryService = inject(CountryService);
+  cities: any[] = [];
+  adress: any[] = [
     {
-      iban:'',
-      license:'',
-      cr:''
-    }
-  ]
+      expalinedAddress: '',
+      latitude: '',
+      logitude: '',
+      cityId: '',
+      userId: Number(localStorage.getItem('userId')) || 0,
+    },
+  ];
+  files: any[] = [
+    {
+      iban: '',
+      license: '',
+      cr: '',
+    },
+  ];
   // isAddressValid:boolean=false
   form = new FormGroup({
     name: new FormControl('', {
-      validators: [
-        Validators.required
-      ],
+      validators: [Validators.required],
     }),
     email: new FormControl('', {
-      validators: [
-        Validators.required,
-        Validations.emailValidator()
-      ]
+      validators: [Validators.required, Validations.emailValidator()],
     }),
     phone: new FormControl('', {
       validators: [
@@ -87,41 +109,23 @@ export class TraderDetailsComponent  {
     }),
 
     storeName: new FormControl('', {
-      validators: [
-        Validators.required
-      ]
+      validators: [Validators.required],
     }),
-    cr: new FormControl<any>('', {
-        
-    }),
-    license: new FormControl<any>('', {
-     
-    }),
-    iban: new FormControl<any>('', {
-     
-    }),
-    image: new FormControl<any>('', {
-     
-    }),
+    cr: new FormControl<any>('', {}),
+    license: new FormControl<any>('', {}),
+    iban: new FormControl<any>('', {}),
+    image: new FormControl<any>('', {}),
 
     numberOfBranches: new FormControl<any>('', {
-      validators: [
-        Validators.required,
-        Validations.onlyNumberValidator()
-      ]
+      validators: [Validators.required, Validations.onlyNumberValidator()],
     }),
     addresses: new FormControl<any>(''),
     expalinedAddress: new FormControl('', {
-      validators: [
-        Validators.required,
-      ]
+      validators: [Validators.required],
     }),
     cityId: new FormControl('', {
-      validators: [
-        Validators.required,
-      ]
+      validators: [Validators.required],
     }),
-
 
     // street: new FormControl('', {
     //   validators: [
@@ -151,83 +155,82 @@ export class TraderDetailsComponent  {
     //   ]
     // }),
     logitude: new FormControl('', {
-      validators: [
-        Validators.required,
-        Validations.decimalNumberValidators()
-      ]
+      validators: [Validators.required, Validations.decimalNumberValidators()],
     }),
     latitude: new FormControl('', {
-      validators: [
-        Validators.required,
-        Validations.decimalNumberValidators()
-      ]
+      validators: [Validators.required, Validations.decimalNumberValidators()],
     }),
     id: new FormControl(this.getID | 0),
-  })
+  });
 
-  editTraderImageMode:boolean=false
-  editCRMode:boolean=false
-  editLicenseMode:boolean=false
-  editIBanMode:boolean=false
+  editTraderImageMode: boolean = false;
+  editCRMode: boolean = false;
+  editLicenseMode: boolean = false;
+  editIBanMode: boolean = false;
 
+  openPdf(title: string, url: string) {
+    this.pdfTitle = title;
+    this.pdfUrl = url;
+    this.showPdfDialog = true;
+  }
 
   editImageProps: IEditImage = {
     props: {
       visible: true,
-      imgSrc: ''
+      imgSrc: '',
     },
     onEditBtn: (e?: Event) => {
       this.editImageProps.props.visible = false;
       this.editCRMode = false;
-    }
+    },
   };
 
   editImageCRProps: IEditImage = {
     props: {
       visible: true,
-      imgSrc: ''
+      imgSrc: '',
     },
     onEditBtn: (e?: Event) => {
       this.editImageCRProps.props.visible = false;
       this.editCRMode = false;
-    }
+    },
   };
 
   editImageLicenseProps: IEditImage = {
     props: {
       visible: true,
-      imgSrc: ''
+      imgSrc: '',
     },
     onEditBtn: (e?: Event) => {
       this.editImageProps.props.visible = false;
       this.editLicenseMode = false;
-    }
+    },
   };
 
   editImageIBanProps: IEditImage = {
     props: {
       visible: true,
-      imgSrc: ''
+      imgSrc: '',
     },
     onEditBtn: (e?: Event) => {
       this.editImageProps.props.visible = false;
       this.editIBanMode = false;
-    }
+    },
   };
 
   editTraderImageProps: IEditImage = {
     props: {
       visible: true,
-      imgSrc: ''
+      imgSrc: '',
     },
     onEditBtn: (e?: Event) => {
       this.editTraderImageProps.props.visible = false;
       this.editTraderImageMode = false;
-    }
+    },
   };
 
   get getID() {
-    return this.route.snapshot.params['id']
+    return this.route.snapshot.params['id'];
   }
 
   selectedLang: any;
@@ -235,13 +238,12 @@ export class TraderDetailsComponent  {
   phoneHintKey = getDomesticPhoneHintKey('+966');
 
   ngOnInit() {
-
-    this.pageName.set(global_PageName)
-    this.getAllCity()
-    this.setupPhoneValidator()
+    this.pageName.set(global_PageName);
+    this.getAllCity();
+    this.setupPhoneValidator();
     this.languageService.translationService.onLangChange.subscribe(() => {
       this.selectedLang = this.languageService.translationService.currentLang;
-      this.getAllCity()
+      this.getAllCity();
     });
 
     // Subscribe to selected country changes to update phone validator
@@ -278,7 +280,6 @@ export class TraderDetailsComponent  {
     //     addresses: this.adress
     //   })
 
-
     // })
     // this.form.get('flatNo')?.valueChanges.subscribe(res => {
     //   this.adress[0].flatNo = +res
@@ -286,14 +287,12 @@ export class TraderDetailsComponent  {
     //     addresses: this.adress
     //   })
 
-
     // })
     // this.form.get('district')?.valueChanges.subscribe(res => {
     //   this.adress[0].district = res
     //   this.form.patchValue({
     //     addresses: this.adress
     //   })
-
 
     // })
     // this.form.get('floorNo')?.valueChanges.subscribe(res => {
@@ -303,67 +302,57 @@ export class TraderDetailsComponent  {
     //   })
     //   console.log('dd',this.form.value)
 
-
     // })
-    this.form.get('latitude')?.valueChanges.subscribe(res => {
-      this.adress[0].latitude = res
+    this.form.get('latitude')?.valueChanges.subscribe((res) => {
+      this.adress[0].latitude = res;
       this.form.patchValue({
-        addresses: this.adress
-      })
-
-
-    })
-    this.form.get('logitude')?.valueChanges.subscribe(res => {
-      this.adress[0].logitude = res
+        addresses: this.adress,
+      });
+    });
+    this.form.get('logitude')?.valueChanges.subscribe((res) => {
+      this.adress[0].logitude = res;
       this.form.patchValue({
-        addresses: this.adress
-      })
-
-
-    })
-    this.form.get('expalinedAddress')?.valueChanges.subscribe(res => {
-      this.adress[0].expalinedAddress = res
+        addresses: this.adress,
+      });
+    });
+    this.form.get('expalinedAddress')?.valueChanges.subscribe((res) => {
+      this.adress[0].expalinedAddress = res;
       this.form.patchValue({
-        addresses: this.adress
-      })
-
-
-    })
-    this.form.get('cityId')?.valueChanges.subscribe(res => {
-      this.adress[0].cityId = res
+        addresses: this.adress,
+      });
+    });
+    this.form.get('cityId')?.valueChanges.subscribe((res) => {
+      this.adress[0].cityId = res;
       this.form.patchValue({
-        addresses: this.adress
-      })
-
-
-    })
-    this.form.get('addresses')?.valueChanges.subscribe(res => {
-      this.isAddressVaild()
-    })
-    this.form.get('iban')?.valueChanges.subscribe(res => {
-      this.files[0].iban=res
-      this.isFilesValid()
-    })
-    this.form.get('cr')?.valueChanges.subscribe(res => {
-      console.log("TraderDetailsComponent  this.form.get  res:", res)
-      this.files[0].cr=res
-      this.isFilesValid()
-    })
-    this.form.get('license')?.valueChanges.subscribe(res => {
-      this.files[0].license=res
-      this.isFilesValid()
-    })
-    if (this.tyepMode() !== 'Add')
-      this.API_getItemDetails()
+        addresses: this.adress,
+      });
+    });
+    this.form.get('addresses')?.valueChanges.subscribe((res) => {
+      this.isAddressVaild();
+    });
+    this.form.get('iban')?.valueChanges.subscribe((res) => {
+      this.files[0].iban = res;
+      this.isFilesValid();
+    });
+    this.form.get('cr')?.valueChanges.subscribe((res) => {
+      console.log('TraderDetailsComponent  this.form.get  res:', res);
+      this.files[0].cr = res;
+      this.isFilesValid();
+    });
+    this.form.get('license')?.valueChanges.subscribe((res) => {
+      this.files[0].license = res;
+      this.isFilesValid();
+    });
+    if (this.tyepMode() !== 'Add') this.API_getItemDetails();
   }
 
   tyepMode() {
     const url = this.router.url;
-    let result = 'Add'
-    if (url.includes('edit')) result = 'Edit'
-    else if (url.includes('view')) result = 'View'
-    else result = 'Add'
-    return result
+    let result = 'Add';
+    if (url.includes('edit')) result = 'Edit';
+    else if (url.includes('view')) result = 'View';
+    else result = 'Add';
+    return result;
   }
 
   onChangeLocation(event: { lat: number; lng: number }) {
@@ -371,10 +360,9 @@ export class TraderDetailsComponent  {
     this.lng = event.lng;
     this.form.patchValue({
       latitude: String(event.lat),
-      logitude: String(event.lng)
-    })
+      logitude: String(event.lng),
+    });
   }
-
 
   // getMainCategory(){
   //   this.ApiService.get('MainCategory/GetAll').subscribe((res: any) => {
@@ -390,18 +378,18 @@ export class TraderDetailsComponent  {
 
   //   })
   // }
-  getAllCity(){
+  getAllCity() {
     this.ApiService.get('Cities').subscribe((res: any) => {
       if (res.data) {
-        this.cities=[]
-       res.data.map((city:any)=>{
-           this.cities.push({
-            name:this.selectedLang=='en'?city.enName :city.arName,
-            code:city.id
-           })
-       })
+        this.cities = [];
+        res.data.map((city: any) => {
+          this.cities.push({
+            name: this.selectedLang == 'en' ? city.enName : city.arName,
+            code: city.id,
+          });
+        });
       }
-    })
+    });
   }
   API_getItemDetails() {
     this.ApiService.get(`Traders/${this.getID}`).subscribe((res: any) => {
@@ -413,15 +401,27 @@ export class TraderDetailsComponent  {
           name: d.userName ?? d.name,
           phone: formatPhoneForInput(
             d.phone?.toString(),
-            d.phoneCountryCode ?? this.countryService.getSelectedCountry()?.phoneCode ?? '+966',
+            d.phoneCountryCode ??
+              this.countryService.getSelectedCountry()?.phoneCode ??
+              '+966',
           ),
           expalinedAddress: addr?.expalinedAddress ?? addr?.street,
           cityId: addr?.cityId,
           latitude: addr?.latitude != null ? String(addr.latitude) : '',
-          logitude: addr?.longitude != null ? String(addr.longitude) : addr?.logitude != null ? String(addr.logitude) : '',
-        })
+          logitude:
+            addr?.longitude != null
+              ? String(addr.longitude)
+              : addr?.logitude != null
+                ? String(addr.logitude)
+                : '',
+        });
         this.lat = addr?.latitude != null ? Number(addr.latitude) : 24.7136;
-        this.lng = addr?.longitude != null ? Number(addr.longitude) : addr?.logitude != null ? Number(addr.logitude) : 46.6753;
+        this.lng =
+          addr?.longitude != null
+            ? Number(addr.longitude)
+            : addr?.logitude != null
+              ? Number(addr.logitude)
+              : 46.6753;
         this.editTraderImageProps.props.imgSrc = res.data.image;
         this.editImageIBanProps.props.imgSrc = res.data.iban;
         this.editImageCRProps.props.imgSrc = res.data.cr;
@@ -435,7 +435,7 @@ export class TraderDetailsComponent  {
         this.files[0] = {
           iban: res.data.iban,
           license: res.data.license,
-          cr: res.data.cr
+          cr: res.data.cr,
         };
 
         // Update form controls with file URLs
@@ -443,30 +443,33 @@ export class TraderDetailsComponent  {
           cr: res.data.cr,
           license: res.data.license,
           iban: res.data.iban,
-          image: res.data.image
+          image: res.data.image,
         });
 
-
-        this.adress = addr ? [{
-          id: addr.id,
-          expalinedAddress: addr.expalinedAddress ?? addr.street,
-          cityId: addr.cityId,
-          latitude: String(addr.latitude ?? ''),
-          logitude: String(addr.longitude ?? addr.logitude ?? ''),
-          userId: Number(localStorage.getItem('userId')) || 0
-        }] : this.adress
+        this.adress = addr
+          ? [
+              {
+                id: addr.id,
+                expalinedAddress: addr.expalinedAddress ?? addr.street,
+                cityId: addr.cityId,
+                latitude: String(addr.latitude ?? ''),
+                logitude: String(addr.longitude ?? addr.logitude ?? ''),
+                userId: Number(localStorage.getItem('userId')) || 0,
+              },
+            ]
+          : this.adress;
 
         // this.imageList = res.data.image;
         // if (this.imageList.length != 0) {
         //   this.addUrltoMedia(this.imageList);
         // }
-        
+
         // Debug: Check form validation after loading data
         setTimeout(() => {
           this.checkFormValidation();
         }, 100);
       }
-    })
+    });
   }
   // addUrltoMedia(list: any) {
   //   list.forEach((data: any) => {
@@ -496,22 +499,26 @@ export class TraderDetailsComponent  {
   // }
 
   setPayload(keysToRemove: string[], payload: any) {
-    console.log("TraderDetailsComponent  setPayload   this.form.value:", this.form.value)
+    console.log(
+      'TraderDetailsComponent  setPayload   this.form.value:',
+      this.form.value,
+    );
     keysToRemove.forEach((key) => {
       this.form.get(key)?.clearValidators();
       this.form.get(key)?.updateValueAndValidity();
       delete payload[key];
-
     });
-    console.log("TraderDetailsComponent  setPayload   this.form.value:", this.form.value)
-
+    console.log(
+      'TraderDetailsComponent  setPayload   this.form.value:',
+      this.form.value,
+    );
   }
 
-  onFileEdit(control:string){
-    this.form.get(control)?.setValue(null)
-    
+  onFileEdit(control: string) {
+    this.form.get(control)?.setValue(null);
+
     // Switch to upload mode when editing files
-    switch(control) {
+    switch (control) {
       case 'cr':
         this.editCRMode = false;
         break;
@@ -527,7 +534,6 @@ export class TraderDetailsComponent  {
     }
   }
 
-
   onSubmit() {
     const raw = this.form.value;
     if (this.form.get('phone')?.invalid) {
@@ -535,10 +541,18 @@ export class TraderDetailsComponent  {
       return;
     }
 
-    const crVal = Array.isArray(raw.cr) ? raw.cr[0]?.image ?? raw.cr[0] : raw.cr;
-    const licenseVal = Array.isArray(raw.license) ? raw.license[0]?.image ?? raw.license[0] : raw.license;
-    const ibanVal = Array.isArray(raw.iban) ? raw.iban[0]?.image ?? raw.iban[0] : raw.iban;
-    const imageVal = Array.isArray(raw.image) ? raw.image[0]?.image ?? raw.image[0] : raw.image;
+    const crVal = Array.isArray(raw.cr)
+      ? (raw.cr[0]?.image ?? raw.cr[0])
+      : raw.cr;
+    const licenseVal = Array.isArray(raw.license)
+      ? (raw.license[0]?.image ?? raw.license[0])
+      : raw.license;
+    const ibanVal = Array.isArray(raw.iban)
+      ? (raw.iban[0]?.image ?? raw.iban[0])
+      : raw.iban;
+    const imageVal = Array.isArray(raw.image)
+      ? (raw.image[0]?.image ?? raw.image[0])
+      : raw.image;
 
     const phoneCountryCode =
       this.countryService.getSelectedCountry()?.phoneCode ?? '+966';
@@ -554,38 +568,45 @@ export class TraderDetailsComponent  {
       license: licenseVal,
       iban: ibanVal,
       image: imageVal,
-      addresses: this.adress?.length ? [{
-        id: this.adress[0].id,
-        expalinedAddress: raw.expalinedAddress ?? this.adress[0].expalinedAddress,
-        cityId: raw.cityId ?? this.adress[0].cityId,
-        latitude: raw.latitude != null ? +raw.latitude : this.adress[0].latitude,
-        logitude: raw.logitude != null ? +raw.logitude : this.adress[0].logitude,
-      }] : [],
+      addresses: this.adress?.length
+        ? [
+            {
+              id: this.adress[0].id,
+              expalinedAddress:
+                raw.expalinedAddress ?? this.adress[0].expalinedAddress,
+              cityId: raw.cityId ?? this.adress[0].cityId,
+              latitude:
+                raw.latitude != null ? +raw.latitude : this.adress[0].latitude,
+              logitude:
+                raw.logitude != null ? +raw.logitude : this.adress[0].logitude,
+            },
+          ]
+        : [],
     };
 
     if (this.tyepMode() === 'Edit') {
       payload.id = +this.getID;
     }
 
-    this.setPayload(['expalinedAddress', 'cityId', 'logitude', 'latitude'], payload);
+    this.setPayload(
+      ['expalinedAddress', 'cityId', 'logitude', 'latitude'],
+      payload,
+    );
 
-    console.log('ggg', payload)
+    console.log('ggg', payload);
 
     if (this.tyepMode() == 'Add') {
-
-      this.API_forAddItem(payload)
-
-    }
-    else {
-      this.API_forEditItem(payload)
+      this.API_forAddItem(payload);
+    } else {
+      this.API_forEditItem(payload);
     }
   }
 
   navigateToPageTable() {
-    this.router.navigateByUrl(global_routeUrl)
+    this.router.navigateByUrl(global_routeUrl);
   }
   onValueStepperChange(value: any) {
-    this.gotTo(value)
+    this.gotTo(value);
   }
 
   gotTo(pageNumber: number) {
@@ -599,48 +620,53 @@ export class TraderDetailsComponent  {
   }
   isAddressVaild() {
     const isAddressValid = this.adress.every((obj: any) =>
-      Object.values(obj).every(value => value !== null && value !== undefined && value !== '')
+      Object.values(obj).every(
+        (value) => value !== null && value !== undefined && value !== '',
+      ),
     );
 
-    return isAddressValid
+    return isAddressValid;
   }
 
-  isFilesValid(){
+  isFilesValid() {
     // Check each file individually - either it's in edit mode (has URL) or has uploaded file
-    const crValid = this.editCRMode || (this.form.get('cr')?.value && this.form.get('cr')?.value.length > 0);
-    const licenseValid = this.editLicenseMode || (this.form.get('license')?.value && this.form.get('license')?.value.length > 0);
-    const ibanValid = this.editIBanMode || (this.form.get('iban')?.value && this.form.get('iban')?.value.length > 0);
-    const imageValid = this.editTraderImageMode || (this.form.get('image')?.value && this.form.get('image')?.value !== '');
-    
+    const crValid =
+      this.editCRMode ||
+      (this.form.get('cr')?.value && this.form.get('cr')?.value.length > 0);
+    const licenseValid =
+      this.editLicenseMode ||
+      (this.form.get('license')?.value &&
+        this.form.get('license')?.value.length > 0);
+    const ibanValid =
+      this.editIBanMode ||
+      (this.form.get('iban')?.value && this.form.get('iban')?.value.length > 0);
+    const imageValid =
+      this.editTraderImageMode ||
+      (this.form.get('image')?.value && this.form.get('image')?.value !== '');
+
     return crValid && licenseValid && ibanValid && imageValid;
   }
   cancel() {
-    const hasValue = this.confirm.formHasValue(this.form)
+    const hasValue = this.confirm.formHasValue(this.form);
     if (hasValue && this.tyepMode() == 'Edit')
-      this.showConfirmMessage = !this.showConfirmMessage
-    else
-      this.navigateToPageTable()
-
+      this.showConfirmMessage = !this.showConfirmMessage;
+    else this.navigateToPageTable();
   }
 
   onConfirmMessage() {
-    this.navigateToPageTable()
-
+    this.navigateToPageTable();
   }
 
-
   API_forAddItem(payload: any) {
-    this.ApiService.post(global_API_create, payload).subscribe(res => {
-      if (res)
-        this.navigateToPageTable()
-    })
+    this.ApiService.post(global_API_create, payload).subscribe((res) => {
+      if (res) this.navigateToPageTable();
+    });
   }
 
   API_forEditItem(payload: any) {
-    this.ApiService.put(global_API_update, payload).subscribe(res => {
-      if (res)
-        this.navigateToPageTable()
-    })
+    this.ApiService.put(global_API_update, payload).subscribe((res) => {
+      if (res) this.navigateToPageTable();
+    });
   }
 
   // Debug method to check form validation status
@@ -653,7 +679,7 @@ export class TraderDetailsComponent  {
 
   getFormValidationErrors() {
     let formErrors: any = {};
-    Object.keys(this.form.controls).forEach(key => {
+    Object.keys(this.form.controls).forEach((key) => {
       const controlErrors = this.form.get(key)?.errors;
       if (controlErrors) {
         formErrors[key] = controlErrors;
@@ -667,37 +693,41 @@ export class TraderDetailsComponent  {
     const nameValid = this.form.get('name')?.valid ?? false;
     const emailValid = this.form.get('email')?.valid ?? false;
     const phoneValid = this.form.get('phone')?.valid ?? false;
-    
+
     return nameValid && emailValid && phoneValid;
   }
 
   isStep2Valid(): boolean {
     const storeNameValid = this.form.get('storeName')?.valid ?? false;
-    const numberOfBranchesValid = this.form.get('numberOfBranches')?.valid ?? false;
-    
+    const numberOfBranchesValid =
+      this.form.get('numberOfBranches')?.valid ?? false;
+
     return storeNameValid && numberOfBranchesValid;
   }
 
   isStep3Valid(): boolean {
     const longitudeValid = this.form.get('logitude')?.valid ?? false;
     const latitudeValid = this.form.get('latitude')?.valid ?? false;
-    const explainedAddressValid = this.form.get('expalinedAddress')?.valid ?? false;
+    const explainedAddressValid =
+      this.form.get('expalinedAddress')?.valid ?? false;
     const cityIdValid = this.form.get('cityId')?.valid ?? false;
-    
-    return longitudeValid && latitudeValid && explainedAddressValid && cityIdValid;
+
+    return (
+      longitudeValid && latitudeValid && explainedAddressValid && cityIdValid
+    );
   }
 
   private setupPhoneValidator() {
     const countryCode =
       this.countryService.getSelectedCountry()?.phoneCode ?? '+966';
     this.phoneHintKey = getDomesticPhoneHintKey(countryCode);
-    this.form.get('phone')?.setValidators([
-      Validators.required,
-      Validators.pattern(/^\d+$/),
-      Validations.domesticPhoneValidator(() => countryCode),
-    ]);
+    this.form
+      .get('phone')
+      ?.setValidators([
+        Validators.required,
+        Validators.pattern(/^\d+$/),
+        Validations.domesticPhoneValidator(() => countryCode),
+      ]);
     this.form.get('phone')?.updateValueAndValidity({ emitEvent: false });
   }
-
- 
 }
