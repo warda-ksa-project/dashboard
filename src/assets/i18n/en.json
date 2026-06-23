@@ -39,7 +39,7 @@
     "mobileNumber_5_validation": "Mobile number should be 9 numbers start with 5 ",
     "confirm_password_validation": "Password doesn't match",
     "min_validation": "The value must be at least 1",
-    "phoneInvalid_validation": "Enter a valid mobile: Saudi 9 digits (500000003) or 10 digits (0500000003)",
+    "phoneInvalid_validation": "Enter a valid mobile: ",
     "phoneHint_sa": "9 digits starting with 5, 7, or 9 (500000003), or 10 with leading 0 (0500000003)",
     "phoneHint_om": "8 digits starting with 7 or 9 (example: 91234567)",
     "phoneHint_default": "Enter a valid mobile number",

@@ -14,6 +14,8 @@ import { DOCUMENT, TitleCasePipe } from '@angular/common';
 import { PrimeNG } from 'primeng/config';
 import { NotificationsComponent } from '../notifications/notifications.component';
 import { Tooltip } from 'primeng/tooltip';
+import { TraderProfile } from '../../services/trader/trader.model';
+import { TraderService } from '../../services/trader/trader.service';
 
 @Component({
   selector: 'app-navbar',
@@ -28,6 +30,7 @@ import { Tooltip } from 'primeng/tooltip';
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
+  providers: [TraderService],
 })
 export class NavbarComponent {
   @Input() sidebarCollapsed = false;
@@ -39,24 +42,37 @@ export class NavbarComponent {
   selectedLang: string = localStorage.getItem('lang') || 'en';
   languageService = inject(LanguageService);
   toaster = inject(ToasterService);
-  userImage = localStorage.getItem('image');
+  trader?: TraderProfile;
   userName = localStorage.getItem('name');
   email = localStorage.getItem('email');
   userType = localStorage.getItem('role');
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private primeng: PrimeNG,
+    private traderService: TraderService,
   ) {}
 
   ngOnInit(): void {
     this.primeng.ripple.set(true);
     this.initAppTranslation();
+    if (this.userType === 'Trader') {
+      this.getTraderProfile();
+    }
   }
 
   public initAppTranslation() {
     this.languageService.changeAppDirection(this.selectedLang);
     this.languageService.changeHtmlLang(this.selectedLang);
     this.languageService.use(this.selectedLang);
+  }
+
+  private getTraderProfile() {
+    const userId = +(localStorage.getItem('userId') as string);
+    this.traderService.getProfile(userId).subscribe({
+      next: (res) => {
+        this.trader = res.data;
+      },
+    });
   }
 
   onLangChange() {
@@ -94,6 +110,14 @@ export class NavbarComponent {
     this.router.navigate(['/profile']);
   }
 
+  imageError(event: Event) {
+    const imgElement = event.target as HTMLImageElement;
+    if (imgElement.src.includes('assets/images/arabian-man.png')) {
+      imgElement.style.display = 'none';
+      return;
+    }
+    imgElement.src = 'assets/images/arabian-man.png';
+  }
   private router = inject(Router);
 
   logout() {
