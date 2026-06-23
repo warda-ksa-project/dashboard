@@ -16,6 +16,6 @@ export class TraderService {
   }
 
   updateProfile(body: UpdateProfileReqBody) {
-    return this.api.put(`${this.endpoint}`, body);
+    return this.api.patch(`${this.endpoint}/UpdateProfile`, body);
   }
 }

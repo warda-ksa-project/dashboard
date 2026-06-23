@@ -84,12 +84,11 @@
               [control]="profileForm.get('phone')"
               [type]="'tel'"
               [length]="phoneMaxLength"
+              [readOnly]="true"
             ></app-input-text>
-            <small
-              *ngIf="!profileForm.get('phone')?.value"
-              class="hint"
-              >{{ phoneHintKey | translate }}</small
-            >
+            <small *ngIf="!profileForm.get('phone')?.value" class="hint">{{
+              phoneHintKey | translate
+            }}</small>
           </div>
           <div class="col-12 col-lg-6 p-1">
             <app-input-text

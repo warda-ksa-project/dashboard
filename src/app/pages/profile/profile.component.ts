@@ -114,11 +114,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.country = country;
     this.phoneHintKey = getDomesticPhoneHintKey(country.phoneCode);
     this.phoneMaxLength = getDomesticPhoneMaxLength(country.phoneCode);
-    this.profileForm.get('phone')?.setValidators([
-      Validators.required,
-      Validators.pattern(/^\d+$/),
-      Validations.domesticPhoneValidator(() => country.phoneCode),
-    ]);
+    this.profileForm
+      .get('phone')
+      ?.setValidators([
+        Validators.required,
+        Validators.pattern(/^\d+$/),
+        Validations.domesticPhoneValidator(() => country.phoneCode),
+      ]);
     this.profileForm.get('phone')?.updateValueAndValidity({ emitEvent: false });
   }
 
@@ -258,29 +260,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
       return;
     }
     const body: UpdateProfileReqBody = {
-      addresses: this.profile.addresses.map((addr) => {
-        return {
-          cityId: addr.cityId,
-          expalinedAddress: addr.expalinedAddress,
-          id: addr.id,
-          latitude: addr.latitude,
-          logitude: addr.longitude,
-        };
-      }),
+      addresses: this.profile.addresses,
       arDescription: this.profileForm.value.arDescription,
-      cr: this.profile.cr,
       email: this.profileForm.value.email,
       enDescription: this.profileForm.value.enDescription,
-      iban: this.profile.iban,
-      id: this.profile.id,
       image: this.selectedImage || this.profile.image,
-      license: this.profile.license,
       name: this.profileForm.value.userName,
       numberOfBranches: this.profile.numberOfBranches,
-      phone: this.normalizedFormPhone(),
-      phoneCountryCode: this.country.phoneCode,
       storeName: this.profileForm.value.storeName,
-      supportsPickup: this.profile.supportsPickup,
     };
     this.subs.add(
       this.traderService.updateProfile(body).subscribe({
@@ -293,7 +280,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
           this.profile = {
             ...this.profile,
             ...this.profileForm.value,
-            phone: body.phone,
+
             descriptionAr: body.arDescription,
             descriptionEn: body.enDescription,
           } as TraderProfile;
