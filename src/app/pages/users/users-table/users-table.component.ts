@@ -98,39 +98,106 @@ export class UsersTableComponent {
 
   displayTableCols(currentLang: string) {
     this.columns = [
-      { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: true },
-      { keyName: 'name', header: this.languageService.translate('users.form.name'), type: EType.text, show: true },
-      { keyName: 'role', header: this.languageService.translate('users.form.role'), type: EType.text, show: true },
-      { keyName: 'email', header: this.languageService.translate('users.form.email'), type: EType.text, show: true },
-      { keyName: 'phone', header: this.languageService.translate('users.form.phone'), type: EType.text, show: true },
-      { keyName: 'isActive', header: this.languageService.translate('users.form.status'), type: EType.toggle, toggleOptions: global_toggleOptions, show: true },
-      { keyName: '', header: this.languageService.translate('Action'), type: EType.actions, actions: this.tableActions, show: true },
+      {
+        keyName: 'id',
+        header: this.languageService.translate('Id'),
+        type: EType.id,
+        show: true,
+      },
+      {
+        keyName: 'userName',
+        header: this.languageService.translate('users.form.name'),
+        type: EType.text,
+        show: true,
+      },
+      {
+        keyName: 'roleName',
+        header: this.languageService.translate('users.form.role'),
+        type: EType.text,
+        show: true,
+      },
+      {
+        keyName: 'email',
+        header: this.languageService.translate('users.form.email'),
+        type: EType.text,
+        show: true,
+      },
+      {
+        keyName: 'phone',
+        header: this.languageService.translate('users.form.phone'),
+        type: EType.text,
+        show: true,
+      },
+      {
+        keyName: 'isActive',
+        header: this.languageService.translate('users.form.status'),
+        type: EType.toggle,
+        toggleOptions: global_toggleOptions,
+        show: true,
+      },
+      {
+        keyName: '',
+        header: this.languageService.translate('Action'),
+        type: EType.actions,
+        actions: this.tableActions,
+        show: true,
+      },
     ];
     this.columnsSmallTable = [
-      { keyName: 'id', header: this.languageService.translate('Id'), type: EType.id, show: false },
-      { keyName: 'name', header: this.languageService.translate('users.form.name'), type: EType.text, showAs: ETableShow.header },
-      { keyName: 'role', header: this.languageService.translate('users.form.role'), type: EType.text, showAs: ETableShow.header },
-      { keyName: 'email', header: this.languageService.translate('users.form.email'), type: EType.text, showAs: ETableShow.header },
-      { keyName: 'phone', header: this.languageService.translate('users.form.phone'), type: EType.text, showAs: ETableShow.header },
+      {
+        keyName: 'id',
+        header: this.languageService.translate('Id'),
+        type: EType.id,
+        show: false,
+      },
+      {
+        keyName: 'userName',
+        header: this.languageService.translate('users.form.name'),
+        type: EType.text,
+        showAs: ETableShow.header,
+      },
+      {
+        keyName: 'roleName',
+        header: this.languageService.translate('users.form.role'),
+        type: EType.text,
+        showAs: ETableShow.header,
+      },
+      {
+        keyName: 'email',
+        header: this.languageService.translate('users.form.email'),
+        type: EType.text,
+        showAs: ETableShow.header,
+      },
+      {
+        keyName: 'phone',
+        header: this.languageService.translate('users.form.phone'),
+        type: EType.text,
+        showAs: ETableShow.header,
+      },
     ];
   }
 
   getBreadCrumb() {
     this.bredCrumb = {
       crumbs: [
-        { label: this.languageService.translate('Home'), routerLink: '/dashboard-admin' },
+        {
+          label: this.languageService.translate('Home'),
+          routerLink: '/dashboard-admin',
+        },
         { label: this.languageService.translate(this.pageName()) },
       ],
     };
   }
 
   API_getAll() {
-    this.ApiService.get(global_API_getAll, this.objectSearch).subscribe((res: any) => {
-      if (res) {
-        this.dataList = res.data.items;
-        this.totalCount = res.data.totalCount;
-      }
-    });
+    this.ApiService.get(global_API_getAll, this.objectSearch).subscribe(
+      (res: any) => {
+        if (res) {
+          this.dataList = res.data.items;
+          this.totalCount = res.data.totalCount;
+        }
+      },
+    );
   }
 
   onPageChange(event: any) {
@@ -139,13 +206,26 @@ export class UsersTableComponent {
   }
 
   onSearch(value: string) {
-    this.filterMixin.onSearchChange(value, () => this.API_getAll(), this.objectSearch, 'phone');
+    this.filterMixin.onSearchChange(
+      value,
+      () => this.API_getAll(),
+      this.objectSearch,
+      'phone',
+    );
   }
 
   onSubmitFilter() {
     this.filterMixin.updateChips([
-      { key: 'phone', label: 'users.form.phone', value: this.objectSearch.phone },
-      { key: 'nameAr', label: 'users.form.name', value: this.objectSearch.nameAr },
+      {
+        key: 'phone',
+        label: 'users.form.phone',
+        value: this.objectSearch.phone,
+      },
+      {
+        key: 'nameAr',
+        label: 'users.form.name',
+        value: this.objectSearch.nameAr,
+      },
     ]);
     this.objectSearch.pageNumber = 1;
     this.API_getAll();
@@ -153,7 +233,9 @@ export class UsersTableComponent {
   }
 
   onChipRemove(key: string) {
-    this.filterMixin.removeChip(key, this.objectSearch, () => this.API_getAll());
+    this.filterMixin.removeChip(key, this.objectSearch, () =>
+      this.API_getAll(),
+    );
   }
 
   reset() {
