@@ -25,7 +25,7 @@
         <h4>{{ "home" | translate }}</h4>
         <div class="welcome-sub">
           <span>{{ "welcome" | translate }},</span>
-          <span class="welcome-name">{{ userName | titlecase }}</span>
+          <span class="welcome-name">{{ trader?.userName | titlecase }}</span>
         </div>
       </div>
     </div>
@@ -45,12 +45,13 @@
           <img
             width="36"
             height="36"
-            [src]="userImage ? userImage : 'assets/images/arabian-man.png'"
+            [src]="trader ? trader.image : 'assets/images/arabian-man.png'"
             alt=""
+            (error)="imageError($event)"
           />
           <div class="info">
-            <span class="name">{{ userName | titlecase }}</span>
-            <span class="mail">{{ email }}</span>
+            <span class="name">{{ trader?.userName | titlecase }}</span>
+            <span class="mail">{{ trader?.email }}</span>
           </div>
         </div>
       } @else {
@@ -58,7 +59,7 @@
           <img
             width="36"
             height="36"
-            [src]="userImage ? userImage : 'assets/images/arabian-man.png'"
+            [src]="'assets/images/arabian-man.png'"
             alt=""
           />
           <div class="info">

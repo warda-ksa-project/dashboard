@@ -72,5 +72,8 @@
     <span class="text-danger">
       {{ control.errors | validationHandlerPipe }}</span
     >
+    @if (hint && control.hasError("phoneInvalid")) {
+      <span class="text-danger"> {{ "(" + (hint | translate) + ")" }} </span>
+    }
   </div>
 </div>

@@ -37,6 +37,7 @@ export class InputTextComponent {
   @Input() control: any = new FormControl();
   @Input() showPasswordWeakness: boolean = false;
   @Input() length = 9;
+  @Input() hint?: string;
   @Output() onValueChange = new EventEmitter();
 
   OnInit() {
