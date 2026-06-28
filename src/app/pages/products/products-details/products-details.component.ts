@@ -5,23 +5,15 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { ApiService } from '../../../services/api.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { DatePipe, NgFor, NgIf, TitleCasePipe } from '@angular/common';
 import { InputTextComponent } from '../../../components/input-text/input-text.component';
 import { BreadcrumpComponent } from '../../../components/breadcrump/breadcrump.component';
-import { BreadcrumpComponent } from '../../../components/breadcrump/breadcrump.component';
 import { IBreadcrumb } from '../../../components/breadcrump/cerqel-breadcrumb.interface';
 import { ConfirmMsgService } from '../../../services/confirm-msg.service';
 import { DialogComponent } from '../../../components/dialog/dialog.component';
-import { UploadFileComponent } from '../../../components/upload-file/upload-file.component';
 import { UploadFileComponent } from '../../../components/upload-file/upload-file.component';
 import { TranslatePipe } from '@ngx-translate/core';
 import { LanguageService } from '../../../services/language.service';
@@ -37,7 +29,6 @@ import { Validations } from '../../../validations';
 import { Roles } from '../../../conts';
 
 const global_PageName = 'products.pageName';
-const global_routeUrl = 'product';
 const global_routeUrl = 'product';
 const global_API_details = 'Products';
 const global_API_create = 'Products';
@@ -66,45 +57,14 @@ const global_API_update = 'Products';
     UploadFileComponent,
   ],
   providers: [DatePipe],
-  imports: [
-    ReactiveFormsModule,
-    NgFor,
-    CheckBoxComponent,
-    GalleryComponent,
-    StepperModule,
-    SelectComponent,
-    EditorComponent,
-    EditModeImageComponent,
-    TitleCasePipe,
-    TranslatePipe,
-    ButtonModule,
-    NgIf,
-    DialogComponent,
-    InputTextComponent,
-    RouterModule,
-    BreadcrumpComponent,
-    UploadFileComponent,
-  ],
-  providers: [DatePipe],
   templateUrl: './products-details.component.html',
-  styleUrl: './products-details.component.scss',
   styleUrl: './products-details.component.scss',
 })
 export class ProductsDetailsComponent {
   pageName = signal<string>(global_PageName);
   private ApiService = inject(ApiService);
   private router = inject(Router);
-  private ApiService = inject(ApiService);
-  private router = inject(Router);
   arrayFrom = Array.from;
-  minEndDate = new Date();
-  private route = inject(ActivatedRoute);
-  showConfirmMessage: boolean = false;
-  private confirm = inject(ConfirmMsgService);
-  mainCategoryList: any[] = [];
-  categoryList: any[] = [];
-  reviews: any[] = [];
-  payloadFinal: any = {};
   minEndDate = new Date();
   private route = inject(ActivatedRoute);
   showConfirmMessage: boolean = false;
@@ -119,58 +79,39 @@ export class ProductsDetailsComponent {
     { name: 'Percentage', code: 1 },
   ];
   hasDiscount = false;
-    { name: 'Percentage', code: 1 },
-  ];
-  hasDiscount = false;
   imageList: any;
   form = new FormGroup({
     enName: new FormControl('', {
       validators: [Validators.required],
-      validators: [Validators.required],
     }),
     arName: new FormControl('', {
-      validators: [Validators.required],
       validators: [Validators.required],
     }),
     enDescription: new FormControl('', {
       validators: [Validators.required],
-      validators: [Validators.required],
     }),
     arDescription: new FormControl('', {
       validators: [Validators.required],
-      validators: [Validators.required],
     }),
     stockQuantity: new FormControl('', {
-      validators: [Validators.required, Validations.onlyNumberValidator()],
       validators: [Validators.required, Validations.onlyNumberValidator()],
     }),
     hasDiscount: new FormControl<boolean>(false),
     discountType: new FormControl<any>('', {
       validators: [Validators.required],
-      validators: [Validators.required],
     }),
     amount: new FormControl<any>('', {
       validators: [Validators.required, Validations.onlyNumberValidator()],
-      validators: [Validators.required, Validations.onlyNumberValidator()],
     }),
     price: new FormControl('', {
       validators: [Validators.required, Validations.onlyNumberValidator()],
-    price: new FormControl('', {
-      validators: [Validators.required, Validations.onlyNumberValidator()],
     }),
-    priceAfterDiscount: new FormControl('', {
-      validators: [],
     priceAfterDiscount: new FormControl('', {
       validators: [],
     }),
 
     image: new FormControl<any>([]),
     id: new FormControl(this.getID | 0),
-    startDate: new FormControl<any>('', {
-      validators: [Validators.required],
-    }),
-    endDate: new FormControl<any>('', {
-      validators: [Validators.required],
     startDate: new FormControl<any>('', {
       validators: [Validators.required],
     }),
@@ -184,13 +125,8 @@ export class ProductsDetailsComponent {
       validators: [Validators.required],
     }),
   });
-      validators: [Validators.required],
-    }),
-  });
 
   bredCrumb: IBreadcrumb = {
-    crumbs: [],
-  };
     crumbs: [],
   };
 
@@ -198,22 +134,17 @@ export class ProductsDetailsComponent {
     props: {
       visible: true,
       imgSrc: '',
-      imgSrc: '',
     },
     onEditBtn: (e?: Event) => {
       this.editImageProps.props.visible = false;
       this.editMode = false;
-    },
     },
   };
 
   editMode: boolean = false;
   apiService = inject(ApiService);
   role: any = '';
-  apiService = inject(ApiService);
-  role: any = '';
   get getID() {
-    return this.route.snapshot.params['id'];
     return this.route.snapshot.params['id'];
   }
 
@@ -222,13 +153,11 @@ export class ProductsDetailsComponent {
   isPastDate(date: Date): boolean {
     const today = new Date();
 
-
     // Remove time from today's date for accurate comparison
     today.setHours(0, 0, 0, 0);
     return date < today;
   }
   ngOnInit() {
-    this.pageName.set(global_PageName);
     this.pageName.set(global_PageName);
     this.getRoles();
     this.selectedLang = this.languageService.translationService.currentLang;
@@ -237,16 +166,6 @@ export class ProductsDetailsComponent {
       this.getRoles();
     });
 
-    this.form.get('startDate')?.valueChanges.subscribe((res: any) => {
-      if (this.isFirstDateAfter(res, this.form.get('endDate')?.value))
-        this.form.get('endDate')?.setValue('');
-      if (this.isPastDate(res) == true) {
-        this.minEndDate = new Date();
-      }
-      if (this.isPastDate(res) == false) {
-        this.minEndDate = new Date(res);
-      }
-    });
     this.form.get('startDate')?.valueChanges.subscribe((res: any) => {
       if (this.isFirstDateAfter(res, this.form.get('endDate')?.value))
         this.form.get('endDate')?.setValue('');
@@ -268,13 +187,11 @@ export class ProductsDetailsComponent {
 
       if (value) {
         this.hasDiscount = true;
-        this.hasDiscount = true;
         this.form.get('discountType')?.setValidators([Validators.required]);
         this.form.get('amount')?.setValidators([Validators.required]);
         this.form.get('startDate')?.setValidators([Validators.required]);
         this.form.get('endDate')?.setValidators([Validators.required]);
       } else {
-        this.hasDiscount = false;
         this.hasDiscount = false;
         this.form.get('discountType')?.setValue(0);
         this.form.get('amount')?.setValue(0);
@@ -292,12 +209,9 @@ export class ProductsDetailsComponent {
     });
 
     if (this.tyepMode() !== 'Add') this.API_getItemDetails();
-    if (this.tyepMode() !== 'Add') this.API_getItemDetails();
   }
-  isFirstDateAfter(start: any, end: any) {
   isFirstDateAfter(start: any, end: any) {
     return new Date(start) > new Date(end);
-  }
   }
 
   getRoles() {
@@ -308,11 +222,6 @@ export class ProductsDetailsComponent {
   }
   tyepMode() {
     const url = this.router.url;
-    let result = 'Add';
-    if (url.includes('edit')) result = 'Edit';
-    else if (url.includes('view')) result = 'View';
-    else result = 'Add';
-    return result;
     let result = 'Add';
     if (url.includes('edit')) result = 'Edit';
     else if (url.includes('view')) result = 'View';
@@ -330,11 +239,6 @@ export class ProductsDetailsComponent {
       const arr = Array.isArray(list) ? list : [list];
       console.log(this.selectedLang);
       this.mainCategoryList = arr.map((item: any) => ({
-        name:
-          this.selectedLang === 'ar'
-            ? (item.arName ?? item.enName)
-            : (item.enName ?? item.arName),
-        code: item.id,
         name: this.selectedLang === 'ar' ? item.arName : item.enName,
         code: item.id,
       }));
@@ -353,17 +257,9 @@ export class ProductsDetailsComponent {
     this.ApiService.get(
       `SubCategories/by-main-category/${mainCategoryId}`,
     ).subscribe((res: any) => {
-    this.ApiService.get(
-      `SubCategories/by-main-category/${mainCategoryId}`,
-    ).subscribe((res: any) => {
       const list = res?.data ?? res ?? [];
       const arr = Array.isArray(list) ? list : [list];
       this.categoryList = arr.map((item: any) => ({
-        name:
-          this.selectedLang === 'ar'
-            ? (item.arName ?? item.enName)
-            : (item.enName ?? item.arName),
-        code: item.id,
         name:
           this.selectedLang === 'ar'
             ? (item.arName ?? item.enName)
@@ -375,12 +271,7 @@ export class ProductsDetailsComponent {
 
   onValueStepperChange(value: any) {
     this.goTo(value);
-  onValueStepperChange(value: any) {
-    this.goTo(value);
   }
-  goTo(value: number) {
-    setTimeout(() => {
-      if (value == 2) {
   goTo(value: number) {
     setTimeout(() => {
       if (value == 2) {
@@ -394,61 +285,10 @@ export class ProductsDetailsComponent {
         this.payloadFinal = JSON.parse(JSON.stringify(this.form.value));
         this.payloadFinal.startDate = new Date(this.payloadFinal.startDate);
         this.payloadFinal.endDate = new Date(this.payloadFinal.endDate);
-          amount: +this.payloadFinal.amount,
-          startDate: this.payloadFinal.startDate,
-          endDate: this.payloadFinal.endDate,
-          discountType: this.payloadFinal.discountType,
-        });
-      } else if (value == 1) {
-        this.payloadFinal = JSON.parse(JSON.stringify(this.form.value));
-        this.payloadFinal.startDate = new Date(this.payloadFinal.startDate);
-        this.payloadFinal.endDate = new Date(this.payloadFinal.endDate);
       }
-    });
     });
   }
   API_getItemDetails() {
-    this.ApiService.get(`${global_API_details}/${this.getID}`).subscribe(
-      (res: any) => {
-        const d = res?.data ?? res;
-        if (d) {
-          this.reviews = d.productReviews ?? [];
-          const price = d.price ?? d.prices?.[0]?.amount ?? 0;
-          this.form.patchValue({
-            ...d,
-            price: price,
-            priceAfterDiscount: d.priceAfterDiscount ?? price,
-            startDate: d.startDate ? new Date(d.startDate) : null,
-            endDate: d.endDate ? new Date(d.endDate) : null,
-            hasDiscount: !!d.hasDiscount,
-            mainCategoryId: d.mainCategoryId ?? null,
-          });
-          if (d.mainCategoryId) {
-            this.getSubCategoriesByMain(d.mainCategoryId);
-          }
-          const imgs = d.images ?? d.image ?? [];
-          this.imageList = Array.isArray(imgs)
-            ? imgs.map((x: any) =>
-                typeof x === 'string'
-                  ? { src: x, mediaTypeEnum: 1 }
-                  : {
-                      ...x,
-                      src: x.src ?? x.image ?? '',
-                      mediaTypeEnum: x.mediaTypeEnum ?? 1,
-                    },
-              )
-            : imgs
-              ? [{ src: imgs, mediaTypeEnum: 1 }]
-              : [];
-          if (this.imageList?.length) this.addUrltoMedia(this.imageList);
-          this.payloadFinal = JSON.parse(JSON.stringify(this.form.value));
-          if (this.payloadFinal.startDate)
-            this.payloadFinal.startDate = new Date(this.payloadFinal.startDate);
-          if (this.payloadFinal.endDate)
-            this.payloadFinal.endDate = new Date(this.payloadFinal.endDate);
-        }
-      },
-    );
     this.ApiService.get(`${global_API_details}/${this.getID}`).subscribe(
       (res: any) => {
         const d = res?.data ?? res;
@@ -495,8 +335,6 @@ export class ProductsDetailsComponent {
     (list || []).forEach((data: any) => {
       data.src =
         data.src ?? data.image ?? (typeof data === 'string' ? data : '');
-      data.src =
-        data.src ?? data.image ?? (typeof data === 'string' ? data : '');
     });
   }
   // onSelect(event: any): void {
@@ -533,7 +371,6 @@ export class ProductsDetailsComponent {
 
   //   // }
 
-
   //   // this.imageList=this.form.value.image;
   //   console.log('fff',this.form.value)
 
@@ -555,8 +392,6 @@ export class ProductsDetailsComponent {
         enDescription: raw.enDescription ?? '',
         mainCategoryId:
           raw.mainCategoryId != null ? Number(raw.mainCategoryId) : null,
-        mainCategoryId:
-          raw.mainCategoryId != null ? Number(raw.mainCategoryId) : null,
         categoryId: Number(raw.categoryId) || 0,
         stockQuantity: Number(raw.stockQuantity) || 0,
         prices: [{ amount: priceVal, currency: 'SAR' }],
@@ -570,21 +405,8 @@ export class ProductsDetailsComponent {
         raw.startDate &&
         raw.endDate
       ) {
-      if (
-        raw.hasDiscount &&
-        raw.discountType != null &&
-        raw.amount != null &&
-        raw.startDate &&
-        raw.endDate
-      ) {
         payload.discountType = Number(raw.discountType);
         payload.amount = Number(raw.amount);
-        payload.startDate =
-          raw.startDate instanceof Date
-            ? raw.startDate.toISOString()
-            : raw.startDate;
-        payload.endDate =
-          raw.endDate instanceof Date ? raw.endDate.toISOString() : raw.endDate;
         payload.startDate =
           raw.startDate instanceof Date
             ? raw.startDate.toISOString()
@@ -602,21 +424,12 @@ export class ProductsDetailsComponent {
         enDescription: raw.enDescription ?? '',
         mainCategoryId:
           raw.mainCategoryId != null ? Number(raw.mainCategoryId) : null,
-        mainCategoryId:
-          raw.mainCategoryId != null ? Number(raw.mainCategoryId) : null,
         categoryId: Number(raw.categoryId) || 0,
         stockQuantity: Number(raw.stockQuantity) || 0,
         prices: [{ amount: priceVal, currency: 'SAR' }],
         imagesBase64: imagesBase64.length ? imagesBase64 : null,
         hasDiscount: !!raw.hasDiscount,
       };
-      if (
-        raw.hasDiscount &&
-        raw.discountType != null &&
-        raw.amount != null &&
-        raw.startDate &&
-        raw.endDate
-      ) {
       if (
         raw.hasDiscount &&
         raw.discountType != null &&
@@ -632,12 +445,6 @@ export class ProductsDetailsComponent {
             : raw.startDate;
         payload.endDate =
           raw.endDate instanceof Date ? raw.endDate.toISOString() : raw.endDate;
-        payload.startDate =
-          raw.startDate instanceof Date
-            ? raw.startDate.toISOString()
-            : raw.startDate;
-        payload.endDate =
-          raw.endDate instanceof Date ? raw.endDate.toISOString() : raw.endDate;
       }
       this.API_forEditItem(payload);
     }
@@ -645,21 +452,16 @@ export class ProductsDetailsComponent {
 
   navigateToPageTable() {
     this.router.navigateByUrl(global_routeUrl);
-    this.router.navigateByUrl(global_routeUrl);
   }
 
   cancel() {
     const hasValue = this.confirm.formHasValue(this.form);
-    const hasValue = this.confirm.formHasValue(this.form);
     if (hasValue && this.tyepMode() == 'Edit')
-      this.showConfirmMessage = !this.showConfirmMessage;
-    else this.navigateToPageTable();
       this.showConfirmMessage = !this.showConfirmMessage;
     else this.navigateToPageTable();
   }
 
   onConfirmMessage() {
-    this.navigateToPageTable();
     this.navigateToPageTable();
   }
 
