@@ -378,9 +378,11 @@ export class ProductsDetailsComponent {
   onSubmit() {
     const raw = this.form.value;
     const priceVal = Number(raw.price) || 0;
-    const imagesBase64 = (raw.image || [])
+    const imagesBase64Raw = (raw.image || [])
       .map((x: any) => x?.image ?? x?.src ?? (typeof x === 'string' ? x : null))
       .filter(Boolean);
+
+    const imagesBase64 = [...new Set(imagesBase64Raw)];
 
     if (this.tyepMode() === 'Add') {
       const payload: any = {
@@ -471,7 +473,11 @@ export class ProductsDetailsComponent {
 
   API_forEditItem(payload: any) {
     this.ApiService.put(global_API_update, payload).subscribe((res: any) => {
-      if (res?.isSuccess !== false) this.navigateToPageTable();
+      if (res?.isSuccess !== false) {
+        this.imageList = [];
+        this.API_getItemDetails();
+        this.navigateToPageTable();
+      }
     });
   }
 }
