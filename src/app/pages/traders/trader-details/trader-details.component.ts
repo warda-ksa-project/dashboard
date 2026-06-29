@@ -103,7 +103,7 @@ export class TraderDetailsComponent {
         Validators.required,
         Validators.pattern(/^\d+$/),
         Validations.domesticPhoneValidator(
-          this.countryService.getSelectedCountry()?.phoneCode,
+          () => this.countryService.getSelectedCountry()?.phoneCode,
         ),
       ],
     }),
