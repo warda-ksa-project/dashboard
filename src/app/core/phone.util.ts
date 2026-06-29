@@ -95,6 +95,8 @@ export function getDomesticPhoneHint(
   return translate ? translate(key) : key;
 }
 
-export function getDomesticPhoneMaxLength(countryCode: PhoneCountryCode = '+966'): number {
+export function getDomesticPhoneMaxLength(
+  countryCode: PhoneCountryCode = '+966',
+): number {
   return normalizeCountryCode(countryCode) === '+966' ? 10 : 9;
 }
