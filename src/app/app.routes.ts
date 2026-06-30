@@ -536,6 +536,54 @@ export const routes: Routes = [
         canActivate: [roleGuard],
         data: { roles: [Roles.admin] }
       },
+      { 
+        path: 'users/wallet/:id', 
+        loadComponent: () => import('./pages/client-wallet/client-wallet.component').then(m => m.ClientWalletComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'wallet-management', 
+        loadComponent: () => import('./pages/wallet-management/wallet-management.component').then(m => m.WalletManagementComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'clients', 
+        loadComponent: () => import('./pages/clients/clients-table/clients-table.component').then(m => m.ClientsTableComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'client/view/:id', 
+        loadComponent: () => import('./pages/clients/client-details/client-details.component').then(m => m.ClientDetailsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'financial-reports', 
+        loadComponent: () => import('./pages/financial-reports/financial-reports.component').then(m => m.FinancialReportsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'settlements', 
+        loadComponent: () => import('./pages/settlements/settlements.component').then(m => m.SettlementsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'commission-settings', 
+        loadComponent: () => import('./pages/commission-settings/commission-settings.component').then(m => m.CommissionSettingsComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin] }
+      },
+      { 
+        path: 'trader-financial', 
+        loadComponent: () => import('./pages/trader-financial/trader-financial.component').then(m => m.TraderFinancialComponent),
+        canActivate: [roleGuard],
+        data: { roles: [Roles.admin, Roles.trader] }
+      },
 
       // ==================== Trader Only Routes ====================
       

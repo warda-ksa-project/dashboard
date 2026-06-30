@@ -11,7 +11,7 @@ export interface Country {
   phoneLength: string;
   phoneCode: string;
   status: boolean;
-  paymentWalletUrl: string;
+  paymentUrl?: string;
 }
 
 @Injectable({

@@ -1,0 +1,11 @@
+.view-link {
+  color: #7a1e3b;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

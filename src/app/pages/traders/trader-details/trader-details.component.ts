@@ -30,6 +30,7 @@ import { MapComponent } from '../../../components/map/map.component';
 import { SelectComponent } from '../../../components/select/select.component';
 import { CountryService } from '../../../services/country.service';
 import { DialogModule } from 'primeng/dialog';
+import { TraderFinancialPanelComponent } from '../../../components/trader-financial-panel/trader-financial-panel.component';
 import { SafePipe } from '../../../pipes/safe-pipe';
 
 const global_PageName = 'trader.pageName';
@@ -56,6 +57,7 @@ const global_API_update = 'Traders';
     RouterModule,
     UploadFileComponent,
     DialogModule,
+    TraderFinancialPanelComponent,
   ],
   templateUrl: './trader-details.component.html',
   styleUrl: './trader-details.component.scss',

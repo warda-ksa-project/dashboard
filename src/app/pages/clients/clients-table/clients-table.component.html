@@ -1,0 +1,45 @@
+<div class="page-form-container container-fluid">
+  <div class="row">
+    <div class="page-details mb-3">
+      <div class="title">
+        <h2>{{ pageName() | translate | titlecase }}</h2>
+      </div>
+      <div class="breadcrumb">
+        <app-breadcrump [breadcrumbProps]="bredCrumb"></app-breadcrump>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-container">
+    <p-table [value]="clients" styleClass="p-datatable-sm" [paginator]="true" [rows]="10">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>{{ 'Id' | translate }}</th>
+          <th>{{ 'client.form.name' | translate }}</th>
+          <th>{{ 'client.form.mobile' | translate }}</th>
+          <th>{{ 'client.form.email' | translate }}</th>
+          <th>{{ 'Action' | translate }}</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-c>
+        <tr>
+          <td>{{ c.id }}</td>
+          <td>{{ c.name ?? c.userName }}</td>
+          <td>{{ c.phone }}</td>
+          <td>{{ c.email || '—' }}</td>
+          <td>
+            <a [routerLink]="['/client/view', c.id]" class="view-link">
+              <i class="pi pi-eye"></i>
+              {{ 'actions.view' | translate }}
+            </a>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="5" class="text-center py-4 text-muted">{{ 'shared.no_data' | translate }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

@@ -1,0 +1,105 @@
+@if (clientId > 0) {
+  <div class="client-wallet-panel">
+    <div class="balance-card mb-4">
+      <span>{{ 'client_wallet.balance' | translate }}</span>
+      <strong>{{ formatAmount(balance?.balance, balance?.currency) }}</strong>
+    </div>
+
+    <div class="deposit-card mb-4">
+      <h4>{{ 'client_wallet.admin_operations' | translate }}</h4>
+
+      <div class="operation-tabs mb-3">
+        <button
+          type="button"
+          class="operation-tab"
+          [class.active]="operation === 'deposit'"
+          (click)="setOperation('deposit')"
+        >
+          {{ 'client_wallet.deposit_btn' | translate }}
+        </button>
+        <button
+          type="button"
+          class="operation-tab withdraw-tab"
+          [class.active]="operation === 'withdraw'"
+          (click)="setOperation('withdraw')"
+        >
+          {{ 'client_wallet.withdraw_btn' | translate }}
+        </button>
+      </div>
+
+      <form [formGroup]="operationForm" class="row g-3 align-items-end" (ngSubmit)="submitOperation()">
+        <div class="col-md-8">
+          <label class="amount-label" for="wallet-operation-amount">
+            {{ 'client_wallet.amount' | translate }}
+          </label>
+          <input
+            id="wallet-operation-amount"
+            type="number"
+            class="amount-input w-100"
+            formControlName="amount"
+            min="0.01"
+            step="0.01"
+            placeholder="0.00"
+          />
+          @if (operationForm.get('amount')?.invalid && operationForm.get('amount')?.touched) {
+            <small class="text-danger">
+              {{ 'validation_message.required_validation' | translate }}
+            </small>
+          }
+        </div>
+        <div class="col-md-4">
+          <button
+            pButton
+            type="submit"
+            class="w-100 operation-submit-btn"
+            [class.withdraw-btn]="operation === 'withdraw'"
+            [disabled]="submitting"
+          >
+            {{
+              (operation === 'deposit' ? 'client_wallet.deposit_btn' : 'client_wallet.withdraw_btn')
+                | translate
+            }}
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <h4 class="mb-3">{{ 'client_wallet.transactions' | translate }}</h4>
+    <p-table [value]="transactions" styleClass="p-datatable-sm" [paginator]="true" [rows]="10">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>{{ 'client_wallet.col_id' | translate }}</th>
+          <th>{{ 'client_wallet.col_type' | translate }}</th>
+          <th>{{ 'client_wallet.col_amount' | translate }}</th>
+          <th>{{ 'client_wallet.col_order' | translate }}</th>
+          <th>{{ 'client_wallet.col_status' | translate }}</th>
+          <th>{{ 'client_wallet.col_date' | translate }}</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-t>
+        <tr>
+          <td>{{ t.walletTransactionId ?? t.id }}</td>
+          <td>{{ typeLabel(t.transactionType) }}</td>
+          <td [class.text-danger]="t.transactionType === 2">
+            @if (t.transactionType === 2) {
+              -{{ formatAmount(t.amount) }}
+            } @else {
+              {{ formatAmount(t.amount) }}
+            }
+          </td>
+          <td>{{ t.orderId ?? '—' }}</td>
+          <td>{{ statusLabel(t.isApproved) }}</td>
+          <td>{{ (t.createdDate ?? t.createdAt) | date:'short' }}</td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="6" class="text-center py-4 text-muted">
+            {{ 'client_wallet.empty' | translate }}
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+}
+

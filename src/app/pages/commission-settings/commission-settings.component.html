@@ -1,0 +1,247 @@
+<div class="page-form-container container-fluid">
+
+  <div class="row">
+
+    <div class="page-details mb-3">
+
+      <div class="title">
+
+        <h2>{{ pageName() | translate | titlecase }}</h2>
+
+      </div>
+
+      <div class="breadcrumb">
+
+        <app-breadcrump [breadcrumbProps]="bredCrumb"></app-breadcrump>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="form-container commission-settings-page">
+
+    @if (editingId) {
+
+      <p class="edit-hint mb-3">
+
+        {{ 'commission_settings.editing_hint' | translate:{ id: editingId } }}
+
+      </p>
+
+    }
+
+
+
+    <form [formGroup]="form" class="add-form row g-3 mb-4" (ngSubmit)="onSubmit()">
+
+      <div class="col-12 col-md-2">
+
+        <app-input-text
+
+          [label]="'commission_settings.rate'"
+
+          [control]="form.get('commissionRate')"
+
+          type="number"
+
+        ></app-input-text>
+
+      </div>
+
+      <div class="col-12 col-md-3">
+
+        <app-select
+
+          [label]="'commission_settings.trader'"
+
+          [placeholder]="'shared.select' | translate"
+
+          [list]="tradersList"
+
+          [control]="form.get('traderId')"
+
+          [disabled]="!!editingId"
+
+        ></app-select>
+
+      </div>
+
+      <div class="col-12 col-md-3">
+
+        <app-select
+
+          [label]="'commission_settings.category'"
+
+          [placeholder]="'shared.select' | translate"
+
+          [list]="categoriesList"
+
+          [control]="form.get('categoryId')"
+
+          [disabled]="!!editingId"
+
+        ></app-select>
+
+      </div>
+
+      @if (editingId) {
+
+        <div class="col-12 col-md-2">
+
+          <app-select
+
+            [label]="'commission_settings.col_active'"
+
+            [placeholder]="'shared.select' | translate"
+
+            [list]="statusList"
+
+            [control]="form.get('isActive')"
+
+          ></app-select>
+
+        </div>
+
+      }
+
+      <div class="col-12 col-md-2 d-flex align-items-end gap-2">
+
+        <button pButton type="submit" class="flex-grow-1 add-btn">
+
+          {{
+
+            (editingId ? 'commission_settings.save' : 'commission_settings.add')
+
+              | translate
+
+          }}
+
+        </button>
+
+        @if (editingId) {
+
+          <button
+
+            pButton
+
+            type="button"
+
+            class="cancel-btn"
+
+            (click)="cancelEdit()"
+
+          >
+
+            {{ 'actions.cancel' | translate }}
+
+          </button>
+
+        }
+
+      </div>
+
+    </form>
+
+
+
+    <p-table [value]="settings" styleClass="p-datatable-sm" [paginator]="true" [rows]="10">
+
+      <ng-template pTemplate="header">
+
+        <tr>
+
+          <th>{{ 'commission_settings.col_id' | translate }}</th>
+
+          <th>{{ 'commission_settings.col_trader' | translate }}</th>
+
+          <th>{{ 'commission_settings.col_category' | translate }}</th>
+
+          <th>{{ 'commission_settings.col_rate' | translate }}</th>
+
+          <th>{{ 'commission_settings.col_active' | translate }}</th>
+
+          <th>{{ 'commission_settings.col_actions' | translate }}</th>
+
+        </tr>
+
+      </ng-template>
+
+      <ng-template pTemplate="body" let-s>
+
+        <tr [class.editing-row]="editingId === s.id">
+
+          <td>{{ s.id }}</td>
+
+          <td>{{ traderName(s.traderId) }}</td>
+
+          <td>{{ categoryName(s.categoryId) }}</td>
+
+          <td>{{ s.commissionRate }}%</td>
+
+          <td>{{ activeLabel(s.isActive) }}</td>
+
+          <td class="actions-cell">
+
+            <button
+
+              type="button"
+
+              class="edit-btn"
+
+              [title]="'actions.edit' | translate"
+
+              (click)="startEdit(s)"
+
+            >
+
+              <i class="pi pi-pencil"></i>
+
+            </button>
+
+            <button
+
+              type="button"
+
+              class="delete-btn"
+
+              [title]="'actions.delete' | translate"
+
+              (click)="remove(s)"
+
+            >
+
+              <i class="pi pi-trash"></i>
+
+            </button>
+
+          </td>
+
+        </tr>
+
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+
+        <tr>
+
+          <td colspan="6" class="text-center py-4 text-muted">
+
+            {{ 'commission_settings.empty' | translate }}
+
+          </td>
+
+        </tr>
+
+      </ng-template>
+
+    </p-table>
+
+  </div>
+
+</div>
+
+

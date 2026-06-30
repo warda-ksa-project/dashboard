@@ -1,0 +1,43 @@
+@if (traderId > 0) {
+  <div class="trader-financial-panel">
+    <h4 class="mb-3">{{ 'wallet_management.trader_title' | translate }}</h4>
+    <p class="text-muted mb-3">{{ 'wallet_management.trader_hint' | translate }}</p>
+
+    @if (loading) {
+      <p class="text-muted">{{ 'financial_reports.loading' | translate }}</p>
+    } @else if (data) {
+      <div class="row g-3">
+        <div class="col-md-4">
+          <div class="summary-card">
+            <span>{{ 'wallet_management.available_balance' | translate }}</span>
+            <strong>{{ formatAmount(data.availableBalance, data.currency) }}</strong>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="summary-card">
+            <span>{{ 'wallet_management.gross_sales' | translate }}</span>
+            <strong>{{ formatAmount(data.totalGrossSales, data.currency) }}</strong>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="summary-card">
+            <span>{{ 'wallet_management.commission' | translate }}</span>
+            <strong>{{ formatAmount(data.totalCommission, data.currency) }}</strong>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="summary-card">
+            <span>{{ 'wallet_management.net_earnings' | translate }}</span>
+            <strong>{{ formatAmount(data.totalNetEarnings, data.currency) }}</strong>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="summary-card">
+            <span>{{ 'wallet_management.completed_orders' | translate }}</span>
+            <strong>{{ data.completedOrdersCount ?? 0 }}</strong>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+}

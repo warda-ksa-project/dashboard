@@ -159,6 +159,11 @@
                   [control]="form.get('address')"
                 ></app-input-text>
               </div>
+              @if (clientUserId > 0) {
+                <div class="col-12 mt-4">
+                  <app-client-wallet-panel [clientId]="clientUserId"></app-client-wallet-panel>
+                </div>
+              }
             </div>
 
             <!-- Trader Info -->
@@ -301,6 +306,9 @@
 
         <!-- Actions -->
         <div class="actions mt-5 text-center">
+          <button type="button" class="btn btn-warning me-2" (click)="refundOrder()" *ngIf="data?.statusId === 6">
+            Refund to Wallet
+          </button>
           <button type="button" class="cancel-btn" (click)="cancel()">
             {{ "actions.cancel" | translate }}
           </button>

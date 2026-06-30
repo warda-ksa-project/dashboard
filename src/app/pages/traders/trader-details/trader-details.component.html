@@ -406,6 +406,10 @@
         </p-stepper>
       </form>
     </div>
+
+    @if (tyepMode() === 'View' && getID) {
+      <app-trader-financial-panel [traderId]="+getID"></app-trader-financial-panel>
+    }
   </div>
 </div>
 <app-dialog [visible]="showConfirmMessage">

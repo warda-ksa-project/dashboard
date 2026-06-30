@@ -1,0 +1,58 @@
+.commission-settings-page {
+  .edit-hint {
+    color: #7a1e3b;
+    font-weight: 500;
+  }
+
+  .add-form {
+    align-items: flex-end;
+  }
+
+  .add-btn {
+    background-color: #7a1e3b;
+    border: none;
+    min-height: 42px;
+  }
+
+  .cancel-btn {
+    background: #fff;
+    border: 1px solid #ccc;
+    color: #333;
+    min-height: 42px;
+  }
+
+  .editing-row {
+    background: #fdf2f5;
+  }
+
+  .actions-cell {
+    display: flex;
+    gap: 0.25rem;
+    justify-content: center;
+  }
+
+  .edit-btn,
+  .delete-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    font-size: 1rem;
+  }
+
+  .edit-btn {
+    color: #7a1e3b;
+
+    &:hover {
+      color: #5c1530;
+    }
+  }
+
+  .delete-btn {
+    color: #c0392b;
+
+    &:hover {
+      color: #922b21;
+    }
+  }
+}

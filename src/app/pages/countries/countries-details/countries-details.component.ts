@@ -74,6 +74,7 @@ export class CountriesDetailsComponent implements OnInit {
         Validations.onlyNumberValidator()
       ]
     }),
+    paymentUrl: new FormControl(''),
     status: new FormControl(true),
     image: new FormControl(null, {
       validators: [Validators.required]
@@ -163,7 +164,8 @@ export class CountriesDetailsComponent implements OnInit {
           phoneCode: d.phoneCode,
           status: d.status,
           currencyId: d.currencyId,
-          image: imgPath
+          image: imgPath,
+          paymentUrl: d.paymentUrl ?? ''
         });
         this.editImageProps.props.imgSrc = d.image ?? '';
         this.editMode = !!d.image;
@@ -181,7 +183,7 @@ export class CountriesDetailsComponent implements OnInit {
       phoneLength: raw.phoneLength ?? null,
       phoneCode: raw.phoneCode ?? null,
       status: raw.status ?? true,
-      paymentUrl: null,
+      paymentUrl: raw.paymentUrl || null,
       smsBearerToken: null,
       smsSenderName: null
     };

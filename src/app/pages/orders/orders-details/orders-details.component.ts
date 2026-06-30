@@ -21,6 +21,8 @@ import { UploadFileComponent } from '../../../components/upload-file/upload-file
 import { Roles } from '../../../conts';
 import { parseApiDateTime } from '../../../utils/api-datetime-parse';
 import { SignalRService } from '../../../services/signalr.service';
+import { ClientWalletPanelComponent } from '../../../components/client-wallet-panel/client-wallet-panel.component';
+import { WalletAdminService } from '../../../services/wallet.service';
 import { Subscription } from 'rxjs';
 
 const global_PageName = 'order.pageName';
@@ -42,6 +44,7 @@ const global_API_details = 'Orders';
     CommonModule,
     FormsModule,
     MapComponent,
+    ClientWalletPanelComponent,
   ],
   templateUrl: './orders-details.component.html',
   styleUrl: './orders-details.component.scss',
@@ -54,6 +57,7 @@ export class OrdersDetailsComponent implements OnInit, OnDestroy {
   showConfirmMessage: boolean = false;
   private confirm = inject(ConfirmMsgService);
   data: any = {};
+  clientUserId = 0;
   products: any[] = [];
   customerLat: number = 0;
   customerLng: number = 0;
@@ -109,6 +113,7 @@ export class OrdersDetailsComponent implements OnInit, OnDestroy {
   selectedLang: any;
   languageService = inject(LanguageService);
   private signalR = inject(SignalRService);
+  private walletAdmin = inject(WalletAdminService);
   private signalRSub?: Subscription;
 
   ngOnInit() {
@@ -201,6 +206,7 @@ export class OrdersDetailsComponent implements OnInit, OnDestroy {
       (res: any) => {
         if (res.data) {
           this.data = res.data;
+          this.clientUserId = res.data.userId ?? 0;
           this.products = res.data.orderItemResponseDtos || [];
 
           // Set customer location from address
@@ -275,5 +281,15 @@ export class OrdersDetailsComponent implements OnInit, OnDestroy {
       return 'status-completed';
     if (statusId === 8) return 'status-canceled';
     return 'status-pending';
+  }
+
+  refundOrder() {
+    const orderId = this.data?.id;
+    if (!orderId) return;
+    const amount = Number(this.form.get('totalPrice')?.value) || undefined;
+    this.walletAdmin.refundOrder(orderId, amount, 'Admin refund from dashboard').subscribe({
+      next: () => alert('Refund processed to client wallet'),
+      error: () => alert('Refund failed'),
+    });
   }
 }

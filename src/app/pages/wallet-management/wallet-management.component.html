@@ -1,0 +1,63 @@
+<div class="page-form-container container-fluid">
+  <div class="row">
+    <div class="page-details mb-3">
+      <div class="title">
+        <h2>{{ pageName() | translate | titlecase }}</h2>
+      </div>
+      <div class="breadcrumb">
+        <app-breadcrump [breadcrumbProps]="bredCrumb"></app-breadcrump>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-container wallet-management-page">
+    <div class="row g-4">
+      <div class="col-lg-6">
+        <div class="section-card">
+          <h4>{{ 'wallet_management.client_title' | translate }}</h4>
+          <p class="text-muted">{{ 'wallet_management.client_hint' | translate }}</p>
+          <form [formGroup]="clientForm" class="row g-3 align-items-end" (ngSubmit)="openClientWallet()">
+            <div class="col-12">
+              <app-select
+                [label]="'wallet_management.select_client'"
+                [placeholder]="'shared.select' | translate"
+                [list]="clientsList"
+                [control]="clientForm.get('clientId')"
+              ></app-select>
+            </div>
+            <div class="col-12">
+              <button
+                pButton
+                type="submit"
+                class="action-btn w-100"
+                [disabled]="!clientForm.value.clientId || clientForm.value.clientId <= 0"
+              >
+                {{ 'wallet_management.open_client_wallet' | translate }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="section-card">
+          <h4>{{ 'wallet_management.trader_title' | translate }}</h4>
+          <p class="text-muted">{{ 'wallet_management.trader_hint' | translate }}</p>
+          <form [formGroup]="traderForm" class="row g-3 align-items-end">
+            <div class="col-12">
+              <app-select
+                [label]="'wallet_management.select_trader'"
+                [placeholder]="'shared.select' | translate"
+                [list]="tradersList"
+                [control]="traderForm.get('traderId')"
+                (onSelectedValue)="onTraderSelected($event)"
+              ></app-select>
+            </div>
+          </form>
+
+          <app-trader-financial-panel [traderId]="selectedTraderId"></app-trader-financial-panel>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

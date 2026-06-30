@@ -17,6 +17,7 @@ import { environment } from '../../../../environments/environment';
 import { IEditImage } from '../../../components/edit-mode-image/editImage.interface';
 import { GalleryComponent } from '../../../components/gallery/gallery.component';
 import { CountryService } from '../../../services/country.service';
+import { ClientWalletPanelComponent } from '../../../components/client-wallet-panel/client-wallet-panel.component';
 const global_PageName ='users.pageName';
 const global_API_Name ='Users';
 const global_API_details = global_API_Name;
@@ -26,7 +27,7 @@ const global_routeUrl ="/users"
 @Component({
   selector: 'app-users-details',
   standalone: true,
-  imports: [ReactiveFormsModule,NgIf,TranslatePipe,CheckBoxComponent,TitleCasePipe,DialogComponent, ButtonModule, InputTextComponent, RouterModule],
+  imports: [ReactiveFormsModule,NgIf,TranslatePipe,CheckBoxComponent,TitleCasePipe,DialogComponent, ButtonModule, InputTextComponent, RouterModule, ClientWalletPanelComponent],
   templateUrl: './users-details.component.html',
   styleUrl: './users-details.component.scss'
 })
@@ -70,6 +71,8 @@ pageName = signal<string>(global_PageName);
   };
 
   editMode: boolean = false;
+  userRoleId = 0;
+  showClientWallet = false;
   get getID() {
     return this.route.snapshot.params['id']
   }
@@ -108,6 +111,10 @@ pageName = signal<string>(global_PageName);
       this.API_getItemDetails()
   }
 
+  get clientId(): number {
+    return Number(this.getID) || 0;
+  }
+
   tyepMode() {
     const url = this.router.url;
     let result = 'Add'
@@ -144,6 +151,8 @@ pageName = signal<string>(global_PageName);
         });
         this.editMode = true;
         this.editImageProps.props.imgSrc = d.image;
+        this.userRoleId = d.roleId ?? 0;
+        this.showClientWallet = this.tyepMode() === 'View';
       }
     });
   }

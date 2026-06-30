@@ -1,0 +1,85 @@
+.client-wallet-panel {
+  .balance-card {
+    background: #fdf2f5;
+    border: 1px solid #f4a8bc;
+    border-radius: 8px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    strong {
+      font-size: 1.5rem;
+      color: #7a1e3b;
+    }
+  }
+
+  .deposit-card {
+    background: #fafafa;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 1.25rem;
+  }
+
+  .operation-tabs {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .operation-tab {
+    border: 1px solid #7a1e3b;
+    background: #fff;
+    color: #7a1e3b;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-weight: 500;
+
+    &.active {
+      background: #7a1e3b;
+      color: #fff;
+    }
+
+    &.withdraw-tab.active {
+      background: #b42318;
+      border-color: #b42318;
+    }
+  }
+
+  .operation-submit-btn {
+    background-color: #7a1e3b;
+    border: none;
+    min-height: 42px;
+
+    &.withdraw-btn {
+      background-color: #b42318;
+    }
+  }
+
+  .deposit-btn {
+    background-color: #7a1e3b;
+    border: none;
+    min-height: 42px;
+  }
+
+  .amount-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+
+  .amount-input {
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    padding: 0.65rem 0.75rem;
+    font-size: 1rem;
+    min-height: 42px;
+
+    &:focus {
+      outline: none;
+      border-color: #7a1e3b;
+      box-shadow: 0 0 0 2px rgba(122, 30, 59, 0.15);
+    }
+  }
+}

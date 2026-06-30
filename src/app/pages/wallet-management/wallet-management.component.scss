@@ -1,0 +1,32 @@
+.wallet-management-page {
+  .section-card {
+    background: #fafafa;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 1.25rem;
+    height: 100%;
+  }
+
+  .action-btn {
+    background-color: #7a1e3b;
+    border: none;
+    min-height: 42px;
+  }
+
+  .trader-summary {
+    border-top: 1px solid #eee;
+    padding-top: 1rem;
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.5rem 0;
+      border-bottom: 1px dashed #eee;
+
+      strong {
+        color: #7a1e3b;
+      }
+    }
+  }
+}

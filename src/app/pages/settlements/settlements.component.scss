@@ -1,0 +1,39 @@
+.settlements-page {
+  .create-btn,
+  .mark-btn {
+    background-color: #7a1e3b;
+    border: none;
+    min-height: 42px;
+  }
+
+  .mark-paid-card {
+    background: #fafafa;
+    border: 1px solid #eee;
+    border-radius: 8px;
+  }
+
+  .status-badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    background: #eee;
+
+    &[data-status='1'] {
+      background: #fff3cd;
+      color: #856404;
+    }
+    &[data-status='2'] {
+      background: #cce5ff;
+      color: #004085;
+    }
+    &[data-status='3'] {
+      background: #d4edda;
+      color: #155724;
+    }
+    &[data-status='4'] {
+      background: #f8d7da;
+      color: #721c24;
+    }
+  }
+}

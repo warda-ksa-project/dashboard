@@ -1,0 +1,79 @@
+<div class="page-form-container container-fluid">
+  <div class="row">
+    <div class="page-details mb-3">
+      <div class="title">
+        <h2>{{ pageName() | translate }}</h2>
+      </div>
+      <div class="breadcrumb">
+        <app-breadcrump [breadcrumbProps]="bredCrumb"></app-breadcrump>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-container financial-reports-page">
+    @if (loading) {
+      <p class="text-muted">{{ 'financial_reports.loading' | translate }}</p>
+    } @else if (summary) {
+      <div class="row g-3 mb-4">
+        <div class="col-md-3">
+          <div class="summary-card">
+            <strong>{{ 'financial_reports.escrow' | translate }}</strong>
+            <div class="amount">{{ formatAmount(summary.totalEscrowBalance) }}</div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="summary-card">
+            <strong>{{ 'financial_reports.platform_revenue' | translate }}</strong>
+            <div class="amount">{{ formatAmount(summary.totalPlatformRevenue) }}</div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="summary-card">
+            <strong>{{ 'financial_reports.trader_payables' | translate }}</strong>
+            <div class="amount">{{ formatAmount(summary.totalTraderPayables) }}</div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="summary-card">
+            <strong>{{ 'financial_reports.settled_orders' | translate }}</strong>
+            <div class="amount">
+              {{ formatAmount(summary.totalSettledOrders) }}
+              <small class="d-block text-muted">
+                {{ 'financial_reports.settled_count' | translate:{ count: summary.completedSettlementsCount ?? 0 } }}
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <h4 class="mb-3">{{ 'financial_reports.ledger_title' | translate }}</h4>
+    <p-table [value]="ledger" styleClass="p-datatable-sm" [paginator]="true" [rows]="10">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>{{ 'financial_reports.col_ref' | translate }}</th>
+          <th>{{ 'financial_reports.col_type' | translate }}</th>
+          <th>{{ 'financial_reports.col_amount' | translate }}</th>
+          <th>{{ 'financial_reports.col_order' | translate }}</th>
+          <th>{{ 'financial_reports.col_date' | translate }}</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-row>
+        <tr>
+          <td>{{ row.referenceNo }}</td>
+          <td>{{ entryTypeLabel(row.entryType) }}</td>
+          <td>{{ formatAmount(row.amount, row.currency) }}</td>
+          <td>{{ row.orderId ?? '—' }}</td>
+          <td>{{ row.createdDate | date:'short' }}</td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="5" class="text-center py-4 text-muted">
+            {{ 'financial_reports.ledger_empty' | translate }}
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

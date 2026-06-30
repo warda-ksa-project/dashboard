@@ -78,6 +78,13 @@
         </form>
       </div>
     </div>
+
+    @if (showClientWallet) {
+      <div class="wallet-section mt-4">
+        <h3 class="mb-3">{{ 'client_wallet.pageName' | translate }}</h3>
+        <app-client-wallet-panel [clientId]="clientId"></app-client-wallet-panel>
+      </div>
+    }
   </div>
   
   <app-dialog [visible]="showConfirmMessage">

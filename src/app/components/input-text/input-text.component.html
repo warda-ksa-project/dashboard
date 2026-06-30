@@ -40,11 +40,11 @@
     }
     <input
       autocomplete="off"
-      autocomplete="off"
       (ngModelChange)="onInputChange($event)"
-      *ngIf="type == 'text'"
+      *ngIf="type == 'text' || type == 'number'"
       class="w-100"
       pInputText
+      [type]="type === 'number' ? 'number' : 'text'"
       id="enTitle"
       [formControl]="control"
       [readOnly]="readOnly"
@@ -64,11 +64,7 @@
     />
     <label class="block mb-1" for="enTitle">{{ label | translate }}</label>
   </p-floatlabel>
-  <div
-    *ngIf="
-      (control.errors && control.touched) || (control.value && control.errors)
-    "
-  >
+  <div *ngIf="control.invalid && control.touched">
     <span class="text-danger">
       {{ control.errors | validationHandlerPipe }}</span
     >
